@@ -1,0 +1,12 @@
+machine:
+  php:
+    version: 7.0.4
+dependencies:
+  post:
+    - wget https://phar.phpunit.de/phpunit-6.2.phar
+    - chmod +x phpunit-6.2.phar
+    - sudo mv -f phpunit-6.2.phar /usr/local/bin/phpunit
+    - phpunit --version
+test:
+  override:
+    - phpunit -c tests/unit/phpunit.xml
