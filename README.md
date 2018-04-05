@@ -1,1 +1,2 @@
-# hipay-enterprise-sdk-woocommerce
+# HiPay Enterprise plugin for Woocommerce 3.x.x
+
