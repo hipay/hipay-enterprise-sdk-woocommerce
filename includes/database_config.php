@@ -7,8 +7,7 @@ if($wpdb->get_var("show tables like '$this->plugin_table'") != $this->plugin_tab
 	$sql = "CREATE TABLE $this->plugin_table (
 	  `id` bigint(20) NOT NULL AUTO_INCREMENT,
 	  `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	  `reference` varchar(520) NOT NULL,
-	  `processed` tinyint(4) NOT NULL DEFAULT '0',
+	  `reference` varchar(150) NULL DEFAULT '0',
 	  `order_id` bigint(20) NOT NULL,
 	  `processed_date` datetime NOT NULL,
 	  `amount` varchar(7) NOT NULL,

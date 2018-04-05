@@ -298,17 +298,16 @@ $this->faqs = array(
 
 
 //LOGS
-
+//TODO: LIST ALL & CLEAR LIST
 $this->logs = array(
 	'api_tab_logs' => array(
-		'title'       => "<hr>".__( 'LOGS', 'hipayenterprise' ) ,
+		'title'       => "<hr>".__( 'LAST 100 LOGS', 'hipayenterprise' ) ,
 		'type'        => 'title',
 		'description' => ''
 	),
 
-	'api_tab_logs_disclaimer' => array(
-		'title'       => "" ,
-		'type'        => 'title',
-		'description' => __('Coming soon.')
-	),
+	'logs_details' => array(
+		'type'        => 'logs_details',
+	),	
+
 );

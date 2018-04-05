@@ -64,15 +64,7 @@ function woocommerce_hipayenterprise_init() {
 			$this->account_proxy_port 								= $this->get_option('account_proxy_port');
 			$this->account_proxy_username 							= $this->get_option('account_proxy_username');
 			$this->account_proxy_password 							= $this->get_option('account_proxy_password');
-
 			
-			$this->fraud_details 			= get_option( 'woocommerce_hipayenterprise_fraud',
-				array(
-					'woocommerce_hipayenterprise_fraud_copy_to'   	=> $this->get_option( 'woocommerce_hipayenterprise_fraud_copy_to' ),
-					'woocommerce_hipayenterprise_fraud_copy_method' => $this->get_option( 'woocommerce_hipayenterprise_fraud_copy_method' ),
-				)
-			);
-
 			$this->fraud_details 			= get_option( 'woocommerce_hipayenterprise_fraud',
 				array(
 					'woocommerce_hipayenterprise_fraud_copy_to'   	=> $this->get_option( 'woocommerce_hipayenterprise_fraud_copy_to' ),
@@ -93,14 +85,14 @@ function woocommerce_hipayenterprise_init() {
 					'woocommerce_hipayenterprise_methods_capture'  				=> $this->get_option( 'woocommerce_hipayenterprise_methods_capture' ),
 					'woocommerce_hipayenterprise_methods_3ds' 					=> $this->get_option( 'woocommerce_hipayenterprise_methods_3ds' ),
 					'woocommerce_hipayenterprise_methods_mode' 					=> $this->get_option( 'woocommerce_hipayenterprise_methods_mode' ),
-
+					'woocommerce_hipayenterprise_methods_hosted_mode' 			=> $this->get_option( 'woocommerce_hipayenterprise_methods_hosted_mode' ),
+					'woocommerce_hipayenterprise_methods_hosted_css' 			=> $this->get_option( 'woocommerce_hipayenterprise_methods_hosted_css' ),
+					'woocommerce_hipayenterprise_methods_hosted_card_selector'	=> $this->get_option( 'woocommerce_hipayenterprise_methods_hosted_card_selector' ),
 					'woocommerce_hipayenterprise_methods_oneclick'				=> $this->get_option( 'woocommerce_hipayenterprise_methods_oneclick' ),
 					'woocommerce_hipayenterprise_methods_cart_sending'			=> $this->get_option( 'woocommerce_hipayenterprise_methods_cart_sending' ),
 					'woocommerce_hipayenterprise_methods_keep_cart_onfail'		=> $this->get_option( 'woocommerce_hipayenterprise_methods_keep_cart_onfail' ),
 					'woocommerce_hipayenterprise_methods_log_info'				=> $this->get_option( 'woocommerce_hipayenterprise_methods_log_info' ),
-
 					'woocommerce_hipayenterprise_methods_display_name'			=> $this->get_option( 'woocommerce_hipayenterprise_methods_display_name' ),
-
 					'woocommerce_hipayenterprise_methods_payments' 				=> $this->get_option( 'woocommerce_hipayenterprise_methods_payments' ),
 				)
 			);
@@ -147,11 +139,9 @@ function woocommerce_hipayenterprise_init() {
 					$the_method->set_available_currencies($_POST['woocommerce_hipayenterprise_methods_cc_currencies'][$the_method->get_key()]);
 					$the_method->set_available_countries($_POST['woocommerce_hipayenterprise_methods_cc_countries_available_list'][$the_method->get_key()]);
 					$temp_list = explode(",",$_POST['woocommerce_hipayenterprise_methods_cc_countries_available_list'][$the_method->get_key()]);
-					$countries_list = array_unique(array_filter(array_merge($countries_list,$temp_list )));
-
+					if ($the_method->get_is_active()) $countries_list = array_unique(array_filter(array_merge($countries_list,$temp_list )));
 					$temp_list = explode(",",$the_method->get_available_currencies());
-					$currencies_list = array_unique(array_filter(array_merge($currencies_list,$temp_list )));
-
+					if ($the_method->get_is_active()) $currencies_list = array_unique(array_filter(array_merge($currencies_list,$temp_list )));
 					$all_methods_json .= $the_method->get_json() . ",";
 				} else {
 					$all_methods_json .= $the_method->get_json() . ",";
@@ -202,8 +192,7 @@ function woocommerce_hipayenterprise_init() {
 		
 		function init_form_fields() {
 			
-			include( plugin_dir_path( __FILE__ ) . 'includes/form_fields.php' );
-			
+			include( plugin_dir_path( __FILE__ ) . 'includes/form_fields.php' );		
 		}
 
 
@@ -467,8 +456,8 @@ function woocommerce_hipayenterprise_init() {
 				<fieldset>
 					<legend class="screen-reader-text"><span><?php _e("Display Hosted Page", 'hipayenterprise');?></span></legend>
 					<select class="select " name="woocommerce_hipayenterprise_methods_hosted_mode" id="woocommerce_hipayenterprise_methods_hosted_mode" style="">
-						<option value="hosted_page" <?php if ($woocommerce_hipayenterprise_methods_hosted_mode == "redirect") echo " SELECTED";?>><?php _e( 'Redirect', 'hipayenterprise' ); ?></option>
-						<option value="api" <?php if ($woocommerce_hipayenterprise_methods_hosted_mode == "iframe") echo " SELECTED";?> disabled><?php _e( 'IFrame', 'hipayenterprise' ); ?> <?php _e( '(SOON)', 'hipayenterprise' ); ?></option>
+						<option value="redirect" <?php if ($woocommerce_hipayenterprise_methods_hosted_mode == "redirect") echo " SELECTED";?>><?php _e( 'Redirect', 'hipayenterprise' ); ?></option>
+						<option value="iframe" <?php if ($woocommerce_hipayenterprise_methods_hosted_mode == "iframe") echo " SELECTED";?> disabled><?php _e( 'IFrame', 'hipayenterprise' ); ?> <?php _e( '(SOON)', 'hipayenterprise' ); ?></option>
 					</select>
 				</fieldset>
 				</td>
@@ -560,7 +549,7 @@ function woocommerce_hipayenterprise_init() {
 					<select class="select " name="woocommerce_hipayenterprise_methods_3ds" id="woocommerce_hipayenterprise_methods_3ds" style="">
 						<option value="0" <?php if ($woocommerce_hipayenterprise_methods_3ds == "0") echo " SELECTED";?>><?php _e( 'Deactivated', 'hipayenterprise' ); ?></option>
 						<option value="1" <?php if ($woocommerce_hipayenterprise_methods_3ds == "1") echo " SELECTED";?>><?php _e( 'Try to enable for all transactions', 'hipayenterprise' ); ?></option>
-						<option value="4" <?php if ($woocommerce_hipayenterprise_methods_3ds == "4") echo " SELECTED";?>><?php _e( 'Force for all transactions', 'hipayenterprise' ); ?></option>
+						<option value="2" <?php if ($woocommerce_hipayenterprise_methods_3ds == "2") echo " SELECTED";?>><?php _e( 'Force for all transactions', 'hipayenterprise' ); ?></option>
 					</select>
 					<p class="description"></p>
 				</fieldset>
@@ -618,8 +607,6 @@ function woocommerce_hipayenterprise_init() {
 		}
 
 
-
-
 		function generate_faqs_details_html() {
 
 			ob_start();
@@ -669,6 +656,37 @@ function woocommerce_hipayenterprise_init() {
 
 		}
 
+		function generate_logs_details_html() {
+
+			global $wpdb;
+			ob_start();
+			?>
+			<table class="wc_emails widefat" cellspacing="0"><tbody>
+				<tr>
+					<th class="wc-email-settings-table-name"><?php echo __("TYPE","hipayenterprise");?></th>
+					<th class="wc-email-settings-table-name"><?php echo __("ORDER","hipayenterprise");?></th>
+					<th class="wc-email-settings-table-name"><?php echo __("DATE","hipayenterprise");?></th>
+					<th class="wc-email-settings-table-name"><?php echo __("DESCRIPTION","hipayenterprise");?></th>
+				</tr>
+
+				<?php
+				$logs_list = $wpdb->get_results( "SELECT id,create_date,log_desc,order_id,type FROM $this->plugin_table_logs ORDER BY id DESC LIMIT 100");
+				foreach ($logs_list as $value) {
+				?>	
+					<tr>
+						<td ><?php echo $value->type;?></td>
+						<td ><?php echo $value->order_id;?></td>
+						<td ><?php echo $value->create_date;?></td>
+						<td ><?php echo $value->log_desc;?></td>
+					</tr>
+				<?php	
+				}
+				?>
+			</tbody></table>
+			<?php
+			return ob_get_clean();
+
+		}
 
 		function generate_fraud_details_html() {
 
@@ -836,7 +854,7 @@ function woocommerce_hipayenterprise_init() {
 		            <a href="#accounts" id="accounts-tab" class="nav-tab hipayenterprise-tab" data-toggle="accounts"><i class="dashicons dashicons-admin-generic"></i> <?php _e("Plugin Settings");?></a>
 		            <a href="#methods" id="methods-tab" class="nav-tab hipayenterprise-tab" data-toggle="methods"><span class="dashicons dashicons-cart"></span> <?php _e("Payment Methods");?></a>
 		            <a href="#fraud" id="fraud-tab" class="nav-tab hipayenterprise-tab" data-toggle="fraud"><span class="dashicons dashicons-warning"></span> <?php _e("Fraud");?></a>
-		            <a href="#currencies" id="logs-tab" class="nav-tab hipayenterprise-tab" data-toggle="currencies"><span class="dashicons dashicons-category"></span> <?php _e("Currencies");?></a>
+		            <a href="#currencies" id="currencies-tab" class="nav-tab hipayenterprise-tab" data-toggle="currencies"><span class="dashicons dashicons-category"></span> <?php _e("Currencies");?></a>
 		            <a href="#faqs" id="faqs-tab" class="nav-tab hipayenterprise-tab" data-toggle="faqs"><span class="dashicons dashicons-admin-comments"></span> <?php _e("FAQ");?></a>
 		            <a href="#logs" id="logs-tab" class="nav-tab hipayenterprise-tab" data-toggle="logs"><span class="dashicons dashicons-admin-page"></span> <?php _e("LOGS");?></a>
 		        </h2>
@@ -924,11 +942,6 @@ function woocommerce_hipayenterprise_init() {
 		}
 
 
-		//juan test
-		//94656299.stage-secure-gateway.hipay-tpp.com
-		//Test_sbqM2REKZcrAIF8arJgLOi5D
-		//LPsx!?@&:s61f4f9s43cekjgMPS
-
 	    function process_payment( $order_id ) {
 
 			global $woocommerce;
@@ -944,14 +957,13 @@ function woocommerce_hipayenterprise_init() {
 
 			$env = ($this->sandbox) ? HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENV_STAGE : HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENV_PRODUCTION;
 
-			$operation = "sale";
-			if ($this->woocommerce_hipayenterprise_methods['woocommerce_hipayenterprise_methods_capture'] == "manual") $operation = "authorization";
+			$operation = "Sale";
+			if ($this->method_details['woocommerce_hipayenterprise_methods_capture'] == "manual") $operation = "Authorization";
 			$callback_url = site_url().'/wc-api/WC_HipayEnterprise/?order=' . $order_id;
 			$current_currency = get_woocommerce_currency();
+			$current_billing_country = $woocommerce->customer->get_billing_country();
 			$billing_email = $woocommerce->customer->get_billing_email();
 			$shop_title = get_bloginfo( 'name' );
-
-
 
 			try {
 
@@ -959,8 +971,7 @@ function woocommerce_hipayenterprise_init() {
 				$clientProvider = new \HiPay\Fullservice\HTTP\SimpleHTTPClient($config);
 				$gatewayClient = new \HiPay\Fullservice\Gateway\Client\GatewayClient($clientProvider);
 				$orderRequest = new \HiPay\Fullservice\Gateway\Request\Order\HostedPaymentPageRequest();
-				$orderRequest = new \HiPay\Fullservice\Gateway\Request\Order\HostedPaymentPageRequest();
-
+				
 				$orderRequest->orderid = $order_id;
 				$orderRequest->operation = $operation;
 				$orderRequest->currency = $current_currency;
@@ -970,33 +981,76 @@ function woocommerce_hipayenterprise_init() {
 				$orderRequest->pending_url = $order->get_checkout_order_received_url();
 				$orderRequest->exception_url = $order->get_cancel_order_url_raw();
 				$orderRequest->cancel_url = $order->get_cancel_order_url_raw();
-				$orderRequest->http_accept = $callback_url;
+				$orderRequest->notify_url = $callback_url;
 				$orderRequest->language = "pt_PT";
 				$orderRequest->payment_product = "cb";
 				$orderRequest->description = $shop_title;
-				$orderRequest->ipaddr = $client_ip; 
-				$orderRequest->shipping = 0;
+				$orderRequest->ipaddr = $_SERVER ['REMOTE_ADDR']; 
+				$orderRequest->http_user_agent = $_SERVER ['HTTP_USER_AGENT'];
+				//$orderRequest->basket = "[{'type':'good' , 'name':'teste produto','total_amount':'2.00'}]";
+				$shipping = $woocommerce->cart->get_cart_shipping_total();
+				$currency_symbol = get_woocommerce_currency_symbol();	
+				$shipping = str_replace($currency_symbol,"", $shipping);
+				$thousands_sep = wp_specialchars_decode(stripslashes(get_option( 'woocommerce_price_thousand_sep')), ENT_QUOTES);
+				$shipping = str_replace($thousands_sep,"", $shipping);
+				$decimals_sep = wp_specialchars_decode(stripslashes(get_option( 'woocommerce_price_decimal_sep')), ENT_QUOTES);
+				if ( $decimals_sep != ".") $shipping = str_replace($decimals_sep,".", $shipping);
+				$shipping = floatval( preg_replace( '#[^\d.]#', '',  $shipping) );
+				$orderRequest->shipping = $shipping;
 				$orderRequest->tax =0; 
-				$orderRequest->template = "basic-js";
-				$orderRequest->display_selector = 1;//(int)$this->woocommerce_hipayenterprise_methods['woocommerce_hipayenterprise_methods_hosted_card_selector'];
-				if ($this->woocommerce_hipayenterprise_methods['woocommerce_hipayenterprise_methods_hosted_css']!="") $orderRequest->css = $this->woocommerce_hipayenterprise_methods['woocommerce_hipayenterprise_methods_hosted_css'];
 
-				$orderRequest->payment_product_list = array(array("teste1",1));
-				$orderRequest->payment_product_category_list = 'cb';
-				//multi_use, time_limit_to_pay
+				//https://github.com/hipay/hipay-fullservice-sdk-php/blob/master/lib/HiPay/Fullservice/Gateway/Model/Cart/Item.php
+
+				$orderRequest->authentication_indicator = $this->method_details['woocommerce_hipayenterprise_methods_3ds'];
+				if ($this->method_details['woocommerce_hipayenterprise_methods_hosted_mode']=="redirect") 
+					$orderRequest->template = "basic-js";
+				else
+					$orderRequest->template = "iframe-js";
+
+				$orderRequest->display_selector = (int)$this->method_details['woocommerce_hipayenterprise_methods_hosted_card_selector'];
+				if ($this->method_details['woocommerce_hipayenterprise_methods_hosted_css']!="") $orderRequest->css = $this->woocommerce_hipayenterprise_methods['woocommerce_hipayenterprise_methods_hosted_css'];
+
+				//check max min amount
+				$all_methods 		= json_decode($this->method_details['woocommerce_hipayenterprise_methods_payments']);
+				$max_amount = 0;
+				$min_amount = -1;
+				$countries_list = array();
+				$currencies_list = array();
+				$available_methods = array();
+
+				foreach ($all_methods as $key => $value) {
+					$the_method = new HipayEnterprisePaymentMethodClass($value);
+					//check currency, country and amount
+					if ($the_method->get_is_active() && $order_total <= $the_method->get_max_amount() && $order_total >= $the_method->get_min_amount() && (strpos($the_method->get_available_currencies(),$current_currency) !== false)  && (strpos($the_method->get_available_countries(),$current_billing_country) !== false))	{
+						$available_methods[] = $the_method->get_key();
+					}	
+				}
+				
+				$orderRequest->payment_product_list = implode(",", $available_methods);
+				$orderRequest->payment_product_category_list = '';
+				//multi_use, time_limit_to_pay, token
+				//firstname, lastname, billinginfo, shipping info
 				$transaction = $gatewayClient->requestHostedPaymentPage($orderRequest);
 
-				$x = print_r($transaction,true);
-				$order->add_order_note($x);				
-
+				//$x = print_r($transaction,true);
+				//$order->add_order_note($x);
 				$order->add_order_note(__('Payment URL:', 'hipayenterprise') . " " . $transaction->getForwardUrl() );
-		    	return array('result' 	=> 'success','redirect'	=> 	$transaction->getForwardUrl()     	);
+		    	$logger = wc_get_logger(); $logger->debug( $transaction->getForwardUrl(), array( 'source' => 'hipayenterprise' ) );
 
+				$wpdb->insert( $this->plugin_table, array( 'reference' => 0, 'order_id' => $order_id, 'amount' => $order_total ) );
+
+				if ($this->method_details['woocommerce_hipayenterprise_methods_log_info'])
+					$wpdb->insert( $this->plugin_table_logs, array( 'log_desc' => __("Payment created with url:","hipayenterprise") . " " . $transaction->getForwardUrl(), 'order_id' => $order_id, 'type' => 'INFO' ) );
+
+		    	return array('result' 	=> 'success','redirect'	=> 	$transaction->getForwardUrl()     	);
 
 
 			} catch (Exception $e) {
 				$order->add_order_note($e->getMessage() );
-			    
+				//if ($this->method_details['woocommerce_hipayenterprise_methods_log_info'])
+					$wpdb->insert( $this->plugin_table_logs, array( 'log_desc' => __("Error on creation:","hipayenterprise") . " " . $e->getMessage(), 'order_id' => $order_id, 'type' => 'ERROR' ) );
+
+				throw new Exception($e->getMessage());			    
 			}
 		
 
@@ -1034,21 +1088,24 @@ function woocommerce_hipayenterprise_init() {
 			$test 					= $notification["test"];
 			$transaction_reference	= $notification["transaction_reference"];
 
-			$order->add_order_note( $status . ": " . $message . " " . $state . " (".$transaction_reference.")");
-			if ($state = "completed" && $status == 118)
+			$order->add_order_note( $status . ": " . $message . " " . $state . " (".$transaction_reference.$this->plugin_table.")");
+
+			if ($this->method_details['woocommerce_hipayenterprise_methods_log_info'])
+				$wpdb->insert( $this->plugin_table_logs, array( 'log_desc' => $message . " " . __("Callback received for transation:","hipayenterprise") . " " . $transaction_reference, 'order_id' => $order_id, 'type' => 'INFO' ) );
+
+			if ($state = "completed" && $status == 118){
 				$order->update_status('processing', __("Payment successful for transaction", 'hipayenterprise' ) . " " . $transaction_reference, 0 );
-
-			if ($state = "completed" && $status == 116 && $this->woocommerce_hipayenterprise_methods["woocommerce_hipayenterprise_methods_capture"] == "manual")
-				$order->add_order_note( "Waiting manual capture");
-				//send mail
-				//$order->update_status('processing', __("Payment successful for transaction", 'hipayenterprise' ) . " " . $transaction_reference, 0 );
-
-
+				$wpdb->update( $this->plugin_table , array( 'captured' => 1, 'reference' => $transaction_reference, 'status' => $status,'operation' => $message ,'processed' => 1, 'processed_date' => date('Y-m-d H:i:s')), array('order_id' =>$order_id, 'processed' => 0 ) );
+				if ($this->method_details['woocommerce_hipayenterprise_methods_log_info'])
+					$wpdb->insert( $this->plugin_table_logs, array( 'log_desc' => __("Payment captured and Order changed to processing status.","hipayenterprise"), 'order_id' => $order_id, 'type' => 'INFO' ) );
+			} elseif ($state = "completed" && $status == 116 && $this->method_details["woocommerce_hipayenterprise_methods_capture"] == "manual"){
+				$order->update_status('on-hold', __("Waiting for manual capture. Authorization successful for transaction.", 'hipayenterprise' ) . " " . $transaction_reference, 0 );
+				$wpdb->update( $this->plugin_table , array( 'reference' => $transaction_reference, 'status' => $status,'operation' => $message ,'processed' => 0, 'processed_date' => date('Y-m-d H:i:s')), array('order_id' =>$order_id, 'processed' => 0 ) );				
+				if ($this->method_details['woocommerce_hipayenterprise_methods_log_info'])
+					$wpdb->insert( $this->plugin_table_logs, array( 'log_desc' => __("Payment authorized and Order changed to on-hold status, waiting for capture.","hipayenterprise"), 'order_id' => $order_id, 'type' => 'INFO' ) );
+			}	
 			return true;
 		}
-
-
-
 
 	}	
 
@@ -1058,12 +1115,10 @@ function woocommerce_hipayenterprise_init() {
 		global $woocommerce;
 		global $wpdb;
 
-
 		if (isset($woocommerce->cart)){
 
 			$current_currency = get_woocommerce_currency();
 			$current_billing_country = $woocommerce->customer->get_billing_country();
-		
 			$plugin_method_settings =get_option( 'woocommerce_hipayenterprise_methods');
 			$min_value = $plugin_method_settings['woocommerce_hipayenterprise_methods_payments_min_amount'];
 			$max_value = $plugin_method_settings['woocommerce_hipayenterprise_methods_payments_max_amount'];
