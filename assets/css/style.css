@@ -29,3 +29,7 @@
 .is_pointer {
 	cursor: pointer;
 }
+
+.woocommerce_hipayenterprise_methods_cc_countries, .woocommerce_hipayenterprise_methods_cc_countries_available {
+	min-width: 180px !important;
+}

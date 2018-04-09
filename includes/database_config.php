@@ -10,9 +10,13 @@ if($wpdb->get_var("show tables like '$this->plugin_table'") != $this->plugin_tab
 	  `reference` varchar(150) NULL DEFAULT '0',
 	  `order_id` bigint(20) NOT NULL,
 	  `processed_date` datetime NOT NULL,
-	  `amount` varchar(7) NOT NULL,
+	  `amount` varchar(10) NOT NULL,
 	  `status` varchar(7) NOT NULL,
-	  `operation` varchar(17) NOT NULL,
+	  `operation` varchar(100) NOT NULL,
+	  `processed` tinyint(4) NOT NULL DEFAULT '0',
+  	  `refunded` tinyint(4) NOT NULL DEFAULT '0',
+      `captured` tinyint(4) NOT NULL DEFAULT '0',
+      `stocks` tinyint(4) NOT NULL DEFAULT '0',
 	UNIQUE KEY id (id)
 	) $charset_collate;";
 
