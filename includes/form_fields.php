@@ -1,5 +1,7 @@
 <?php
-// BASE
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 $this->form_fields = array(
 'api_tab_module_configuration' => array(
@@ -234,20 +236,14 @@ $this->methods = array(
 
 
 'api_tab_methods_3' => array(
-	'title'       => "<p><hr>".__( 'LOCAL PAYMENT', 'hipayenterprise' ) ."</p>",
+	'title'       => "<p><hr>".__( 'LOCAL PAYMENTS', 'hipayenterprise' ) ."</p>",
 	'type'        => 'title',
 	
 ),			
 
-	'api_tab_methods_local_disclaimer' => array(
-		'title'       => "" ,
-		'type'        => 'title',
-		'description' => __('Coming soon.')
+	'methods_local_payments_settings' => array(
+		'type'        => 'methods_local_payments_settings',
 	),
-
-	//'methods_local_payments_settings' => array(
-	//	'type'        => 'methods_local_payments_settings',
-	//),
 );
 
 

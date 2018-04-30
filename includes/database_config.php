@@ -17,6 +17,7 @@ if($wpdb->get_var("show tables like '$this->plugin_table'") != $this->plugin_tab
   	  `refunded` tinyint(4) NOT NULL DEFAULT '0',
       `captured` tinyint(4) NOT NULL DEFAULT '0',
       `stocks` tinyint(4) NOT NULL DEFAULT '0',
+      `url` varchar(1024) DEFAULT NULL
 	UNIQUE KEY id (id)
 	) $charset_collate;";
 
