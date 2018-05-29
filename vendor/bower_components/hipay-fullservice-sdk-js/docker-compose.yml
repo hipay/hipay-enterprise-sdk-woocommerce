@@ -1,0 +1,38 @@
+#https://github.com/nanoninja/docker-nginx-php-mysql
+version: '2'
+services:
+    web:
+        container_name: hipay-sdk-js
+        image: nginx:latest
+        ports:
+            - "80:80"
+            - "443:443"
+        restart: always
+        volumes:
+            - ./etc/nginx/default.conf:/etc/nginx/conf.d/default.conf
+            - ./etc/ssl:/etc/ssl
+            - ./:/web
+        depends_on:
+            - "php"
+    php:
+        container_name: php_bloc
+        image: nanoninja/php-fpm
+        restart: always
+        volumes:
+            - ./etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini
+            - .:/web
+    composer:
+        container_name: composer_bloc
+        image: composer/composer
+        volumes:
+            - ./example:/app
+        command: install
+    npm:
+        container_name: npm_bloc
+        image: node
+        volumes:
+            - .:/data
+        working_dir: /data
+        entrypoint: ['npm', '--no-bin-link']
+        command: install
+

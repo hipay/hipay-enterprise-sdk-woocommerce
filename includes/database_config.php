@@ -26,7 +26,7 @@ if($wpdb->get_var("show tables like '$this->plugin_table'") != $this->plugin_tab
 
 } 
 
-if($wpdb->get_var("show tables like '$this->plugin_table'") != $this->plugin_table_logs)
+if($wpdb->get_var("show tables like '$this->plugin_table_logs'") != $this->plugin_table_logs)
 {
 	$charset_collate = $wpdb->get_charset_collate();
 	$sql = "CREATE TABLE $this->plugin_table_logs (
@@ -34,7 +34,7 @@ if($wpdb->get_var("show tables like '$this->plugin_table'") != $this->plugin_tab
 	  `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	  `log_desc` varchar(2222) NOT NULL,
 	  `order_id` bigint(20) NOT NULL,
-	  `status` varchar(22) NOT NULL,
+	  `type` varchar(22) NOT NULL,
 	UNIQUE KEY id (id)
 	) $charset_collate;";
 
@@ -48,7 +48,7 @@ if($wpdb->get_var("show tables like '$this->plugin_table_token'") != $this->plug
 {
 	$charset_collate = $wpdb->get_charset_collate();
 	$sql = "CREATE TABLE $this->plugin_table_token (
-  `id` int(10) UNSIGNED NOT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `customer_id` int(10) UNSIGNED NOT NULL,
   `token` varchar(45) NOT NULL,
   `brand` varchar(255) NOT NULL,

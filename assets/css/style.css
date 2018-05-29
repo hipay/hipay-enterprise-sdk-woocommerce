@@ -32,6 +32,7 @@
 
 .woocommerce_hipayenterprise_methods_cc_countries, .woocommerce_hipayenterprise_methods_cc_countries_available, .woocommerce_hipayenterprise_methods_lp_countries, .woocommerce_hipayenterprise_methods_lp_countries_available {
 	min-width: 180px !important;
+	min-height: 120px;
 }
 
 .wc_hipay_iframe_container {
@@ -49,4 +50,8 @@
     left: 0;
     width: 100%;
     height: 100%;
+}
+
+#saveTokenHipay {
+	float:left;
 }
