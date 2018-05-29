@@ -55,3 +55,17 @@
 #saveTokenHipay {
 	float:left;
 }
+
+#hipayPaymentInformationsTitle {
+	font-weight: bold;
+	margin-bottom: 15px;
+}
+
+#hipayPaymentInformationsInfo {
+	font-weight: normal;
+	margin-bottom: 10px;
+}
+
+#hiPay_error_message {
+	font-weight: bold;
+}

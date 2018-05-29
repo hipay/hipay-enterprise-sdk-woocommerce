@@ -17,15 +17,12 @@ function woocommerce_hipayenterprise_init() {
 
     define( 'WC_HIPAYENTERPRISE_VERSION', '1.0.0' );
 
-
 	class WC_HipayEnterprise extends WC_Payment_Gateway  {
 		
-
 		public function __construct() {
 
 			global $woocommerce;
 			global $wpdb;
-
 
 			$this->id 												= 'hipayenterprise';
 			$this->supports           								= array(	'products',	'refunds',	);
@@ -228,6 +225,7 @@ function woocommerce_hipayenterprise_init() {
 		public function payment_fields()
 		{
 			global $woocommerce;
+			global $wpdb;
 
 			if ($this->method_details['woocommerce_hipayenterprise_methods_hosted_mode'] == "redirect" && $this->method_details['woocommerce_hipayenterprise_methods_mode'] == "hosted_page")
 				_e('You will be redirected to an external payment page. Please do not refresh the page during the process.', $this->id );
@@ -238,12 +236,22 @@ function woocommerce_hipayenterprise_init() {
 				$password 	= (!$this->sandbox) ? $this->account_production_tokenization_password	: $this->account_test_tokenization_password;
 				$env = ($this->sandbox) ? "stage" : "production";
 				$customer_id = get_current_user_id();
+
+				if ($customer_id > 0) {
+					$token_flag = $wpdb->get_row( "SELECT id,brand,pan,card_holder,card_expiry_month,card_expiry_year,issuer,country,token FROM $this->plugin_table_token WHERE customer_id = $customer_id LIMIT 1");
+					if (isset($token_flag->id) ){
+						if ( strlen($token_flag->card_expiry_month)<2) $token_flag->card_expiry_month = "0" . $token_flag->card_expiry_month;
+						if ( strlen($token_flag->card_expiry_year)<4)  $token_flag->card_expiry_year  = "20" . $token_flag->card_expiry_year;
+						$token_flag_json = json_encode($token_flag);
+						
+					}
+				}
 			?>
 					<script type="text/javascript" src="<?php echo plugins_url( '/vendor/bower_components/hipay-fullservice-sdk-js/dist/strings.js', __FILE__ ) ;?>"></script>
 					<script type="text/javascript" src="<?php echo plugins_url( '/vendor/bower_components/hipay-fullservice-sdk-js/dist/card-js.min.js', __FILE__ ) ;?>"></script>
 					<script type="text/javascript" src="<?php echo plugins_url( '/vendor/bower_components/hipay-fullservice-sdk-js/dist/card-tokenize.js', __FILE__ ) ;?>"></script>
 					<script type="text/javascript" src="<?php echo plugins_url( '/vendor/bower_components/hipay-fullservice-sdk-js/dist/hipay-fullservice-sdk.min.js', __FILE__ ) ;?>"></script>
-
+					
 					<script type="text/javascript">
 					    var i18nFieldIsMandatory = "Field is mandatory";
 					    var i18nBadIban = "This is not a correct IBAN";
@@ -269,6 +277,7 @@ function woocommerce_hipayenterprise_init() {
 					<form id="tokenizerForm" action="" enctype="application/x-www-form-urlencoded" class="form-horizontal hipay-form-17" method="post" name="tokenizerForm" autocomplete="off">
 	                    <div id="error-js" style="" class="alert alert-danger">
 				        	<ul><li class="error" id="hiPay_error_message"></li></ul>
+
 						</div>
 					    
 					    <div class="card-js " data-icon-colour="#158CBA">
@@ -282,22 +291,46 @@ function woocommerce_hipayenterprise_init() {
 					    		<input id="hipay-the-card-name-id" class="name" name="card-holders-name" placeholder="<?php echo __('Name on card','hipayenterprise');?>">
 					    		<div class="icon"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="4px" width="24px" height="16px" viewBox="0 0 216 146" enable-background="new 0 0 216 146" xml:space="preserve"><g><path class="svg" d="M107.999,73c8.638,0,16.011-3.056,22.12-9.166c6.111-6.11,9.166-13.483,9.166-22.12c0-8.636-3.055-16.009-9.166-22.12c-6.11-6.11-13.484-9.165-22.12-9.165c-8.636,0-16.01,3.055-22.12,9.165c-6.111,6.111-9.166,13.484-9.166,22.12c0,8.637,3.055,16.01,9.166,22.12C91.99,69.944,99.363,73,107.999,73z" style="fill: rgb(21, 140, 186);"></path><path class="svg" d="M165.07,106.037c-0.191-2.743-0.571-5.703-1.141-8.881c-0.57-3.178-1.291-6.124-2.16-8.84c-0.869-2.715-2.037-5.363-3.504-7.943c-1.466-2.58-3.15-4.78-5.052-6.6s-4.223-3.272-6.965-4.358c-2.744-1.086-5.772-1.63-9.085-1.63c-0.489,0-1.63,0.584-3.422,1.752s-3.815,2.472-6.069,3.911c-2.254,1.438-5.188,2.743-8.799,3.909c-3.612,1.168-7.237,1.752-10.877,1.752c-3.639,0-7.264-0.584-10.876-1.752c-3.611-1.166-6.545-2.471-8.799-3.909c-2.254-1.439-4.277-2.743-6.069-3.911c-1.793-1.168-2.933-1.752-3.422-1.752c-3.313,0-6.341,0.544-9.084,1.63s-5.065,2.539-6.966,4.358c-1.901,1.82-3.585,4.02-5.051,6.6s-2.634,5.229-3.503,7.943c-0.869,2.716-1.589,5.662-2.159,8.84c-0.571,3.178-0.951,6.137-1.141,8.881c-0.19,2.744-0.285,5.554-0.285,8.433c0,6.517,1.983,11.664,5.948,15.439c3.965,3.774,9.234,5.661,15.806,5.661h71.208c6.572,0,11.84-1.887,15.806-5.661c3.966-3.775,5.948-8.921,5.948-15.439C165.357,111.591,165.262,108.78,165.07,106.037z" style="fill: rgb(21, 140, 186);"></path></g></svg></div></div><div class="expiry-container"><div class="expiry-wrapper"><div><input class="expiry" type="tel" placeholder="MM / YY" maxlength="7" x-autocompletetype="cc-exp" autocompletetype="cc-exp" autocorrect="off" spellcheck="off" autocapitalize="off" id="hipay-expiry"><input type="hidden" name="expiry-month" id="hipay-expiry-month"><input type="hidden" name="expiry-year" id="hipay-expiry-year"></div>
 					    		<div class="icon"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="4px" width="24px" height="16px" viewBox="0 0 216 146" enable-background="new 0 0 216 146" xml:space="preserve"><path class="svg" d="M172.691,23.953c-2.062-2.064-4.508-3.096-7.332-3.096h-10.428v-7.822c0-3.584-1.277-6.653-3.83-9.206c-2.554-2.553-5.621-3.83-9.207-3.83h-5.213c-3.586,0-6.654,1.277-9.207,3.83c-2.554,2.553-3.83,5.622-3.83,9.206v7.822H92.359v-7.822c0-3.584-1.277-6.653-3.83-9.206c-2.553-2.553-5.622-3.83-9.207-3.83h-5.214c-3.585,0-6.654,1.277-9.207,3.83c-2.553,2.553-3.83,5.622-3.83,9.206v7.822H50.643c-2.825,0-5.269,1.032-7.333,3.096s-3.096,4.509-3.096,7.333v104.287c0,2.823,1.032,5.267,3.096,7.332c2.064,2.064,4.508,3.096,7.333,3.096h114.714c2.824,0,5.27-1.032,7.332-3.096c2.064-2.064,3.096-4.509,3.096-7.332V31.286C175.785,28.461,174.754,26.017,172.691,23.953z M134.073,13.036c0-0.761,0.243-1.386,0.731-1.874c0.488-0.488,1.113-0.733,1.875-0.733h5.213c0.762,0,1.385,0.244,1.875,0.733c0.488,0.489,0.732,1.114,0.732,1.874V36.5c0,0.761-0.244,1.385-0.732,1.874c-0.49,0.488-1.113,0.733-1.875,0.733h-5.213c-0.762,0-1.387-0.244-1.875-0.733s-0.731-1.113-0.731-1.874V13.036z M71.501,13.036c0-0.761,0.244-1.386,0.733-1.874c0.489-0.488,1.113-0.733,1.874-0.733h5.214c0.761,0,1.386,0.244,1.874,0.733c0.488,0.489,0.733,1.114,0.733,1.874V36.5c0,0.761-0.244,1.386-0.733,1.874c-0.489,0.488-1.113,0.733-1.874,0.733h-5.214c-0.761,0-1.386-0.244-1.874-0.733c-0.488-0.489-0.733-1.113-0.733-1.874V13.036z M165.357,135.572H50.643V52.143h114.714V135.572z" style="fill: rgb(21, 140, 186);"></path></svg></div></div></div><div class="cvc-container"><div class="cvc-wrapper"><input id="hipay-cvc" class="cvc" data-toggle="tooltip" title="<?php echo __("3-digit security code usually found on the back of your card. American Express cards have a 4-digit code located on the front.","hipayenterprise");?>" name="cvc" type="tel" placeholder="CVC" maxlength="3" x-autocompletetype="cc-csc" autocompletetype="cc-csc" autocorrect="off" spellcheck="off" autocapitalize="off">
-
 					    		<div class="icon"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="3px" width="24px" height="17px" viewBox="0 0 216 146" enable-background="new 0 0 216 146" xml:space="preserve"><path class="svg" d="M152.646,70.067c-1.521-1.521-3.367-2.281-5.541-2.281H144.5V52.142c0-9.994-3.585-18.575-10.754-25.745c-7.17-7.17-15.751-10.755-25.746-10.755s-18.577,3.585-25.746,10.755C75.084,33.567,71.5,42.148,71.5,52.142v15.644h-2.607c-2.172,0-4.019,0.76-5.54,2.281c-1.521,1.52-2.281,3.367-2.281,5.541v46.929c0,2.172,0.76,4.019,2.281,5.54c1.521,1.52,3.368,2.281,5.54,2.281h78.214c2.174,0,4.02-0.76,5.541-2.281c1.52-1.521,2.281-3.368,2.281-5.54V75.607C154.93,73.435,154.168,71.588,152.646,70.067z M128.857,67.786H87.143V52.142c0-5.757,2.037-10.673,6.111-14.746c4.074-4.074,8.989-6.11,14.747-6.11s10.673,2.036,14.746,6.11c4.073,4.073,6.11,8.989,6.11,14.746V67.786z" style="fill: rgb(21, 140, 186);"></path></svg></div>
-				    	
 					    	</div>
+
 					    </div></div>
+						<input type="hidden" id="hipay_user_token" value='<?php echo $token_flag_json;?>'>				    	
+						<?php
+
+						if ($this->method_details['woocommerce_hipayenterprise_methods_oneclick'] == "1" && $customer_id > 0) {	?>
+								<span class="custom-checkbox"><br><input id="saveTokenHipay" type="checkbox" name="saveTokenHipay" <?php if ($token_flag_json!="") echo "CHECKED";?>><label for="saveTokenHipay"><?php echo __("Save credit card (One click payment)","hipayenterprise");?></label>
+						        </span>
+						<?php
+						}	?>        
+
+					    <div><br><button type="submit" class="button alt" name="woocommerce_tokenize_order" id="woocommerce_tokenize_order" value="<?php echo __('Validate Credit Card','hipayenterprise');?>" data-value="<?php echo __('Validate Credit Card','hipayenterprise');?>"><?php echo __('Validate Credit Card','hipayenterprise');?></button></div>
+						</form>
+
+						<div id="hipayPaymentInformations" style="display:none;">
+							<div id="hipayPaymentInformationsTitle"><?php echo __("Validate your Payment Information",'hipayenterprise');?></div>
+							
+							<div id="hipayPaymentInformationsInfo"><?php echo __("Card Number",'hipayenterprise');?>: <span id="cardnumberinfo"></span></div>
+							<div id="hipayPaymentInformationsInfo"><?php echo __("Name on Card",'hipayenterprise');?>: <span id="nameoncardinfo"></span></div>
+							<div id="hipayPaymentInformationsInfo"><?php echo __("Expiry date",'hipayenterprise');?>: <span id="expirydateinfo"></span></div>
+
+							<div><br>
+								<button type="button" class="button alt" name="woocommerce_tokenize_order_reset" id="woocommerce_tokenize_order_reset" value="<?php echo __('Change Credit Card','hipayenterprise');?>" data-value="<?php echo __('Change Credit Card','hipayenterprise');?>"><?php echo __('Change Credit Card','hipayenterprise');?></button>
+								<?php if ($token_flag_json!="") {	?>
+									<button type="button" class="button alt" name="woocommerce_tokenize_order_delete" id="woocommerce_tokenize_order_delete" value="<?php echo __('Remove Credit Card','hipayenterprise');?>" data-value="<?php echo __('Remove Credit Card','hipayenterprise');?>"><?php echo __('Remove Credit Card','hipayenterprise');?></button>
+								<?php }	?>
+							</div>
 
 
-
+						</div>
 
 					<script>
 
 						jQuery(function($) {     
 
 
-							  $('form[name="checkout"] input[name="payment_method"]').eq(0).prop('checked', true).attr( 'checked', 'checked' );
-							  usingGateway();
+                            $('form[name="checkout"] input[name="payment_method"]').eq(0).prop('checked', true).attr( 'checked', 'checked' );
+							usingGateway();
 
 							$(document).on("change", "form[name='checkout'] input[name='hipayenterprise']", function(){
 							  if ( 0 === jQuery('form[name="checkout"] input[name="hipayenterprise"]' ).filter( ':checked' ).size() ) {
@@ -307,102 +340,178 @@ function woocommerce_hipayenterprise_init() {
 							});						  
 
 							$( ".expiry" ).change(function() {
-
-							    $("input[name='expiry-month']").val($( ".expiry" ).val().substring(0,2));
-							    $("input[name='expiry-year']").val($( ".expiry" ).val().substring(3,5));
+							    $("input[name='expiry-month']").val($( ".expiry" ).val().replace(/\s/g,'').substring(0,2));
+							    $("input[name='expiry-year']").val($( ".expiry" ).val().replace(/\s/g,'').substring(3,5));
 							});
 
+
 							function usingGateway(){
-						  		
+
 						  		if($('form[name="checkout"] input[name="payment_method"]:checked').val() == 'hipayenterprise' ){
 
-									jQuery('form[name="checkout"]').on('submit', function(e){
-										if ($("#hipay_token").val()=="") {
-											e.preventDefault();
-											if ($('#saveTokenHipay').attr('checked'))
-												multiuse = '1';
-											else
-												multiuse = '0';
+						  			if ($("#hipay_user_token").val()!=""){
+						  				var tokenObj = JSON.parse($("#hipay_user_token").val());
+						  				console.log(tokenObj.id);
+								        $("#cardnumberinfo").html(tokenObj.pan + " ("+tokenObj.brand+")");
+								        $("#nameoncardinfo").html(tokenObj.card_holder);
+								        $("#expirydateinfo").html(tokenObj.card_expiry_month + " / " + tokenObj.card_expiry_year);
 
-											var params = {
-											    card_number: $('#hipay-card-number').val(),
-											    cvc: $('#hipay-cvc').val(),
-											    card_expiry_month: $("input[name='expiry-month']").val(),
-											    card_expiry_year: $("input[name='expiry-year']").val(),
-											    card_holder: $('#hipay-the-card-name-id').val(),
-											    multi_use: multiuse,
-											 };
+										if ($('#saveTokenHipay').attr('checked'))
+											multiuse = '1';
+										else
+											multiuse = '0';
 
-											HiPay.setTarget('<?php echo $env;?>'); 
-											HiPay.setCredentials('<?php echo $username;?>', '<?php echo $password;?>');
-											HiPay.create(params,
+								        $("#hipay_token").val(tokenObj.token);
+								        $("#hipay_brand").val(tokenObj.brand);
+								        $("#hipay_pan").val(tokenObj.pan);
+								        $("#hipay_card_holder").val(tokenObj.card_holder);
+								        $("#hipay_card_expiry_month").val(tokenObj.card_expiry_month);
+								        $("#hipay_card_expiry_year").val(tokenObj.card_expiry_year);
+								        $("#hipay_issuer").val(tokenObj.issuer);
+								        $("#hipay_country").val(tokenObj.country);
+								        $("#hipay_multiuse").val(multiuse);
+								        $("#hipay_direct_error").val("");
 
-											function(result) {
+						  				$('#tokenizerForm').hide();
+										$('#hipayPaymentInformations').show();
+										$("#place_order").show();
+						  			} else {
+						  				$("#place_order").hide();
+						  			}
+									
+									$('#woocommerce_tokenize_order_reset').click(function(e){
+										e.preventDefault();
+								        $("#hipay_token").val("");
+								        $("#hiPay_error_message").html("");
+								        $("#hipay_brand").val("");
+								        $("#hipay_pan").val("");
+								        $("#hipay_card_holder").val("");
+								        $("#hipay_card_expiry_month").val("");
+								        $("#hipay_card_expiry_year").val("");
+								        $("#hipay_issuer").val("");
+								        $("#hipay_country").val("");
+								        $("#hipay_multiuse").val("");
+								        $("#cardnumberinfo").html("");
+								        $("#nameoncardinfo").html("");
+								        $("#expirydateinfo").html("");
+								        $("#place_order").hide();	
+										$('#tokenizerForm').show();
+										$('#hipayPaymentInformations').hide();
+										return false;
+									});	
 
-												if ($('#saveTokenHipay').attr('checked'))
-													multiuse = '1';
-												else
-													multiuse = '0';
-										        $("#hipay_token").val(result.token);
-										        $("#hipay_brand").val(result.brand);
-										        $("#hipay_pan").val(result.pan);
-										        $("#hipay_card_holder").val(result.card_holder);
-										        $("#hipay_card_expiry_month").val(result.card_expiry_month);
-										        $("#hipay_card_expiry_year").val(result.card_expiry_year);
-										        $("#hipay_issuer").val(result.issuer);
-										        $("#hipay_country").val(result.country);
-										        $("#hipay_multiuse").val(multiuse);
-										        $("#hipay_direct_error").val("");
-										        jQuery('form[name="checkout"]').submit();						        
-										    }, 
-
-										    function (errors) {
-
-										        $("#hipay_token").val("");
-										        $("#hipay_brand").val("");
-										        $("#hipay_pan").val("");
-										        $("#hipay_card_holder").val("");
-										        $("#hipay_card_expiry_month").val("");
-										        $("#hipay_card_expiry_year").val("");
-										        $("#hipay_issuer").val("");
-										        $("#hipay_country").val("");
-										        $("#hipay_multiuse").val("");
-										        $("#hipay_direct_error").val("<?php echo __('Error processing payment information.','hipayenterprise');?>");
-										        jQuery('form[name="checkout"]').submit();						        
-
-										    //  if (typeof errors.message != "undefined") {
-										    }
-										  );
-										  e.preventDefault();
-										  return false;
-										}
+									$('#woocommerce_tokenize_order_delete').click(function(e){
+										e.preventDefault();
+										$("#hipay_delete_info").val($("#hipay_token").val());
+										$("#hipay_user_token").val("");
+								        $("#hipay_token").val("");
+								        $("#hiPay_error_message").html("");
+								        $("#hipay_brand").val("");
+								        $("#hipay_pan").val("");
+								        $("#hipay_card_holder").val("");
+								        $("#hipay_card_expiry_month").val("");
+								        $("#hipay_card_expiry_year").val("");
+								        $("#hipay_issuer").val("");
+								        $("#hipay_country").val("");
+								        $("#hipay_delete_info").val();
+								        $("#hipay_multiuse").val("");
+								        $("#cardnumberinfo").html("");
+								        $("#nameoncardinfo").html("");
+								        $("#expirydateinfo").html("");
+								        $("#place_order").hide();	
+										$('#tokenizerForm').show();
+										$('#hipayPaymentInformations').hide();
+										return false;
 									});
 
-								  	
-								  //return false;
-    							} else {
-									jQuery('form[name="checkout"]').unbind('submit');
 
-    							}
+									$('#woocommerce_tokenize_order').click(function(e){
+										e.preventDefault();
+										$("#hiPay_error_message").html("");
+										if ($('#saveTokenHipay').attr('checked'))
+											multiuse = '1';
+										else
+											multiuse = '0';
+
+										var params = {
+										    card_number: $('#hipay-card-number').val(),
+										    cvc: $('#hipay-cvc').val(),
+										    card_expiry_month: $("input[name='expiry-month']").val(),
+										    card_expiry_year: $("input[name='expiry-year']").val(),
+										    card_holder: $('#hipay-the-card-name-id').val(),
+										    multi_use: multiuse,
+										 };
+										HiPay.setTarget('<?php echo $env;?>'); 
+										HiPay.setCredentials('<?php echo $username;?>', '<?php echo $password;?>');
+										HiPay.create(params,
+
+												function(result) {
+
+													if ($('#saveTokenHipay').attr('checked'))
+														multiuse = '1';
+													else
+														multiuse = '0';
+											        $("#hipay_token").val(result.token);
+											        $("#hipay_brand").val(result.brand);
+											        $("#hipay_pan").val(result.pan);
+											        $("#hipay_card_holder").val(result.card_holder);
+											        $("#hipay_card_expiry_month").val(result.card_expiry_month);
+											        $("#hipay_card_expiry_year").val(result.card_expiry_year);
+											        $("#hipay_issuer").val(result.issuer);
+											        $("#hipay_country").val(result.country);
+											        $("#hipay_multiuse").val(multiuse);
+											        $("#hipay_direct_error").val("");
+
+											        $("#cardnumberinfo").html(result.pan + " ("+result.brand+")");
+											        $("#nameoncardinfo").html(result.card_holder);
+											        $("#expirydateinfo").html(result.card_expiry_month + " / " + result.card_expiry_year);
+
+											        $("#place_order").show();	
+											     	$('#tokenizerForm').hide();
+													$('#hipayPaymentInformations').show();
+											        return false;					        
+											    }, 
+
+											    function (errors) {
+
+											        $("#hipay_token").val("");
+											        $("#hipay_brand").val("");
+											        $("#hipay_pan").val("");
+											        $("#hipay_card_holder").val("");
+											        $("#hipay_card_expiry_month").val("");
+											        $("#hipay_card_expiry_year").val("");
+											        $("#hipay_issuer").val("");
+											        $("#hipay_country").val("");
+											        $("#hipay_multiuse").val("");
+											        $("#cardnumberinfo").html("");
+											        $("#nameoncardinfo").html("");
+											        $("#expirydateinfo").html("");
+											        $("#hipay_direct_error").val("<?php echo __('Error processing payment information.','hipayenterprise');?>");
+											        $("#hiPay_error_message").html("<?php echo __('Please check your payment information.','hipayenterprise');?><br>");
+											        
+											        return false;				        
+
+											    }
+					    
+
+											  );
+
+   										return false;
+
+									});
+
+    							} 
     						}
 
 
 						});
 
 
+
+
 					</script><br>
 
-					<?php
 
-					if ($this->method_details['woocommerce_hipayenterprise_methods_oneclick'] == "1" && $customer_id > 0) {	?>
-							<span class="custom-checkbox">
-				            <input id="saveTokenHipay" type="checkbox" name="saveTokenHipay"><label for="saveTokenHipay"><?php echo __("Save credit card (One click payment)","hipayenterprise");?></label>
-					        </span>
-					<?php
-					}	?>        
-
-				    <button style="display:none" id="pay-with-payment-option-3" type="submit"></button>
-					</form>
 
 		<?php						             
 			}	
@@ -1439,16 +1548,24 @@ function woocommerce_hipayenterprise_init() {
 		    $token =  $_POST["hipay_token"];
 			$order = new WC_Order( $order_id );
 
+
 		    if ($this->method_details["woocommerce_hipayenterprise_methods_mode"] == "api" && $token == "") {
-				return true;
+				return;
 		    } elseif ( $this->method_details["woocommerce_hipayenterprise_methods_mode"] == "api" && $token != "") {
 
 			    $hipay_direct_error =  $_POST["hipay_direct_error"];
 			    if ($hipay_direct_error != "") 	throw new Exception($hipay_direct_error, 1);
 
 			    $brand =  $_POST["hipay_brand"];
+			    $hipay_delete_token =  $_POST["hipay_delete_info"];
 			    $user_multiuse =  $_POST["hipay_multiuse"];
 			    $customer_id = $order->get_user_id();
+
+				if ( $customer_id > 0 && $hipay_delete_token != "") {
+					$wpdb->delete( $this->plugin_table_token, array( 'customer_id' => $customer_id, 'token' => $hipay_delete_token ) );
+				}	
+
+
 				if ( $this->method_details["woocommerce_hipayenterprise_methods_oneclick"] == "1" && $customer_id > 0 && $user_multiuse == "1" && $token != "") {
 
 				    $issuer =  $_POST["hipay_issuer"];
@@ -1457,10 +1574,11 @@ function woocommerce_hipayenterprise_init() {
 				    $card_expiry_year =  $_POST["hipay_card_expiry_year"];
 				    $card_holder =  $_POST["hipay_card_holder"];
 				    $country =  $_POST["hipay_country"];
-
+					$direct_post_eci = 7;
 					$token_flag = $wpdb->get_row( "SELECT id FROM $this->plugin_table_token WHERE customer_id = $customer_id LIMIT 1");
 					if (isset($token_flag->id) ){
 						$wpdb->update( $this->plugin_table_token, array( 'brand' => $brand , 'pan' => $pan, 'card_holder' => $card_holder, 'card_expiry_month' => $card_expiry_month, 'card_expiry_year' => $card_expiry_year, 'token' => $token, 'issuer' => $issuer, 'country' => $country ), array('customer_id' => $customer_id ) );
+						$direct_post_eci = 9;
 					} else	{
 						$wpdb->insert( $this->plugin_table_token, array( 'customer_id' => $customer_id, 'brand' => $brand , 'pan' => $pan, 'card_holder' => $card_holder, 'card_expiry_month' => $card_expiry_month, 'card_expiry_year' => $card_expiry_year, 'token' => $token, 'issuer' => $issuer, 'country' => $country ) );
 					}
@@ -1498,7 +1616,7 @@ function woocommerce_hipayenterprise_init() {
 					if ($user_multiuse == "0")
 						$orderRequest->paymentMethod->eci = 7;
 					else
-						$orderRequest->paymentMethod->eci = 9;
+						$orderRequest->paymentMethod->eci = $direct_post_eci;
 					$orderRequest->paymentMethod->authentication_indicator = $this->method_details['woocommerce_hipayenterprise_methods_3ds'];
 					$orderRequest->payment_product = $brand;
 
@@ -1654,25 +1772,34 @@ function woocommerce_hipayenterprise_init() {
 						throw new Exception(__('Error generating payment url.','hipayenterprise'));			    
 				    }	
 				} else {
+
  					$transaction = $gatewayClient->requestNewOrder($orderRequest);			
-					$t = print_r($transaction,true);
-			    	if ($this->method_details['woocommerce_hipayenterprise_methods_log_info'])
-						$wpdb->insert( $this->plugin_table_logs, array( 'log_desc' => $t, 'order_id' => $order_id, 'type' => 'ERROR' ) );
- 				
+					$redirectUrl = $transaction->getForwardUrl();
+
+ 					if ($transaction->getStatus() == "118" || $transaction->getStatus() == "117") {					
+
 						$order_flag = $wpdb->get_row( "SELECT order_id FROM $this->plugin_table WHERE order_id = $order_id LIMIT 1");
 						if (isset($order_flag->order_id) ){
 							SELF::reset_stock_levels($order);
 							wc_reduce_stock_levels( $order_id );
-							$wpdb->update( $this->plugin_table, array( 'amount' => $order_total , 'stocks' => 1, 'url' => "" ), array('order_id' => $order_id ) );
+							$wpdb->update( $this->plugin_table, array( 'amount' => $order_total , 'stocks' => 1, 'url' => $redirectUrl ), array('order_id' => $order_id ) );
 						} else	{
 							wc_reduce_stock_levels( $order_id );
-							$wpdb->insert( $this->plugin_table, array( 'reference' => 0, 'order_id' => $order_id, 'amount' => $order_total , 'stocks' => 1, 'url' => "" ) );
+							$wpdb->insert( $this->plugin_table, array( 'reference' => 0, 'order_id' => $order_id, 'amount' => $order_total , 'stocks' => 1, 'url' => $redirectUrl ) );
 						}
 
 						return array(
 							'result'   => 'success',
 							'redirect' => $order->get_checkout_payment_url( true )
 						);
+
+					} else {
+
+						$reason = $transaction->getReason();
+						$order->add_order_note(__('Error:', 'hipayenterprise') . " " . $reason['message'] );
+						throw new Exception(__('Error processing payment:' ,'hipayenterprise') . " " . $reason['message']);			    
+
+					}	
 
 
 				}
@@ -1690,20 +1817,19 @@ function woocommerce_hipayenterprise_init() {
 			global $wpdb;
 
 			$order 			= wc_get_order( $order_id );
+			$payment_url 	= $wpdb->get_row("SELECT url FROM $this->plugin_table WHERE order_id = $order_id LIMIT 1");
 
-			if ($this->method_details["woocommerce_hipayenterprise_methods_mode"] != "api"){
+			if (!isset($payment_url->url) )	
 
-				$payment_url 	= $wpdb->get_row("SELECT url FROM $this->plugin_table WHERE order_id = $order_id LIMIT 1");
-				
-				if (!isset($payment_url->url) )	
 					$order->get_cancel_order_url_raw();
-				else		
-					echo '<div id="wc_hipay_iframe_container"><iframe id="wc_hipay_iframe" name="wc_hipay_iframe" width="100%" height="475" style="border: 0;" src="'.$payment_url->url.'" allowfullscreen="" frameborder="0"></iframe></div>' . PHP_EOL;
-			} 
-			else {
-				echo __("We have received your order payment. We will process the order as soon as we get the payment confirmation.","hipayenterprise");
-			}
 
+			elseif ($this->method_details["woocommerce_hipayenterprise_methods_mode"] == "api" && $payment_url->url == "")
+
+				echo __("We have received your order payment. We will process the order as soon as we get the payment confirmation.","hipayenterprise");	
+
+			else		
+
+				echo '<div id="wc_hipay_iframe_container"><iframe id="wc_hipay_iframe" name="wc_hipay_iframe" width="100%" height="475" style="border: 0;" src="'.$payment_url->url.'" allowfullscreen="" frameborder="0"></iframe></div>' . PHP_EOL;
 
 		}
 
@@ -1843,7 +1969,8 @@ function woocommerce_hipayenterprise_init() {
 					if ($this->method_details['woocommerce_hipayenterprise_methods_log_info'])
 						$wpdb->insert( $this->plugin_table_logs, array( 'log_desc' => __("Authorization cancelled. Order was cancelled.","hipayenterprise"), 'order_id' => $order_id, 'type' => 'INFO' ) );
 				} else{
-					$order->add_order_note( $status . ": " . $message . " (" . $state . " ".$transaction_reference.")");
+					if ($this->method_details['woocommerce_hipayenterprise_methods_log_info'])
+						$wpdb->insert( $this->plugin_table_logs, array( 'log_desc' => $status . ": " . $message . " (" . $state . " ".$transaction_reference.")", 'order_id' => $order_id, 'type' => 'INFO' ) );
 				}	
 				return true;
 				
@@ -1995,36 +2122,47 @@ function woocommerce_hipayenterprise_init() {
 
 	function custom_checkout_field_hipay_enterprise( $checkout ) {
 
+		echo "<div id='hipay_dp' style='display:none;'>";
 	    woocommerce_form_field( 'hipay_token', array(
-	        'type'          => 'hidden',
+	        'type'          => 'text',
 	        ), $checkout->get_value( 'hipay_token' ));
 	    woocommerce_form_field( 'hipay_brand', array(
-	        'type'          => 'hidden',
+	        'type'          => 'text',
 	        ), $checkout->get_value( 'hipay_brand' ));
 	    woocommerce_form_field( 'hipay_pan', array(
-	        'type'          => 'hidden',
+	        'type'          => 'text',
 	        ), $checkout->get_value( 'hipay_pan' ));
 	    woocommerce_form_field( 'hipay_card_holder', array(
-	        'type'          => 'hidden',
+	        'type'          => 'text',
 	        ), $checkout->get_value( 'hipay_card_holder' ));
 	    woocommerce_form_field( 'hipay_card_expiry_month', array(
-	        'type'          => 'hidden',
+	        'type'          => 'text',
 	        ), $checkout->get_value( 'hipay_card_expiry_month' ));
 	    woocommerce_form_field( 'hipay_card_expiry_year', array(
-	        'type'          => 'hidden',
+	        'type'          => 'text',
 	        ), $checkout->get_value( 'hipay_card_expiry_year' ));
 	    woocommerce_form_field( 'hipay_issuer', array(
-	        'type'          => 'hidden',
+	        'type'          => 'text',
 	        ), $checkout->get_value( 'hipay_issuer' ));
 	    woocommerce_form_field( 'hipay_country', array(
-	        'type'          => 'hidden',
+	        'type'          => 'text',
 	        ), $checkout->get_value( 'hipay_country' ));
 	    woocommerce_form_field( 'hipay_multiuse', array(
-	        'type'          => 'hidden',
+	        'type'          => 'text',
 	        ), $checkout->get_value( 'hipay_multiuse' ));
 	    woocommerce_form_field( 'hipay_direct_error', array(
-	        'type'          => 'hidden',
+	        'type'          => 'text',
 	        ), $checkout->get_value( 'hipay_direct_error' ));
+
+	    woocommerce_form_field( 'hipay_delete_info', array(
+	        'type'          => 'text',
+	        ), $checkout->get_value( 'hipay_delete_info' ));
+	    woocommerce_form_field( 'ioBB', array(
+	        'type'          => 'text',
+	        ), $checkout->get_value( 'ioBB' ));
+
+
+	    echo "</div>";
 
 	}
 	add_action( 'woocommerce_after_order_notes', 'custom_checkout_field_hipay_enterprise' );

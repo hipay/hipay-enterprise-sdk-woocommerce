@@ -56,7 +56,7 @@ if($wpdb->get_var("show tables like '$this->plugin_table_token'") != $this->plug
   `card_holder` varchar(255) NOT NULL,
   `card_expiry_month` int(2) UNSIGNED NOT NULL,
   `card_expiry_year` int(4) UNSIGNED NOT NULL,
-  `issuer` varchar(255) NOT NULL,
+  `issuer` varchar(512) NOT NULL,
   `country` varchar(15) NOT NULL,
 	UNIQUE KEY id (id)
 	) $charset_collate;";
