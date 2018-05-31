@@ -17,6 +17,7 @@ class WC_HipayEnterprise_LocalPayments_Giropay extends WC_HipayEnterprise {
 		global $wpdb;
 
 		$this->payment_code			= 'giropay';		
+		$this->domain 				= 'hipayenterprise';
 		$this->id                   = 'hipayenterprise_giropay';
 		$plugin_data 				= get_plugin_data( __FILE__ );
 
@@ -92,6 +93,19 @@ class WC_HipayEnterprise_LocalPayments_Giropay extends WC_HipayEnterprise {
 
 	}
 
+	public function payment_fields()
+	{
+		global $woocommerce;
+		global $wpdb;
+
+		if ($this->method_details['woocommerce_hipayenterprise_methods_mode'] == "hosted_page"){
+			if ($this->method_details['woocommerce_hipayenterprise_methods_hosted_mode'] == "redirect")
+				_e('You will be redirected to an external payment page. Please do not refresh the page during the process.', $this->domain );
+			else
+				_e('Pay with Giropay.', $this->domain );
+
+		}
+	}	
 
 	    function process_payment( $order_id ) {
 	    	

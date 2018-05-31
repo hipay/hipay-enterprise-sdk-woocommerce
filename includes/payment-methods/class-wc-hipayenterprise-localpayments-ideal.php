@@ -17,6 +17,7 @@ class WC_HipayEnterprise_LocalPayments_Ideal extends WC_HipayEnterprise {
 
 		$this->payment_code			= 'ideal';		
 		$this->id                   = 'hipayenterprise_ideal';
+		$this->domain 				= 'hipayenterprise';
 		$plugin_data 				= get_plugin_data( __FILE__ );
 
 		load_plugin_textdomain( $this->id, false, basename( dirname( __FILE__ ) ) . '../../languages' ); 
@@ -91,6 +92,20 @@ class WC_HipayEnterprise_LocalPayments_Ideal extends WC_HipayEnterprise {
 
 	}
 
+
+	public function payment_fields()
+	{
+		global $woocommerce;
+		global $wpdb;
+
+		if ($this->method_details['woocommerce_hipayenterprise_methods_mode'] == "hosted_page"){
+			if ($this->method_details['woocommerce_hipayenterprise_methods_hosted_mode'] == "redirect")
+				_e('You will be redirected to an external payment page. Please do not refresh the page during the process.', $this->domain );
+			else
+				_e('Pay with iDEAL.', $this->domain );
+
+		}
+	}	
 
 	    function process_payment( $order_id ) {
 	    	

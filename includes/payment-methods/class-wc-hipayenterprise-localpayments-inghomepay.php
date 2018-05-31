@@ -16,7 +16,8 @@ class WC_HipayEnterprise_LocalPayments_Inghomepay extends WC_HipayEnterprise {
 		global $wpdb;
 
 		$this->payment_code			= 'ing-homepay';		
-		$this->id                   = 'hipayenterprise_inghomepay';
+		$this->id                   = 'hipayenterprise_ing-homepay';
+		$this->domain 				= 'hipayenterprise';
 		$plugin_data 				= get_plugin_data( __FILE__ );
 
 		load_plugin_textdomain( $this->id, false, basename( dirname( __FILE__ ) ) . '../../languages' ); 
@@ -91,6 +92,19 @@ class WC_HipayEnterprise_LocalPayments_Inghomepay extends WC_HipayEnterprise {
 
 	}
 
+	public function payment_fields()
+	{
+		global $woocommerce;
+		global $wpdb;
+
+		if ($this->method_details['woocommerce_hipayenterprise_methods_mode'] == "hosted_page"){
+			if ($this->method_details['woocommerce_hipayenterprise_methods_hosted_mode'] == "redirect")
+				_e('You will be redirected to an external payment page. Please do not refresh the page during the process.', $this->domain );
+			else
+				_e("Pay with ING Home'Pay.", $this->domain );
+
+		}
+	}	
 
 	    function process_payment( $order_id ) {
 	    	

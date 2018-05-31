@@ -131,7 +131,7 @@ function woocommerce_hipayenterprise_init() {
 			add_action('woocommerce_api_wc_hipayenterprise', 						array($this, 'check_callback_response') );
 			add_action('woocommerce_update_options_payment_gateways_' . $this->id, 	array($this, 'process_admin_options'));
 			add_action('woocommerce_update_options_payment_gateways_' . $this->id, 	array($this, 'save_account_details' ) );
-			add_action('woocommerce_receipt_' . 						$this->id, 	array( $this, 'receipt_page' ) );
+			add_action('woocommerce_receipt_' . 						$this->id, 	array($this, 'receipt_page' ) );
 
 			wp_enqueue_style('hipayenterprise-style', plugins_url( '/assets/css/style.css', __FILE__ ), array(),'all');
 			wp_enqueue_style('hipayenterprise-card-style', plugins_url( '/assets/css/card-js.min.css', __FILE__ ), array(),'all');
@@ -159,6 +159,7 @@ function woocommerce_hipayenterprise_init() {
 			$min_amount = -1;
 			$countries_list = array();
 			$currencies_list = array();
+			$local_payments_filter = array();
 
 			$all_methods_json 	= "[";
 			foreach ($all_methods as $key => $value) {
@@ -182,10 +183,14 @@ function woocommerce_hipayenterprise_init() {
 					$the_method->set_min_amount($_POST['woocommerce_hipayenterprise_methods_lp_min_amount'][$the_method->get_key()]);
 					$the_method->set_available_currencies($_POST['woocommerce_hipayenterprise_methods_lp_currencies'][$the_method->get_key()]);
 					$the_method->set_available_countries($_POST['woocommerce_hipayenterprise_methods_lp_countries_available_list'][$the_method->get_key()]);
-					//$temp_list = explode(",",$_POST['woocommerce_hipayenterprise_methods_lp_countries_available_list'][$the_method->get_key()]);
-					//if ($the_method->get_is_active()) $countries_list = array_unique(array_filter(array_merge($countries_list,$temp_list )));
-					//$temp_list = explode(",",$the_method->get_available_currencies());
-					//if ($the_method->get_is_active()) $currencies_list = array_unique(array_filter(array_merge($currencies_list,$temp_list )));
+
+					$temp_list = explode(",",$_POST['woocommerce_hipayenterprise_methods_lp_countries_available_list'][$the_method->get_key()]);
+ 					$local_payments_filter[$the_method->get_key()]["available_countries"] 	= $temp_list;
+					$temp_list = explode(",",$the_method->get_available_currencies());
+					$local_payments_filter[$the_method->get_key()]["available_currencies"] 	= $temp_list;
+					$local_payments_filter[$the_method->get_key()]["max_amount"] 			= $the_method->get_max_amount();
+					$local_payments_filter[$the_method->get_key()]["enabled"] 				= $the_method->get_is_active();
+					$local_payments_filter[$the_method->get_key()]["min_amount"] 			= $the_method->get_min_amount();
 					$all_methods_json .= $the_method->get_json() . ",";
 				}
 
@@ -199,22 +204,23 @@ function woocommerce_hipayenterprise_init() {
 
 			$all_methods_json 	= substr($all_methods_json,0, -1) . "]";
  			$methods = array(
- 				'woocommerce_hipayenterprise_methods_mode'		 				=> sanitize_title($_POST['woocommerce_hipayenterprise_methods_mode']),
- 				'woocommerce_hipayenterprise_methods_capture'		 			=> sanitize_title($_POST['woocommerce_hipayenterprise_methods_capture']),
-				'woocommerce_hipayenterprise_methods_3ds' 						=> sanitize_title($_POST['woocommerce_hipayenterprise_methods_3ds']),
-				'woocommerce_hipayenterprise_methods_oneclick'					=> sanitize_title($_POST['woocommerce_hipayenterprise_methods_oneclick']),
-				'woocommerce_hipayenterprise_methods_cart_sending'				=> sanitize_title($_POST['woocommerce_hipayenterprise_methods_cart_sending']),
-				'woocommerce_hipayenterprise_methods_keep_cart_onfail'			=> sanitize_title($_POST['woocommerce_hipayenterprise_methods_keep_cart_onfail']),
-				'woocommerce_hipayenterprise_methods_log_info'					=> sanitize_title($_POST['woocommerce_hipayenterprise_methods_log_info']),
-				'woocommerce_hipayenterprise_methods_hosted_css'				=> sanitize_title($_POST['woocommerce_hipayenterprise_methods_hosted_css']),
-				'woocommerce_hipayenterprise_methods_hosted_mode'				=> sanitize_title($_POST['woocommerce_hipayenterprise_methods_hosted_mode']),
-				'woocommerce_hipayenterprise_methods_hosted_card_selector'		=> sanitize_title($_POST['woocommerce_hipayenterprise_methods_hosted_card_selector']),
-				'woocommerce_hipayenterprise_methods_payment_image'				=> $_POST['woocommerce_hipayenterprise_methods_payment_image'],
-				'woocommerce_hipayenterprise_methods_payments' 					=> $all_methods_json,
- 				'woocommerce_hipayenterprise_methods_payments_min_amount'		=> $min_amount,
- 				'woocommerce_hipayenterprise_methods_payments_max_amount'		=> $max_amount,
- 				'woocommerce_hipayenterprise_methods_payments_countries_list'	=> $countries_list,
- 				'woocommerce_hipayenterprise_methods_payments_currencies_list'	=> $currencies_list,
+ 				'woocommerce_hipayenterprise_methods_mode'		 					=> sanitize_title($_POST['woocommerce_hipayenterprise_methods_mode']),
+ 				'woocommerce_hipayenterprise_methods_capture'		 				=> sanitize_title($_POST['woocommerce_hipayenterprise_methods_capture']),
+				'woocommerce_hipayenterprise_methods_3ds' 							=> sanitize_title($_POST['woocommerce_hipayenterprise_methods_3ds']),
+				'woocommerce_hipayenterprise_methods_oneclick'						=> sanitize_title($_POST['woocommerce_hipayenterprise_methods_oneclick']),
+				'woocommerce_hipayenterprise_methods_cart_sending'					=> sanitize_title($_POST['woocommerce_hipayenterprise_methods_cart_sending']),
+				'woocommerce_hipayenterprise_methods_keep_cart_onfail'				=> sanitize_title($_POST['woocommerce_hipayenterprise_methods_keep_cart_onfail']),
+				'woocommerce_hipayenterprise_methods_log_info'						=> sanitize_title($_POST['woocommerce_hipayenterprise_methods_log_info']),
+				'woocommerce_hipayenterprise_methods_hosted_css'					=> sanitize_title($_POST['woocommerce_hipayenterprise_methods_hosted_css']),
+				'woocommerce_hipayenterprise_methods_hosted_mode'					=> sanitize_title($_POST['woocommerce_hipayenterprise_methods_hosted_mode']),
+				'woocommerce_hipayenterprise_methods_hosted_card_selector'			=> sanitize_title($_POST['woocommerce_hipayenterprise_methods_hosted_card_selector']),
+				'woocommerce_hipayenterprise_methods_payment_image'					=> $_POST['woocommerce_hipayenterprise_methods_payment_image'],
+				'woocommerce_hipayenterprise_methods_payments' 						=> $all_methods_json,
+ 				'woocommerce_hipayenterprise_methods_payments_min_amount'			=> $min_amount,
+ 				'woocommerce_hipayenterprise_methods_payments_max_amount'			=> $max_amount,
+ 				'woocommerce_hipayenterprise_methods_payments_countries_list'		=> $countries_list,
+ 				'woocommerce_hipayenterprise_methods_payments_currencies_list'		=> $currencies_list,
+ 				'woocommerce_hipayenterprise_methods_payments_local_payments_filter'=> $local_payments_filter,
 			);	
 
 			update_option( 'woocommerce_hipayenterprise_methods'	, $methods );
@@ -228,8 +234,13 @@ function woocommerce_hipayenterprise_init() {
 			global $woocommerce;
 			global $wpdb;
 
-			if ($this->method_details['woocommerce_hipayenterprise_methods_hosted_mode'] == "redirect" && $this->method_details['woocommerce_hipayenterprise_methods_mode'] == "hosted_page")
-				_e('You will be redirected to an external payment page. Please do not refresh the page during the process.', $this->id );
+			if ($this->method_details['woocommerce_hipayenterprise_methods_mode'] == "hosted_page"){
+				if ($this->method_details['woocommerce_hipayenterprise_methods_hosted_mode'] == "redirect")
+					_e('You will be redirected to an external payment page. Please do not refresh the page during the process.', $this->id );
+				else
+					_e('Pay with your credit card.', $this->id );
+
+			}
 			elseif ( $this->method_details['woocommerce_hipayenterprise_methods_mode'] == "api") {	
 
 
@@ -2008,33 +2019,36 @@ function woocommerce_hipayenterprise_init() {
 			$min_value = $plugin_method_settings['woocommerce_hipayenterprise_methods_payments_min_amount'];
 			$max_value = $plugin_method_settings['woocommerce_hipayenterprise_methods_payments_max_amount'];
 
+			$currency_symbol = get_woocommerce_currency_symbol();
+			$total_amount = $woocommerce->cart->get_total();
+			$total_amount = str_replace($currency_symbol,"", $total_amount);
+			$thousands_sep = wp_specialchars_decode(stripslashes(get_option( 'woocommerce_price_thousand_sep')), ENT_QUOTES);
+			$total_amount = str_replace($thousands_sep,"", $total_amount);
+			$decimals_sep = wp_specialchars_decode(stripslashes(get_option( 'woocommerce_price_decimal_sep')), ENT_QUOTES);
+			if ( $decimals_sep != ".") $total_amount = str_replace($decimals_sep,".", $total_amount);
+			$total_amount = floatval( preg_replace( '#[^\d.]#', '',  $total_amount) );
+
     		if (in_array($current_currency, $plugin_method_settings['woocommerce_hipayenterprise_methods_payments_currencies_list']) && in_array($current_billing_country, $plugin_method_settings['woocommerce_hipayenterprise_methods_payments_countries_list']) ) {
-
-				$currency_symbol = get_woocommerce_currency_symbol();
-				$total_amount = $woocommerce->cart->get_total();
-				$total_amount = str_replace($currency_symbol,"", $total_amount);
-				$thousands_sep = wp_specialchars_decode(stripslashes(get_option( 'woocommerce_price_thousand_sep')), ENT_QUOTES);
-				$total_amount = str_replace($thousands_sep,"", $total_amount);
-				$decimals_sep = wp_specialchars_decode(stripslashes(get_option( 'woocommerce_price_decimal_sep')), ENT_QUOTES);
-				if ( $decimals_sep != ".") $total_amount = str_replace($decimals_sep,".", $total_amount);
-				$total_amount = floatval( preg_replace( '#[^\d.]#', '',  $total_amount) );
-
-				if ($total_amount > $max_value || $total_amount < $min_value ) unset($methods['hipayenterprise']); 
-
+					if ($total_amount > $max_value || $total_amount < $min_value ) unset($methods['hipayenterprise']); 
 			} else	{
 				unset($methods['hipayenterprise']); 
 			}
+
+			$local_payment_filter = $plugin_method_settings['woocommerce_hipayenterprise_methods_payments_local_payments_filter'];
+			foreach ($local_payment_filter as $key => $value) {
+	    		
+				if ($value["enabled"] == 0 ) {
+					unset($methods['hipayenterprise_'.$key]);
+	    		} elseif (in_array($current_currency, $value['available_currencies']) && in_array($current_billing_country, $value['available_countries']) ) {
+						if ($total_amount > $value['max_amount'] || $total_amount < $value['min_amount'] ) unset($methods['hipayenterprise_'.$key]); 
+				} else	{
+					unset($methods['hipayenterprise_'.$key]); 
+				}
+						
+			}
+
 		}
 
-		/*$methods[] = 'WC_HipayEnterprise_LocalPayments_Paypal'; 
-		$methods[] = 'WC_HipayEnterprise_LocalPayments_Belfius'; 
-		$methods[] = 'WC_HipayEnterprise_LocalPayments_Multibanco'; 
-		$methods[] = 'WC_HipayEnterprise_LocalPayments_Giropay'; 
-		$methods[] = 'WC_HipayEnterprise_LocalPayments_Inghomepay'; 
-		$methods[] = 'WC_HipayEnterprise_LocalPayments_Ideal'; 
-		*/
-
-		
 		return $methods;
 	}
 

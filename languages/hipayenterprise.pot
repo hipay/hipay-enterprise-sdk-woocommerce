@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce HiPay Enterprise\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-31 12:05+0000\n"
+"POT-Creation-Date: 2018-05-31 16:09+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -124,128 +124,128 @@ msgstr ""
 msgid "LAST 100 LOGS"
 msgstr ""
 
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-belfius.php:26
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-belfius.php:63
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-belfius.php:27
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-belfius.php:64
 msgid "Belfius"
 msgstr ""
 
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-belfius.php:167
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-paypal.php:167
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-multibanco.php:168
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-giropay.php:168
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-inghomepay.php:167
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-ideal.php:167
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-belfius.php:181
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-paypal.php:181
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-multibanco.php:182
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-giropay.php:182
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-inghomepay.php:181
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-ideal.php:182
 msgid "Order #"
 msgstr ""
 
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-belfius.php:167
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-paypal.php:167
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-multibanco.php:168
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-giropay.php:168
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-inghomepay.php:167
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-ideal.php:167
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-belfius.php:181
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-paypal.php:181
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-multibanco.php:182
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-giropay.php:182
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-inghomepay.php:181
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-ideal.php:182
 msgid "at"
 msgstr ""
 
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-belfius.php:248
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-belfius.php:250
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-paypal.php:248
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-paypal.php:250
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-multibanco.php:249
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-multibanco.php:251
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-giropay.php:249
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-giropay.php:251
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-inghomepay.php:248
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-inghomepay.php:250
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-ideal.php:248
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-ideal.php:250
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-belfius.php:262
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-belfius.php:264
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-paypal.php:262
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-paypal.php:264
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-multibanco.php:263
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-multibanco.php:265
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-giropay.php:263
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-giropay.php:265
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-inghomepay.php:262
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-inghomepay.php:264
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-ideal.php:263
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-ideal.php:265
 msgid "Payment URL:"
 msgstr ""
 
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-belfius.php:263
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-paypal.php:263
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-multibanco.php:264
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-giropay.php:264
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-inghomepay.php:263
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-ideal.php:263
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-belfius.php:277
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-paypal.php:277
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-multibanco.php:278
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-giropay.php:278
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-inghomepay.php:277
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-ideal.php:278
 msgid "Payment created with url:"
 msgstr ""
 
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-belfius.php:276
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-belfius.php:277
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-paypal.php:276
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-paypal.php:277
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-multibanco.php:277
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-multibanco.php:278
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-giropay.php:277
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-giropay.php:278
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-inghomepay.php:276
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-inghomepay.php:277
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-ideal.php:276
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-ideal.php:277
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-belfius.php:290
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-belfius.php:291
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-paypal.php:290
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-paypal.php:291
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-multibanco.php:291
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-multibanco.php:292
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-giropay.php:291
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-giropay.php:292
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-inghomepay.php:290
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-inghomepay.php:291
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-ideal.php:291
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-ideal.php:292
 msgid "Error generating payment url."
 msgstr ""
 
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-belfius.php:305
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-paypal.php:305
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-multibanco.php:306
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-giropay.php:306
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-inghomepay.php:305
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-ideal.php:305
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-belfius.php:319
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-paypal.php:319
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-multibanco.php:320
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-giropay.php:320
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-inghomepay.php:319
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-ideal.php:320
 msgid "Error:"
 msgstr ""
 
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-belfius.php:306
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-paypal.php:306
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-multibanco.php:307
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-giropay.php:307
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-inghomepay.php:306
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-ideal.php:306
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-belfius.php:320
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-paypal.php:320
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-multibanco.php:321
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-giropay.php:321
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-inghomepay.php:320
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-ideal.php:321
 msgid "Error processing payment:"
 msgstr ""
 
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-belfius.php:315
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-paypal.php:315
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-multibanco.php:316
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-giropay.php:316
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-inghomepay.php:315
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-ideal.php:315
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-belfius.php:329
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-paypal.php:329
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-multibanco.php:330
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-giropay.php:330
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-inghomepay.php:329
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-ideal.php:330
 msgid "Error on creation:"
 msgstr ""
 
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-belfius.php:334
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-paypal.php:334
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-multibanco.php:335
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-giropay.php:335
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-inghomepay.php:334
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-ideal.php:334
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-belfius.php:348
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-paypal.php:348
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-multibanco.php:349
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-giropay.php:349
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-inghomepay.php:348
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-ideal.php:349
 msgid ""
 "We have received your order payment. We will process the order as soon as we "
 "get the payment confirmation."
 msgstr ""
 
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-paypal.php:26
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-paypal.php:63
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-paypal.php:27
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-paypal.php:64
 msgid "Paypal"
 msgstr ""
 
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-multibanco.php:27
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-multibanco.php:64
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-multibanco.php:28
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-multibanco.php:65
 msgid "Multibanco"
 msgstr ""
 
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-giropay.php:27
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-giropay.php:64
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-giropay.php:28
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-giropay.php:65
 msgid "Giropay"
 msgstr ""
 
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-inghomepay.php:26
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-inghomepay.php:63
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-inghomepay.php:27
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-inghomepay.php:64
 msgid "ING Home'Pay"
 msgstr ""
 
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-ideal.php:26
-#: includes/payment-methods/class-wc-hipayenterprise-localpayments-ideal.php:63
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-ideal.php:27
+#: includes/payment-methods/class-wc-hipayenterprise-localpayments-ideal.php:64
 msgid "iDEAL"
 msgstr ""
 
@@ -263,4 +263,8 @@ msgstr ""
 
 #. Author of the plugin
 msgid "Hi-Pay Portugal"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://www.hipaycomprafacil.com"
 msgstr ""
