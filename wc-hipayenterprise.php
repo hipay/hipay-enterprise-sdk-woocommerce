@@ -19,6 +19,7 @@ function woocommerce_hipayenterprise_init() {
 
 	class WC_HipayEnterprise extends WC_Payment_Gateway  {
 		
+
 		public function __construct() {
 
 			global $woocommerce;
@@ -120,13 +121,13 @@ function woocommerce_hipayenterprise_init() {
 
 			$this->method_details["woocommerce_hipayenterprise_methods_payments"] = str_replace("\'", "'", $this->method_details["woocommerce_hipayenterprise_methods_payments"]);
 			
-			//require_once( plugin_dir_path( __FILE__ ) . 'includes/payment-methods/class-wc-hipayenterprise-localpayments-paypal.php' );
-			//require_once( plugin_dir_path( __FILE__ ) . 'includes/payment-methods/class-wc-hipayenterprise-localpayments-inghomepay.php' );
-			//require_once( plugin_dir_path( __FILE__ ) . 'includes/payment-methods/class-wc-hipayenterprise-localpayments-ideal.php' );
-			//require_once( plugin_dir_path( __FILE__ ) . 'includes/payment-methods/class-wc-hipayenterprise-localpayments-giropay.php' );
-			//require_once( plugin_dir_path( __FILE__ ) . 'includes/payment-methods/class-wc-hipayenterprise-localpayments-belfius.php' );
-			//require_once( plugin_dir_path( __FILE__ ) . 'includes/payment-methods/class-wc-hipayenterprise-localpayments-multibanco.php' );
-
+			require_once( plugin_dir_path( __FILE__ ) . 'includes/payment-methods/class-wc-hipayenterprise-localpayments-paypal.php' );
+			require_once( plugin_dir_path( __FILE__ ) . 'includes/payment-methods/class-wc-hipayenterprise-localpayments-inghomepay.php' );
+			require_once( plugin_dir_path( __FILE__ ) . 'includes/payment-methods/class-wc-hipayenterprise-localpayments-ideal.php' );
+			require_once( plugin_dir_path( __FILE__ ) . 'includes/payment-methods/class-wc-hipayenterprise-localpayments-giropay.php' );
+			require_once( plugin_dir_path( __FILE__ ) . 'includes/payment-methods/class-wc-hipayenterprise-localpayments-belfius.php' );
+			require_once( plugin_dir_path( __FILE__ ) . 'includes/payment-methods/class-wc-hipayenterprise-localpayments-multibanco.php' );
+			
 			add_action('woocommerce_api_wc_hipayenterprise', 						array($this, 'check_callback_response') );
 			add_action('woocommerce_update_options_payment_gateways_' . $this->id, 	array($this, 'process_admin_options'));
 			add_action('woocommerce_update_options_payment_gateways_' . $this->id, 	array($this, 'save_account_details' ) );
@@ -181,14 +182,14 @@ function woocommerce_hipayenterprise_init() {
 					$the_method->set_min_amount($_POST['woocommerce_hipayenterprise_methods_lp_min_amount'][$the_method->get_key()]);
 					$the_method->set_available_currencies($_POST['woocommerce_hipayenterprise_methods_lp_currencies'][$the_method->get_key()]);
 					$the_method->set_available_countries($_POST['woocommerce_hipayenterprise_methods_lp_countries_available_list'][$the_method->get_key()]);
-					$temp_list = explode(",",$_POST['woocommerce_hipayenterprise_methods_lp_countries_available_list'][$the_method->get_key()]);
-					if ($the_method->get_is_active()) $countries_list = array_unique(array_filter(array_merge($countries_list,$temp_list )));
-					$temp_list = explode(",",$the_method->get_available_currencies());
-					if ($the_method->get_is_active()) $currencies_list = array_unique(array_filter(array_merge($currencies_list,$temp_list )));
+					//$temp_list = explode(",",$_POST['woocommerce_hipayenterprise_methods_lp_countries_available_list'][$the_method->get_key()]);
+					//if ($the_method->get_is_active()) $countries_list = array_unique(array_filter(array_merge($countries_list,$temp_list )));
+					//$temp_list = explode(",",$the_method->get_available_currencies());
+					//if ($the_method->get_is_active()) $currencies_list = array_unique(array_filter(array_merge($currencies_list,$temp_list )));
 					$all_methods_json .= $the_method->get_json() . ",";
 				}
 
-				if ($the_method->get_is_active()){
+				if ($the_method->get_is_active() && $the_method->get_is_credit_card()){
 					if ($the_method->get_max_amount() > $max_amount) $max_amount = $the_method->get_max_amount();
 					if ( ($the_method->get_min_amount() < $min_amount) || $min_amount > -1 ) $min_amount = $the_method->get_min_amount();
 				}
@@ -332,12 +333,14 @@ function woocommerce_hipayenterprise_init() {
                             $('form[name="checkout"] input[name="payment_method"]').eq(0).prop('checked', true).attr( 'checked', 'checked' );
 							usingGateway();
 
-							$(document).on("change", "form[name='checkout'] input[name='hipayenterprise']", function(){
-							  if ( 0 === jQuery('form[name="checkout"] input[name="hipayenterprise"]' ).filter( ':checked' ).size() ) {
-							    jQuery(this).prop('checked', true).attr( 'checked', 'checked' );
-							  };
-							  usingGateway();
-							});						  
+						    $('form[name="checkout"] input[type=radio][name=payment_method]').change(function() {
+						        if (this.value == 'hipayenterprise') {
+						            usingGateway();
+						        } else {
+						        	if ($('#place_order').css('display') == 'none') $("#place_order").show();
+						        }
+						    });
+
 
 							$( ".expiry" ).change(function() {
 							    $("input[name='expiry-month']").val($( ".expiry" ).val().replace(/\s/g,'').substring(0,2));
@@ -348,6 +351,7 @@ function woocommerce_hipayenterprise_init() {
 							function usingGateway(){
 
 						  		if($('form[name="checkout"] input[name="payment_method"]:checked').val() == 'hipayenterprise' ){
+
 
 						  			if ($("#hipay_user_token").val()!=""){
 						  				var tokenObj = JSON.parse($("#hipay_user_token").val());
@@ -1693,7 +1697,7 @@ function woocommerce_hipayenterprise_init() {
 				foreach ($all_methods as $key => $value) {
 					$the_method = new HipayEnterprisePaymentMethodClass($value);
 					//check currency, country and amount
-					if ($the_method->get_is_active() && $order_total <= $the_method->get_max_amount() && $order_total >= $the_method->get_min_amount() && (strpos($the_method->get_available_currencies(),$current_currency) !== false)  && (strpos($the_method->get_available_countries(),$current_billing_country) !== false))	{
+					if ($the_method->get_is_active() && $the_method->get_is_credit_card() && $order_total <= $the_method->get_max_amount() && $order_total >= $the_method->get_min_amount() && (strpos($the_method->get_available_currencies(),$current_currency) !== false)  && (strpos($the_method->get_available_countries(),$current_billing_country) !== false))	{
 						$available_methods[] = $the_method->get_key();
 					}	
 				}
@@ -1776,7 +1780,7 @@ function woocommerce_hipayenterprise_init() {
  					$transaction = $gatewayClient->requestNewOrder($orderRequest);			
 					$redirectUrl = $transaction->getForwardUrl();
 
- 					if ($transaction->getStatus() == "118" || $transaction->getStatus() == "117") {					
+ 					if ($transaction->getStatus() == "118" || $transaction->getStatus() == "117" || $transaction->getStatus() == "116") {					
 
 						$order_flag = $wpdb->get_row( "SELECT order_id FROM $this->plugin_table WHERE order_id = $order_id LIMIT 1");
 						if (isset($order_flag->order_id) ){
@@ -1788,9 +1792,10 @@ function woocommerce_hipayenterprise_init() {
 							$wpdb->insert( $this->plugin_table, array( 'reference' => 0, 'order_id' => $order_id, 'amount' => $order_total , 'stocks' => 1, 'url' => $redirectUrl ) );
 						}
 
+
 						return array(
 							'result'   => 'success',
-							'redirect' => $order->get_checkout_payment_url( true )
+							'redirect' => $order->get_checkout_order_received_url()
 						);
 
 					} else {
@@ -1873,11 +1878,11 @@ function woocommerce_hipayenterprise_init() {
 			
 			$plugin_option =get_option( 'woocommerce_hipayenterprise_settings');
 
-			$username 	= (!$plugin_option[sandbox]) ? $plugin_option[account_production_private_username] 	 : $plugin_option[account_test_private_username];
-			$password 	= (!$plugin_option[sandbox]) ? $plugin_option[account_production_private_password]	 : $plugin_option[account_test_private_password];
-			$passphrase = (!$plugin_option[sandbox]) ? $plugin_option[account_production_private_passphrase] : $plugin_option[account_test_private_passphrase];
+			$username 	= (!$plugin_option['sandbox']) ? $plugin_option['account_production_private_username'] 	 : $plugin_option['account_test_private_username'];
+			$password 	= (!$plugin_option['sandbox']) ? $plugin_option['account_production_private_password']	 : $plugin_option['account_test_private_password'];
+			$passphrase = (!$plugin_option['sandbox']) ? $plugin_option['account_production_private_passphrase'] : $plugin_option['account_test_private_passphrase'];
 
-			$env = ($plugin_option[sandbox]) ? HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENV_STAGE : HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENV_PRODUCTION;
+			$env = ($plugin_option['sandbox']) ? HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENV_STAGE : HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENV_PRODUCTION;
 
 			try {
 
@@ -2020,6 +2025,16 @@ function woocommerce_hipayenterprise_init() {
 				unset($methods['hipayenterprise']); 
 			}
 		}
+
+		/*$methods[] = 'WC_HipayEnterprise_LocalPayments_Paypal'; 
+		$methods[] = 'WC_HipayEnterprise_LocalPayments_Belfius'; 
+		$methods[] = 'WC_HipayEnterprise_LocalPayments_Multibanco'; 
+		$methods[] = 'WC_HipayEnterprise_LocalPayments_Giropay'; 
+		$methods[] = 'WC_HipayEnterprise_LocalPayments_Inghomepay'; 
+		$methods[] = 'WC_HipayEnterprise_LocalPayments_Ideal'; 
+		*/
+
+		
 		return $methods;
 	}
 
@@ -2027,12 +2042,12 @@ function woocommerce_hipayenterprise_init() {
 	function add_hipayenterprise_gateway( $methods ) {
 
 		$methods[] = 'WC_HipayEnterprise'; 
-//		$methods[] = 'WC_HipayEnterprise_LocalPayments_Paypal'; 
-//		$methods[] = 'WC_HipayEnterprise_LocalPayments_Belfius'; 
-//		$methods[] = 'WC_HipayEnterprise_LocalPayments_Multibanco'; 
-//		$methods[] = 'WC_HipayEnterprise_LocalPayments_Giropay'; 
-//		$methods[] = 'WC_HipayEnterprise_LocalPayments_Inghomepay'; 
-//		$methods[] = 'WC_HipayEnterprise_LocalPayments_Ideal'; 
+		$methods[] = 'WC_HipayEnterprise_LocalPayments_Paypal'; 
+		$methods[] = 'WC_HipayEnterprise_LocalPayments_Belfius'; 
+		$methods[] = 'WC_HipayEnterprise_LocalPayments_Multibanco'; 
+		$methods[] = 'WC_HipayEnterprise_LocalPayments_Giropay'; 
+		$methods[] = 'WC_HipayEnterprise_LocalPayments_Inghomepay'; 
+		$methods[] = 'WC_HipayEnterprise_LocalPayments_Ideal'; 
 
 		return $methods;
 		
@@ -2069,11 +2084,11 @@ function woocommerce_hipayenterprise_init() {
 			require plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';		
 			require plugin_dir_path( __FILE__ ) . 'includes/operations.php';		
 			$plugin_option =get_option( 'woocommerce_hipayenterprise_settings');
-			$username 	= (!$plugin_option[sandbox]) ? $plugin_option[account_production_private_username] 	 : $plugin_option[account_test_private_username];
-			$password 	= (!$plugin_option[sandbox]) ? $plugin_option[account_production_private_password]	 : $plugin_option[account_test_private_password];
-			$passphrase = (!$plugin_option[sandbox]) ? $plugin_option[account_production_private_passphrase] : $plugin_option[account_test_private_passphrase];
-			$env = ($plugin_option[sandbox]) ? HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENV_STAGE : HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENV_PRODUCTION;
-			$env_endpoint = ($plugin_option[sandbox]) ? HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENDPOINT_STAGE : HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENDPOINT_PROD;
+			$username 	= (!$plugin_option['sandbox']) ? $plugin_option['account_production_private_username'] 	 : $plugin_option['account_test_private_username'];
+			$password 	= (!$plugin_option['sandbox']) ? $plugin_option['account_production_private_password']	 : $plugin_option['account_test_private_password'];
+			$passphrase = (!$plugin_option['sandbox']) ? $plugin_option['account_production_private_passphrase'] : $plugin_option['account_test_private_passphrase'];
+			$env = ($plugin_option['sandbox']) ? HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENV_STAGE : HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENV_PRODUCTION;
+			$env_endpoint = ($plugin_option['sandbox']) ? HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENDPOINT_STAGE : HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENDPOINT_PROD;
 			$order_total = $order->get_total();
 
 			try {
