@@ -138,8 +138,6 @@ function woocommerce_hipayenterprise_init() {
 			
 		}
 
-
-
 		public function save_account_details() {
 
 			$fraud = array();
@@ -263,7 +261,31 @@ function woocommerce_hipayenterprise_init() {
 					<script type="text/javascript" src="<?php echo plugins_url( '/vendor/bower_components/hipay-fullservice-sdk-js/dist/card-js.min.js', __FILE__ ) ;?>"></script>
 					<script type="text/javascript" src="<?php echo plugins_url( '/vendor/bower_components/hipay-fullservice-sdk-js/dist/card-tokenize.js', __FILE__ ) ;?>"></script>
 					<script type="text/javascript" src="<?php echo plugins_url( '/vendor/bower_components/hipay-fullservice-sdk-js/dist/hipay-fullservice-sdk.min.js', __FILE__ ) ;?>"></script>
-					
+
+
+
+					<form id="tokenizerForm" action="" enctype="application/x-www-form-urlencoded" class="form-horizontal hipay-form-17" method="post" name="tokenizerForm" autocomplete="off">
+						<input type="hidden" id="ioBB" name="ioBB" value="">	
+
+					<script type="text/javascript">
+						
+					var io_operation = 'ioBegin';
+					// io_bbout_element_id should refer to the hidden field in your form that contains the blackbox
+					var io_bbout_element_id = 'ioBB';
+
+					var io_install_stm = false; // do not try to download activex control
+					var io_exclude_stm = 12;  // do not attempt to instantiate an activex control
+					// installed by another customer
+					var io_install_flash = false; // do not force installation of Flash Player
+					var io_install_rip = true; // do attempt to collect real ip
+
+					// uncomment any of the below to signal an error when ActiveX or Flash is not present
+					//var io_install_stm_error_handler = "redirectActiveX();";
+					var io_flash_needs_update_handler = "";
+					var io_install_flash_error_handler = "";
+
+					</script>
+					<script type="text/javascript" src="https://mpsnare.iesnare.com/snare.js" async></script>					
 					<script type="text/javascript">
 					    var i18nFieldIsMandatory = "Field is mandatory";
 					    var i18nBadIban = "This is not a correct IBAN";
@@ -286,7 +308,6 @@ function woocommerce_hipayenterprise_init() {
 					    var i18nCVCTooltipLocal = "3-digit security code usually found on the back of your card. American Express cards have a 4-digit code located on the front.";
 					</script>
 
-					<form id="tokenizerForm" action="" enctype="application/x-www-form-urlencoded" class="form-horizontal hipay-form-17" method="post" name="tokenizerForm" autocomplete="off">
 	                    <div id="error-js" style="" class="alert alert-danger">
 				        	<ul><li class="error" id="hiPay_error_message"></li></ul>
 
@@ -2186,10 +2207,6 @@ function woocommerce_hipayenterprise_init() {
 	    woocommerce_form_field( 'hipay_delete_info', array(
 	        'type'          => 'text',
 	        ), $checkout->get_value( 'hipay_delete_info' ));
-	    woocommerce_form_field( 'ioBB', array(
-	        'type'          => 'text',
-	        ), $checkout->get_value( 'ioBB' ));
-
 
 	    echo "</div>";
 

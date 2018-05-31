@@ -89,22 +89,25 @@ class WC_HipayEnterprise_LocalPayments_Giropay extends WC_HipayEnterprise {
 		}
 
 		$this->method_enabled             = $this->method->get_is_active();
-		add_action('woocommerce_receipt_' . 						$this->id, 	array( $this, 'receipt_page' ) );
+		add_action('woocommerce_update_options_payment_gateways_' . $this->id, 	array($this, 'goto_admin_options'));
 
 	}
 
+	public function goto_admin_options() {
+
+		header("location: admin.php?page=wc-settings&tab=checkout&section=hipayenterprise");
+	}
+		
+	public function admin_options() {
+		
+		echo "<h3>" . $this->method_title . "</h3>";
+		_e("Please use the global administration panel for the Hipay Enterprise plugin.","hipayenterprise");
+
+	}	
+
 	public function payment_fields()
 	{
-		global $woocommerce;
-		global $wpdb;
-
-		if ($this->method_details['woocommerce_hipayenterprise_methods_mode'] == "hosted_page"){
-			if ($this->method_details['woocommerce_hipayenterprise_methods_hosted_mode'] == "redirect")
-				_e('You will be redirected to an external payment page. Please do not refresh the page during the process.', $this->domain );
-			else
-				_e('Pay with Giropay.', $this->domain );
-
-		}
+		_e('You will be redirected to an external payment page. Please do not refresh the page during the process.', $this->domain );
 	}	
 
 	    function process_payment( $order_id ) {

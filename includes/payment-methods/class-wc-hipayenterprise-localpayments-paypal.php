@@ -88,22 +88,25 @@ class WC_HipayEnterprise_LocalPayments_Paypal extends WC_HipayEnterprise {
 		}
 
 		$this->method_enabled             = $this->method->get_is_active();
-		add_action('woocommerce_receipt_' . 						$this->id, 	array( $this, 'receipt_page' ) );
+		add_action('woocommerce_update_options_payment_gateways_' . $this->id, 	array($this, 'goto_admin_options'));
 
 	}
 
+	public function goto_admin_options() {
+
+		header("location: admin.php?page=wc-settings&tab=checkout&section=hipayenterprise");
+	}
+		
+	public function admin_options() {
+		
+		echo "<h3>" . $this->method_title . "</h3>";
+		_e("Please use the global administration panel for the Hipay Enterprise plugin.","hipayenterprise");
+
+	}	
+
 	public function payment_fields()
 	{
-		global $woocommerce;
-		global $wpdb;
-
-		if ($this->method_details['woocommerce_hipayenterprise_methods_mode'] == "hosted_page"){
-			if ($this->method_details['woocommerce_hipayenterprise_methods_hosted_mode'] == "redirect")
-				_e('You will be redirected to an external payment page. Please do not refresh the page during the process.', $this->domain );
-			else
-				_e('Pay with Paypal.', $this->domain );
-
-		}
+		_e('You will be redirected to an external payment page. Please do not refresh the page during the process.', $this->domain );
 	}	
 
     function process_payment( $order_id ) {
@@ -135,23 +138,10 @@ class WC_HipayEnterprise_LocalPayments_Paypal extends WC_HipayEnterprise {
 			$config = new \HiPay\Fullservice\HTTP\Configuration\Configuration($username, $password, $env);
 			$clientProvider = new \HiPay\Fullservice\HTTP\SimpleHTTPClient($config);
 			$gatewayClient = new \HiPay\Fullservice\Gateway\Client\GatewayClient($clientProvider);
-			if ($this->method_details["woocommerce_hipayenterprise_methods_mode"] == "api"){
-				$orderRequest = new \HiPay\Fullservice\Gateway\Request\Order\OrderRequest();
-				$orderRequest->paymentMethod = new \HiPay\Fullservice\Gateway\Request\PaymentMethod\CardTokenPaymentMethod(); 
-				$orderRequest->paymentMethod->cardtoken = $token;
-				if ($user_multiuse == "0")
-					$orderRequest->paymentMethod->eci = 7;
-				else
-					$orderRequest->paymentMethod->eci = $direct_post_eci;
-				$orderRequest->paymentMethod->authentication_indicator = $this->method_details['woocommerce_hipayenterprise_methods_3ds'];
-				$orderRequest->payment_product = $brand;
 
-			}else{
-				$orderRequest = new \HiPay\Fullservice\Gateway\Request\Order\HostedPaymentPageRequest();
-				$orderRequest->payment_product = "";
-			}
-			
-
+			$orderRequest = new \HiPay\Fullservice\Gateway\Request\Order\OrderRequest();
+			$orderRequest->paymentMethod->eci = 7;
+			$orderRequest->payment_product = $this->payment_code;
 			$orderRequest->orderid = $order_id;
 			$orderRequest->operation = $operation;
 			$orderRequest->currency = $current_currency;
@@ -164,6 +154,7 @@ class WC_HipayEnterprise_LocalPayments_Paypal extends WC_HipayEnterprise {
 			$orderRequest->notify_url = $callback_url;
 			$orderRequest->language = get_locale();
 			$orderRequest->source = $request_source;
+
 			if ($this->method_details["woocommerce_hipayenterprise_methods_cart_sending"]) {
 
 				$orderRequest->description = "";
@@ -180,6 +171,7 @@ class WC_HipayEnterprise_LocalPayments_Paypal extends WC_HipayEnterprise {
 			{
 				$orderRequest->description = __("Order #",'hipayenterprise') . $order_id . " " . __( 'at','hipayenterprise') . " " . $shop_title;
 			}
+
 			$orderRequest->ipaddr = $_SERVER ['REMOTE_ADDR']; 
 			$orderRequest->http_user_agent = $_SERVER ['HTTP_USER_AGENT'];
 			$shipping = $woocommerce->cart->get_cart_shipping_total();
@@ -192,21 +184,6 @@ class WC_HipayEnterprise_LocalPayments_Paypal extends WC_HipayEnterprise {
 			$shipping = floatval( preg_replace( '#[^\d.]#', '',  $shipping) );
 			$orderRequest->shipping = $shipping;
 			$orderRequest->tax =0; 
-
-
-			if ($this->method_details["woocommerce_hipayenterprise_methods_mode"] != "api"){
-
-				$orderRequest->authentication_indicator = $this->method_details['woocommerce_hipayenterprise_methods_3ds'];
-
-				if ($this->method_details['woocommerce_hipayenterprise_methods_hosted_mode']=="redirect") 
-					$orderRequest->template = "basic-js";
-				else
-					$orderRequest->template = "iframe-js";
-
-				$orderRequest->display_selector = (int)$this->method_details['woocommerce_hipayenterprise_methods_hosted_card_selector'];
-				$orderRequest->multi_use 		= (int)$this->method_details['woocommerce_hipayenterprise_methods_oneclick'];
-				if ($this->method_details['woocommerce_hipayenterprise_methods_hosted_css']!="") $orderRequest->css = $this->woocommerce_hipayenterprise_methods['woocommerce_hipayenterprise_methods_hosted_css'];
-			}
 				
 			//check max min amount
 			$all_methods 		= json_decode($this->method_details['woocommerce_hipayenterprise_methods_payments']);
@@ -215,11 +192,6 @@ class WC_HipayEnterprise_LocalPayments_Paypal extends WC_HipayEnterprise {
 			$countries_list = array();
 			$currencies_list = array();
 			$available_methods = array();
-
-			if ($this->method_details["woocommerce_hipayenterprise_methods_mode"] != "api"){
-				$orderRequest->payment_product_list = $this->payment_code;
-				$orderRequest->payment_product_category_list = '';
-			}
 				
 			$orderRequest->email 		= $order->get_billing_email();
 
@@ -255,9 +227,11 @@ class WC_HipayEnterprise_LocalPayments_Paypal extends WC_HipayEnterprise {
 			$orderRequest->shipto_state 	= $order->get_shipping_state();
 			$orderRequest->shipto_postcode 	= $order->get_shipping_postcode();
 				
-			if ($this->method_details["woocommerce_hipayenterprise_methods_mode"] != "api"){
-					$transaction = $gatewayClient->requestHostedPaymentPage($orderRequest);			
-				$redirectUrl = $transaction->getForwardUrl();				
+
+					$transaction = $gatewayClient->requestNewOrder($orderRequest);			
+				$redirectUrl = $transaction->getForwardUrl();
+
+
 				if ($redirectUrl != ""){
 					$order->add_order_note(__('Payment URL:', 'hipayenterprise') . " " . $redirectUrl );
 			    	if ($this->method_details['woocommerce_hipayenterprise_methods_log_info'])
@@ -276,13 +250,7 @@ class WC_HipayEnterprise_LocalPayments_Paypal extends WC_HipayEnterprise {
 					if ($this->method_details['woocommerce_hipayenterprise_methods_log_info'])
 						$wpdb->insert( $this->plugin_table_logs, array( 'log_desc' => __("Payment created with url:","hipayenterprise") . " " . $redirectUrl, 'order_id' => $order_id, 'type' => 'INFO' ) );
 
-					if ($this->method_details['woocommerce_hipayenterprise_methods_hosted_mode'] == "iframe")
-						return array(
-							'result'   => 'success',
-							'redirect' => $order->get_checkout_payment_url( true )
-						);
-					else
-				    	return array('result' => 'success','redirect' =>  $redirectUrl );
+			    	return array('result' => 'success','redirect' =>  $redirectUrl );
 
 
 			    } else {
@@ -290,39 +258,7 @@ class WC_HipayEnterprise_LocalPayments_Paypal extends WC_HipayEnterprise {
 						$wpdb->insert( $this->plugin_table_logs, array( 'log_desc' => __('Error generating payment url.','hipayenterprise'), 'order_id' => $order_id, 'type' => 'ERROR' ) );
 					throw new Exception(__('Error generating payment url.','hipayenterprise'));			    
 			    }	
-			} else {
 
-					$transaction = $gatewayClient->requestNewOrder($orderRequest);			
-				$redirectUrl = $transaction->getForwardUrl();
-
-					if ($transaction->getStatus() == "118" || $transaction->getStatus() == "117" || $transaction->getStatus() == "116") {					
-
-					$order_flag = $wpdb->get_row( "SELECT order_id FROM $this->plugin_table WHERE order_id = $order_id LIMIT 1");
-					if (isset($order_flag->order_id) ){
-						SELF::reset_stock_levels($order);
-						wc_reduce_stock_levels( $order_id );
-						$wpdb->update( $this->plugin_table, array( 'amount' => $order_total , 'stocks' => 1, 'url' => $redirectUrl ), array('order_id' => $order_id ) );
-					} else	{
-						wc_reduce_stock_levels( $order_id );
-						$wpdb->insert( $this->plugin_table, array( 'reference' => 0, 'order_id' => $order_id, 'amount' => $order_total , 'stocks' => 1, 'url' => $redirectUrl ) );
-					}
-
-
-					return array(
-						'result'   => 'success',
-						'redirect' => $order->get_checkout_order_received_url()
-					);
-
-				} else {
-
-					$reason = $transaction->getReason();
-					$order->add_order_note(__('Error:', 'hipayenterprise') . " " . $reason['message'] );
-					throw new Exception(__('Error processing payment:' ,'hipayenterprise') . " " . $reason['message']);			    
-
-				}	
-
-
-			}
 
 		} catch (Exception $e) {
 			if ($this->method_details['woocommerce_hipayenterprise_methods_log_info'])
@@ -332,26 +268,6 @@ class WC_HipayEnterprise_LocalPayments_Paypal extends WC_HipayEnterprise {
 
 	}
 
-
-	public function receipt_page( $order_id ) {
-		global $wpdb;
-
-		$order 			= wc_get_order( $order_id );
-		$payment_url 	= $wpdb->get_row("SELECT url FROM $this->plugin_table WHERE order_id = $order_id LIMIT 1");
-
-		if (!isset($payment_url->url) )	
-
-				$order->get_cancel_order_url_raw();
-
-		elseif ($this->method_details["woocommerce_hipayenterprise_methods_mode"] == "api" && $payment_url->url == "")
-
-			echo __("We have received your order payment. We will process the order as soon as we get the payment confirmation.","hipayenterprise");	
-
-		else		
-
-			echo '<div id="wc_hipay_iframe_container"><iframe id="wc_hipay_iframe" name="wc_hipay_iframe" width="100%" height="475" style="border: 0;" src="'.$payment_url->url.'" allowfullscreen="" frameborder="0"></iframe></div>' . PHP_EOL;
-
-	}
 
 
 }

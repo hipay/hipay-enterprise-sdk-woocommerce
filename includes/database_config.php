@@ -18,6 +18,7 @@ if($wpdb->get_var("show tables like '$this->plugin_table'") != $this->plugin_tab
       `captured` tinyint(4) NOT NULL DEFAULT '0',
       `stocks` tinyint(4) NOT NULL DEFAULT '0',
       `url` varchar(1024) DEFAULT NULL,
+	  `additionalInfo` varchar(150) NOT NULL,
 	UNIQUE KEY id (id)
 	) $charset_collate;";
 
@@ -25,6 +26,21 @@ if($wpdb->get_var("show tables like '$this->plugin_table'") != $this->plugin_tab
 	dbDelta($sql);
 
 } 
+
+
+$has_entity_column = false;
+$table_name = $this->plugin_table;
+$fivesdrafts = $wpdb->get_results( "DESCRIBE $table_name");
+foreach($fivesdrafts as $fivesdraft){
+	if ($fivesdraft->Field == "additionalInfo"){
+		$has_entity_column = true;
+		break;
+	}
+}
+if (!$has_entity_column){
+    $t = $wpdb->get_results("ALTER TABLE $table_name ADD COLUMN additionalInfo varchar(150) NOT NULL;");
+}
+
 
 if($wpdb->get_var("show tables like '$this->plugin_table_logs'") != $this->plugin_table_logs)
 {
