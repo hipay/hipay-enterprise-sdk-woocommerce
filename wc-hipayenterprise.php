@@ -1324,45 +1324,43 @@ function woocommerce_hipayenterprise_init() {
 
 		function process_refund( $order_id, $amount = null, $reason = '' ) {
 
-				global $wpdb;
-				global $woocommerce;
+			global $wpdb;
+			global $woocommerce;
 
-				require plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
+			require plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
 
-				$order = wc_get_order( $order_id );
-				$order->add_order_note(__('Refund through Hipay Enterprise for amount:', 'hipayenterprise') . " " . $amount . " and reason: " . $reason );
+			$order = wc_get_order( $order_id );
+			$order->add_order_note(__('Request refund through Hipay Enterprise for amount:', 'hipayenterprise') . " " . $amount . " " . $order->get_currency() . " and reason: " . $reason );
+			
+			$username 	= (!$this->sandbox) ? $this->account_production_private_username 	: $this->account_test_private_username;
+			$password 	= (!$this->sandbox) ? $this->account_production_private_password	: $this->account_test_private_password;
+			$passphrase = (!$this->sandbox) ? $this->account_production_private_passphrase: $this->account_test_private_passphrase;
+			$env = ($this->sandbox) ? HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENV_STAGE : HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENV_PRODUCTION;
+
+			try {
+
+				$config = new \HiPay\Fullservice\HTTP\Configuration\Configuration($username, $password, $env);
+				$clientProvider = new \HiPay\Fullservice\HTTP\SimpleHTTPClient($config);
+				$gatewayClient = new \HiPay\Fullservice\Gateway\Client\GatewayClient($clientProvider);
+
+				$transactionId = $wpdb->get_row( "SELECT reference FROM $this->plugin_table WHERE order_id = $order_id LIMIT 1");
+
+				if (!isset($transactionId->reference) ){	
+					throw new Exception(__("No transaction reference found.",'hipayenterprise'));
+				} else	{
+					$maintenanceResult = $gatewayClient->requestMaintenanceOperation("refund",$transactionId->reference,$amount);
+					$maintenanceResultDump = print_r($maintenanceResult,true);
+					if ($this->method_details['woocommerce_hipayenterprise_methods_log_info'])
+						$wpdb->insert( $this->plugin_table_logs, array( 'log_desc' => $maintenanceResultDump, 'order_id' => $order_id, 'type' => 'INFO' ) );
+					if ($maintenanceResult->getStatus() == "124")
+						return true;
+				}
+				return false;
+
+			} catch (Exception $e) {
+				throw new Exception(__("Error processing the Refund:",'hipayenterprise') . " " . $e->getMessage() );
 				
-				$username 	= (!$this->sandbox) ? $this->account_production_private_username 	: $this->account_test_private_username;
-				$password 	= (!$this->sandbox) ? $this->account_production_private_password	: $this->account_test_private_password;
-				$passphrase = (!$this->sandbox) ? $this->account_production_private_passphrase: $this->account_test_private_passphrase;
-				$env = ($this->sandbox) ? HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENV_STAGE : HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENV_PRODUCTION;
-
-				try {
-
-					$config = new \HiPay\Fullservice\HTTP\Configuration\Configuration($username, $password, $env);
-					$clientProvider = new \HiPay\Fullservice\HTTP\SimpleHTTPClient($config);
-					$gatewayClient = new \HiPay\Fullservice\Gateway\Client\GatewayClient($clientProvider);
-
-					$transactionId = $wpdb->get_row( "SELECT reference FROM $this->plugin_table WHERE order_id = $order_id LIMIT 1");
-					if (!isset($transactionId->reference) ){	
-						throw new Exception(__("No transaction reference found.",'hipayenterprise'));
-					} else	{
-						$maintenanceResult = $gatewayClient->requestMaintenanceOperation("capture",$transactionId->reference,$amount);
-						$maintenanceResultDump = print_r($maintenanceResult,true);
-						if ($this->method_details['woocommerce_hipayenterprise_methods_log_info'])
-							$wpdb->insert( $this->plugin_table_logs, array( 'log_desc' => $maintenanceResultDump, 'order_id' => $order_id, 'type' => 'ERROR' ) );
-
-						if ($maintenanceResult->_status == "101")
-							return true;
-
-					}
-
-					return false;
-
-				} catch (Exception $e) {
-					throw new Exception(__("Error processing the Refund:",'hipayenterprise') . " " . $e->getMessage() );
-					
-				}	
+			}	
 
 		}
 
