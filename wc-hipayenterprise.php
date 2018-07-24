@@ -116,7 +116,7 @@ function woocommerce_hipayenterprise_init() {
 			else
 				$this->icon 				= "";
 
-			if (!isset($this->method_details["woocommerce_hipayenterprise_methods_payments"]))
+			if (!isset($this->method_details["woocommerce_hipayenterprise_methods_payments"]) || $this->method_details["woocommerce_hipayenterprise_methods_payments"] == "" )
 				$this->method_details["woocommerce_hipayenterprise_methods_payments"] = HIPAY_ENTERPRISE_PAYMENT_METHODS;
 
 			$this->method_details["woocommerce_hipayenterprise_methods_payments"] = str_replace("\'", "'", $this->method_details["woocommerce_hipayenterprise_methods_payments"]);
