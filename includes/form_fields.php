@@ -13,7 +13,7 @@ $this->form_fields = array(
 				'title' => __( 'Enable/Disable', 'hipayenterprise' ),
 				'type' => 'checkbox',
 				'label' => __( 'Activate Hipay Enterprise payments', 'hipayenterprise' ),
-				'default' => 'yes'
+				'default' => 'no'
 			),
 
 'sandbox' => array(

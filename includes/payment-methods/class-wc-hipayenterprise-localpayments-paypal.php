@@ -18,7 +18,7 @@ class WC_HipayEnterprise_LocalPayments_Paypal extends WC_HipayEnterprise {
 		$this->payment_code			= 'paypal';		
 		$this->domain 				= 'hipayenterprise';
 		$this->id                   = 'hipayenterprise_paypal';
-		$plugin_data 				= get_plugin_data( __FILE__ );
+		if (is_admin())				$plugin_data 				= get_plugin_data( __FILE__ );
 
 		load_plugin_textdomain( $this->domain, false, basename( dirname( __FILE__ ) ) . '../../languages' ); 
 		include_once( plugin_dir_path( __FILE__ ) . '../payment_methods.php' );

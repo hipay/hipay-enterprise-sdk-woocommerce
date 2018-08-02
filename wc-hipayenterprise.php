@@ -28,8 +28,10 @@ function woocommerce_hipayenterprise_init() {
 			$this->id 												= 'hipayenterprise';
 			$this->supports           								= array(	'products',	'refunds',	);
 			$this->woocommerce_version								= $woocommerce->version;
-			$plugin_data 											= get_plugin_data( __FILE__ );
-    		$this->plugin_version 									= $plugin_data['Version'];
+			if (is_admin()) {
+				$plugin_data 											= get_plugin_data( __FILE__ );
+    			$this->plugin_version 									= $plugin_data['Version'];
+    		}
 
 			load_plugin_textdomain( $this->id, false, basename( dirname( __FILE__ ) ) . '/languages' ); 
 			include_once( plugin_dir_path( __FILE__ ) . 'includes/payment_methods.php' );

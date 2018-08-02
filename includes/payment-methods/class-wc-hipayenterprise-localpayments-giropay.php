@@ -19,7 +19,7 @@ class WC_HipayEnterprise_LocalPayments_Giropay extends WC_HipayEnterprise {
 		$this->payment_code			= 'giropay';		
 		$this->domain 				= 'hipayenterprise';
 		$this->id                   = 'hipayenterprise_giropay';
-		$plugin_data 				= get_plugin_data( __FILE__ );
+		if (is_admin())				$plugin_data 				= get_plugin_data( __FILE__ );
 
 		load_plugin_textdomain( $this->id, false, basename( dirname( __FILE__ ) ) . '../../languages' ); 
 		include_once( plugin_dir_path( __FILE__ ) . '../payment_methods.php' );
