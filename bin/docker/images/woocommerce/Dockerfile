@@ -28,7 +28,7 @@ RUN wp --info
 
 RUN chmod u+x /tmp/setup-woocommerce.sh
 
-COPY . /tmp/woocommerce_hipayenterprise
+COPY src /tmp/woocommerce_hipayenterprise
 
 WORKDIR /var/www/html
 

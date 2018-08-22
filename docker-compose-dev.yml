@@ -1,7 +1,7 @@
 version: '3.3'
 
 services:
-   db:
+   database:
      image: mysql:5.7
      volumes:
        - db_data:/var/lib/mysql
@@ -14,7 +14,7 @@ services:
 
    wordpress:
      depends_on:
-       - db
+       - database
      build:
        context: .
        dockerfile: bin/docker/images/woocommerce/Dockerfile
@@ -29,7 +29,7 @@ services:
        ADMIN_USERNAME: "admin"
        ADMIN_EMAIL: "admin-wordpress@hipay.com"
        ADMIN_PASSWORD: "hipay"
-       WORDPRESS_DB_HOST: db:3306
+       WORDPRESS_DB_HOST: database:3306
        WORDPRESS_DB_USER: wordpress
        WORDPRESS_DB_PASSWORD: wordpress
 volumes:

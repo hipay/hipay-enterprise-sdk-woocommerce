@@ -1,0 +1,62 @@
+version: '3.3'
+
+networks:
+  traefik_traefik:
+    external: true
+  wordpress:
+    internal: true
+  outside-pi-overlay:
+    external: true
+
+
+services:
+   database:
+     image: mysql:5.7
+     restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: somewordpress
+       MYSQL_DATABASE: wordpress
+       MYSQL_USER: wordpress
+       MYSQL_PASSWORD: wordpress
+   networks:
+      traefik_traefik:
+      wordpress:
+      outside-pi-overlay:
+        aliases:
+          - woocommerce-test-database
+   wordpress:
+     depends_on:
+       - database
+     image: pi-woocommerce_web:develop
+     build:
+       context: .
+       dockerfile: bin/docker/images/woocommerce/Dockerfile
+     restart: always
+     environment:
+       WOOCOMMERCE_VERSION: 3.4.4
+       ADMIN_USERNAME: "admin"
+       ADMIN_EMAIL: "admin-wordpress@hipay.com"
+       ADMIN_PASSWORD: "hipay"
+       WORDPRESS_DB_HOST: database:3306
+       WORDPRESS_DB_USER: wordpress
+       WORDPRESS_DB_PASSWORD: wordpress
+   deploy:
+        labels:
+          - "traefik.frontend.rule=Host:pi-woocommerce-develop.hipay-pos-platform.com"
+          - "traefik.port=80"
+          - "traefik.docker.network=traefik_traefik"
+        placement:
+          constraints:
+            - node.hostname == docker
+        replicas: 1
+        update_config:
+          parallelism: 2
+          delay: 30s
+        restart_policy:
+          condition: on-failure
+   networks:
+      traefik_traefik:
+      wordpress:
+      outside-pi-overlay:
+        aliases:
+          - woocommerce-test-web
