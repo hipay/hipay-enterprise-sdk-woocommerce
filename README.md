@@ -17,3 +17,5 @@ When a transaction is likely to be a fraud then an email is sent to the contact 
 - Switch operating mode between Hosted page - redirect or iframe - or Direct Post;
 - Enable credit card payments for a minimun and maximum amount, countries and currencies;
 - Enable local payments for a minimun and maximum amount, countries and currencies;
+
+8N5nUiPDak15N!D5aa

@@ -15,13 +15,20 @@ services:
    wordpress:
      depends_on:
        - db
-     image: wordpress:latest
+     build:
+       context: .
+       dockerfile: bin/docker/images/woocommerce/Dockerfile
      volumes:
        - ./wordpress/core:/var/www/html
+       - ./src:/var/www/html/wp-content/plugins/woocommerce_hipayenterprise
      ports:
        - "8000:80"
      restart: always
      environment:
+       WOOCOMMERCE_VERSION: 3.4.4
+       ADMIN_USERNAME: "admin"
+       ADMIN_EMAIL: "admin-wordpress@hipay.com"
+       ADMIN_PASSWORD: "hipay"
        WORDPRESS_DB_HOST: db:3306
        WORDPRESS_DB_USER: wordpress
        WORDPRESS_DB_PASSWORD: wordpress

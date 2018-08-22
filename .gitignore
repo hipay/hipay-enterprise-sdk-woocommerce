@@ -1,5 +1,6 @@
 
 wordpress/
+bin/package/
 *.sublime-project
 
 hipay\.enterprise\.woocommerce\.sdk\.sublime-workspace
