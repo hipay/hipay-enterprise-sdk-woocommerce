@@ -1,7 +1,7 @@
 <?php 
 //authorized: by hipay, if empty = all
 //available:  by merchant, if empty = none
-define(HIPAY_ENTERPRISE_PAYMENT_METHODS, '
+define("HIPAY_ENTERPRISE_PAYMENT_METHODS", '
 [
 { "key":"visa", "title":"Visa","is_credit_card":"1","is_local_payment":"0","description":"","max_amount":"","min_amount":"","authorized_countries":"","authorized_currencies":"","is_active":"0","available_countries":"" },
 { "key":"mastercard", "title":"Mastercard","is_credit_card":"1","is_local_payment":"0","description":"","max_amount":"","min_amount":"","authorized_countries":"","authorized_currencies":"","is_active":"0","available_countries":"" },
@@ -17,5 +17,5 @@ define(HIPAY_ENTERPRISE_PAYMENT_METHODS, '
 { "key":"multibanco", "title":"Multibanco","is_credit_card":"0","is_local_payment":"1","description":"Pay Multibanco references on ATM or Homebanking","max_amount":"2500","min_amount":"1","authorized_countries":"PT","authorized_currencies":"EUR","is_active":"0","available_countries":"PT" }
 ]');
 
-define(HIPAY_ENTERPRISE_LOCAL_PAYMENTS, 'off');
+define("HIPAY_ENTERPRISE_LOCAL_PAYMENTS", 'off');
 //{ "key":"visa", "title":"Visa","is_credit_card":"1","is_local_payment":"0","description":"","max_amount":"","min_amount":"","authorized_countries":"","authorized_currencies":"","is_active":"0","available_countries":"" }

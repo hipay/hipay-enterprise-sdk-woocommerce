@@ -147,10 +147,10 @@ function woocommerce_hipayenterprise_init() {
 			$fraud['woocommerce_hipayenterprise_fraud_copy_method'] 		= sanitize_title($_POST['woocommerce_hipayenterprise_fraud_copy_method']);
 
 			$currencies = array();
-			$woocommerce_hipayenterprise_currencies_active   				= array_map( 'wc_clean', $_POST['woocommerce_hipayenterprise_currencies_active'] );
-			$currencies['woocommerce_hipayenterprise_currencies_active']	= $woocommerce_hipayenterprise_currencies_active;
-	
-			$methods = array();
+			if (is_array($_POST['woocommerce_hipayenterprise_currencies_active'])) {
+                $woocommerce_hipayenterprise_currencies_active = array_map('wc_clean', $_POST['woocommerce_hipayenterprise_currencies_active']);
+                $currencies['woocommerce_hipayenterprise_currencies_active'] = $woocommerce_hipayenterprise_currencies_active;
+            }
 
 			$all_methods 		= str_replace("\'", "'", HIPAY_ENTERPRISE_PAYMENT_METHODS);
 			$all_methods 		= json_decode($all_methods);
@@ -672,14 +672,16 @@ function woocommerce_hipayenterprise_init() {
 										$available_currencies = array();
 										if ($the_method->get_authorized_currencies() != "") $authorized_currencies = explode(",", $the_method->get_authorized_currencies());
 										if ($the_method->get_available_currencies() != "") $available_currencies = explode(",", $the_method->get_available_currencies());
-										foreach ($this->currencies_details["woocommerce_hipayenterprise_currencies_active"] as $keyc => $valuec) {
-											if (empty($authorized_currencies) || array_search($keyc, $authorized_currencies) !== false ){
-												echo '<input class="" type="checkbox" name="woocommerce_hipayenterprise_methods_cc_currencies['. $the_method->get_key().']['. $keyc.']" id="woocommerce_hipayenterprise_methods_cc_currencies" style="" value="1"';
-												if (array_search($keyc, $available_currencies) !== false )														
-													echo ' checked="checked"';
-												echo "><span style='padding-right:18px;'>" . $this->list_of_currencies[$keyc] . "</span>";
-											}
-										}	
+                                        if (is_array($this->currencies_details["woocommerce_hipayenterprise_currencies_active"] )) {
+                                            foreach ($this->currencies_details["woocommerce_hipayenterprise_currencies_active"] as $keyc => $valuec) {
+                                                if (empty($authorized_currencies) || array_search($keyc, $authorized_currencies) !== false) {
+                                                    echo '<input class="" type="checkbox" name="woocommerce_hipayenterprise_methods_cc_currencies[' . $the_method->get_key() . '][' . $keyc . ']" id="woocommerce_hipayenterprise_methods_cc_currencies" style="" value="1"';
+                                                    if (array_search($keyc, $available_currencies) !== false)
+                                                        echo ' checked="checked"';
+                                                    echo "><span style='padding-right:18px;'>" . $this->list_of_currencies[$keyc] . "</span>";
+                                                }
+                                            }
+                                        }
 										?>
 									</fieldset>
 									</td>
@@ -884,15 +886,17 @@ function woocommerce_hipayenterprise_init() {
 										$available_currencies = array();
 										if ($the_method->get_authorized_currencies() != "") $authorized_currencies = explode(",", $the_method->get_authorized_currencies());
 										if ($the_method->get_available_currencies() != "") $available_currencies = explode(",", $the_method->get_available_currencies());
-										foreach ($this->currencies_details["woocommerce_hipayenterprise_currencies_active"] as $keyc => $valuec) {
-											if (empty($authorized_currencies) || array_search($keyc, $authorized_currencies) !== false ){
-												echo '<input class="" type="checkbox" name="woocommerce_hipayenterprise_methods_lp_currencies['. $the_method->get_key().']['. $keyc.']" id="woocommerce_hipayenterprise_methods_lp_currencies" style="" value="1"';
-												if (array_search($keyc, $available_currencies) !== false )														
-													echo ' checked="checked"';
-												echo "><span style='padding-right:18px;'>" . $this->list_of_currencies[$keyc] . "</span>";
-											}
-										}	
-										?>
+                                        if (is_array($this->currencies_details["woocommerce_hipayenterprise_currencies_active"] )) {
+                                            foreach ($this->currencies_details["woocommerce_hipayenterprise_currencies_active"] as $keyc => $valuec) {
+                                                if (empty($authorized_currencies) || array_search($keyc, $authorized_currencies) !== false) {
+                                                    echo '<input class="" type="checkbox" name="woocommerce_hipayenterprise_methods_lp_currencies[' . $the_method->get_key() . '][' . $keyc . ']" id="woocommerce_hipayenterprise_methods_lp_currencies" style="" value="1"';
+                                                    if (array_search($keyc, $available_currencies) !== false)
+                                                        echo ' checked="checked"';
+                                                    echo "><span style='padding-right:18px;'>" . $this->list_of_currencies[$keyc] . "</span>";
+                                                }
+                                            }
+                                        }
+                                        ?>
 									</fieldset>
 									</td>
 
@@ -2028,7 +2032,6 @@ function woocommerce_hipayenterprise_init() {
 
 
 	function filter_hipayenterprise_gateway( $methods ) {
-		
 		global $woocommerce;
 		global $wpdb;
 
@@ -2050,7 +2053,9 @@ function woocommerce_hipayenterprise_init() {
 			$total_amount = floatval( preg_replace( '#[^\d.]#', '',  $total_amount) );
 
     		if (in_array($current_currency, $plugin_method_settings['woocommerce_hipayenterprise_methods_payments_currencies_list']) && in_array($current_billing_country, $plugin_method_settings['woocommerce_hipayenterprise_methods_payments_countries_list']) ) {
-					if ($total_amount > $max_value || $total_amount < $min_value ) unset($methods['hipayenterprise']); 
+					if (($max_value != 0 && $total_amount > $max_value) || ($min_value != 0 && $total_amount < $min_value) ) {
+					    unset($methods['hipayenterprise']);
+                    }
 			} else	{
 				unset($methods['hipayenterprise']); 
 			}

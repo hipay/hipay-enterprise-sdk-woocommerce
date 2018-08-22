@@ -108,17 +108,21 @@ class HipayEnterprisePaymentMethodClass
 
 	function set_authorized_currencies($authorized_currencies){
 		$this->authorized_currencies = "";
-		foreach ($authorized_currencies as $key => $value) {
-			$this->authorized_currencies .= $key . ",";	
-		}
+        if (is_array($authorized_currencies)) {
+            foreach ($authorized_currencies as $key => $value) {
+                $this->authorized_currencies .= $key . ",";
+            }
+        }
 		if (strlen($this->authorized_currencies) > 0) $this->authorized_currencies = substr($this->authorized_currencies, 0, -1);
 	}
 
 	function set_available_currencies($available_currencies){
 		$this->available_currencies = "";
-		foreach ($available_currencies as $key => $value) {
-			$this->available_currencies .= $key . ",";	
-		}
+		if (is_array($available_currencies)) {
+            foreach ($available_currencies as $key => $value) {
+                $this->available_currencies .= $key . ",";
+            }
+        }
 		if (strlen($this->available_currencies) > 0) $this->available_currencies = substr($this->available_currencies, 0, -1);
 	}
 
