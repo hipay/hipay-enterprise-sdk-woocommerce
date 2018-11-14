@@ -31,19 +31,17 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 'products',
                 'refunds');
 
-            $this->woocommerce_version = $woocommerce->version;
-
             if (is_admin()) {
                 $plugin_data = get_plugin_data(__FILE__);
                 $this->plugin_version = $plugin_data['Version'];
             }
 
             load_plugin_textdomain($this->id, false, basename(dirname(__FILE__)) . '/languages');
-            include_once(plugin_dir_path(__FILE__) . 'payment_methods.php');
 
+            // TODO Mettre à un autre endroit les noms des tables ( PS la table log ne sert plus a rien)
             $this->plugin_table = $wpdb->prefix . 'woocommerce_hipayenterprise';
-            $this->plugin_table_logs = $wpdb->prefix . 'woocommerce_hipayenterprise_logs';
             $this->plugin_table_token = $wpdb->prefix . 'woocommerce_hipayenterprise_token';
+
             $this->has_fields = true;
 
             $this->method_title = __('HiPay Enterprise', $this->id);
@@ -56,7 +54,9 @@ if (!class_exists('WC_Gateway_Hipay')) {
             $this->addActions();
 
             $this->confHelper = new WC_HipayEnterprise_Config($this);
+
             $this->logs = new WC_HipayEnterprise_Log($this);
+
             $this->settingsHandler = new WC_HipayEnterprise_Settings_Handler($this);
 
             $this->settingsHipay = $this->confHelper->getConfigHipay();
@@ -64,13 +64,6 @@ if (!class_exists('WC_Gateway_Hipay')) {
             $this->icon = WP_PLUGIN_URL . "/" . plugin_basename(dirname(__FILE__)) . '/assets/images/hipay_logo-' . $this->get_option('payment_image') . '.png';
 
             $this->title = __('Pay by Credit Card', $this->id);
-
-            if ($this->method_details['display_hosted_page'] == "redirect" && $this->method_details['operating_mode'] == "hosted_page") {
-                $this->description = __('You will be redirected to an external payment page. Please do not refresh the page during the process.', $this->id);
-            } else {
-                $this->description = "";
-            }
-
 
             // TODO faire une classe asset front
             wp_enqueue_style('hipayenterprise-style', plugins_url('/assets/css/style.css', __FILE__), array(), 'all');
@@ -652,9 +645,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 } else {
                     $maintenanceResult = $gatewayClient->requestMaintenanceOperation("refund", $transactionId->reference, $amount);
                     $maintenanceResultDump = print_r($maintenanceResult, true);
-                    if ($this->method_details['log_infos']) {
-                        $wpdb->insert($this->plugin_table_logs, array('log_desc' => $maintenanceResultDump, 'order_id' => $order_id, 'type' => 'INFO'));
-                    }
+
                     if ($maintenanceResult->getStatus() == "124") {
                         return true;
                     }
@@ -755,7 +746,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
             $billing_email = $woocommerce->customer->get_billing_email();
             $shop_title = get_bloginfo('name');
 
-            $request_source = '{"source":"CMS","brand":"Woocommerce","brand_version":"' . $this->woocommerce_version . '","integration_version":"' . $this->plugin_version . '"}';
+            $request_source = '{"source":"CMS","brand":"Woocommerce","brand_version":"' . $woocommerce->version . '","integration_version":"' . $this->plugin_version . '"}';
 
             try {
                 $config = new \HiPay\Fullservice\HTTP\Configuration\Configuration($username, $password, $env);
@@ -893,9 +884,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
                     $redirectUrl = $transaction->getForwardUrl();
                     if ($redirectUrl != "") {
                         $order->add_order_note(__('Payment URL:', 'hipayenterprise') . " " . $redirectUrl);
-                        if ($this->method_details['log_infos']) {
-                            $wpdb->insert($this->plugin_table_logs, array('log_desc' => __('Payment URL:', 'hipayenterprise') . " " . $redirectUrl, 'order_id' => $order_id, 'type' => 'INFO'));
-                        }
+
 
                         $order_flag = $wpdb->get_row("SELECT order_id FROM $this->plugin_table WHERE order_id = $order_id LIMIT 1");
                         if (isset($order_flag->order_id)) {
@@ -907,10 +896,6 @@ if (!class_exists('WC_Gateway_Hipay')) {
                             $wpdb->insert($this->plugin_table, array('reference' => 0, 'order_id' => $order_id, 'amount' => $order_total, 'stocks' => 1, 'url' => $redirectUrl));
                         }
 
-                        if ($this->method_details['log_infos']) {
-                            $wpdb->insert($this->plugin_table_logs, array('log_desc' => __("Payment created with url:", "hipayenterprise") . " " . $redirectUrl, 'order_id' => $order_id, 'type' => 'INFO'));
-                        }
-
                         if ($this->method_details['display_hosted_page'] == "iframe") {
                             return array(
                                 'result' => 'success',
@@ -920,9 +905,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
                             return array('result' => 'success', 'redirect' => $redirectUrl);
                         }
                     } else {
-                        if ($this->method_details['log_infos']) {
-                            $wpdb->insert($this->plugin_table_logs, array('log_desc' => __('Error generating payment url.', 'hipayenterprise'), 'order_id' => $order_id, 'type' => 'ERROR'));
-                        }
+
                         throw new Exception(__('Error generating payment url.', 'hipayenterprise'));
                     }
                 } else {
@@ -952,9 +935,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
                     }
                 }
             } catch (Exception $e) {
-                if ($this->method_details['log_infos']) {
-                    $wpdb->insert($this->plugin_table_logs, array('log_desc' => __("Error on creation:", "hipayenterprise") . " " . $e->getMessage(), 'order_id' => $order_id, 'type' => 'ERROR'));
-                }
+
                 throw new Exception($e->getMessage());
             }
         }

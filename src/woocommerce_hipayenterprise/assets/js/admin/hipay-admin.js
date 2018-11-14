@@ -1,6 +1,15 @@
 jQuery( function( $ ) {
 	'use strict';
 
+    $('#operating_mode').change(function () {
+        if ($(this).val() == "hosted_page") {
+            $(".hosted_page_config").removeClass("hidden").show();
+        } else {
+            $(".hosted_page_config").hide();
+        }
+        return false;
+    });
+
     $( '.woocommerce_hipayenterprise_methods_creditCard_countries' ).multi({
         enable_search: false,
         non_selected_header: 'Available countries',

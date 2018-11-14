@@ -166,29 +166,3 @@
 <tr valign="top">
     <th colspan="2" align="right"><?php submit_button(); ?></th>
 </tr>
-
-
-<script type="text/javascript">
-    jQuery(function () {
-
-        jQuery('#operating_mode').change(function () {
-            if (jQuery(this).val() == "hosted_page") {
-                jQuery(".hosted_page_config").removeClass("hidden").show();
-            } else {
-                jQuery(".hosted_page_config").hide();
-            }
-            return false;
-        });
-
-        jQuery('.credit_card_admin_menu').click(function () {
-            $id = jQuery(this).attr("data-id");
-            jQuery('.credit_card_admin_menu').removeClass("credit_card_admin_menu_sel");
-            jQuery(this).addClass("credit_card_admin_menu_sel");
-            jQuery('.credit_card_admin_config').addClass("hidden");
-            jQuery('.credit_card_admin_config_' + $id).removeClass("hidden");
-            return false;
-        });
-
-
-    });
-</script>

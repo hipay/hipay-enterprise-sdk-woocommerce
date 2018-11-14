@@ -41,25 +41,6 @@ if (!$has_entity_column){
     $t = $wpdb->get_results("ALTER TABLE $table_name ADD COLUMN additionalInfo varchar(150) NOT NULL;");
 }
 
-
-if($wpdb->get_var("show tables like '$this->plugin_table_logs'") != $this->plugin_table_logs)
-{
-	$charset_collate = $wpdb->get_charset_collate();
-	$sql = "CREATE TABLE $this->plugin_table_logs (
-	  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-	  `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	  `log_desc` varchar(2222) NOT NULL,
-	  `order_id` bigint(20) NOT NULL,
-	  `type` varchar(22) NOT NULL,
-	UNIQUE KEY id (id)
-	) $charset_collate;";
-
-	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-	dbDelta($sql);
-
-} 
-
-
 if($wpdb->get_var("show tables like '$this->plugin_table_token'") != $this->plugin_table_token)
 {
 	$charset_collate = $wpdb->get_charset_collate();

@@ -27,7 +27,6 @@ class WC_HipayEnterprise_LocalPayments_Inghomepay extends WC_Gateway_Hipay {
 		$this->method_title         = __("HiPay ING Home'Pay",'hipayenterprise');
 		$this->supports             = array('products');
 		$this->plugin_table 									= $wpdb->prefix . 'woocommerce_hipayenterprise';
-		$this->plugin_table_logs 								= $wpdb->prefix . 'woocommerce_hipayenterprise_logs';
 		$this->plugin_table_token								= $wpdb->prefix . 'woocommerce_hipayenterprise_token';
 		$this->has_fields 										= true;
 
@@ -235,8 +234,6 @@ class WC_HipayEnterprise_LocalPayments_Inghomepay extends WC_Gateway_Hipay {
 
 				if ($redirectUrl != ""){
 					$order->add_order_note(__('Payment URL:', 'hipayenterprise') . " " . $redirectUrl );
-			    	if ($this->method_details['log_infos'])
-						$wpdb->insert( $this->plugin_table_logs, array( 'log_desc' => __('Payment URL:', 'hipayenterprise') . " " . $redirectUrl, 'order_id' => $order_id, 'type' => 'INFO' ) );
 
 					$order_flag = $wpdb->get_row( "SELECT order_id FROM $this->plugin_table WHERE order_id = $order_id LIMIT 1");
 					if (isset($order_flag->order_id) ){
@@ -248,23 +245,17 @@ class WC_HipayEnterprise_LocalPayments_Inghomepay extends WC_Gateway_Hipay {
 						$wpdb->insert( $this->plugin_table, array( 'reference' => 0, 'order_id' => $order_id, 'amount' => $order_total , 'stocks' => 1, 'url' => $redirectUrl ) );
 					}
 					
-					if ($this->method_details['log_infos'])
-						$wpdb->insert( $this->plugin_table_logs, array( 'log_desc' => __("Payment created with url:","hipayenterprise") . " " . $redirectUrl, 'order_id' => $order_id, 'type' => 'INFO' ) );
 
 			    	return array('result' => 'success','redirect' =>  $redirectUrl );
 
 
 			    } else {
-			    	if ($this->method_details['log_infos'])
-						$wpdb->insert( $this->plugin_table_logs, array( 'log_desc' => __('Error generating payment url.','hipayenterprise'), 'order_id' => $order_id, 'type' => 'ERROR' ) );
-					throw new Exception(__('Error generating payment url.','hipayenterprise'));			    
+                	throw new Exception(__('Error generating payment url.','hipayenterprise'));
 			    }	
 
 
 		} catch (Exception $e) {
-			if ($this->method_details['log_infos'])
-				$wpdb->insert( $this->plugin_table_logs, array( 'log_desc' => __("Error on creation:","hipayenterprise") . " " . $e->getMessage(), 'order_id' => $order_id, 'type' => 'ERROR' ) );
-			throw new Exception($e->getMessage());			    
+		    throw new Exception($e->getMessage());
 		}
 
 	}
