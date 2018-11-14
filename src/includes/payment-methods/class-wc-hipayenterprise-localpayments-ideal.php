@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @extends WC_HipayEnterprise
  * @since 1.0.0
  */
-class WC_HipayEnterprise_LocalPayments_Ideal extends WC_HipayEnterprise {
+class WC_HipayEnterprise_LocalPayments_Ideal extends WC_Gateway_Hipay {
 
 	public function __construct() {
 
@@ -22,9 +22,9 @@ class WC_HipayEnterprise_LocalPayments_Ideal extends WC_HipayEnterprise {
 
 		load_plugin_textdomain( $this->id, false, basename( dirname( __FILE__ ) ) . '../../languages' ); 
 		include_once( plugin_dir_path( __FILE__ ) . '../payment_methods.php' );
-		include_once( plugin_dir_path( __FILE__ ) . '../base_config.php' );
 
-		$this->method_title         = __('iDEAL','hipayenterprise');
+
+		$this->method_title         = __('HiPay iDEAL','hipayenterprise');
 		$this->supports             = array('products');
 		$this->plugin_table 									= $wpdb->prefix . 'woocommerce_hipayenterprise';
 		$this->plugin_table_logs 								= $wpdb->prefix . 'woocommerce_hipayenterprise_logs';
@@ -65,22 +65,19 @@ class WC_HipayEnterprise_LocalPayments_Ideal extends WC_HipayEnterprise {
 
 		$this->method_details 		= get_option( 'woocommerce_hipayenterprise_methods',
 			array(
-				'woocommerce_hipayenterprise_methods_capture'  				=> $this->get_option( 'woocommerce_hipayenterprise_methods_capture' ),
-				'woocommerce_hipayenterprise_methods_3ds' 					=> $this->get_option( 'woocommerce_hipayenterprise_methods_3ds' ),
-				'woocommerce_hipayenterprise_methods_mode' 					=> $this->get_option( 'woocommerce_hipayenterprise_methods_mode' ),
-				'woocommerce_hipayenterprise_methods_hosted_mode' 			=> $this->get_option( 'woocommerce_hipayenterprise_methods_hosted_mode' ),
-				'woocommerce_hipayenterprise_methods_hosted_css' 			=> $this->get_option( 'woocommerce_hipayenterprise_methods_hosted_css' ),
-				'woocommerce_hipayenterprise_methods_hosted_card_selector'	=> $this->get_option( 'woocommerce_hipayenterprise_methods_hosted_card_selector' ),
-				'woocommerce_hipayenterprise_methods_oneclick'				=> $this->get_option( 'woocommerce_hipayenterprise_methods_oneclick' ),
-				'woocommerce_hipayenterprise_methods_cart_sending'			=> $this->get_option( 'woocommerce_hipayenterprise_methods_cart_sending' ),
-				'woocommerce_hipayenterprise_methods_keep_cart_onfail'		=> $this->get_option( 'woocommerce_hipayenterprise_methods_keep_cart_onfail' ),
-				'woocommerce_hipayenterprise_methods_log_info'				=> $this->get_option( 'woocommerce_hipayenterprise_methods_log_info' ),
+				'capture_mode'  				=> $this->get_option( 'capture_mode' ),
+				'activate_3d_secure' 					=> $this->get_option( 'activate_3d_secure' ),
+				'operating_mode' 					=> $this->get_option( 'operating_mode' ),
+				'display_hosted_page' 			=> $this->get_option( 'display_hosted_page' ),
+				'css_url' 			=> $this->get_option( 'css_url' ),
+				'display_card_selector'	=> $this->get_option( 'display_card_selector' ),
+				'card_token'				=> $this->get_option( 'card_token' ),
+				'activate_basket'			=> $this->get_option( 'activate_basket' ),
+				'regenerate_cart_on_decline'		=> $this->get_option( 'regenerate_cart_on_decline' ),
+				'log_infos'				=> $this->get_option( 'log_infos' ),
 				'woocommerce_hipayenterprise_methods_payments' 				=> $this->get_option( 'woocommerce_hipayenterprise_methods_payments' ),
 			)
 		);
-
-		if (!isset($this->method_details["woocommerce_hipayenterprise_methods_payments"]) || $this->method_details["woocommerce_hipayenterprise_methods_payments"] == "" )
-			$this->method_details["woocommerce_hipayenterprise_methods_payments"] = HIPAY_ENTERPRISE_PAYMENT_METHODS;
 
 		$this->method_details["woocommerce_hipayenterprise_methods_payments"] = str_replace("\'", "'", $this->method_details["woocommerce_hipayenterprise_methods_payments"]);
 
@@ -158,7 +155,7 @@ class WC_HipayEnterprise_LocalPayments_Ideal extends WC_HipayEnterprise {
 			$orderRequest->language = get_locale();
 			$orderRequest->source = $request_source;
 
-			if ($this->method_details["woocommerce_hipayenterprise_methods_cart_sending"]) {
+			if ($this->method_details["activate_basket"]) {
 
 				$orderRequest->description = "";
 				$products = $order->get_items();
@@ -237,7 +234,7 @@ class WC_HipayEnterprise_LocalPayments_Ideal extends WC_HipayEnterprise {
 
 				if ($redirectUrl != ""){
 					$order->add_order_note(__('Payment URL:', 'hipayenterprise') . " " . $redirectUrl );
-			    	if ($this->method_details['woocommerce_hipayenterprise_methods_log_info'])
+			    	if ($this->method_details['log_infos'])
 						$wpdb->insert( $this->plugin_table_logs, array( 'log_desc' => __('Payment URL:', 'hipayenterprise') . " " . $redirectUrl, 'order_id' => $order_id, 'type' => 'INFO' ) );
 
 					$order_flag = $wpdb->get_row( "SELECT order_id FROM $this->plugin_table WHERE order_id = $order_id LIMIT 1");
@@ -250,21 +247,21 @@ class WC_HipayEnterprise_LocalPayments_Ideal extends WC_HipayEnterprise {
 						$wpdb->insert( $this->plugin_table, array( 'reference' => 0, 'order_id' => $order_id, 'amount' => $order_total , 'stocks' => 1, 'url' => $redirectUrl ) );
 					}
 					
-					if ($this->method_details['woocommerce_hipayenterprise_methods_log_info'])
+					if ($this->method_details['log_infos'])
 						$wpdb->insert( $this->plugin_table_logs, array( 'log_desc' => __("Payment created with url:","hipayenterprise") . " " . $redirectUrl, 'order_id' => $order_id, 'type' => 'INFO' ) );
 
 			    	return array('result' => 'success','redirect' =>  $redirectUrl );
 
 
 			    } else {
-			    	if ($this->method_details['woocommerce_hipayenterprise_methods_log_info'])
+			    	if ($this->method_details['log_infos'])
 						$wpdb->insert( $this->plugin_table_logs, array( 'log_desc' => __('Error generating payment url.','hipayenterprise'), 'order_id' => $order_id, 'type' => 'ERROR' ) );
 					throw new Exception(__('Error generating payment url.','hipayenterprise'));			    
 			    }	
 
 
 		} catch (Exception $e) {
-			if ($this->method_details['woocommerce_hipayenterprise_methods_log_info'])
+			if ($this->method_details['log_infos'])
 				$wpdb->insert( $this->plugin_table_logs, array( 'log_desc' => __("Error on creation:","hipayenterprise") . " " . $e->getMessage(), 'order_id' => $order_id, 'type' => 'ERROR' ) );
 			throw new Exception($e->getMessage());			    
 		}

@@ -1,0 +1,23 @@
+{
+  "name": "american-express",
+  "config": {
+    "displayName": "American Express",
+    "activated": 1,
+    "canRefund": 1,
+    "canManualCapture": 1,
+    "currencies": [
+      "EUR"
+    ],
+    "minAmount": {
+      "EUR": 0
+    },
+    "maxAmount": {
+      "EUR": false
+    },
+    "countries": [
+      "GB",
+      "FR"
+    ],
+    "recurring": 1
+  }
+}

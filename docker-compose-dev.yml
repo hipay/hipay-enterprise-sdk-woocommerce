@@ -11,7 +11,8 @@ services:
        MYSQL_DATABASE: wordpress
        MYSQL_USER: wordpress
        MYSQL_PASSWORD: wordpress
-
+     ports:
+       - "3309:3306"
    wordpress:
      depends_on:
        - database
@@ -24,13 +25,8 @@ services:
      ports:
        - "8000:80"
      restart: always
-     environment:
-       WOOCOMMERCE_VERSION: 3.4.4
-       ADMIN_USERNAME: "admin"
-       ADMIN_EMAIL: "admin-wordpress@hipay.com"
-       ADMIN_PASSWORD: "hipay"
-       WORDPRESS_DB_HOST: database:3306
-       WORDPRESS_DB_USER: wordpress
-       WORDPRESS_DB_PASSWORD: wordpress
+     env_file:
+      - bin/docker/conf/development/hipay.env
+      - bin/docker/conf/development/wordpress.env.sample
 volumes:
     db_data:

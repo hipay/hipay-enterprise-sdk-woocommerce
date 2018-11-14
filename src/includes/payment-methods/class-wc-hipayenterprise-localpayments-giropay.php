@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @extends WC_HipayEnterprise
  * @since 1.0.0
  */
-class WC_HipayEnterprise_LocalPayments_Giropay extends WC_HipayEnterprise {
+class WC_HipayEnterprise_LocalPayments_Giropay extends WC_Gateway_Hipay {
 
 	
 	public function __construct() {
@@ -23,9 +23,9 @@ class WC_HipayEnterprise_LocalPayments_Giropay extends WC_HipayEnterprise {
 
 		load_plugin_textdomain( $this->id, false, basename( dirname( __FILE__ ) ) . '../../languages' ); 
 		include_once( plugin_dir_path( __FILE__ ) . '../payment_methods.php' );
-		include_once( plugin_dir_path( __FILE__ ) . '../base_config.php' );
 
-		$this->method_title         = __('Giropay','hipayenterprise');
+
+		$this->method_title         = __('HiPay Giropay','hipayenterprise');
 		$this->supports             = array('products');
 		$this->plugin_table 									= $wpdb->prefix . 'woocommerce_hipayenterprise';
 		$this->plugin_table_logs 								= $wpdb->prefix . 'woocommerce_hipayenterprise_logs';
@@ -66,22 +66,20 @@ class WC_HipayEnterprise_LocalPayments_Giropay extends WC_HipayEnterprise {
 
 		$this->method_details 		= get_option( 'woocommerce_hipayenterprise_methods',
 			array(
-				'woocommerce_hipayenterprise_methods_capture'  				=> $this->get_option( 'woocommerce_hipayenterprise_methods_capture' ),
-				'woocommerce_hipayenterprise_methods_3ds' 					=> $this->get_option( 'woocommerce_hipayenterprise_methods_3ds' ),
-				'woocommerce_hipayenterprise_methods_mode' 					=> $this->get_option( 'woocommerce_hipayenterprise_methods_mode' ),
-				'woocommerce_hipayenterprise_methods_hosted_mode' 			=> $this->get_option( 'woocommerce_hipayenterprise_methods_hosted_mode' ),
-				'woocommerce_hipayenterprise_methods_hosted_css' 			=> $this->get_option( 'woocommerce_hipayenterprise_methods_hosted_css' ),
-				'woocommerce_hipayenterprise_methods_hosted_card_selector'	=> $this->get_option( 'woocommerce_hipayenterprise_methods_hosted_card_selector' ),
-				'woocommerce_hipayenterprise_methods_oneclick'				=> $this->get_option( 'woocommerce_hipayenterprise_methods_oneclick' ),
-				'woocommerce_hipayenterprise_methods_cart_sending'			=> $this->get_option( 'woocommerce_hipayenterprise_methods_cart_sending' ),
-				'woocommerce_hipayenterprise_methods_keep_cart_onfail'		=> $this->get_option( 'woocommerce_hipayenterprise_methods_keep_cart_onfail' ),
-				'woocommerce_hipayenterprise_methods_log_info'				=> $this->get_option( 'woocommerce_hipayenterprise_methods_log_info' ),
+				'capture_mode'  				=> $this->get_option( 'capture_mode' ),
+				'activate_3d_secure' 					=> $this->get_option( 'activate_3d_secure' ),
+				'operating_mode' 					=> $this->get_option( 'operating_mode' ),
+				'display_hosted_page' 			=> $this->get_option( 'display_hosted_page' ),
+				'css_url' 			=> $this->get_option( 'css_url' ),
+				'display_card_selector'	=> $this->get_option( 'display_card_selector' ),
+				'card_token'				=> $this->get_option( 'card_token' ),
+				'activate_basket'			=> $this->get_option( 'activate_basket' ),
+				'regenerate_cart_on_decline'		=> $this->get_option( 'regenerate_cart_on_decline' ),
+				'log_infos'				=> $this->get_option( 'log_infos' ),
 				'woocommerce_hipayenterprise_methods_payments' 				=> $this->get_option( 'woocommerce_hipayenterprise_methods_payments' ),
 			)
 		);
 
-		if (!isset($this->method_details["woocommerce_hipayenterprise_methods_payments"]) || $this->method_details["woocommerce_hipayenterprise_methods_payments"] == "" )
-			$this->method_details["woocommerce_hipayenterprise_methods_payments"] = HIPAY_ENTERPRISE_PAYMENT_METHODS;
 
 		$this->method_details["woocommerce_hipayenterprise_methods_payments"] = str_replace("\'", "'", $this->method_details["woocommerce_hipayenterprise_methods_payments"]);
 
@@ -142,7 +140,7 @@ class WC_HipayEnterprise_LocalPayments_Giropay extends WC_HipayEnterprise {
 				$config = new \HiPay\Fullservice\HTTP\Configuration\Configuration($username, $password, $env);
 				$clientProvider = new \HiPay\Fullservice\HTTP\SimpleHTTPClient($config);
 				$gatewayClient = new \HiPay\Fullservice\Gateway\Client\GatewayClient($clientProvider);
-				if ($this->method_details["woocommerce_hipayenterprise_methods_mode"] == "api"){
+				if ($this->method_details["operating_mode"] == "direct_post"){
 					$orderRequest = new \HiPay\Fullservice\Gateway\Request\Order\OrderRequest();
 					$orderRequest->paymentMethod = new \HiPay\Fullservice\Gateway\Request\PaymentMethod\CardTokenPaymentMethod(); 
 					$orderRequest->paymentMethod->cardtoken = $token;
@@ -150,7 +148,7 @@ class WC_HipayEnterprise_LocalPayments_Giropay extends WC_HipayEnterprise {
 						$orderRequest->paymentMethod->eci = 7;
 					else
 						$orderRequest->paymentMethod->eci = $direct_post_eci;
-					$orderRequest->paymentMethod->authentication_indicator = $this->method_details['woocommerce_hipayenterprise_methods_3ds'];
+					$orderRequest->paymentMethod->authentication_indicator = $this->method_details['activate_3d_secure'];
 					$orderRequest->payment_product = $brand;
 
 				}else{
@@ -171,7 +169,7 @@ class WC_HipayEnterprise_LocalPayments_Giropay extends WC_HipayEnterprise {
 				$orderRequest->notify_url = $callback_url;
 				$orderRequest->language = get_locale();
 				$orderRequest->source = $request_source;
-				if ($this->method_details["woocommerce_hipayenterprise_methods_cart_sending"]) {
+				if ($this->method_details["activate_basket"]) {
 
 					$orderRequest->description = "";
 					$products = $order->get_items();
@@ -201,18 +199,18 @@ class WC_HipayEnterprise_LocalPayments_Giropay extends WC_HipayEnterprise {
 				$orderRequest->tax =0; 
 
 
-				if ($this->method_details["woocommerce_hipayenterprise_methods_mode"] != "api"){
+				if ($this->method_details["operating_mode"] != "direct_post"){
 
-					$orderRequest->authentication_indicator = $this->method_details['woocommerce_hipayenterprise_methods_3ds'];
+					$orderRequest->authentication_indicator = $this->method_details['activate_3d_secure'];
 
-					if ($this->method_details['woocommerce_hipayenterprise_methods_hosted_mode']=="redirect") 
+					if ($this->method_details['display_hosted_page']=="redirect")
 						$orderRequest->template = "basic-js";
 					else
 						$orderRequest->template = "iframe-js";
 
-					$orderRequest->display_selector = (int)$this->method_details['woocommerce_hipayenterprise_methods_hosted_card_selector'];
-					$orderRequest->multi_use 		= (int)$this->method_details['woocommerce_hipayenterprise_methods_oneclick'];
-					if ($this->method_details['woocommerce_hipayenterprise_methods_hosted_css']!="") $orderRequest->css = $this->woocommerce_hipayenterprise_methods['woocommerce_hipayenterprise_methods_hosted_css'];
+					$orderRequest->display_selector = (int)$this->method_details['display_card_selector'];
+					$orderRequest->multi_use 		= (int)$this->method_details['card_token'];
+					if ($this->method_details['css_url']!="") $orderRequest->css = $this->woocommerce_hipayenterprise_methods['css_url'];
 				}
 					
 				//check max min amount
@@ -223,7 +221,7 @@ class WC_HipayEnterprise_LocalPayments_Giropay extends WC_HipayEnterprise {
 				$currencies_list = array();
 				$available_methods = array();
 
-				if ($this->method_details["woocommerce_hipayenterprise_methods_mode"] != "api"){
+				if ($this->method_details["operating_mode"] != "direct_post"){
 					$orderRequest->payment_product_list = $this->payment_code;
 					$orderRequest->payment_product_category_list = '';
 				}
@@ -262,12 +260,12 @@ class WC_HipayEnterprise_LocalPayments_Giropay extends WC_HipayEnterprise {
 				$orderRequest->shipto_state 	= $order->get_shipping_state();
 				$orderRequest->shipto_postcode 	= $order->get_shipping_postcode();
  				
-				if ($this->method_details["woocommerce_hipayenterprise_methods_mode"] != "api"){
+				if ($this->method_details["operating_mode"] != "direct_post"){
  					$transaction = $gatewayClient->requestHostedPaymentPage($orderRequest);			
 					$redirectUrl = $transaction->getForwardUrl();				
 					if ($redirectUrl != ""){
 						$order->add_order_note(__('Payment URL:', 'hipayenterprise') . " " . $redirectUrl );
-				    	if ($this->method_details['woocommerce_hipayenterprise_methods_log_info'])
+				    	if ($this->method_details['log_infos'])
 							$wpdb->insert( $this->plugin_table_logs, array( 'log_desc' => __('Payment URL:', 'hipayenterprise') . " " . $redirectUrl, 'order_id' => $order_id, 'type' => 'INFO' ) );
 
 						$order_flag = $wpdb->get_row( "SELECT order_id FROM $this->plugin_table WHERE order_id = $order_id LIMIT 1");
@@ -280,10 +278,10 @@ class WC_HipayEnterprise_LocalPayments_Giropay extends WC_HipayEnterprise {
 							$wpdb->insert( $this->plugin_table, array( 'reference' => 0, 'order_id' => $order_id, 'amount' => $order_total , 'stocks' => 1, 'url' => $redirectUrl ) );
 						}
 						
-						if ($this->method_details['woocommerce_hipayenterprise_methods_log_info'])
+						if ($this->method_details['log_infos'])
 							$wpdb->insert( $this->plugin_table_logs, array( 'log_desc' => __("Payment created with url:","hipayenterprise") . " " . $redirectUrl, 'order_id' => $order_id, 'type' => 'INFO' ) );
 
-						if ($this->method_details['woocommerce_hipayenterprise_methods_hosted_mode'] == "iframe")
+						if ($this->method_details['display_hosted_page'] == "iframe")
 							return array(
 								'result'   => 'success',
 								'redirect' => $order->get_checkout_payment_url( true )
@@ -293,7 +291,7 @@ class WC_HipayEnterprise_LocalPayments_Giropay extends WC_HipayEnterprise {
 
 
 				    } else {
-				    	if ($this->method_details['woocommerce_hipayenterprise_methods_log_info'])
+				    	if ($this->method_details['log_infos'])
 							$wpdb->insert( $this->plugin_table_logs, array( 'log_desc' => __('Error generating payment url.','hipayenterprise'), 'order_id' => $order_id, 'type' => 'ERROR' ) );
 						throw new Exception(__('Error generating payment url.','hipayenterprise'));			    
 				    }	
@@ -332,7 +330,7 @@ class WC_HipayEnterprise_LocalPayments_Giropay extends WC_HipayEnterprise {
 				}
 
 			} catch (Exception $e) {
-				if ($this->method_details['woocommerce_hipayenterprise_methods_log_info'])
+				if ($this->method_details['log_infos'])
 					$wpdb->insert( $this->plugin_table_logs, array( 'log_desc' => __("Error on creation:","hipayenterprise") . " " . $e->getMessage(), 'order_id' => $order_id, 'type' => 'ERROR' ) );
 				throw new Exception($e->getMessage());			    
 			}
@@ -350,7 +348,7 @@ class WC_HipayEnterprise_LocalPayments_Giropay extends WC_HipayEnterprise {
 
 					$order->get_cancel_order_url_raw();
 
-			elseif ($this->method_details["woocommerce_hipayenterprise_methods_mode"] == "api" && $payment_url->url == "")
+			elseif ($this->method_details["operating_mode"] == "direct_post" && $payment_url->url == "")
 
 				echo __("We have received your order payment. We will process the order as soon as we get the payment confirmation.","hipayenterprise");	
 

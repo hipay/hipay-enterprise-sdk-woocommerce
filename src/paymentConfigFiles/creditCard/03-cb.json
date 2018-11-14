@@ -1,0 +1,22 @@
+{
+  "name": "cb",
+  "config": {
+    "displayName": "Carte Bancaire",
+    "activated": 1,
+    "canRefund": 1,
+    "canManualCapture": 1,
+    "currencies": [
+      "EUR"
+    ],
+    "minAmount": {
+      "EUR": 0
+    },
+    "maxAmount": {
+      "EUR": false
+    },
+    "countries": [
+      "FR"
+    ],
+    "recurring": 1
+  }
+}
