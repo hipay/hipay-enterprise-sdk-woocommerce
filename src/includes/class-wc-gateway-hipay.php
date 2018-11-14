@@ -1075,6 +1075,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 }
             }
 
+            
             return $availableMethod;
 
             $min_value = $plugin_method_settings['woocommerce_hipayenterprise_methods_payments_min_amount'];
