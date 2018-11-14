@@ -40,7 +40,7 @@ class WC_HipayEnterprise_Config
      */
     private function initConfigHiPay()
     {
-        $this->configHipay = array_merge($this->plugin->settings, get_option($this->plugin->settings_name, array()));
+        $this->configHipay =  get_option($this->plugin->settings_name, array());
 
         // if config exist but empty, init new object for configHipay
         if (!$this->configHipay || empty($this->configHipay)) {
