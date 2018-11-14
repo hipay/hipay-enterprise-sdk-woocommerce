@@ -9,7 +9,7 @@ wp theme install storefront --allow-root --activate --path="/var/www/html"
 wp plugin install wordpress-importer --activate --allow-root --path="/var/www/html"
 php -f /tmp/setup-wizard-woocommerce.php
 
-cp -R /tmp/woocommerce_hipayenterprise /var/www/html/wp-content/plugins/woocommerce_hipayenterprise
+cp -R /tmp/woocommerce_hipayenterprise /var/www/html/wp-content/plugins
 
 wp import /var/www/html/wp-content/plugins/woocommerce/sample-data/smaple_product.csv --authors=create --path="/var/www/html"
 
