@@ -1,3 +1,32 @@
+# Version 1.10.0
+
+- [#39](https://github.com/hipay/hipay-fullservice-sdk-php/pull/39) Merge pull request #39 (#39)
+- [#38](https://github.com/hipay/hipay-fullservice-sdk-php/issues/38) Fix issue #38 (#38)
+
+# Version 1.9.0
+
+- Add proxy support to Curl request
+
+# Version 1.8.0
+
+- [#35](https://github.com/hipay/hipay-fullservice-sdk-php/pull/35) Fix issue #34 (#35)
+- [#33](https://github.com/hipay/hipay-fullservice-sdk-php/pull/33) Add Notification Url (#33)
+- [#32](https://github.com/hipay/hipay-fullservice-sdk-php/pull/32) Add security settings api call & Change signature helper (#32)
+
+# Version 1.7.0
+
+- [#31](https://github.com/hipay/hipay-fullservice-sdk-php/pull/31) Add multi_use field for Hpayment (#31)
+
+# Version 1.6.1
+
+- [#27](https://github.com/hipay/hipay-fullservice-sdk-php/pull/27) Fixes Undefined index: msisdn (#27) (@legithubdeaymeric)
+
+# Version 1.6.0
+
+- [#26](https://github.com/hipay/hipay-fullservice-sdk-php/pull/26) Add time_limit_to_pay in HostedPaymentPageRequest (#26) (@legithubdeaymeric)
+- [#25](https://github.com/hipay/hipay-fullservice-sdk-php/pull/25) Remove CDATA parameters ( Use custom_data now )(#25) (@legithubdeaymeric)
+
+
 # Version 1.5.1
 
 - Fix : Invert payment method and billing adress in  OrderRequest
@@ -14,7 +43,7 @@ New - Add new fields for 3x/4x payment
 New - Add 2 methods to get transaction details + order's transactions
 New - Improvements for support of basket in Order and Maintenance Request
 Fix circle CI
-Fix order transaction info with single transaction response 
+Fix order transaction info with single transaction response
 
 # Version 1.2.1
 Fix - Get order transaction info with single transaction response

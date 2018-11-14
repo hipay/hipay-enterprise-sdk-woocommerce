@@ -177,7 +177,7 @@ class Collection
             },
             {
                 "productCode":"bcmc",
-                "brandName":"Bancontact",
+                "brandName":"Bancontact / Mister Cash",
                 "can3ds":"1",
                 "canRefund":"0",
                 "canRecurring":"0",

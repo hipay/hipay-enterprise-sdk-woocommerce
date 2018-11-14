@@ -10,6 +10,7 @@ hipay\.enterprise\.woocommerce\.sdk\.sublime-workspace
 ######################
 wordpress/
 bin/package/
+src/woocommerce_hipayenterprise/vendor
 
 ######################
 # Logs and databases #

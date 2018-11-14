@@ -11,6 +11,13 @@ php -f /tmp/setup-wizard-woocommerce.php
 
 cp -R /tmp/woocommerce_hipayenterprise /var/www/html/wp-content/plugins
 
+printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+printf "\n${COLOR_SUCCESS}            INSTALLATION SDK PHP         ${NC}\n"
+printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+
+cd /var/www/html/wp-content/plugins/woocommerce_hipayenterprise/ \
+&& composer install --no-dev
+
 wp import /var/www/html/wp-content/plugins/woocommerce/sample-data/smaple_product.csv --authors=create --path="/var/www/html"
 
 #==========================================

@@ -9,6 +9,10 @@ ENV APACHE_RUN_USER=www-data \
      APACHE_LOCK_DIR=/var/lock/apache2 \
      APACHE_LOG_DIR=/var/log/apache2
 
+RUN apt-get update \
+    && curl -sS https://getcomposer.org/installer | php -- --filename=composer -- --install-dir=/usr/local/bin \
+    &&  rm -rf /var/lib/apt/lists/*
+
 ##########################################
 ####            ENTRYPOINT      ##########
 ##########################################
