@@ -4,7 +4,7 @@ services:
    database:
      image: mysql:5.7
      volumes:
-       - db_data:/var/lib/mysql
+       - ./data:/var/lib/mysql
      restart: always
      environment:
        MYSQL_ROOT_PASSWORD: somewordpress
@@ -28,5 +28,4 @@ services:
      env_file:
       - bin/docker/conf/development/hipay.env
       - bin/docker/conf/development/wordpress.env.sample
-volumes:
-    db_data:
+
