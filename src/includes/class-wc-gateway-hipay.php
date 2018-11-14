@@ -82,7 +82,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
          */
         public function addActions()
         {
-            add_filter('woocommerce_available_payment_gateways', array( $this,'available_payment_gateways'));
+            add_filter('woocommerce_available_payment_gateways', array($this, 'available_payment_gateways'));
 
             add_action('woocommerce_order_status_pending_to_cancelled', 'update_stocks_cancelled_order_hipay_enterprise', 10, 2);
             add_action('woocommerce_order_status_pending_to_failed', 'update_stocks_cancelled_order_hipay_enterprise', 10, 2);
@@ -293,8 +293,8 @@ if (!class_exists('WC_Gateway_Hipay')) {
                         ?>
                         <span class="custom-checkbox"><br><input id="saveTokenHipay" type="checkbox"
                                                                  name="saveTokenHipay" <?php if ($token_flag_json != "") {
-                            echo "CHECKED";
-                        } ?>><label
+                                echo "CHECKED";
+                            } ?>><label
                                     for="saveTokenHipay"><?php echo __("Save credit card (One click payment)", "hipayenterprise"); ?></label>
 						        </span>
                         <?php
@@ -325,13 +325,13 @@ if (!class_exists('WC_Gateway_Hipay')) {
                                 value="<?php echo __('Change Credit Card', 'hipayenterprise'); ?>"
                                 data-value="<?php echo __('Change Credit Card', 'hipayenterprise'); ?>"><?php echo __('Change Credit Card', 'hipayenterprise'); ?></button>
                         <?php if ($token_flag_json != "") {
-                        ?>
+                            ?>
                             <button type="button" class="button alt" name="woocommerce_tokenize_order_delete"
                                     id="woocommerce_tokenize_order_delete"
                                     value="<?php echo __('Remove Credit Card', 'hipayenterprise'); ?>"
                                     data-value="<?php echo __('Remove Credit Card', 'hipayenterprise'); ?>"><?php echo __('Remove Credit Card', 'hipayenterprise'); ?></button>
-                        <?php
-                    } ?>
+                            <?php
+                        } ?>
                     </div>
 
 
@@ -563,7 +563,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
             ob_start();
             $this->process_template('admin-creditcard-settings.php', array(
                 'configurationPaymentMethod' => $this->confHelper->getLocalPayment(),
-                 'methods' => 'local'
+                'methods' => 'local'
             ));
             return ob_get_clean();
         }
@@ -1044,7 +1044,6 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
         public function update_stocks_cancelled_order_hipay_enterprise($order_id, $order)
         {
-
             global $wpdb;
 
             $cur_payment_method = get_post_meta($order_id, '_payment_method', true);
@@ -1056,14 +1055,27 @@ if (!class_exists('WC_Gateway_Hipay')) {
             }
         }
 
+        /**
+         * Check if payment method is available for current cart
+         *
+         * @return boolean
+         */
         public function isAvailableForCurrentCart()
         {
-
             global $woocommerce;
+            $settingsCreditCard = $this->confHelper->getPaymentCreditCard();
 
+            $availableMethod = false;
+            foreach ($settingsCreditCard as $card => $conf) {
+                if ($conf["activated"]
+                    && in_array(get_woocommerce_currency(), $conf["currencies"])
+                    && in_array($woocommerce->customer->get_billing_country(), $conf["countries"])) {
+                    $availableMethod = true;
+                    break;
+                }
+            }
 
-            $settingsGateway = $this->confHelper->getPaymentCreditCard();
-
+            return $availableMethod;
 
             $min_value = $plugin_method_settings['woocommerce_hipayenterprise_methods_payments_min_amount'];
             $max_value = $plugin_method_settings['woocommerce_hipayenterprise_methods_payments_max_amount'];
@@ -1110,9 +1122,9 @@ if (!class_exists('WC_Gateway_Hipay')) {
         public function available_payment_gateways($available_gateways)
         {
             global $woocommerce;
-            
+
             if (isset($woocommerce->cart)) {
-                foreach ( $available_gateways as $id => $gateway ) {
+                foreach ($available_gateways as $id => $gateway) {
                     if ($id == "hipayenterprise") {
                         if (!$gateway->isAvailableForCurrentCart()) {
                             unset($available_gateways [$id]);
