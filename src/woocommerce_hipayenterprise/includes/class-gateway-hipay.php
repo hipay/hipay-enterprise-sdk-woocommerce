@@ -22,6 +22,8 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
         public $confHelper;
 
+        protected $api;
+
         public function __construct()
         {
             global $woocommerce;
@@ -56,6 +58,8 @@ if (!class_exists('WC_Gateway_Hipay')) {
             $this->confHelper->initConfigHiPay();
 
             $this->addActions();
+
+            $this->api = new Hipay_Api($this);
 
             $this->logs = new Hipay_Log($this);
 
@@ -164,7 +168,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
         }
 
         /**
-         * Process template
+         *  Get detail field for payment method
          */
         public function payment_fields()
         {
@@ -392,294 +396,46 @@ if (!class_exists('WC_Gateway_Hipay')) {
         }
 
 
+        /**
+         *
+         *  Process payment
+         *
+         * @param int $order_id
+         * @return array|void
+         * @throws Exception
+         */
         public function process_payment($order_id)
         {
-            global $woocommerce;
-            global $wpdb;
-
-            $token = $_POST["hipay_token"];
-            $order = new WC_Order($order_id);
-
-
-            if ($this->method_details["operating_mode"] == OperatingMode::DIRECT_POST && $token == "") {
-                return;
-            } elseif ($this->method_details["operating_mode"] == OperatingMode::DIRECT_POST && $token != "") {
-                $hipay_direct_error = $_POST["hipay_direct_error"];
-                if ($hipay_direct_error != "") {
-                    throw new Exception($hipay_direct_error, 1);
-                }
-
-                $brand = $_POST["hipay_brand"];
-                $customer_id = $order->get_user_id();
-            }
-
-            $order_total = $order->get_total();
-            require plugin_dir_path(__FILE__) . 'vendor/autoload.php';
-
-            $username = (!$this->sandbox) ? $this->account_production_private_username : $this->account_test_private_username;
-            $password = (!$this->sandbox) ? $this->account_production_private_password : $this->account_test_private_password;
-            $passphrase = (!$this->sandbox) ? $this->account_production_private_passphrase : $this->account_test_private_passphrase;
-
-            $env = ($this->sandbox) ? HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENV_STAGE : HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENV_PRODUCTION;
-
-            $operation = "Sale";
-            if ($this->method_details['capture_mode'] == CaptureMode::MANUAL) {
-                $operation = "Authorization";
-            }
-            $callback_url = site_url() . '/wc-api/WC_HipayEnterprise/?order=' . $order_id;
-            $current_currency = get_woocommerce_currency();
-            $current_billing_country = $woocommerce->customer->get_billing_country();
-            $billing_email = $woocommerce->customer->get_billing_email();
-            $shop_title = get_bloginfo('name');
-
-            $request_source = '{"source":"CMS","brand":"Woocommerce","brand_version":"' .
-                $woocommerce->version .
-                '","integration_version":"' .
-                $this->plugin_version .
-                '"}';
-
             try {
-                $config = new \HiPay\Fullservice\HTTP\Configuration\Configuration($username, $password, $env);
-                $clientProvider = new \HiPay\Fullservice\HTTP\SimpleHTTPClient($config);
-                $gatewayClient = new \HiPay\Fullservice\Gateway\Client\GatewayClient($clientProvider);
-                if ($this->method_details["operating_mode"] == OperatingMode::DIRECT_POST) {
-                    $orderRequest = new \HiPay\Fullservice\Gateway\Request\Order\OrderRequest();
-                    $orderRequest->paymentMethod = new \HiPay\Fullservice\Gateway\Request\PaymentMethod\CardTokenPaymentMethod(
-                    );
-                    $orderRequest->paymentMethod->cardtoken = $token;
-                    $orderRequest->paymentMethod->eci = 7;
-                    $orderRequest->paymentMethod->authentication_indicator = $this->method_details['activate_3d_secure'];
-                    $orderRequest->payment_product = $brand;
-                } else {
-                    $orderRequest = new \HiPay\Fullservice\Gateway\Request\Order\HostedPaymentPageRequest();
-                    $orderRequest->payment_product = "";
+                $order = wc_get_order($order_id);
+
+                $response = $this->api->requestHostedPaymentPage( $order);
+
+                if (! empty($response->error)) {
+                    //$order->add_order_note($response->error->message);
+
+                    //throw new Exception($response->error->message);
                 }
 
+                //update_post_meta( $order_id, '_stripe_source_id', $response->id );
 
-                $orderRequest->orderid = $order_id;
-                $orderRequest->operation = $operation;
-                $orderRequest->currency = $current_currency;
-                $orderRequest->amount = $order_total;
-                $orderRequest->accept_url = $order->get_checkout_order_received_url();
-                $orderRequest->decline_url = $order->get_cancel_order_url_raw();
-                $orderRequest->pending_url = $order->get_checkout_order_received_url();
-                $orderRequest->exception_url = $order->get_cancel_order_url_raw();
-                $orderRequest->cancel_url = $order->get_cancel_order_url_raw();
-                $orderRequest->notify_url = $callback_url;
-                $orderRequest->language = get_locale();
-                $orderRequest->source = $request_source;
-                if ($this->method_details["activate_basket"]) {
-                    $orderRequest->description = "";
-                    $products = $order->get_items();
-                    foreach ($products as $product) {
-                        //$variation_id = (int)$product['variation_id'];
-                        $p = new WC_Product($product['product_id']);
-                        $orderRequest->description .= $product['qty'] . "x " . $p->get_title() . ', ';
-                    }
-                    $orderRequest->description = substr($orderRequest->description, 0, -2);
-                } else {
-                    $orderRequest->description = __("Order #", 'hipayenterprise') . $order_id . " " . __(
-                            'at',
-                            'hipayenterprise'
-                        ) . " " . $shop_title;
-                }
-                $orderRequest->ipaddr = $_SERVER ['REMOTE_ADDR'];
-                $orderRequest->http_user_agent = $_SERVER ['HTTP_USER_AGENT'];
-                $shipping = $woocommerce->cart->get_cart_shipping_total();
-                $currency_symbol = get_woocommerce_currency_symbol();
-                $shipping = str_replace($currency_symbol, "", $shipping);
-                $thousands_sep = wp_specialchars_decode(
-                    stripslashes(get_option('woocommerce_price_thousand_sep')),
-                    ENT_QUOTES
-                );
-                $shipping = str_replace($thousands_sep, "", $shipping);
-                $decimals_sep = wp_specialchars_decode(
-                    stripslashes(get_option('woocommerce_price_decimal_sep')),
-                    ENT_QUOTES
-                );
-                if ($decimals_sep != ".") {
-                    $shipping = str_replace($decimals_sep, ".", $shipping);
-                }
-                $shipping = floatval(preg_replace('#[^\d.]#', '', $shipping));
-                $orderRequest->shipping = $shipping;
-                $orderRequest->tax = 0;
+                //$order->update_status( 'on-hold', __( 'Awaiting Multibanco payment', 'woocommerce-gateway-stripe' ) );
 
+                // Reduce stock levels
+                //wc_reduce_stock_levels( $order_id );
 
-                if ($this->method_details["operating_mode"] != OperatingMode::DIRECT_POST) {
-                    $orderRequest->authentication_indicator = $this->method_details['activate_3d_secure'];
+                // Remove cart
+                //WC()->cart->empty_cart();
 
-                    if ($this->method_details['display_hosted_page'] == "redirect") {
-                        $orderRequest->template = HiPay\Fullservice\Enum\Transaction\Template::BASIC_JS;
-                    } else {
-                        $orderRequest->template = "iframe-js";
-                    }
-
-                    $orderRequest->display_selector = (int)$this->method_details['display_card_selector'];
-                    $orderRequest->multi_use = (int)$this->method_details['card_token'];
-                    if ($this->method_details['css_url'] != "") {
-                        $orderRequest->css = $this->woocommerce_hipayenterprise_methods['css_url'];
-                    }
-                }
-
-                //check max min amount
-                $all_methods = json_decode($this->method_details['woocommerce_hipayenterprise_methods_payments']);
-                $max_amount = 0;
-                $min_amount = -1;
-                $countries_list = array();
-                $currencies_list = array();
-                $available_methods = array();
-
-                foreach ($all_methods as $key => $value) {
-                    $the_method = new HipayEnterprisePaymentMethodClass($value);
-                    //check currency, country and amount
-                    if ($the_method->get_is_active() &&
-                        $the_method->get_is_credit_card() &&
-                        $order_total <= $the_method->get_max_amount() &&
-                        $order_total >= $the_method->get_min_amount() &&
-                        (strpos(
-                                $the_method->get_available_currencies(),
-                                $current_currency
-                            ) !== false) &&
-                        (strpos(
-                                $the_method->get_available_countries(),
-                                $current_billing_country
-                            ) !== false)) {
-                        $available_methods[] = $the_method->get_key();
-                    }
-                }
-                if ($this->method_details["operating_mode"] != OperatingMode::DIRECT_POST) {
-                    $orderRequest->payment_product_list = implode(",", $available_methods);
-                    $orderRequest->payment_product_category_list = '';
-                }
-
-                $orderRequest->email = $order->get_billing_email();
-
-                $customerBillingInfo = new \HiPay\Fullservice\Gateway\Request\Info\CustomerBillingInfoRequest();
-                $customerBillingInfo->firstname = $order->get_billing_first_name();
-                $customerBillingInfo->lastname = $order->get_billing_last_name();
-                $customerBillingInfo->email = $order->get_billing_email();
-                $customerBillingInfo->country = $order->get_billing_country();
-                $customerBillingInfo->streetaddress = $order->get_billing_address_1();
-                $customerBillingInfo->streetaddress2 = $order->get_billing_address_2();
-                $customerBillingInfo->city = $order->get_billing_city();
-                $customerBillingInfo->state = $order->get_billing_state();
-                $customerBillingInfo->zipcode = $order->get_billing_postcode();
-                $orderRequest->customerBillingInfo = $customerBillingInfo;
-
-                $customerShippingInfo = new \HiPay\Fullservice\Gateway\Request\Info\CustomerShippingInfoRequest();
-                $customerShippingInfo->firstname = $order->get_shipping_first_name();
-                $customerShippingInfo->lastname = $order->get_shipping_last_name();
-                $customerShippingInfo->country = $order->get_shipping_country();
-                $customerShippingInfo->streetaddress = $order->get_shipping_address_1();
-                $customerShippingInfo->streetaddress2 = $order->get_shipping_address_2();
-                $customerShippingInfo->city = $order->get_shipping_city();
-                $customerShippingInfo->state = $order->get_shipping_state();
-                $customerShippingInfo->zipcode = $order->get_shipping_postcode();
-                $orderRequest->customerShippingInfo = $customerShippingInfo;
-
-                $orderRequest->shipto_firstname = $order->get_shipping_first_name();
-                $orderRequest->shipto_lastname = $order->get_shipping_last_name();
-                $orderRequest->shipto_streetaddress = $order->get_shipping_address_1();
-                $orderRequest->shipto_streetaddress2 = $order->get_shipping_address_2();
-                $orderRequest->shipto_city = $order->get_shipping_city();
-                $orderRequest->shipto_country = $order->get_shipping_country();
-                $orderRequest->shipto_state = $order->get_shipping_state();
-                $orderRequest->shipto_postcode = $order->get_shipping_postcode();
-
-                if ($this->method_details["operating_mode"] != OperatingMode::DIRECT_POST) {
-                    $transaction = $gatewayClient->requestHostedPaymentPage($orderRequest);
-                    $redirectUrl = $transaction->getForwardUrl();
-                    if ($redirectUrl != "") {
-                        $order->add_order_note(__('Payment URL:', 'hipayenterprise') . " " . $redirectUrl);
-
-
-                        $order_flag = $wpdb->get_row(
-                            "SELECT order_id FROM $this->plugin_table WHERE order_id = $order_id LIMIT 1"
-                        );
-                        if (isset($order_flag->order_id)) {
-                            SELF::reset_stock_levels($order);
-                            wc_reduce_stock_levels($order_id);
-                            $wpdb->update(
-                                $this->plugin_table,
-                                array('amount' => $order_total, 'stocks' => 1, 'url' => $redirectUrl),
-                                array('order_id' => $order_id)
-                            );
-                        } else {
-                            wc_reduce_stock_levels($order_id);
-                            $wpdb->insert(
-                                $this->plugin_table,
-                                array(
-                                    'reference' => 0,
-                                    'order_id' => $order_id,
-                                    'amount' => $order_total,
-                                    'stocks' => 1,
-                                    'url' => $redirectUrl
-                                )
-                            );
-                        }
-
-                        if ($this->method_details['display_hosted_page'] == "iframe") {
-                            return array(
-                                'result' => 'success',
-                                'redirect' => $order->get_checkout_payment_url(true)
-                            );
-                        } else {
-                            return array('result' => 'success', 'redirect' => $redirectUrl);
-                        }
-                    } else {
-
-                        throw new Exception(__('Error generating payment url.', 'hipayenterprise'));
-                    }
-                } else {
-                    $transaction = $gatewayClient->requestNewOrder($orderRequest);
-                    $redirectUrl = $transaction->getForwardUrl();
-
-                    if ($transaction->getStatus() == TransactionStatus::CAPTURED ||
-                        $transaction->getStatus() == TransactionStatus::AUTHORIZED ||
-                        $transaction->getStatus() == TransactionStatus::CAPTURE_REQUESTED) {
-                        $order_flag = $wpdb->get_row(
-                            "SELECT order_id FROM $this->plugin_table WHERE order_id = $order_id LIMIT 1"
-                        );
-                        if (isset($order_flag->order_id)) {
-                            SELF::reset_stock_levels($order);
-                            wc_reduce_stock_levels($order_id);
-                            $wpdb->update(
-                                $this->plugin_table,
-                                array('amount' => $order_total, 'stocks' => 1, 'url' => $redirectUrl),
-                                array('order_id' => $order_id)
-                            );
-                        } else {
-                            wc_reduce_stock_levels($order_id);
-                            $wpdb->insert(
-                                $this->plugin_table,
-                                array(
-                                    'reference' => 0,
-                                    'order_id' => $order_id,
-                                    'amount' => $order_total,
-                                    'stocks' => 1,
-                                    'url' => $redirectUrl
-                                )
-                            );
-                        }
-
-
-                        return array(
-                            'result' => 'success',
-                            'redirect' => $order->get_checkout_order_received_url()
-                        );
-                    } else {
-                        $reason = $transaction->getReason();
-                        $order->add_order_note(__('Error:', 'hipayenterprise') . " " . $reason['message']);
-                        throw new Exception(
-                            __(
-                                'Error processing payment:',
-                                'hipayenterprise'
-                            ) . " " . $reason['message']
-                        );
-                    }
-                }
+                return array(
+                'result'   => 'success',
+                'redirect' => esc_url_raw($response),
+            );
             } catch (Exception $e) {
-                throw new Exception($e->getMessage());
+                return array(
+                'result'   => 'fail',
+                'redirect' => '',
+            );
             }
         }
 
@@ -798,6 +554,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
         /**
          * Check if payment method is available for current cart
          *
+         * TODO Utiliser la methode getActivatedPaymentByCountryAndCurrency
          * @return boolean
          */
         public function isAvailableForCurrentCart()
@@ -809,7 +566,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 if ($conf["activated"]
                     && in_array(get_woocommerce_currency(), $conf["currencies"])
                     && in_array($woocommerce->customer->get_billing_country(), $conf["countries"])
-                    && Hipay_Helper::isInAuthorizedAmount($conf, $cartTotals)) {
+                    && Hipay_Helper::isInAuthorizedAmount($conf, $cartTotals["total"])) {
                     return true;
                 }
             }
@@ -928,14 +685,14 @@ if (!class_exists('WC_Gateway_Hipay')) {
             global $woocommerce;
 
             $cur_payment_method = get_post_meta($order_id, '_payment_method', true);
-
+            $captured_flag = "";
             if ($cur_payment_method == 'hipayenterprise') {
                 $order = new WC_Order($order_id);
                 //capture status in db
 
-                if ($captured_flag->captured == 1) {
-                    return true;
-                }
+//                if ($captured_flag->captured == 1) {
+//                    return true;
+//                }
 
                 require plugin_dir_path(__FILE__) . 'vendor/autoload.php';
                 require plugin_dir_path(__FILE__) . 'includes/operations.php';
