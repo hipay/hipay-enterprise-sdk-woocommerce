@@ -61,13 +61,13 @@ if (!class_exists('WC_HipayEnterprise')) {
             function wc_hipay_add_gateway($methods)
             {
                 WC_HipayEnterprise::loadClassesHipay();
-                $methods[] = 'WC_Gateway_Hipay';
-//                $methods[] = 'WC_HipayEnterprise_LocalPayments_Paypal';
-//                $methods[] = 'WC_HipayEnterprise_LocalPayments_Belfius';
-//                $methods[] = 'WC_HipayEnterprise_LocalPayments_Multibanco';
-//                $methods[] = 'WC_HipayEnterprise_LocalPayments_Giropay';
-//                $methods[] = 'WC_HipayEnterprise_LocalPayments_Inghomepay';
-//                $methods[] = 'WC_HipayEnterprise_LocalPayments_Ideal';
+                $methods[] = 'Gateway_Hipay';
+//                $methods[] = 'Hipay_LocalPayments_Paypal';
+//                $methods[] = 'Hipay_LocalPayments_Belfius';
+//                $methods[] = 'Hipay_LocalPayments_Multibanco';
+//                $methods[] = 'Hipay_LocalPayments_Giropay';
+//                $methods[] = 'Hipay_LocalPayments_Inghomepay';
+//                $methods[] = 'Hipay_LocalPayments_Ideal';
                 return $methods;
             }
         }
@@ -77,19 +77,19 @@ if (!class_exists('WC_HipayEnterprise')) {
          */
         public static function loadClassesHipay()
         {
-            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/class-wc-gateway-hipay.php');
-//            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/payment-methods/class-wc-hipayenterprise-localpayments-paypal.php');
-//            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/payment-methods/class-wc-hipayenterprise-localpayments-inghomepay.php');
-//            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/payment-methods/class-wc-hipayenterprise-localpayments-ideal.php');
-//            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/payment-methods/class-wc-hipayenterprise-localpayments-giropay.php');
-//            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/payment-methods/class-wc-hipayenterprise-localpayments-belfius.php');
-//            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/payment-methods/class-wc-hipayenterprise-localpayments-multibanco.php');
+            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/class-gateway-hipay.php');
+//            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/payment-methods/class-hipay-localpayments-paypal.php');
+//            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/payment-methods/class-hipay-localpayments-inghomepay.php');
+//            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/payment-methods/class-hipay-localpayments-ideal.php');
+//            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/payment-methods/class-hipay-localpayments-giropay.php');
+//            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/payment-methods/class-hipay-localpayments-belfius.php');
+//            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/payment-methods/class-hipay-localpayments-multibanco.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'vendor/autoload.php');
-            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-wc-hipay-log.php');
-            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-wc-hipay-notification.php');
-            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-wc-hipay-admin-assets.php');
-            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-wc-hipay-config.php');
-            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-wc-hipay-settings-handler.php');
+            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-log.php');
+            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-notification.php');
+            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-admin-assets.php');
+            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-config.php');
+            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-settings-handler.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/ThreeDS.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/ApiMode.php');
         }

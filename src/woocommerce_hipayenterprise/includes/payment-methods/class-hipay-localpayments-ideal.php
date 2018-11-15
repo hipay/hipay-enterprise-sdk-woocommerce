@@ -4,20 +4,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class that handles Multibanco payment method.
+ * Class that handles iDEAL payment method.
  * @extends WC_HipayEnterprise
  * @since 1.0.0
  */
-class WC_HipayEnterprise_LocalPayments_Multibanco extends WC_Gateway_Hipay {
-
+class Hipay_LocalPayments_Ideal extends WC_Gateway_Hipay {
 
 	public function __construct() {
 
 		global $woocommerce;
 		global $wpdb;
 
-		$this->payment_code			= 'multibanco';		
-		$this->id                   = 'hipayenterprise_multibanco';
+		$this->payment_code			= 'ideal';		
+		$this->id                   = 'hipayenterprise_ideal';
 		$this->domain 				= 'hipayenterprise';
 		if (is_admin())				$plugin_data 				= get_plugin_data( __FILE__ );
 
@@ -25,9 +24,7 @@ class WC_HipayEnterprise_LocalPayments_Multibanco extends WC_Gateway_Hipay {
 		include_once( plugin_dir_path( __FILE__ ) . '../payment_methods.php' );
 
 
-		$this->method_title         = __('HiPay Multibanco','hipayenterprise');
-		$this->method_description   = __('Pay at ATM or Homebanking with Multibanco references.','hipayenterprise');
-
+		$this->method_title         = __('HiPay iDEAL','hipayenterprise');
 		$this->supports             = array('products');
 		$this->plugin_table 									= $wpdb->prefix . 'woocommerce_hipayenterprise';
 		$this->plugin_table_token								= $wpdb->prefix . 'woocommerce_hipayenterprise_token';
@@ -63,7 +60,7 @@ class WC_HipayEnterprise_LocalPayments_Multibanco extends WC_Gateway_Hipay {
 		$this->payment_image 		= "";
 		$this->icon 				= "";
 
-		$this->title                = __('Multibanco','hipayenterprise');
+		$this->title                = __('iDEAL','hipayenterprise');
 
 		$this->method_details 		= get_option( 'woocommerce_hipayenterprise_methods',
 			array(
@@ -90,7 +87,6 @@ class WC_HipayEnterprise_LocalPayments_Multibanco extends WC_Gateway_Hipay {
 		}
 
 		$this->method_enabled             = $this->method->get_is_active();
-		add_action('woocommerce_receipt_' . 							$this->id, 		array( $this, 'receipt_page' ) );
 		add_action('woocommerce_update_options_payment_gateways_' . $this->id, 	array($this, 'goto_admin_options'));
 
 	}
@@ -145,7 +141,6 @@ class WC_HipayEnterprise_LocalPayments_Multibanco extends WC_Gateway_Hipay {
 			$orderRequest = new \HiPay\Fullservice\Gateway\Request\Order\OrderRequest();
 			$orderRequest->paymentMethod->eci = 7;
 			$orderRequest->payment_product = $this->payment_code;
-
 			$orderRequest->orderid = $order_id;
 			$orderRequest->operation = $operation;
 			$orderRequest->currency = $current_currency;
@@ -231,83 +226,37 @@ class WC_HipayEnterprise_LocalPayments_Multibanco extends WC_Gateway_Hipay {
 			$orderRequest->shipto_state 	= $order->get_shipping_state();
 			$orderRequest->shipto_postcode 	= $order->get_shipping_postcode();
 				
-			$transaction = $gatewayClient->requestNewOrder($orderRequest);			
-			$redirectUrl = $transaction->getForwardUrl();
+
+					$transaction = $gatewayClient->requestNewOrder($orderRequest);			
+				$redirectUrl = $transaction->getForwardUrl();
+
 
 				if ($redirectUrl != ""){
-
-					$multibanco_info = $transaction->getReferenceToPay();
-					$additionalInfo  = json_encode($multibanco_info);
-
-					$order->add_order_note(__('Entity','hipayenterprise') . ": " . $multibanco_info["entity"] . "<br>" . __('Reference','hipayenterprise') . ": " . $multibanco_info["reference"] . "<br>" .__('Amount','hipayenterprise') . ": " . $multibanco_info["amount"] . "<br>" .__('Expiration Date','hipayenterprise') . ": " . $multibanco_info["expirationDate"] );
+					$order->add_order_note(__('Payment URL:', 'hipayenterprise') . " " . $redirectUrl );
 
 					$order_flag = $wpdb->get_row( "SELECT order_id FROM $this->plugin_table WHERE order_id = $order_id LIMIT 1");
 					if (isset($order_flag->order_id) ){
 						SELF::reset_stock_levels($order);
 						wc_reduce_stock_levels( $order_id );
-						$wpdb->update( $this->plugin_table, array( 'amount' => $order_total , 'stocks' => 1, 'url' => $redirectUrl, 'additionalInfo' => $additionalInfo ), array('order_id' => $order_id ) );
+						$wpdb->update( $this->plugin_table, array( 'amount' => $order_total , 'stocks' => 1, 'url' => $redirectUrl ), array('order_id' => $order_id ) );
 					} else	{
 						wc_reduce_stock_levels( $order_id );
-						$wpdb->insert( $this->plugin_table, array( 'reference' => 0, 'order_id' => $order_id, 'amount' => $order_total , 'stocks' => 1, 'url' => $redirectUrl, 'additionalInfo' => $additionalInfo ) );
+						$wpdb->insert( $this->plugin_table, array( 'reference' => 0, 'order_id' => $order_id, 'amount' => $order_total , 'stocks' => 1, 'url' => $redirectUrl ) );
 					}
 					
 
-					return array(
-						'result'   => 'success',
-						'redirect' => $order->get_checkout_payment_url( true )
-					);
+			    	return array('result' => 'success','redirect' =>  $redirectUrl );
 
 
 			    } else {
-			    	throw new Exception(__('Error generating payment url.','hipayenterprise'));
+                    	throw new Exception(__('Error generating payment url.','hipayenterprise'));
 			    }	
 
 
 		} catch (Exception $e) {
-            throw new Exception($e->getMessage());
+                throw new Exception($e->getMessage());
 		}
 
 	}
-
-
-	public function receipt_page( $order_id ) {
-		global $wpdb;
-
-		$order 			= wc_get_order( $order_id );
-		$payment_url 	= $wpdb->get_row("SELECT additionalInfo FROM $this->plugin_table WHERE order_id = $order_id LIMIT 1");
-
-		if (isset($payment_url->additionalInfo) )	{
-
-			$multibanco_info = json_decode($payment_url->additionalInfo);			
-			echo "<p>" . __("We have received your order payment. We will process the order as soon as we get the payment confirmation.","hipayenterprise") . "</p>";	
-
-
-			echo '<table cellpadding="6" cellspacing="2" style="width: 350px; height: 55px; margin: 10px 0 2px 0;border: 1px solid #ddd"><tr>
-						<td style="background-color: #ccc;color:#313131;text-align:center;" colspan="3">'.__("Please use an ATM or Homebanking account to pay the following Multibanco reference.","hipayenterprise") .'</td>
-					</tr>
-					<tr>
-						<td rowspan="4" style="width:110px;padding: 0px 15px;vertical-align: middle;"><img src="'.WP_PLUGIN_URL . "/" . plugin_basename( dirname(__FILE__)) . '/../../assets/local_payments_images/multibanco.jpg" style="margin-bottom: 0px; margin-right: 0px;"/></td>
-						<td style="width:110px;text-align:right;">'.__('ENTITY','hipayenterprise').':</td>
-						<td style="font-weight:bold;width:245px;">'.$multibanco_info->entity .'</td>
-					</tr>
-					<tr>
-						<td style="width:110px;text-align:right;">'.__('REFERENCE','hipayenterprise').':</td>
-						<td style="font-weight:bold;">'.$multibanco_info->reference.'</td>
-					</tr>
-					<tr>
-						<td style="width:110px;text-align:right;">'.__('AMOUNT','hipayenterprise').':</td>
-						<td style="font-weight:bold;">'.$multibanco_info->amount.' &euro;</td>
-					</tr>
-					<tr>
-						<td style="width:110px;text-align:right;">'.__('EXPIRATION DATE','hipayenterprise').':</td>
-						<td style="font-weight:bold;">'.$multibanco_info->expirationDate.'</td>
-					</tr>
-				</table>';
-
-		}
-
-	}
-
 
 }
-

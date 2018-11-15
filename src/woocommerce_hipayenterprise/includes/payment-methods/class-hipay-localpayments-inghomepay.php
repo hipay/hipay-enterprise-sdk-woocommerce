@@ -3,29 +3,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-
 /**
- * Class that handles PAYPAL payment method.
+ * Class that handles ING Home'Pay payment method.
  * @extends WC_HipayEnterprise
  * @since 1.0.0
  */
-class WC_HipayEnterprise_LocalPayments_Paypal extends WC_Gateway_Hipay{
+class Hipay_LocalPayments_Inghomepay extends WC_Gateway_Hipay {
 
 	public function __construct() {
 
 		global $woocommerce;
 		global $wpdb;
 
-		$this->payment_code			= 'paypal';		
+		$this->payment_code			= 'ing-homepay';		
+		$this->id                   = 'hipayenterprise_ing-homepay';
 		$this->domain 				= 'hipayenterprise';
-		$this->id                   = 'hipayenterprise_paypal';
-		if (is_admin())				$plugin_data 				= get_plugin_data( __FILE__ );
+		if (is_admin())			$plugin_data 				= get_plugin_data( __FILE__ );
 
-		load_plugin_textdomain( $this->domain, false, basename( dirname( __FILE__ ) ) . '../../languages' ); 
+		load_plugin_textdomain( $this->id, false, basename( dirname( __FILE__ ) ) . '../../languages' ); 
 		include_once( plugin_dir_path( __FILE__ ) . '../payment_methods.php' );
 
 
-		$this->method_title         = __('HiPay Paypal','hipayenterprise');
+		$this->method_title         = __("HiPay ING Home'Pay",'hipayenterprise');
 		$this->supports             = array('products');
 		$this->plugin_table 									= $wpdb->prefix . 'woocommerce_hipayenterprise';
 		$this->plugin_table_token								= $wpdb->prefix . 'woocommerce_hipayenterprise_token';
@@ -61,7 +60,7 @@ class WC_HipayEnterprise_LocalPayments_Paypal extends WC_Gateway_Hipay{
 		$this->payment_image 		= "";
 		$this->icon 				= "";
 
-		$this->title                = __('Paypal','hipayenterprise');
+		$this->title                = __("ING Home'Pay",'hipayenterprise');
 
 		$this->method_details 		= get_option( 'woocommerce_hipayenterprise_methods',
 			array(
@@ -103,6 +102,7 @@ class WC_HipayEnterprise_LocalPayments_Paypal extends WC_Gateway_Hipay{
 		_e("Please use the global administration panel for the Hipay Enterprise plugin.","hipayenterprise");
 
 	}	
+
 
 	public function payment_fields()
 	{
@@ -234,6 +234,7 @@ class WC_HipayEnterprise_LocalPayments_Paypal extends WC_Gateway_Hipay{
 
 				if ($redirectUrl != ""){
 					$order->add_order_note(__('Payment URL:', 'hipayenterprise') . " " . $redirectUrl );
+
 					$order_flag = $wpdb->get_row( "SELECT order_id FROM $this->plugin_table WHERE order_id = $order_id LIMIT 1");
 					if (isset($order_flag->order_id) ){
 						SELF::reset_stock_levels($order);
@@ -243,26 +244,21 @@ class WC_HipayEnterprise_LocalPayments_Paypal extends WC_Gateway_Hipay{
 						wc_reduce_stock_levels( $order_id );
 						$wpdb->insert( $this->plugin_table, array( 'reference' => 0, 'order_id' => $order_id, 'amount' => $order_total , 'stocks' => 1, 'url' => $redirectUrl ) );
 					}
+					
 
 			    	return array('result' => 'success','redirect' =>  $redirectUrl );
 
 
 			    } else {
-				    //Todo LOG
-				    throw new Exception(__('Error generating payment url.','hipayenterprise'));
+                	throw new Exception(__('Error generating payment url.','hipayenterprise'));
 			    }	
 
 
 		} catch (Exception $e) {
-		        //TODO log
-				throw new Exception($e->getMessage());
+		    throw new Exception($e->getMessage());
 		}
 
 	}
 
 
-
 }
-
-
-

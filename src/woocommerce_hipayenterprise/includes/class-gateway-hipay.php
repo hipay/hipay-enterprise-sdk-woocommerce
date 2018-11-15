@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
  * @extends     WC_Payment_Gateway
  */
 if (!class_exists('WC_Gateway_Hipay')) {
-    class WC_Gateway_Hipay extends WC_Payment_Gateway
+    class Gateway_Hipay extends WC_Payment_Gateway
     {
         public $logs;
 
@@ -53,11 +53,11 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
             $this->addActions();
 
-            $this->confHelper = new WC_HipayEnterprise_Config($this);
+            $this->confHelper = new Hipay_Config($this);
 
-            $this->logs = new WC_HipayEnterprise_Log($this);
+            $this->logs = new Hipay_Log($this);
 
-            $this->settingsHandler = new WC_HipayEnterprise_Settings_Handler($this);
+            $this->settingsHandler = new Hipay_Settings_Handler($this);
 
             $this->settingsHipay = $this->confHelper->getConfigHipay();
 
@@ -102,11 +102,8 @@ if (!class_exists('WC_Gateway_Hipay')) {
         {
             $settings = array();
             $this->settingsHandler->saveFraudSettings($settings);
-
             $this->settingsHandler->saveCreditCardSettings($settings);
-
             $this->settingsHandler->savePaymentGlobal($settings);
-
             $this->settingsHandler->saveLocalPaymentSettings($settings);
 
             update_option($this->settings_name, $settings);

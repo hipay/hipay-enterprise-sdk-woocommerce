@@ -3,7 +3,7 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
-class WC_HipayEnterprise_Config
+class Hipay_Config
 {
 
     private $configHipay = array();

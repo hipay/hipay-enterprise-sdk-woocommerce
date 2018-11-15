@@ -5,7 +5,7 @@ if (! defined('ABSPATH')) {
 
 use \HiPay\Fullservice\Enum\Transaction\TransactionStatus;
 
-class WC_HipayEnterprise_Notification
+class Hipay_Notification
 {
 
     protected $transaction;

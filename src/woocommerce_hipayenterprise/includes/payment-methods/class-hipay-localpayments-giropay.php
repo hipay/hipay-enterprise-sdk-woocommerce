@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @extends WC_HipayEnterprise
  * @since 1.0.0
  */
-class WC_HipayEnterprise_LocalPayments_Giropay extends WC_Gateway_Hipay {
+class Hipay_LocalPayments_Giropay extends WC_Gateway_Hipay {
 
 	
 	public function __construct() {
