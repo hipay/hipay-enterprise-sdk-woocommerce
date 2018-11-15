@@ -139,7 +139,7 @@ class Hipay_LocalPayments_Giropay extends WC_Gateway_Hipay {
 				$config = new \HiPay\Fullservice\HTTP\Configuration\Configuration($username, $password, $env);
 				$clientProvider = new \HiPay\Fullservice\HTTP\SimpleHTTPClient($config);
 				$gatewayClient = new \HiPay\Fullservice\Gateway\Client\GatewayClient($clientProvider);
-				if ($this->method_details["operating_mode"] == "direct_post"){
+				if ($this->method_details["operating_mode"] == OperatingMode::DIRECT_POST){
 					$orderRequest = new \HiPay\Fullservice\Gateway\Request\Order\OrderRequest();
 					$orderRequest->paymentMethod = new \HiPay\Fullservice\Gateway\Request\PaymentMethod\CardTokenPaymentMethod(); 
 					$orderRequest->paymentMethod->cardtoken = $token;
@@ -198,12 +198,12 @@ class Hipay_LocalPayments_Giropay extends WC_Gateway_Hipay {
 				$orderRequest->tax =0; 
 
 
-				if ($this->method_details["operating_mode"] != "direct_post"){
+				if ($this->method_details["operating_mode"] != OperatingMode::DIRECT_POST){
 
 					$orderRequest->authentication_indicator = $this->method_details['activate_3d_secure'];
 
 					if ($this->method_details['display_hosted_page']=="redirect")
-						$orderRequest->template = "basic-js";
+						$orderRequest->template = HiPay\Fullservice\Enum\Transaction\Template::BASIC_JS;
 					else
 						$orderRequest->template = "iframe-js";
 
@@ -220,7 +220,7 @@ class Hipay_LocalPayments_Giropay extends WC_Gateway_Hipay {
 				$currencies_list = array();
 				$available_methods = array();
 
-				if ($this->method_details["operating_mode"] != "direct_post"){
+				if ($this->method_details["operating_mode"] != OperatingMode::DIRECT_POST){
 					$orderRequest->payment_product_list = $this->payment_code;
 					$orderRequest->payment_product_category_list = '';
 				}
@@ -259,7 +259,7 @@ class Hipay_LocalPayments_Giropay extends WC_Gateway_Hipay {
 				$orderRequest->shipto_state 	= $order->get_shipping_state();
 				$orderRequest->shipto_postcode 	= $order->get_shipping_postcode();
  				
-				if ($this->method_details["operating_mode"] != "direct_post"){
+				if ($this->method_details["operating_mode"] != OperatingMode::DIRECT_POST){
  					$transaction = $gatewayClient->requestHostedPaymentPage($orderRequest);			
 					$redirectUrl = $transaction->getForwardUrl();				
 					if ($redirectUrl != ""){
@@ -292,7 +292,7 @@ class Hipay_LocalPayments_Giropay extends WC_Gateway_Hipay {
  					$transaction = $gatewayClient->requestNewOrder($orderRequest);			
 					$redirectUrl = $transaction->getForwardUrl();
 
- 					if ($transaction->getStatus() == "118" || $transaction->getStatus() == "117" || $transaction->getStatus() == "116") {					
+ 					if ($transaction->getStatus() == TransactionStatus::CAPTURED || $transaction->getStatus() == TransactionStatus:: || $transaction->getStatus() == "116") {
 
 						$order_flag = $wpdb->get_row( "SELECT order_id FROM $this->plugin_table WHERE order_id = $order_id LIMIT 1");
 						if (isset($order_flag->order_id) ){
@@ -338,7 +338,7 @@ class Hipay_LocalPayments_Giropay extends WC_Gateway_Hipay {
 
 					$order->get_cancel_order_url_raw();
 
-			elseif ($this->method_details["operating_mode"] == "direct_post" && $payment_url->url == "")
+			elseif ($this->method_details["operating_mode"] == OperatingMode::DIRECT_POST && $payment_url->url == "")
 
 				echo __("We have received your order payment. We will process the order as soon as we get the payment confirmation.","hipayenterprise");	
 

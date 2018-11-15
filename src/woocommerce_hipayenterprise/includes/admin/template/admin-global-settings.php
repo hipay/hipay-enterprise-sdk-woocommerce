@@ -7,9 +7,9 @@
             <select class="select " name="operating_mode"
                     id="operating_mode" style="">
                 <option
-                        value="hosted_page" <?php if ($paymentCommon["operating_mode"] == "hosted_page") echo " SELECTED"; ?>><?php _e('Hosted page', 'hipayenterprise'); ?></option>
+                        value="hosted_page" <?php if ($paymentCommon["operating_mode"] == OperatingMode::HOSTED_PAGE) echo " SELECTED"; ?>><?php _e('Hosted page', 'hipayenterprise'); ?></option>
                 <option
-                        value="direct_post" <?php if ($paymentCommon["operating_mode"] == "direct_post") echo " SELECTED"; ?>><?php _e('Direct Post', 'hipayenterprise'); ?></option>
+                        value="direct_post" <?php if ($paymentCommon["operating_mode"] == OperatingMode::DIRECT_POST) echo " SELECTED"; ?>><?php _e('Direct Post', 'hipayenterprise'); ?></option>
             </select>
             <p class="description"><?php _e("Api if the customer will fill his bank information directly on merchants OR Hosted if the customer is redirected to a secured payment page hosted by HiPay.", 'hipayenterprise'); ?></p>
         </fieldset>
@@ -18,7 +18,7 @@
 
 
 <tr valign="top"
-    class="<?php if ($paymentCommon["operating_mode"] != "hosted_page") echo "hidden "; ?>hosted_page_config">
+    class="<?php if ($paymentCommon["operating_mode"] != OperatingMode::HOSTED_PAGE) echo "hidden "; ?>hosted_page_config">
     <th scope="row" class="titledesc"><?php _e('Display Hosted Page', 'hipayenterprise'); ?></th>
     <td class="forminp">
         <fieldset>
@@ -37,7 +37,7 @@
 
 
 <tr valign="top"
-    class="<?php if ($paymentCommon["operating_mode"] != "hosted_page") echo "hidden "; ?>hosted_page_config">
+    class="<?php if ($paymentCommon["operating_mode"] != OperatingMode::HOSTED_PAGE) echo "hidden "; ?>hosted_page_config">
     <th scope="row" class="titledesc"><?php _e('Display card selector', 'hipayenterprise'); ?></th>
     <td class="forminp">
         <fieldset>
@@ -52,7 +52,7 @@
 </tr>
 
 <tr valign="top"
-    class="<?php if ($paymentCommon["operating_mode"] != "hosted_page") echo "hidden "; ?>hosted_page_config">
+    class="<?php if ($paymentCommon["operating_mode"] != OperatingMode::HOSTED_PAGE) echo "hidden "; ?>hosted_page_config">
     <th scope="row" class="titledesc"><?php _e('CSS url', 'hipayenterprise'); ?></th>
     <td class="forminp">
         <fieldset>
@@ -78,9 +78,9 @@
             <select class="select " name="capture_mode"
                     id="capture_mode" style="">
                 <option
-                        value="automatic" <?php if ($paymentCommon["capture_mode"] == "automatic") echo " SELECTED"; ?>><?php _e('Automatic', 'hipayenterprise'); ?></option>
+                        value="<?php echo CaptureMode::AUTOMATIC; ?>" <?php if ($paymentCommon["capture_mode"] == CaptureMode::AUTOMATIC) echo " SELECTED"; ?>><?php _e('Automatic', 'hipayenterprise'); ?></option>
                 <option
-                        value="manual" <?php if ($paymentCommon["capture_mode"] == "manual") echo " SELECTED"; ?>><?php _e('Manual', 'hipayenterprise'); ?></option>
+                        value="<?php echo CaptureMode::MANUAL; ?>" <?php if ($paymentCommon["capture_mode"] == CaptureMode::MANUAL) echo " SELECTED"; ?>><?php _e('Manual', 'hipayenterprise'); ?></option>
             </select>
             <p class="description"><?php _e("Manual if all transactions will be captured manually either from the Hipay Back office or from your admin in Woocommerce OR Automatic if all transactions will be captured automatically.", 'hipayenterprise'); ?></p>
         </fieldset>
