@@ -79,8 +79,13 @@ if (!class_exists('WC_HipayEnterprise')) {
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-config.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-settings-handler.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-helper.php');
+            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-api.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/ThreeDS.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/OperatingMode.php');
+            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/CaptureMode.php');
+            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/formatter/class-hipay-api-formatter-abstract.php');
+            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-request-formatter-abstract.php');
+            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-hosted-payment-formatter.php');
         }
     }
 
