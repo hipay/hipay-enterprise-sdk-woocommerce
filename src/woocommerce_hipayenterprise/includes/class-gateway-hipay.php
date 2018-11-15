@@ -1,10 +1,10 @@
 <?php
 
-
 if (!defined('ABSPATH')) {
     exit;
     // Exit if accessed directly
 }
+use \HiPay\Fullservice\Enum\Transaction\TransactionStatus;
 
 /**
  *
@@ -13,6 +13,7 @@ if (!defined('ABSPATH')) {
  * @extends     WC_Payment_Gateway
  */
 if (!class_exists('WC_Gateway_Hipay')) {
+
     class Gateway_Hipay extends WC_Payment_Gateway
     {
         public $logs;
@@ -170,40 +171,25 @@ if (!class_exists('WC_Gateway_Hipay')) {
         {
             global $woocommerce;
 
-            if ($this->method_details['operating_mode'] == "hosted_page") {
+            if ($this->method_details['operating_mode'] == OperatingMode::HOSTED_PAGE) {
                 if ($this->method_details['display_hosted_page'] == "redirect") {
-                    _e(
-                        'You will be redirected to an external payment page. Please do not refresh the page during the process.',
-                        $this->id
-                    );
+                    _e('You will be redirected to an external payment page. Please do not refresh the page during the process.', $this->id);
                 } else {
                     _e('Pay with your credit card.', $this->id);
                 }
-            } elseif ($this->method_details['operating_mode'] == "direct_post") {
+            } elseif ($this->method_details['operating_mode'] == OperatingMode::DIRECT_POST) {
                 $username = (!$this->sandbox) ? $this->account_production_tokenization_username : $this->account_test_tokenization_username;
                 $password = (!$this->sandbox) ? $this->account_production_tokenization_password : $this->account_test_tokenization_password;
                 $env = ($this->sandbox) ? "stage" : "production";
                 $customer_id = get_current_user_id(); ?>
                 <script type="text/javascript"
-                        src="<?php echo plugins_url(
-                            '/vendor/bower_components/hipay-fullservice-sdk-js/dist/strings.js',
-                            __FILE__
-                        ); ?>"></script>
+                        src="<?php echo plugins_url('/vendor/bower_components/hipay-fullservice-sdk-js/dist/strings.js', __FILE__); ?>"></script>
                 <script type="text/javascript"
-                        src="<?php echo plugins_url(
-                            '/vendor/bower_components/hipay-fullservice-sdk-js/dist/card-js.min.js',
-                            __FILE__
-                        ); ?>"></script>
+                        src="<?php echo plugins_url('/vendor/bower_components/hipay-fullservice-sdk-js/dist/card-js.min.js', __FILE__); ?>"></script>
                 <script type="text/javascript"
-                        src="<?php echo plugins_url(
-                            '/vendor/bower_components/hipay-fullservice-sdk-js/dist/card-tokenize.js',
-                            __FILE__
-                        ); ?>"></script>
+                        src="<?php echo plugins_url('/vendor/bower_components/hipay-fullservice-sdk-js/dist/card-tokenize.js', __FILE__); ?>"></script>
                 <script type="text/javascript"
-                        src="<?php echo plugins_url(
-                            '/vendor/bower_components/hipay-fullservice-sdk-js/dist/hipay-fullservice-sdk.min.js',
-                            __FILE__
-                        ); ?>"></script>
+                        src="<?php echo plugins_url('/vendor/bower_components/hipay-fullservice-sdk-js/dist/hipay-fullservice-sdk.min.js', __FILE__); ?>"></script>
 
 
                 <form id="tokenizerForm" action="" enctype="application/x-www-form-urlencoded"
@@ -727,6 +713,44 @@ if (!class_exists('WC_Gateway_Hipay')) {
         }
 
 
+        public function process_refund($order_id, $amount = null, $reason = '')
+        {
+            global $wpdb;
+            global $woocommerce;
+
+            require plugin_dir_path(__FILE__) . 'vendor/autoload.php';
+
+            $order = wc_get_order($order_id);
+            $order->add_order_note(__('Request refund through Hipay Enterprise for amount:', 'hipayenterprise') . " " . $amount . " " . $order->get_currency() . " and reason: " . $reason);
+
+            $username = (!$this->sandbox) ? $this->account_production_private_username : $this->account_test_private_username;
+            $password = (!$this->sandbox) ? $this->account_production_private_password : $this->account_test_private_password;
+            $passphrase = (!$this->sandbox) ? $this->account_production_private_passphrase : $this->account_test_private_passphrase;
+            $env = ($this->sandbox) ? HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENV_STAGE : HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENV_PRODUCTION;
+
+            try {
+                $config = new \HiPay\Fullservice\HTTP\Configuration\Configuration($username, $password, $env);
+                $clientProvider = new \HiPay\Fullservice\HTTP\SimpleHTTPClient($config);
+                $gatewayClient = new \HiPay\Fullservice\Gateway\Client\GatewayClient($clientProvider);
+
+                $transactionId = $wpdb->get_row("SELECT reference FROM $this->plugin_table WHERE order_id = $order_id LIMIT 1");
+
+                if (!isset($transactionId->reference)) {
+                    throw new Exception(__("No transaction reference found.", 'hipayenterprise'));
+                } else {
+                    $maintenanceResult = $gatewayClient->requestMaintenanceOperation("refund", $transactionId->reference, $amount);
+                    $maintenanceResultDump = print_r($maintenanceResult, true);
+
+                    if ($maintenanceResult->getStatus() == "124") {
+                        return true;
+                    }
+                }
+                return false;
+            } catch (Exception $e) {
+                throw new Exception(__("Error processing the Refund:", 'hipayenterprise') . " " . $e->getMessage());
+            }
+        }
+
         /**
          *
          */
@@ -752,6 +776,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
             global $woocommerce;
         }
 
+
         public function process_payment($order_id)
         {
             global $woocommerce;
@@ -761,9 +786,9 @@ if (!class_exists('WC_Gateway_Hipay')) {
             $order = new WC_Order($order_id);
 
 
-            if ($this->method_details["operating_mode"] == "direct_post" && $token == "") {
+            if ($this->method_details["operating_mode"] == OperatingMode::DIRECT_POST && $token == "") {
                 return;
-            } elseif ($this->method_details["operating_mode"] == "direct_post" && $token != "") {
+            } elseif ($this->method_details["operating_mode"] == OperatingMode::DIRECT_POST && $token != "") {
                 $hipay_direct_error = $_POST["hipay_direct_error"];
                 if ($hipay_direct_error != "") {
                     throw new Exception($hipay_direct_error, 1);
@@ -783,7 +808,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
             $env = ($this->sandbox) ? HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENV_STAGE : HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENV_PRODUCTION;
 
             $operation = "Sale";
-            if ($this->method_details['capture_mode'] == "manual") {
+            if ($this->method_details['capture_mode'] == CaptureMode::MANUAL) {
                 $operation = "Authorization";
             }
             $callback_url = site_url() . '/wc-api/WC_HipayEnterprise/?order=' . $order_id;
@@ -802,7 +827,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 $config = new \HiPay\Fullservice\HTTP\Configuration\Configuration($username, $password, $env);
                 $clientProvider = new \HiPay\Fullservice\HTTP\SimpleHTTPClient($config);
                 $gatewayClient = new \HiPay\Fullservice\Gateway\Client\GatewayClient($clientProvider);
-                if ($this->method_details["operating_mode"] == "direct_post") {
+                if ($this->method_details["operating_mode"] == OperatingMode::DIRECT_POST) {
                     $orderRequest = new \HiPay\Fullservice\Gateway\Request\Order\OrderRequest();
                     $orderRequest->paymentMethod = new \HiPay\Fullservice\Gateway\Request\PaymentMethod\CardTokenPaymentMethod(
                     );
@@ -865,11 +890,11 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 $orderRequest->tax = 0;
 
 
-                if ($this->method_details["operating_mode"] != "direct_post") {
+                if ($this->method_details["operating_mode"] != OperatingMode::DIRECT_POST) {
                     $orderRequest->authentication_indicator = $this->method_details['activate_3d_secure'];
 
                     if ($this->method_details['display_hosted_page'] == "redirect") {
-                        $orderRequest->template = "basic-js";
+                        $orderRequest->template = HiPay\Fullservice\Enum\Transaction\Template::BASIC_JS;
                     } else {
                         $orderRequest->template = "iframe-js";
                     }
@@ -907,7 +932,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
                         $available_methods[] = $the_method->get_key();
                     }
                 }
-                if ($this->method_details["operating_mode"] != "direct_post") {
+                if ($this->method_details["operating_mode"] != OperatingMode::DIRECT_POST) {
                     $orderRequest->payment_product_list = implode(",", $available_methods);
                     $orderRequest->payment_product_category_list = '';
                 }
@@ -946,7 +971,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 $orderRequest->shipto_state = $order->get_shipping_state();
                 $orderRequest->shipto_postcode = $order->get_shipping_postcode();
 
-                if ($this->method_details["operating_mode"] != "direct_post") {
+                if ($this->method_details["operating_mode"] != OperatingMode::DIRECT_POST) {
                     $transaction = $gatewayClient->requestHostedPaymentPage($orderRequest);
                     $redirectUrl = $transaction->getForwardUrl();
                     if ($redirectUrl != "") {
@@ -987,18 +1012,15 @@ if (!class_exists('WC_Gateway_Hipay')) {
                             return array('result' => 'success', 'redirect' => $redirectUrl);
                         }
                     } else {
+
                         throw new Exception(__('Error generating payment url.', 'hipayenterprise'));
                     }
                 } else {
                     $transaction = $gatewayClient->requestNewOrder($orderRequest);
                     $redirectUrl = $transaction->getForwardUrl();
 
-                    if ($transaction->getStatus() == "118" ||
-                        $transaction->getStatus() == "117" ||
-                        $transaction->getStatus() == "116") {
-                        $order_flag = $wpdb->get_row(
-                            "SELECT order_id FROM $this->plugin_table WHERE order_id = $order_id LIMIT 1"
-                        );
+                    if ($transaction->getStatus() == TransactionStatus::CAPTURED || $transaction->getStatus() == TransactionStatus::AUTHORIZED || $transaction->getStatus() == TransactionStatus::CAPTURE_REQUESTED) {
+                        $order_flag = $wpdb->get_row("SELECT order_id FROM $this->plugin_table WHERE order_id = $order_id LIMIT 1");
                         if (isset($order_flag->order_id)) {
                             SELF::reset_stock_levels($order);
                             wc_reduce_stock_levels($order_id);
@@ -1052,11 +1074,8 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
             if (!isset($payment_url->url)) {
                 $order->get_cancel_order_url_raw();
-            } elseif ($this->method_details["operating_mode"] == "direct_post" && $payment_url->url == "") {
-                echo __(
-                    "We have received your order payment. We will process the order as soon as we get the payment confirmation.",
-                    "hipayenterprise"
-                );
+            } elseif ($this->method_details["operating_mode"] == OperatingMode::DIRECT_POST && $payment_url->url == "") {
+                echo __("We have received your order payment. We will process the order as soon as we get the payment confirmation.", "hipayenterprise");
             } else {
                 echo '<div id="wc_hipay_iframe_container"><iframe id="wc_hipay_iframe" name="wc_hipay_iframe" width="100%" height="475" style="border: 0;" src="' .
                     $payment_url->url .

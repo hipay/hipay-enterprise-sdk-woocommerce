@@ -67,13 +67,13 @@ class Hipay_Config
         return array(
             "payment" => array(
                 "global" => array(
-                    "operating_mode" => ApiMode::DIRECT_POST,
+                    "operating_mode" => OperatingMode::DIRECT_POST,
                     "iframe_hosted_page_template" => "basic-js",
                     "display_card_selector" => 0,
                     "display_hosted_page" => "redirect",
                     "css_url" => "",
                     "activate_3d_secure" => ThreeDS::THREE_D_S_DISABLED,
-                    "capture_mode" => "automatic",
+                    "capture_mode" => CaptureMode::AUTOMATIC,
                     "activate_basket" => 0,
                     "card_token" => 0,
                     "log_infos" => 1,
