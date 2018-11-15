@@ -1,5 +1,4 @@
 <?php
-global $wpdb;
 
 $curl_active = false;
 $simplexml_active = false;

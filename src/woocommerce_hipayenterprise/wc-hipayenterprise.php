@@ -62,12 +62,6 @@ if (!class_exists('WC_HipayEnterprise')) {
             {
                 WC_HipayEnterprise::loadClassesHipay();
                 $methods[] = 'Gateway_Hipay';
-//                $methods[] = 'Hipay_LocalPayments_Paypal';
-//                $methods[] = 'Hipay_LocalPayments_Belfius';
-//                $methods[] = 'Hipay_LocalPayments_Multibanco';
-//                $methods[] = 'Hipay_LocalPayments_Giropay';
-//                $methods[] = 'Hipay_LocalPayments_Inghomepay';
-//                $methods[] = 'Hipay_LocalPayments_Ideal';
                 return $methods;
             }
         }
@@ -78,12 +72,6 @@ if (!class_exists('WC_HipayEnterprise')) {
         public static function loadClassesHipay()
         {
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/class-gateway-hipay.php');
-//            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/payment-methods/class-hipay-localpayments-paypal.php');
-//            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/payment-methods/class-hipay-localpayments-inghomepay.php');
-//            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/payment-methods/class-hipay-localpayments-ideal.php');
-//            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/payment-methods/class-hipay-localpayments-giropay.php');
-//            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/payment-methods/class-hipay-localpayments-belfius.php');
-//            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/payment-methods/class-hipay-localpayments-multibanco.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'vendor/autoload.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-log.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-notification.php');

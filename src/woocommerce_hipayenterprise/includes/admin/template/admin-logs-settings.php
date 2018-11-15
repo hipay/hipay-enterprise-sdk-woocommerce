@@ -8,7 +8,6 @@
     </tr>
 
     <?php
-    //$logs_list = $wpdb->get_results("SELECT id,create_date,log_desc,order_id,type FROM $this->plugin_table_logs ORDER BY id DESC LIMIT 100");
     foreach ($logs_list as $value) {
         ?>
         <tr>
