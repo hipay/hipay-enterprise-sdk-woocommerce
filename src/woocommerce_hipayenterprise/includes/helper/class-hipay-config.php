@@ -1,12 +1,12 @@
 <?php
-if (! defined('ABSPATH')) {
+if (!defined('ABSPATH')) {
     exit;
 }
 
+use HiPay\Fullservice\Enum\Helper\HashAlgorithm;
+
 class Hipay_Config
 {
-
-    private $configHipay = array();
 
     protected $plugin;
 
@@ -28,33 +28,35 @@ class Hipay_Config
      */
     public function getConfigHipay()
     {
-        if (empty($this->configHipay)) {
-            $this->initConfigHiPay();
-        }
-
-        return $this->configHipay;
+        return $this->plugin->settings;
     }
 
     /**
      * Functions to init the configuration HiPay
      */
-    private function initConfigHiPay()
+    public function initConfigHiPay()
     {
-        $this->configHipay =  get_option($this->plugin->settings_name, array());
-
         // if config exist but empty, init new object for configHipay
-        if (!$this->configHipay || empty($this->configHipay)) {
+        if (!$this->plugin->settings || empty($this->plugin->settings)) {
             $this->insertConfigHiPay();
-            $this->configHipay = array_merge($this->plugin->settings, get_option($this->plugin->settings_name, array()));
+            $this->plugin->init_settings();
         }
     }
 
-    public function insertConfigHiPay() {
+    public function insertConfigHiPay()
+    {
         $configFields = $this->getDefaultConfig();
         $configFields["payment"]["credit_card"] = $this->insertPaymentsConfig("creditCard/");
         $configFields["payment"]["local_payment"] = $this->insertPaymentsConfig("local/");
 
-        update_option($this->plugin->settings_name, $configFields);
+        update_option($this->plugin->get_option_key(), $configFields);
+    }
+
+    public function saveConfiguration($settings)
+    {
+        $configFields = array_merge($this->getConfigHipay(), $settings);
+
+        update_option($this->plugin->get_option_key(), $configFields);
     }
 
     /**
@@ -65,9 +67,38 @@ class Hipay_Config
     private function getDefaultConfig()
     {
         return array(
+            "account" => array(
+                "global" => array(
+                    "sandbox_mode" => 1,
+                    "host_proxy" => "",
+                    "port_proxy" => "",
+                    "user_proxy" => "",
+                    "password_proxy" => ""
+                ),
+                "sandbox" => array(
+                    "api_username_sandbox" => "",
+                    "api_password_sandbox" => "",
+                    "api_tokenjs_username_sandbox" => "",
+                    "api_tokenjs_password_publickey_sandbox" => "",
+                    "api_secret_passphrase_sandbox" => "",
+                ),
+                "production" => array(
+                    "api_username_production" => "",
+                    "api_password_production" => "",
+                    "api_tokenjs_username_production" => "",
+                    "api_tokenjs_password_publickey_production" => "",
+                    "api_secret_passphrase_production" => "",
+                ),
+                "hash_algorithm" => array(
+                    "production" => HashAlgorithm::SHA256,
+                    "test" => HashAlgorithm::SHA256,
+                    "production_moto" => HashAlgorithm::SHA256,
+                    "test_moto" => HashAlgorithm::SHA256
+                )
+            ),
             "payment" => array(
                 "global" => array(
-                    "operating_mode" => ApiMode::DIRECT_POST,
+                    "operating_mode" => OperatingMode::DIRECT_POST,
                     "iframe_hosted_page_template" => "basic-js",
                     "display_card_selector" => 0,
                     "display_hosted_page" => "redirect",
@@ -87,6 +118,14 @@ class Hipay_Config
                 "send_payment_fraud_email_copy_method" => "bcc"
             )
         );
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAccount()
+    {
+        return $this->getConfigHipay()["account"];
     }
 
     /**
@@ -151,7 +190,7 @@ class Hipay_Config
         $creditCard = array();
 
         if (preg_match('/(.*)\.json/', $file) == 1) {
-            $json = json_decode(file_get_contents($this->jsonFilesPath . $folderName . $file),true);
+            $json = json_decode(file_get_contents($this->jsonFilesPath . $folderName . $file), true);
             $creditCard[$json["name"]] = $json["config"];
         }
 
