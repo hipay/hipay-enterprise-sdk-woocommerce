@@ -19,7 +19,7 @@ abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abst
      */
     protected function mapRequest(&$orderRequest)
     {
-        $orderRequest->orderid = $this->order->id;
+        $orderRequest->orderid = $this->order->id . '-' . time();
         if ($this->settings["payment"]["global"]["capture_mode"] === CaptureMode::AUTOMATIC) {
             $orderRequest->operation = "Sale";
         } else {
@@ -35,8 +35,12 @@ abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abst
         $orderRequest->decline_url = $this->order->get_cancel_order_url_raw();
         $orderRequest->pending_url = $this->order->get_checkout_order_received_url();
         $orderRequest->exception_url = $this->order->get_cancel_order_url_raw();
+
+        if ((bool)$this->settings["payment"]["global"]["send_url_notification"]) {
+            $orderRequest->notify_url = $this->getCallbackUrl();
+        }
+
         $orderRequest->cancel_url = $this->order->get_cancel_order_url_raw();
-        $orderRequest->notify_url = $this->getCallbackUrl();
         $orderRequest->source = $this->getRequestSource();
 
         $orderRequest->customerBillingInfo = $this->getCustomerBillingInfo();
@@ -47,7 +51,7 @@ abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abst
         $orderRequest->email = $this->order->get_billing_email();
         //$order->cid = (int)$this->customer->id;
         $orderRequest->ipaddr = $_SERVER ['REMOTE_ADDR'];
-        $orderRequest->language =  $orderRequest->language = get_locale();
+        $orderRequest->language = $orderRequest->language = get_locale();
         $orderRequest->http_user_agent = $_SERVER ['HTTP_USER_AGENT'];
 
         //        $order->basket = $this->params["basket"];
@@ -61,7 +65,7 @@ abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abst
      */
     private function getCallbackUrl()
     {
-        return site_url() . '/wc-api/WC_HipayEnterprise/?order=' . $this->order->id;
+        return site_url() . '/wc-api/WC_HipayEnterprise/';
     }
 
     private function getRequestSource()
@@ -70,7 +74,7 @@ abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abst
             "source" => "CMS",
             "brand" => "Woocommerce",
             //"brand_version" => _PS_VERSION_,
-            "integration_version" =>  $this->plugin->plugin_version
+            "integration_version" => $this->plugin->plugin_version
         );
 
         return json_encode($source);

@@ -34,9 +34,13 @@ class Hipay_Order_Handler
      */
     public function paymentOnHold($reason = '')
     {
-        $this->order->update_status('on-hold', $reason);
-        wc_reduce_stock_levels($this->order->get_id());
-        WC()->cart->empty_cart();
+        if (!in_array($this->order->get_status(), array('processing', 'completed', 'on-hold'), true)) {
+            $this->order->update_status('on-hold', $reason);
+            wc_reduce_stock_levels($this->order->get_id());
+            WC()->cart->empty_cart();
+        } else {
+            $this->addNote($reason);
+        }
     }
 
     /**

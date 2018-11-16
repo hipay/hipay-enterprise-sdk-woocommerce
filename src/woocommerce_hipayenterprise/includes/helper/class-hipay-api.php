@@ -1,7 +1,10 @@
 <?php
-if (! defined('ABSPATH')) {
+
+if (!defined('ABSPATH')) {
     exit;
 }
+
+use \HiPay\Fullservice\HTTP\Configuration\Configuration;
 
 class Hipay_Api
 {
@@ -21,16 +24,19 @@ class Hipay_Api
 
     /**
      * create gateway client from config and client provider
-     * @param type $moduleInstance
-     * @param boolean $moto
-     * @param boolean|string $forceConfig
+     *
+     * @param bool $forceConfig
      * @return \HiPay\Fullservice\Gateway\Client\GatewayClient
      */
-    private function createGatewayClient()
+    private function createGatewayClient($forceConfig = false)
     {
         $proxy = array();
 
-        $sandbox = $this->plugin->settings["account"]["global"]["sandbox_mode"];
+        if (!$forceConfig) {
+            $sandbox = $this->plugin->confHelper->isSandbox();
+        } else {
+            $sandbox = ($forceConfig === Configuration::API_ENV_STAGE);
+        }
 
         $username = ($sandbox) ? $this->plugin->confHelper->getAccount()["sandbox"]["api_username_sandbox"]
             : $this->plugin->confHelper->getAccount()["production"]["api_username_production"];
@@ -50,6 +56,8 @@ class Hipay_Api
     }
 
     /**
+     * @param $order
+     * @return string
      * @throws Exception
      */
     public function requestHostedPaymentPage($order)
@@ -60,7 +68,7 @@ class Hipay_Api
             $params = array();
             $this->iniParamsWithConfiguration($params);
 
-            $activatedPayment =  Hipay_Helper::getActivatedPaymentByCountryAndCurrency(
+            $activatedPayment = Hipay_Helper::getActivatedPaymentByCountryAndCurrency(
                 $this->plugin,
                 "credit_card",
                 $order->get_billing_country(),
@@ -85,64 +93,38 @@ class Hipay_Api
     }
 
     /**
+     * Get Security Settings form Backend Hipay
+     *
+     * @param $plateform
+     * @return \HiPay\Fullservice\Model\AbstractModel|mixed
+     * @throws Exception
+     */
+    public function getSecuritySettings($plateform)
+    {
+        try {
+            $gatewayClient = $this->createGatewayClient($plateform);
+
+            $response = $gatewayClient->requestSecuritySettings();
+
+            $this->plugin->logs->logInfos("# RequestSecuritySettings for ${plateform}");
+
+            return $response;
+        } catch (Exception $e) {
+            $this->plugin->logs->logException($e);
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    /**
      * Init params send to the api caller
      *
      */
-    private function iniParamsWithConfiguration(&$params) {
+    private function iniParamsWithConfiguration(&$params)
+    {
         $params["basket"] = null;
         $params["delivery_informations"] = null;
-        $params["iframe"] = $this->plugin->confHelper->getPaymentGlobal()["display_hosted_page"] == "iframe" ? true : false ;
-        $params["authentication_indicator"] =  $this->plugin->confHelper->getPaymentGlobal()["activate_3d_secure"];
+        $params["iframe"] = $this->plugin->confHelper->getPaymentGlobal()["display_hosted_page"] ==
+        "iframe" ? true : false;
+        $params["authentication_indicator"] = $this->plugin->confHelper->getPaymentGlobal()["activate_3d_secure"];
     }
-
-//    public function requestDirectPost($order) {
-//        //Create your gateway client
-//        $gatewayClient = $this->createGatewayClient();
-//
-//$transaction = $gatewayClient->requestNewOrder($order);
-//$redirectUrl = $transaction->getForwardUrl();
-//
-//if ($transaction->getStatus() == TransactionStatus::CAPTURED || $transaction->getStatus() == TransactionStatus::AUTHORIZED || $transaction->getStatus() == TransactionStatus::CAPTURE_REQUESTED) {
-//$order_flag = $wpdb->get_row("SELECT order_id FROM $this->plugin_table WHERE order_id = $order_id LIMIT 1");
-//if (isset($order_flag->order_id)) {
-//SELF::reset_stock_levels($order);
-//wc_reduce_stock_levels($order_id);
-//$wpdb->update(
-//$this->plugin_table,
-//array('amount' => $order_total, 'stocks' => 1, 'url' => $redirectUrl),
-//array('order_id' => $order_id)
-//);
-//} else {
-//    wc_reduce_stock_levels($order_id);
-//    $wpdb->insert(
-//        $this->plugin_table,
-//        array(
-//            'reference' => 0,
-//            'order_id' => $order_id,
-//            'amount' => $order_total,
-//            'stocks' => 1,
-//            'url' => $redirectUrl
-//        )
-//    );
-//}
-//
-//
-//return array(
-//    'result' => 'success',
-//    'redirect' => $order->get_checkout_order_received_url()
-//);
-//} else {
-//    $reason = $transaction->getReason();
-//    $order->add_order_note(__('Error:', 'hipayenterprise') . " " . $reason['message']);
-//    throw new Exception(
-//        __(
-//            'Error processing payment:',
-//            'hipayenterprise'
-//        ) . " " . $reason['message']
-//    );
-//}
-//}
-//    }
-
-
 }

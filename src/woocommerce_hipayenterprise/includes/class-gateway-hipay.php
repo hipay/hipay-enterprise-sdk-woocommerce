@@ -91,57 +91,6 @@ if (!class_exists('WC_Gateway_Hipay')) {
         {
             add_filter('woocommerce_available_payment_gateways', array($this, 'available_payment_gateways'));
 
-            add_action(
-                'woocommerce_order_status_pending_to_cancelled',
-                'update_stocks_cancelled_order_hipay_enterprise',
-                10,
-                2
-            );
-            add_action(
-                'woocommerce_order_status_pending_to_failed',
-                'update_stocks_cancelled_order_hipay_enterprise',
-                10,
-                2
-            );
-            add_action(
-                'woocommerce_order_status_on-hold_to_cancelled',
-                'update_stocks_cancelled_order_hipay_enterprise',
-                10,
-                2
-            );
-            add_action(
-                'woocommerce_order_status_on-hold_to_failed',
-                'update_stocks_cancelled_order_hipay_enterprise',
-                10,
-                2
-            );
-            add_action(
-                'woocommerce_order_status_processing_to_cancelled',
-                'update_stocks_cancelled_order_hipay_enterprise',
-                10,
-                2
-            );
-            add_action(
-                'woocommerce_order_status_processing_to_failed',
-                'update_stocks_cancelled_order_hipay_enterprise',
-                10,
-                2
-            );
-
-            add_action(
-                'woocommerce_order_status_on-hold_to_processing',
-                'update_status_order_hipay_enterprise',
-                10,
-                2
-            );
-            add_action(
-                'woocommerce_order_status_on-hold_to_completed',
-                'update_status_order_hipay_enterprise',
-                10,
-                2
-            );
-
-
             add_action('woocommerce_after_order_notes', array($this, 'custom_checkout_field_hipay_enterprise'));
             add_action('woocommerce_api_wc_hipayenterprise', array($this, 'check_callback_response'));
             add_action(
@@ -417,14 +366,17 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 }
 
                 return array(
-                    'result'   => 'success',
+                    'result' => 'success',
                     'redirect' => $redirect,
                 );
             } catch (Exception $e) {
-                wc_add_notice( __( 'Sorry, we cannot process your payment.. Please try again.', 'woocommerce-gateway-hipay' ), 'error' );
+                wc_add_notice(
+                    __('Sorry, we cannot process your payment.. Please try again.', 'woocommerce-gateway-hipay'),
+                    'error'
+                );
                 $this->logs->logException($e);
                 return array(
-                    'result'   => 'fail',
+                    'result' => 'fail',
                     'redirect' => '',
                 );
             }
@@ -518,29 +470,19 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
         public function check_callback_response()
         {
+            $transactionReference = (isset($_POST["transaction_reference"])) ? $_POST["transaction_reference"] : '';
+
+            if (!Hipay_Helper::checkSignature($this)) {
+                $this->logs->logErrors("Notify : Signature is wrong for Transaction $transactionReference.");
+                header('HTTP/1.1 403 Forbidden');
+                die('Bad Callback initiated - signature');
+            }
+
             try {
-                $notification = new WC_HipayEnterprise_Notification($this, $_POST);
+                $notification = new Hipay_Notification($this, $_POST);
                 $notification->processTransaction();
             } catch (Exception $e) {
                 header("HTTP/1.0 500 Internal server error");
-            }
-        }
-
-        //@TODO delete
-        public function update_stocks_cancelled_order_hipay_enterprise($order_id, $order)
-        {
-            global $wpdb;
-
-            $cur_payment_method = get_post_meta($order_id, '_payment_method', true);
-            if ($cur_payment_method == 'hipayenterprise') {
-                $stock_flag = $wpdb->get_row(
-                    "SELECT stocks FROM " .
-                    $wpdb->prefix .
-                    "woocommerce_hipayenterprise WHERE order_id = $order_id LIMIT 1"
-                );
-                if (isset($stock_flag->stocks) && $stock_flag->stocks == 1) {
-                    WC_HipayEnterprise::reset_stock_levels($order);
-                }
             }
         }
 
@@ -672,76 +614,13 @@ if (!class_exists('WC_Gateway_Hipay')) {
             echo "</div>";
         }
 
-        public function update_status_order_hipay_enterprise($order_id, $order)
+        /**
+         * @return Hipay_Api
+         */
+        public function getApi()
         {
-            global $woocommerce;
-
-            $cur_payment_method = get_post_meta($order_id, '_payment_method', true);
-            $captured_flag = "";
-            if ($cur_payment_method == 'hipayenterprise') {
-                $order = new WC_Order($order_id);
-                //capture status in db
-
-//                if ($captured_flag->captured == 1) {
-//                    return true;
-//                }
-
-                require plugin_dir_path(__FILE__) . 'vendor/autoload.php';
-                require plugin_dir_path(__FILE__) . 'includes/operations.php';
-                $plugin_option = get_option('woocommerce_hipayenterprise_settings');
-                $username = (!$plugin_option['sandbox']) ? $plugin_option['account_production_private_username'] : $plugin_option['account_test_private_username'];
-                $password = (!$plugin_option['sandbox']) ? $plugin_option['account_production_private_password'] : $plugin_option['account_test_private_password'];
-                $passphrase = (!$plugin_option['sandbox']) ? $plugin_option['account_production_private_passphrase'] : $plugin_option['account_test_private_passphrase'];
-                $env = ($plugin_option['sandbox']) ? HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENV_STAGE : HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENV_PRODUCTION;
-                $env_endpoint = ($plugin_option['sandbox']) ? HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENDPOINT_STAGE : HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENDPOINT_PROD;
-                $order_total = $order->get_total();
-
-                try {
-                    $res = HipayEnterpriseWooOperation::get_details_by_order(
-                        $username,
-                        $password,
-                        $passphrase,
-                        $env_endpoint,
-                        $order_id
-                    );
-
-                    if ($res->transaction->captured_amount < $order_total) {
-
-                        //try to capture amount (total or partial)
-                        $amount_to_capture = $order_total - $res->transaction->captured_amount;
-                        $order->add_order_note(
-                            __(
-                                'Try to capture amount:',
-                                'hipayenterprise'
-                            ) . " " . $amount_to_capture . " " . $res->transaction->currency
-                        );
-                        $config = new \HiPay\Fullservice\HTTP\Configuration\Configuration(
-                            $username,
-                            $password,
-                            $env
-                        );
-                        $clientProvider = new \HiPay\Fullservice\HTTP\SimpleHTTPClient($config);
-                        $gatewayClient = new \HiPay\Fullservice\Gateway\Client\GatewayClient($clientProvider);
-
-                        $operationResult = $gatewayClient->requestMaintenanceOperation(
-                            "capture",
-                            $captured_flag->reference,
-                            $amount_to_capture
-                        );
-                        $order->add_order_note(
-                            __(
-                                'Capture amount:',
-                                'hipayenterprise'
-                            ) . " " . $amount_to_capture . " " . $res->transaction->currency . " " . __(
-                                'returned',
-                                'hipayenterprise'
-                            ) . " " . $operationResult->getStatus() . " " . $operationResult->getMessage()
-                        );
-                    }
-                } catch (Exception $e) {
-                    $order->add_order_note($e->getMessage());
-                }
-            }
+            return $this->api;
         }
+
     }
 }

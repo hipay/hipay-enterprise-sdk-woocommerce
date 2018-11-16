@@ -20,7 +20,6 @@ class Hipay_Config
         $this->jsonFilesPath = dirname(__FILE__) . "/../../paymentConfigFiles/";
     }
 
-
     /**
      *  Get Config Hipay
      *
@@ -91,9 +90,7 @@ class Hipay_Config
                 ),
                 "hash_algorithm" => array(
                     "production" => HashAlgorithm::SHA256,
-                    "test" => HashAlgorithm::SHA256,
-                    "production_moto" => HashAlgorithm::SHA256,
-                    "test_moto" => HashAlgorithm::SHA256
+                    "stage" => HashAlgorithm::SHA256,
                 )
             ),
             "payment" => array(
@@ -108,7 +105,8 @@ class Hipay_Config
                     "activate_basket" => 0,
                     "card_token" => 0,
                     "log_infos" => 1,
-                    "regenerate_cart_on_decline" => 1
+                    "regenerate_cart_on_decline" => 1,
+                    "send_url_notification" => 0
                 ),
                 "credit_card" => array(),
                 "local_payment" => array()
@@ -121,11 +119,43 @@ class Hipay_Config
     }
 
     /**
+     * @return bool
+     */
+    public function isSandbox()
+    {
+        return (bool)$this->getAccount()["global"]["sandbox_mode"];
+    }
+
+    /**
      * @return mixed
      */
     public function getAccount()
     {
         return $this->getConfigHipay()["account"];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAccountProduction()
+    {
+        return $this->getConfigHipay()["account"]["production"];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHashAlgorithm()
+    {
+        return $this->getConfigHipay()["account"]["hash_algorithm"];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAccountSandbox()
+    {
+        return $this->getConfigHipay()["account"]["sandbox"];
     }
 
     /**
@@ -158,6 +188,33 @@ class Hipay_Config
     public function getLocalPayment()
     {
         return $this->getConfigHipay()["payment"]["local_payment"];
+    }
+
+    /**
+     * @param $value
+     * @return mixed
+     */
+    public function setHashAlgorithm($value)
+    {
+        return $this->setConfigHiPay("account", $value, "hash_algorithm");
+    }
+
+    /**
+     * Save a specific key of the module config
+     *
+     * @param $key
+     * @param $value
+     * @param null $child
+     */
+    public function setConfigHiPay($key, $value, $child = null)
+    {
+        if (isset($child)) {
+            $this->plugin->settings[$key][$child] = $value;
+        } else {
+            $this->plugin->settings[$key] = $value;
+        }
+
+        update_option($this->plugin->get_option_key(), $this->plugin->settings);
     }
 
     /**

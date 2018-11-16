@@ -10,6 +10,7 @@ class Hipay_Notification
 
     protected $transaction;
 
+    protected $orderHandler;
 
     protected $plugin;
 
@@ -26,7 +27,9 @@ class Hipay_Notification
             die('No Order found in transaction');
         }
 
-        $order = new WC_Order($this->transaction->getOrder()->getId());
+        $orderId = strtok($this->transaction->getOrder()->getId(), "-");
+
+        $order = wc_get_order($orderId);
 
         if (!$order) {
             $plugin->logs->logErrors('Bad Callback initiated, order could not be initiated ');
@@ -87,7 +90,6 @@ class Hipay_Notification
                     $this->orderHandler->paymentOnHold("pending payment");
                     break;
                 case TransactionStatus::EXPIRED:
-                    break;
                 case TransactionStatus::CANCELLED:
                     $this->orderHandler->paymentFailed(
                         __("Authorization cancelled. Order was cancelled with transaction:", 'hipayenterprise')

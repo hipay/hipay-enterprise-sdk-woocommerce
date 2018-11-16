@@ -1,7 +1,10 @@
 <?php
-if (! defined('ABSPATH')) {
+if (!defined('ABSPATH')) {
     exit;
 }
+
+use \HiPay\Fullservice\Helper\Signature;
+use \HiPay\Fullservice\HTTP\Configuration\Configuration;
 
 class Hipay_Helper
 {
@@ -52,4 +55,71 @@ class Hipay_Helper
         }
         return $activatedPayment;
     }
+
+    public static function checkSignature($plugin)
+    {
+
+        if ($plugin->confHelper->isSandbox()) {
+            $passphrase = $plugin->confHelper->getAccount()["sandbox"]["api_secret_passphrase_sandbox"];
+            $environment = Configuration::API_ENV_STAGE;
+        } else {
+            $passphrase = $plugin->confHelper->getAccount()["production"]["api_secret_passphrase_production"];
+            $environment = Configuration::API_ENV_PRODUCTION;
+        }
+
+        $hashAlgorithm = $plugin->confHelper->getAccount()["hash_algorithm"][$environment];
+
+        $isValidSignature = Signature::isValidHttpSignature($passphrase, $hashAlgorithm);
+
+        if (!$isValidSignature && !Signature::isSameHashAlgorithm($passphrase, $hashAlgorithm)) {
+            $plugin->logs->logInfos(
+                "# Signature is not valid. Hash is not the same. Try to synchronize for {$environment}"
+            );
+
+            try {
+                if (self::existCredentialForPlateform($plugin, $environment)) {
+                    $hashAlgorithmAccount = $plugin->getApi()->getSecuritySettings($environment);
+                    if ($hashAlgorithm != $hashAlgorithmAccount->getHashingAlgorithm()) {
+                        $configHash = $plugin->confHelper->getHashAlgorithm();
+                        $configHash[$environment] = $hashAlgorithmAccount->getHashingAlgorithm();
+                        $plugin->confHelper->setHashAlgorithm($configHash);
+                        $plugin->logs->logInfos("# Hash Algorithm is now synced for {$environment}");
+                        $isValidSignature = Signature::isValidHttpSignature(
+                            $passphrase,
+                            $hashAlgorithmAccount->getHashingAlgorithm()
+                        );
+                    }
+                }
+            } catch (Exception $e) {
+                $plugin->logs->logErrors(sprintf("Update hash failed for %s", $environment));
+            }
+        }
+
+        return $isValidSignature;
+    }
+
+    /**
+     * Test if credentials are filled for plateform ( If no exists then no synchronization )
+     *
+     * @param $plugin
+     * @param $platform
+     * @return bool True if Credentials are filled
+     */
+    public static function existCredentialForPlateform($plugin, $platform)
+    {
+        switch ($platform) {
+            case Configuration::API_ENV_PRODUCTION:
+                $exist = !empty($plugin->confHelper->getAccountProduction()["api_username_production"]);
+                break;
+            case Configuration::API_ENV_STAGE:
+                $exist = !empty($plugin->confHelper->getAccountSandbox()["api_username_sandbox"]);
+                break;
+            default:
+                $exist = false;
+                break;
+        }
+
+        return $exist;
+    }
+
 }

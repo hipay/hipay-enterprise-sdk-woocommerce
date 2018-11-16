@@ -144,6 +144,20 @@
 </tr>
 
 <tr valign="top">
+    <th scope="row" class="titledesc"><?php _e('Send url Notification', 'hipayenterprise'); ?></th>
+    <td class="forminp">
+        <fieldset>
+            <legend class="screen-reader-text">
+                <span><?php _e('Send url Notification', 'hipayenterprise'); ?></span></legend>
+            <input class="" type="checkbox" name="send_url_notification"
+                   id="log_infos" style=""
+                   value="1" <?php if ($paymentCommon["send_url_notification"]) echo 'checked="checked"'; ?>>
+            <br>
+        </fieldset>
+    </td>
+</tr>
+
+<tr valign="top">
     <th scope="row" class="titledesc"><?php _e('Activate 3-D Secure', 'hipayenterprise'); ?></th>
     <td class="forminp">
         <fieldset>

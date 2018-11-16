@@ -35,12 +35,14 @@ class Hipay_Settings_Handler
             );
 
             $settings["account"]["production"] = array(
-                "api_username_production" =>$_POST['woocommerce_hipayenterprise_account_production_username'],
+                "api_username_production" => $_POST['woocommerce_hipayenterprise_account_production_username'],
                 "api_password_production" => $_POST['woocommerce_hipayenterprise_account_production_password'],
                 "api_secret_passphrase_production" => $_POST['woocommerce_hipayenterprise_account_production_secret_passphrase'],
                 "api_tokenjs_username_production" => $_POST['woocommerce_hipayenterprise_account_production_tokenjs_username'],
                 "api_tokenjs_password_publickey_production" => $_POST['woocommerce_hipayenterprise_account_production_password_publickey']
             );
+
+            $settings["account"]["hash_algorithm"] = $this->plugin->confHelper->getHashAlgorithm();
 
             $this->plugin->logs->logInfos($settings);
             return true;
@@ -71,6 +73,7 @@ class Hipay_Settings_Handler
                 'css_url' => sanitize_title($_POST['css_url']),
                 'display_hosted_page' => sanitize_title($_POST['display_hosted_page']),
                 'display_card_selector' => sanitize_title($_POST['display_card_selector']),
+                'send_url_notification' => sanitize_title($_POST['send_url_notification']),
             );
 
             $this->plugin->logs->logInfos($settings);
