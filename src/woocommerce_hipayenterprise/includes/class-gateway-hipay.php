@@ -4,6 +4,7 @@ if (!defined('ABSPATH')) {
     exit;
     // Exit if accessed directly
 }
+
 use \HiPay\Fullservice\Enum\Transaction\TransactionStatus;
 
 /**
@@ -17,9 +18,9 @@ if (!class_exists('WC_Gateway_Hipay')) {
     {
         public $logs;
 
-        public $settings_name = 'hipay_config';
-
         public $settingsHandler;
+
+        public $confHelper;
 
         protected $api;
 
@@ -48,21 +49,21 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 'hipayenterprise'
             );
 
+            $this->confHelper = new Hipay_Config($this);
+
             $this->init_form_fields();
 
             $this->init_settings();
 
-            $this->addActions();
+            $this->confHelper->initConfigHiPay();
 
-            $this->confHelper = new Hipay_Config($this);
+            $this->addActions();
 
             $this->api = new Hipay_Api($this);
 
             $this->logs = new Hipay_Log($this);
 
             $this->settingsHandler = new Hipay_Settings_Handler($this);
-
-            $this->settingsHipay = $this->confHelper->getConfigHipay();
 
             $this->icon = WC_HIPAYENTERPRISE_URL_ASSETS . '/images/credit_card.png';
 
@@ -141,7 +142,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
             );
 
 
-            add_action('woocommerce_after_order_notes', array($this,'custom_checkout_field_hipay_enterprise'));
+            add_action('woocommerce_after_order_notes', array($this, 'custom_checkout_field_hipay_enterprise'));
             add_action('woocommerce_api_wc_hipayenterprise', array($this, 'check_callback_response'));
             add_action(
                 'woocommerce_update_options_payment_gateways_' . $this->id,
@@ -157,12 +158,13 @@ if (!class_exists('WC_Gateway_Hipay')) {
         public function save_settings()
         {
             $settings = array();
+            $this->settingsHandler->saveAccountSettings($settings);
             $this->settingsHandler->saveFraudSettings($settings);
             $this->settingsHandler->saveCreditCardSettings($settings);
             $this->settingsHandler->savePaymentGlobal($settings);
             $this->settingsHandler->saveLocalPaymentSettings($settings);
 
-            update_option($this->settings_name, $settings);
+            $this->confHelper->saveConfiguration($settings);
         }
 
         /**
@@ -173,7 +175,10 @@ if (!class_exists('WC_Gateway_Hipay')) {
             $paymentGlobal = $this->confHelper->getPaymentGlobal();
             if ($paymentGlobal['operating_mode'] == OperatingMode::HOSTED_PAGE) {
                 if ($paymentGlobal['display_hosted_page'] == "redirect") {
-                    _e('You will be redirected to an external payment page. Please do not refresh the page during the process.', $this->id);
+                    _e(
+                        'You will be redirected to an external payment page. Please do not refresh the page during the process.',
+                        $this->id
+                    );
                 } else {
                     _e('Pay with your credit card.', $this->id);
                 }
@@ -185,11 +190,27 @@ if (!class_exists('WC_Gateway_Hipay')) {
          */
         public function init_form_fields()
         {
-            $this->form_fields = include(plugin_dir_path(__FILE__) . 'admin/settings/settings-general.php');
+            $this->account = include(plugin_dir_path(__FILE__) . 'admin/settings/settings-account.php');
             $this->fraud = include(plugin_dir_path(__FILE__) . 'admin/settings/settings-fraud.php');
             $this->methods = include(plugin_dir_path(__FILE__) . 'admin/settings/settings-methods.php');
             $this->faqs = include(plugin_dir_path(__FILE__) . 'admin/settings/settings-faq.php');
             $this->log = include(plugin_dir_path(__FILE__) . 'admin/settings/settings-logs.php');
+        }
+
+        /**
+         *
+         */
+        public function generate_account_details_html()
+        {
+            ob_start();
+            $this->process_template(
+                'admin-account-settings.php',
+                array(
+                    'account' => $this->confHelper->getAccount()
+                )
+            );
+
+            return ob_get_clean();
         }
 
         /**
@@ -305,7 +326,15 @@ if (!class_exists('WC_Gateway_Hipay')) {
             require plugin_dir_path(__FILE__) . 'vendor/autoload.php';
 
             $order = wc_get_order($order_id);
-            $order->add_order_note(__('Request refund through Hipay Enterprise for amount:', 'hipayenterprise') . " " . $amount . " " . $order->get_currency() . " and reason: " . $reason);
+            $order->add_order_note(
+                __('Request refund through Hipay Enterprise for amount:', 'hipayenterprise') .
+                " " .
+                $amount .
+                " " .
+                $order->get_currency() .
+                " and reason: " .
+                $reason
+            );
 
             $username = (!$this->sandbox) ? $this->account_production_private_username : $this->account_test_private_username;
             $password = (!$this->sandbox) ? $this->account_production_private_password : $this->account_test_private_password;
@@ -317,12 +346,18 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 $clientProvider = new \HiPay\Fullservice\HTTP\SimpleHTTPClient($config);
                 $gatewayClient = new \HiPay\Fullservice\Gateway\Client\GatewayClient($clientProvider);
 
-                $transactionId = $wpdb->get_row("SELECT reference FROM $this->plugin_table WHERE order_id = $order_id LIMIT 1");
+                $transactionId = $wpdb->get_row(
+                    "SELECT reference FROM $this->plugin_table WHERE order_id = $order_id LIMIT 1"
+                );
 
                 if (!isset($transactionId->reference)) {
                     throw new Exception(__("No transaction reference found.", 'hipayenterprise'));
                 } else {
-                    $maintenanceResult = $gatewayClient->requestMaintenanceOperation("refund", $transactionId->reference, $amount);
+                    $maintenanceResult = $gatewayClient->requestMaintenanceOperation(
+                        "refund",
+                        $transactionId->reference,
+                        $amount
+                    );
                     $maintenanceResultDump = print_r($maintenanceResult, true);
 
                     if ($maintenanceResult->getStatus() == "124") {
@@ -407,8 +442,12 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
             if (!isset($payment_url->url)) {
                 $order->get_cancel_order_url_raw();
-            } elseif ($this->method_details["operating_mode"] == OperatingMode::DIRECT_POST && $payment_url->url == "") {
-                echo __("We have received your order payment. We will process the order as soon as we get the payment confirmation.", "hipayenterprise");
+            } elseif ($this->method_details["operating_mode"] == OperatingMode::DIRECT_POST &&
+                $payment_url->url == "") {
+                echo __(
+                    "We have received your order payment. We will process the order as soon as we get the payment confirmation.",
+                    "hipayenterprise"
+                );
             } else {
                 echo '<div id="wc_hipay_iframe_container"><iframe id="wc_hipay_iframe" name="wc_hipay_iframe" width="100%" height="475" style="border: 0;" src="' .
                     $payment_url->url .
