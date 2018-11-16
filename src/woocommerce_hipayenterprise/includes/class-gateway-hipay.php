@@ -366,7 +366,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
          *  Process payment
          *
          * @param int $order_id
-         * @return array|void
+         * @return array
          * @throws Exception
          */
         public function process_payment($order_id)
@@ -374,41 +374,34 @@ if (!class_exists('WC_Gateway_Hipay')) {
             try {
                 $order = wc_get_order($order_id);
 
-                $response = $this->api->requestHostedPaymentPage( $order);
+                $response = $this->api->requestHostedPaymentPage($order);
+                $redirect = esc_url_raw($response);
 
-                if (! empty($response->error)) {
-                    //$order->add_order_note($response->error->message);
-
-                    //throw new Exception($response->error->message);
+                if ($this->confHelper->getPaymentGlobal()["display_hosted_page"] == "iframe") {
+                    $redirect = $order->get_checkout_payment_url(true);
                 }
 
-                //update_post_meta( $order_id, '_stripe_source_id', $response->id );
-
-                //$order->update_status( 'on-hold', __( 'Awaiting Multibanco payment', 'woocommerce-gateway-stripe' ) );
-
-                // Reduce stock levels
-                //wc_reduce_stock_levels( $order_id );
-
-                // Remove cart
-                //WC()->cart->empty_cart();
-
                 return array(
-                'result'   => 'success',
-                'redirect' => esc_url_raw($response),
-            );
+                    'result'   => 'success',
+                    'redirect' => $redirect,
+                );
             } catch (Exception $e) {
+                wc_add_notice( __( 'Sorry, we cannot process your payment.. Please try again.', 'woocommerce-gateway-hipay' ), 'error' );
+                $this->logs->logException($e);
                 return array(
-                'result'   => 'fail',
-                'redirect' => '',
-            );
+                    'result'   => 'fail',
+                    'redirect' => '',
+                );
             }
         }
 
-
+        /**
+         *
+         * @param $order_id
+         */
         public function receipt_page($order_id)
         {
             global $wpdb;
-
             $order = wc_get_order($order_id);
             $payment_url = $wpdb->get_row("SELECT url FROM $this->plugin_table WHERE order_id = $order_id LIMIT 1");
 
@@ -545,10 +538,9 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
             if (isset($woocommerce->cart)) {
                 foreach ($available_gateways as $id => $gateway) {
-                    if ($id == "hipayenterprise") {
-                        if (!$gateway->isAvailableForCurrentCart()) {
-                            unset($available_gateways [$id]);
-                        }
+                    if ($id == "hipayenterprise"
+                        && !$gateway->isAvailableForCurrentCart()) {
+                        unset($available_gateways [$id]);
                     }
                 }
             }

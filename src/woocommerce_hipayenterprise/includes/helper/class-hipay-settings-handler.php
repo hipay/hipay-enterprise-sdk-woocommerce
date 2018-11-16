@@ -5,7 +5,6 @@ if (! defined('ABSPATH')) {
 
 class Hipay_Settings_Handler
 {
-    private $configHipay = array();
 
     protected $plugin;
 
@@ -43,7 +42,7 @@ class Hipay_Settings_Handler
             $this->plugin->logs->logInfos($settings);
             return true;
         } catch (Exception $e) {
-            $this->plugin->log->logException($e);
+            $this->plugin->logs->logException($e);
         }
 
         return false;

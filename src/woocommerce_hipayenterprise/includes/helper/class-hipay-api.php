@@ -84,10 +84,14 @@ class Hipay_Api
             $hostedPaymentFormatter = new Hipay_Hosted_Payment_Formatter($this->plugin, $params, $order);
             $orderRequest = $hostedPaymentFormatter->generate();
 
+            $this->plugin->logs->logRequest($orderRequest);
             $transaction = $gatewayClient->requestHostedPaymentPage($orderRequest);
+
+            $this->plugin->logs->logInfos("# RequestHostedPaymentPage " . $order->id);
 
             return $transaction->getForwardUrl();
         } catch (Exception $e) {
+            $this->plugin->logs->logException($e);
             throw new Exception($e->getMessage());
         }
     }

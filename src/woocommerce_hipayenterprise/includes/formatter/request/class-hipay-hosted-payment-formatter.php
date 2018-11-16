@@ -4,6 +4,15 @@
 
 class Hipay_Hosted_Payment_Formatter extends Hipay_Request_Formatter_Abstract
 {
+    /**
+     * @var string
+     */
+    protected $productList;
+
+    /**
+     * @var boolean
+     */
+    protected $iframe;
 
     public function __construct($plugin, $params, $order = false)
     {
