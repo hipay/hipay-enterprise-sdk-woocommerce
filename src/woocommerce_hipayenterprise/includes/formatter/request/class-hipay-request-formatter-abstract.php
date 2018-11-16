@@ -20,7 +20,7 @@ abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abst
     protected function mapRequest(&$orderRequest)
     {
         $orderRequest->orderid = $this->order->id;
-        if ($this->settingsHipay["payment"]["global"]["capture_mode"] === CaptureMode::AUTOMATIC) {
+        if ($this->settings["payment"]["global"]["capture_mode"] === CaptureMode::AUTOMATIC) {
             $orderRequest->operation = "Sale";
         } else {
             $orderRequest->operation = "Authorization";

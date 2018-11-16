@@ -30,24 +30,12 @@ class Hipay_Api
     {
         $proxy = array();
 
-        // Todo a voir après rework Etienne ( Il est enregistré en base 'no' ... )
-        $sandbox = false;
-        $sandbox = $this->plugin->settings["sandbox"] == 'yes' ? true : false;
+        $sandbox = $this->plugin->settings["account"]["global"]["sandbox_mode"];
 
-        if ($this->plugin->settingsHipay["host_proxy"] !== "") {
-            $proxy = array(
-                "host" => $this->plugin->settingsHipay["host_proxy"],
-                "port" => $this->plugin->settingsHipay["port_proxy"],
-                "user" => $this->plugin->settingsHipay["user_proxy"],
-                "password" => $this->plugin->settingsHipay["password_proxy"]
-            );
-        }
-
-        //TODO Revoir le nom des champs et la variables settings à utiliser après rework Etienne
-        $username = ($sandbox) ? $this->plugin->settings["account_test_private_username"]
-            : $this->plugin->settings["account_production_private_username"];
-        $password = ($sandbox) ? $this->plugin->settings["account_test_private_password"]
-            : $this->plugin->settings["account_production_private_password"];
+        $username = ($sandbox) ? $this->plugin->confHelper->getAccount()["sandbox"]["api_username_sandbox"]
+            : $this->plugin->confHelper->getAccount()["production"]["api_username_production"];
+        $password = ($sandbox) ? $this->plugin->confHelper->getAccount()["sandbox"]["api_password_sandbox"]
+            : $this->plugin->confHelper->getAccount()["production"]["api_password_production"];
 
         $env = ($sandbox) ? HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENV_STAGE
             : HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENV_PRODUCTION;
