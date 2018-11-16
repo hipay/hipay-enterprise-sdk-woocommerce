@@ -407,13 +407,18 @@ if (!class_exists('WC_Gateway_Hipay')) {
         public function process_payment($order_id)
         {
             try {
+                $this->logs->logInfos(" # Process Payment for  " . $order_id );
+
                 $order = wc_get_order($order_id);
 
                 $response = $this->api->requestHostedPaymentPage($order);
-                $redirect = esc_url_raw($response);
 
                 if ($this->confHelper->getPaymentGlobal()["display_hosted_page"] == "iframe") {
+                    $order->update_meta_data( '_hipay_pay_url', esc_url_raw($response));
+                    $order->save();
                     $redirect = $order->get_checkout_payment_url(true);
+                } else {
+                    $redirect = esc_url_raw($response);
                 }
 
                 return array(
@@ -431,29 +436,70 @@ if (!class_exists('WC_Gateway_Hipay')) {
         }
 
         /**
+         * Process Hipay Receipt page
          *
          * @param $order_id
          */
         public function receipt_page($order_id)
         {
-            global $wpdb;
-            $order = wc_get_order($order_id);
-            $payment_url = $wpdb->get_row("SELECT url FROM $this->plugin_table WHERE order_id = $order_id LIMIT 1");
+            try {
+                $order = wc_get_order($order_id);
+                $paymentUrl = $order->get_meta("_hipay_pay_url");
 
-            if (!isset($payment_url->url)) {
-                $order->get_cancel_order_url_raw();
-            } elseif ($this->method_details["operating_mode"] == OperatingMode::DIRECT_POST &&
-                $payment_url->url == "") {
-                echo __(
-                    "We have received your order payment. We will process the order as soon as we get the payment confirmation.",
-                    "hipayenterprise"
-                );
-            } else {
-                echo '<div id="wc_hipay_iframe_container"><iframe id="wc_hipay_iframe" name="wc_hipay_iframe" width="100%" height="475" style="border: 0;" src="' .
-                    $payment_url->url .
-                    '" allowfullscreen="" frameborder="0"></iframe></div>' .
-                    PHP_EOL;
+                if (empty($paymentUrl)) {
+                    $this->logs->logInfos(" # No payment Url " . $order_id );
+                    $this->generate_error_receipt();
+                } else {
+                    $this->logs->logInfos(" # Receipt_page " . $order_id );
+
+                    switch ($this->confHelper->getPaymentGlobal()["operating_mode"]) {
+                        case OperatingMode::DIRECT_POST:
+                            $this->generate_common_receipt();
+                            break;
+                        case  OperatingMode::HOSTED_PAGE:
+                            if ($this->confHelper->getPaymentGlobal()["display_hosted_page"] = "iframe"){
+                                $this->generate_iframe_page($paymentUrl);
+                            }
+                            break;
+                    }
+                }
+            } catch (Exception $e) {
+                $this->generate_error_receipt();
+                $this->logs->logException($e);
             }
+        }
+
+        /**
+         *  Generate HTML for error in iframe request
+         *
+         */
+        private function generate_error_receipt() {
+            echo __(
+                "Sorry, we cannot process your payment.. Please try again.",
+                "hipayenterprise"
+            );
+        }
+
+        /**
+         *  Generate HTML for direct integration
+         *
+         */
+        private function generate_common_receipt() {
+            echo __(
+                "We have received your order payment. We will process the order as soon as we get the payment confirmation.",
+                "hipayenterprise"
+            );
+        }
+
+        /**
+         *  Generate HTML for iframe integration
+         *
+         * @param $paymentUrl
+         */
+        private function generate_iframe_page($paymentUrl) {
+            echo '<div id="wc_hipay_iframe_container">
+                    <iframe id="wc_hipay_iframe" name="wc_hipay_iframe" width="100%" height="475" style="border: 0;" src="' . esc_html($paymentUrl) . '" allowfullscreen="" frameborder="0"></iframe>
+                  </div>';
         }
 
 
