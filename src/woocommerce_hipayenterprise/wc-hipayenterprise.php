@@ -75,6 +75,7 @@ if (!class_exists('WC_HipayEnterprise')) {
             require_once(WC_HIPAYENTERPRISE_PATH . 'vendor/autoload.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-log.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-notification.php');
+            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-order-handler.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-admin-assets.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-config.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-settings-handler.php');
