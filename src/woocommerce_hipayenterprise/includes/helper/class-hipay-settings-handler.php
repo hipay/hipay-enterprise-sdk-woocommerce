@@ -5,7 +5,6 @@ if (!defined('ABSPATH')) {
 
 class Hipay_Settings_Handler
 {
-    private $configHipay = array();
 
     protected $plugin;
 
@@ -28,19 +27,19 @@ class Hipay_Settings_Handler
             );
 
             $settings["account"]["sandbox"] = array(
-                "api_username_sandbox" => sanitize_title($_POST['woocommerce_hipayenterprise_account_sandbox_username']),
-                "api_password_sandbox" => sanitize_title($_POST['woocommerce_hipayenterprise_account_sandbox_password']),
-                "api_secret_passphrase_sandbox" => sanitize_title($_POST['woocommerce_hipayenterprise_account_sandbox_secret_passphrase']),
-                "api_tokenjs_username_sandbox" => sanitize_title($_POST['woocommerce_hipayenterprise_account_sandbox_tokenjs_username']),
-                "api_tokenjs_password_publickey_sandbox" => sanitize_title($_POST['woocommerce_hipayenterprise_account_sandbox_password_publickey'])
+                "api_username_sandbox" => $_POST['woocommerce_hipayenterprise_account_sandbox_username'],
+                "api_password_sandbox" => $_POST['woocommerce_hipayenterprise_account_sandbox_password'],
+                "api_secret_passphrase_sandbox" => $_POST['woocommerce_hipayenterprise_account_sandbox_secret_passphrase'],
+                "api_tokenjs_username_sandbox" => $_POST['woocommerce_hipayenterprise_account_sandbox_tokenjs_username'],
+                "api_tokenjs_password_publickey_sandbox" => $_POST['woocommerce_hipayenterprise_account_sandbox_password_publickey']
             );
 
             $settings["account"]["production"] = array(
-                "api_username_production" => sanitize_title($_POST['woocommerce_hipayenterprise_account_production_username']),
-                "api_password_production" => sanitize_title($_POST['woocommerce_hipayenterprise_account_production_password']),
-                "api_secret_passphrase_production" => sanitize_title($_POST['woocommerce_hipayenterprise_account_production_secret_passphrase']),
-                "api_tokenjs_username_production" => sanitize_title($_POST['woocommerce_hipayenterprise_account_production_tokenjs_username']),
-                "api_tokenjs_password_publickey_production" => sanitize_title($_POST['woocommerce_hipayenterprise_account_production_password_publickey'])
+                "api_username_production" =>$_POST['woocommerce_hipayenterprise_account_production_username'],
+                "api_password_production" => $_POST['woocommerce_hipayenterprise_account_production_password'],
+                "api_secret_passphrase_production" => $_POST['woocommerce_hipayenterprise_account_production_secret_passphrase'],
+                "api_tokenjs_username_production" => $_POST['woocommerce_hipayenterprise_account_production_tokenjs_username'],
+                "api_tokenjs_password_publickey_production" => $_POST['woocommerce_hipayenterprise_account_production_password_publickey']
             );
 
             $this->plugin->logs->logInfos($settings);
@@ -77,7 +76,7 @@ class Hipay_Settings_Handler
             $this->plugin->logs->logInfos($settings);
             return true;
         } catch (Exception $e) {
-            $this->plugin->log->logException($e);
+            $this->plugin->logs->logException($e);
         }
 
         return false;

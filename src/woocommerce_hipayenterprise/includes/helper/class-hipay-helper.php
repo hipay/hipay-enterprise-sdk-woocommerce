@@ -42,7 +42,7 @@ class Hipay_Helper
         $orderTotal = 1
     ) {
         $activatedPayment = array();
-        foreach ($plugin->settingsHipay["payment"][$paymentMethodType] as $name => $conf) {
+        foreach ($plugin->settings["payment"][$paymentMethodType] as $name => $conf) {
             if ($conf["activated"]
                 && in_array($currency, $conf["currencies"])
                 && in_array($country, $conf["countries"])
