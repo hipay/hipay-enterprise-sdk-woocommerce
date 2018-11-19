@@ -5,8 +5,6 @@ if (!defined('ABSPATH')) {
     // Exit if accessed directly
 }
 
-use \HiPay\Fullservice\Enum\Transaction\TransactionStatus;
-
 /**
  *
  * WC_Gateway_Hipay
@@ -22,7 +20,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
         public $confHelper;
 
-        protected $api;
+        protected $apiRequestHandler;
 
         public function __construct()
         {
@@ -59,11 +57,9 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
             $this->addActions();
 
-            $this->api = new Hipay_Api($this);
-
             $this->logs = new Hipay_Log($this);
 
-            $this->settingsHandler = new Hipay_Settings_Handler($this);
+            $this->apiRequestHandler = new Hipay_Api_Request_Handler($this);
 
             $this->icon = WC_HIPAYENTERPRISE_URL_ASSETS . '/images/credit_card.png';
 
@@ -356,19 +352,9 @@ if (!class_exists('WC_Gateway_Hipay')) {
         public function process_payment($order_id)
         {
             try {
-                $this->logs->logInfos(" # Process Payment for  " . $order_id );
+                $this->logs->logInfos(" # Process Payment for  " . $order_id);
 
-                $order = wc_get_order($order_id);
-
-                $response = $this->api->requestHostedPaymentPage($order);
-
-                if ($this->confHelper->getPaymentGlobal()["display_hosted_page"] == "iframe") {
-                    $order->update_meta_data( '_hipay_pay_url', esc_url_raw($response));
-                    $order->save();
-                    $redirect = $order->get_checkout_payment_url(true);
-                } else {
-                    $redirect = esc_url_raw($response);
-                }
+                $redirect = $this->apiRequestHandler->handleCreditCard(array("order_id" => $order_id));
 
                 return array(
                     'result' => 'success',
@@ -399,17 +385,17 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 $paymentUrl = $order->get_meta("_hipay_pay_url");
 
                 if (empty($paymentUrl)) {
-                    $this->logs->logInfos(" # No payment Url " . $order_id );
+                    $this->logs->logInfos(" # No payment Url " . $order_id);
                     $this->generate_error_receipt();
                 } else {
-                    $this->logs->logInfos(" # Receipt_page " . $order_id );
+                    $this->logs->logInfos(" # Receipt_page " . $order_id);
 
                     switch ($this->confHelper->getPaymentGlobal()["operating_mode"]) {
                         case OperatingMode::DIRECT_POST:
                             $this->generate_common_receipt();
                             break;
                         case  OperatingMode::HOSTED_PAGE:
-                            if ($this->confHelper->getPaymentGlobal()["display_hosted_page"] = "iframe"){
+                            if ($this->confHelper->getPaymentGlobal()["display_hosted_page"] = "iframe") {
                                 $this->generate_iframe_page($paymentUrl);
                             }
                             break;
@@ -425,7 +411,8 @@ if (!class_exists('WC_Gateway_Hipay')) {
          *  Generate HTML for error in iframe request
          *
          */
-        private function generate_error_receipt() {
+        private function generate_error_receipt()
+        {
             echo __(
                 "Sorry, we cannot process your payment.. Please try again.",
                 "hipayenterprise"
@@ -436,7 +423,8 @@ if (!class_exists('WC_Gateway_Hipay')) {
          *  Generate HTML for direct integration
          *
          */
-        private function generate_common_receipt() {
+        private function generate_common_receipt()
+        {
             echo __(
                 "We have received your order payment. We will process the order as soon as we get the payment confirmation.",
                 "hipayenterprise"
@@ -448,9 +436,12 @@ if (!class_exists('WC_Gateway_Hipay')) {
          *
          * @param $paymentUrl
          */
-        private function generate_iframe_page($paymentUrl) {
+        private function generate_iframe_page($paymentUrl)
+        {
             echo '<div id="wc_hipay_iframe_container">
-                    <iframe id="wc_hipay_iframe" name="wc_hipay_iframe" width="100%" height="475" style="border: 0;" src="' . esc_html($paymentUrl) . '" allowfullscreen="" frameborder="0"></iframe>
+                    <iframe id="wc_hipay_iframe" name="wc_hipay_iframe" width="100%" height="475" style="border: 0;" src="' .
+                esc_html($paymentUrl) .
+                '" allowfullscreen="" frameborder="0"></iframe>
                   </div>';
         }
 
@@ -665,7 +656,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
          */
         public function getApi()
         {
-            return $this->api;
+            return $this->apiRequestHandler->getApi();
         }
 
     }

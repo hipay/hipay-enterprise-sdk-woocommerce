@@ -135,14 +135,15 @@ abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abst
     private function getCustomerShippingInfo()
     {
         $customerShippingInfo = new \HiPay\Fullservice\Gateway\Request\Info\CustomerShippingInfoRequest();
-        $customerShippingInfo->firstname = $this->order->get_shipping_first_name();
-        $customerShippingInfo->lastname = $this->order->get_shipping_last_name();
-        $customerShippingInfo->country = $this->order->get_shipping_country();
-        $customerShippingInfo->streetaddress = $this->order->get_shipping_address_1();
-        $customerShippingInfo->streetaddress2 = $this->order->get_shipping_address_2();
-        $customerShippingInfo->city = $this->order->get_shipping_city();
-        $customerShippingInfo->state = $this->order->get_shipping_state();
-        $customerShippingInfo->zipcode = $this->order->get_shipping_postcode();
+        $customerShippingInfo->shipto_firstname = $this->order->get_shipping_first_name();
+        $customerShippingInfo->shipto_lastname = $this->order->get_shipping_last_name();
+        $customerShippingInfo->shipto_country = $this->order->get_shipping_country();
+        $customerShippingInfo->shipto_streetaddress = $this->order->get_shipping_address_1();
+        $customerShippingInfo->shipto_streetaddress2 = $this->order->get_shipping_address_2();
+        $customerShippingInfo->shipto_city = $this->order->get_shipping_city();
+        $customerShippingInfo->shipto_state = $this->order->get_shipping_state();
+        $customerShippingInfo->shipto_zipcode = $this->order->get_shipping_postcode();
+        $customerShippingInfo->shipto_phone = $this->order->get_billing_phone();
 
         return $customerShippingInfo;
     }

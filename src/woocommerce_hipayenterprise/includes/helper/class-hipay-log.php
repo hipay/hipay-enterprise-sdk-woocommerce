@@ -140,4 +140,15 @@ class Hipay_Log
         }
         return null;
     }
+
+    /**
+     *  Convert Object to Array
+     *
+     * @param $object
+     * @return array
+     */
+    private function toArray($object)
+    {
+        return (array)$object;
+    }
 }

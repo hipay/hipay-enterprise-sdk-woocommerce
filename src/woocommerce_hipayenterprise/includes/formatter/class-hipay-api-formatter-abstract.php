@@ -22,6 +22,7 @@ abstract class Hipay_Api_Formatter_Abstact
         $this->plugin = $plugin;
         $this->order = $order;
     }
+
     abstract public function generate();
 
     abstract protected function mapRequest(&$request);

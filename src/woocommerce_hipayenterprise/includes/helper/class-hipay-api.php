@@ -9,10 +9,7 @@ use \HiPay\Fullservice\HTTP\Configuration\Configuration;
 class Hipay_Api
 {
 
-    private $configHipay = array();
-
     protected $plugin;
-
 
     /**
      *
@@ -55,6 +52,22 @@ class Hipay_Api
         return new \HiPay\Fullservice\Gateway\Client\GatewayClient($clientProvider);
     }
 
+    public function requestDirectPost($order, $params)
+    {
+        try {
+            $gatewayClient = $this->createGatewayClient();
+            $this->iniParamsWithConfiguration($params);
+
+            $directPostFormatter = new Hipay_Direct_Post_Formatter($this->plugin, $params, $order);
+            $orderRequest = $directPostFormatter->generate();
+            return $gatewayClient->requestNewOrder($orderRequest);
+
+        } catch (Exception $e) {
+            $this->plugin->logs->logException($e);
+            throw new Exception($e->getMessage());
+        }
+    }
+
     /**
      * @param $order
      * @return string
@@ -75,6 +88,7 @@ class Hipay_Api
                 $order->get_currency(),
                 $order->get_total()
             );
+
             $params["productlist"] = join(",", array_keys($activatedPayment));
 
             $hostedPaymentFormatter = new Hipay_Hosted_Payment_Formatter($this->plugin, $params, $order);
