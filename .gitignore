@@ -9,6 +9,7 @@ hipay\.enterprise\.woocommerce\.sdk\.sublime-workspace
 # Third party #
 ######################
 wordpress/
+data/
 bin/package/
 src/woocommerce_hipayenterprise/vendor
 
