@@ -63,6 +63,7 @@ if (!class_exists('WC_HipayEnterprise')) {
                 WC_HipayEnterprise::loadClassesHipay();
                 $methods[] = 'Gateway_Hipay';
                 $methods[] = 'Hipay_Bnpp3x';
+                $methods[] = 'Hipay_Bnpp4x';
                 return $methods;
             }
         }
@@ -72,9 +73,12 @@ if (!class_exists('WC_HipayEnterprise')) {
          */
         public static function loadClassesHipay()
         {
-            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/class-gateway-hipay.php');
-            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/payment-methods/class-hipay-bnpp3x.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'vendor/autoload.php');
+            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/gateways/class-hipay-gateway-abstract.php');
+            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/gateways/class-hipay-gateway-local-abstract.php');
+            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/gateways/class-gateway-hipay.php');
+            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/gateways/local/class-hipay-bnpp3x.php');
+            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/gateways/local/class-hipay-bnpp4x.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-log.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-notification.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-order-handler.php');

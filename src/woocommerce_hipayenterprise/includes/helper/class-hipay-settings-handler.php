@@ -1,5 +1,5 @@
 <?php
-if (! defined('ABSPATH')) {
+if (!defined('ABSPATH')) {
     exit;
 }
 
@@ -144,28 +144,23 @@ class Hipay_Settings_Handler
         return false;
     }
 
-    public function saveLocalPaymentSettings(&$settings)
+    public function saveLocalPaymentSettings(&$settings, $methods)
     {
         $this->plugin->logs->logInfos("# SaveLocalPaymentSettings");
 
         try {
             $keySaved = array(
-                "activated",
                 "currencies",
                 "countries",
                 "minAmount",
                 "maxAmount"
             );
 
-            $methodsLocalPayment = $this->plugin->confHelper->getLocalPayment();
-            foreach ($methodsLocalPayment as $card => $conf) {
-                foreach ($conf as $key => $value) {
-                    if (in_array($key, $keySaved)) {
-                        $settings["payment"]["local_payment"][$card][$key] = $_POST["woocommerce_hipayenterprise_methods_local_" .
-                        $key][$card];
-                    } else {
-                        $settings["payment"]["local_payment"][$card][$key] = $methodsLocalPayment[$card][$key];
-                    }
+            $settings = $this->plugin->confHelper->getLocalPayments();
+
+            foreach ($settings[$methods] as $key => $value) {
+                if (in_array($key, $keySaved)) {
+                    $settings[$methods][$key] = $_POST["woocommerce_hipayenterprise_methods_" . $key][$methods];
                 }
             }
 

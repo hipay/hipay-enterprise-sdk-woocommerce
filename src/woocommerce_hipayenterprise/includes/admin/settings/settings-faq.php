@@ -9,8 +9,8 @@ return array(
         'type' => 'title',
         'description' => ''
     ),
-    'faqs_details' => array(
-        'type' => 'faqs_details',
-    ),
+//    'faqs_details' => array(
+//        'type' => 'faqs_details',
+//    ),
 );
 

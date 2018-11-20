@@ -139,9 +139,4 @@
     </td>
 </tr>
 
-<tr valign="top">
-    <th colspan="2" align="right"><?php submit_button(); ?></th>
-</tr>
-
-
 

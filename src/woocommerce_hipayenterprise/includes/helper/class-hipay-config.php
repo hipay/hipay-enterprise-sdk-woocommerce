@@ -8,8 +8,11 @@ use HiPay\Fullservice\Enum\Helper\HashAlgorithm;
 class Hipay_Config
 {
 
+    const OPTION_KEY = "hipay_enterprise";
+
     protected $plugin;
 
+    private $configHipay = array();
 
     /**
      *
@@ -27,7 +30,11 @@ class Hipay_Config
      */
     public function getConfigHipay()
     {
-        return $this->plugin->settings;
+        if (empty($this->configHipay)) {
+            $this->initConfigHiPay();
+        }
+
+        return $this->configHipay;
     }
 
     /**
@@ -35,27 +42,36 @@ class Hipay_Config
      */
     public function initConfigHiPay()
     {
+
+        $this->configHipay = get_option(self::OPTION_KEY, array());
+
         // if config exist but empty, init new object for configHipay
-        if (!$this->plugin->settings || empty($this->plugin->settings)) {
+        if (!$this->configHipay || empty($this->configHipay)) {
             $this->insertConfigHiPay();
             $this->plugin->init_settings();
         }
     }
 
+    /**
+     *
+     */
     public function insertConfigHiPay()
     {
         $configFields = $this->getDefaultConfig();
         $configFields["payment"]["credit_card"] = $this->insertPaymentsConfig("creditCard/");
         $configFields["payment"]["local_payment"] = $this->insertPaymentsConfig("local/");
 
-        update_option($this->plugin->get_option_key(), $configFields);
+        update_option(self::OPTION_KEY, $configFields);
     }
 
+    /**
+     * @param $settings
+     */
     public function saveConfiguration($settings)
     {
         $configFields = array_merge($this->getConfigHipay(), $settings);
 
-        update_option($this->plugin->get_option_key(), $configFields);
+        update_option(self::OPTION_KEY, $configFields);
     }
 
     /**
@@ -161,6 +177,14 @@ class Hipay_Config
     /**
      * @return mixed
      */
+    public function getPayment()
+    {
+        return $this->getConfigHipay()["payment"];
+    }
+
+    /**
+     * @return mixed
+     */
     public function getPaymentGlobal()
     {
         return $this->getConfigHipay()["payment"]["global"];
@@ -185,9 +209,18 @@ class Hipay_Config
     /**
      * @return mixed
      */
-    public function getLocalPayment()
+    public function getLocalPayments()
     {
         return $this->getConfigHipay()["payment"]["local_payment"];
+    }
+
+    /**
+     * @param $paymentId
+     * @return mixed
+     */
+    public function getLocalPayment($paymentId)
+    {
+        return $this->getConfigHipay()["payment"]["local_payment"][$paymentId];
     }
 
     /**
@@ -208,13 +241,15 @@ class Hipay_Config
      */
     public function setConfigHiPay($key, $value, $child = null)
     {
+        $conf = $this->getConfigHipay();
+
         if (isset($child)) {
-            $this->plugin->settings[$key][$child] = $value;
+            $conf[$key][$child] = $value;
         } else {
-            $this->plugin->settings[$key] = $value;
+            $conf[$key] = $value;
         }
 
-        update_option($this->plugin->get_option_key(), $this->plugin->settings);
+        update_option(self::OPTION_KEY, $conf);
     }
 
     /**

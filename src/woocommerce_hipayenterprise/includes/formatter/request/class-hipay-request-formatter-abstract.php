@@ -24,7 +24,7 @@ abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abst
     protected function mapRequest(&$orderRequest)
     {
         $orderRequest->orderid = $this->order->id . '-' . time();
-        if ($this->settings["payment"]["global"]["capture_mode"] === CaptureMode::AUTOMATIC) {
+        if ($this->plugin->confHelper->getPaymentGlobal()["capture_mode"] === CaptureMode::AUTOMATIC) {
             $orderRequest->operation = "Sale";
         } else {
             $orderRequest->operation = "Authorization";
@@ -40,7 +40,7 @@ abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abst
         $orderRequest->pending_url = $this->order->get_checkout_order_received_url();
         $orderRequest->exception_url = $this->order->get_cancel_order_url_raw();
 
-        if ((bool)$this->settings["payment"]["global"]["send_url_notification"]) {
+        if ((bool)$this->plugin->confHelper->getPaymentGlobal()["send_url_notification"]) {
             $orderRequest->notify_url = $this->getCallbackUrl();
         }
 

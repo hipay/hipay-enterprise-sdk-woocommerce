@@ -16,9 +16,6 @@ if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
 }
 
 ?>
-<h3><?php _e('Payments with HiPay Enterprise', 'hipayenterprise'); ?></h3>
-<p></p>
-
 <table class="wc_emails widefat" cellspacing="0">
     <tbody>
     <tr>
@@ -130,8 +127,6 @@ if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
                     class="dashicons dashicons-warning"></span> <?php _e("Fraud"); ?></a>
         <a href="#faqs" id="faqs-tab" class="nav-tab hipayenterprise-tab" data-toggle="faqs"><span
                     class="dashicons dashicons-admin-comments"></span> <?php _e("FAQ"); ?></a>
-        <a href="#logs" id="logs-tab" class="nav-tab hipayenterprise-tab" data-toggle="logs"><span
-                    class="dashicons dashicons-admin-page"></span> <?php _e("LOGS"); ?></a>
     </h2>
 
 
@@ -161,15 +156,6 @@ if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
             ?>
         </table>
     </div>
-    <div id="logs" class="hidden hipayenterprise-tab-content">
-        <table class="form-table">
-            <?php
-            $this->generate_settings_html($this->logs);
-            ?>
-        </table>
-    </div>
-
-
 </div><!-- /.wrap -->
 
 <script type="text/javascript">
