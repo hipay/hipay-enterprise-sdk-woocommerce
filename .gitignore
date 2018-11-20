@@ -12,7 +12,7 @@ wordpress/
 data/
 bin/package/
 src/woocommerce_hipayenterprise/vendor
-
+bin/docker/conf/development/hipay.env
 ######################
 # Logs and databases #
 ######################

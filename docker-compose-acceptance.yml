@@ -15,14 +15,7 @@ services:
     restart: always
     env_file:
       - ./bin/docker/conf/acceptance/hipay.env.sample
-    environment:
-      WOOCOMMERCE_VERSION: 3.4.4
-      ADMIN_USERNAME: "admin"
-      ADMIN_EMAIL: "admin-wordpress@hipay.com"
-      ADMIN_PASSWORD: "hipay"
-      WORDPRESS_DB_HOST: ${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}_database
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: wordpress
+      - bin/docker/conf/acceptance/wordpress.env.sample
     labels:
       - "com.hipay.ir.publish=1"
       - "com.hipay.ir.name=web"
@@ -43,11 +36,8 @@ services:
   database:
     image: mysql:5.7
     restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: somewordpress
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: wordpress
-      MYSQL_PASSWORD: wordpress
+    env_file:
+      - bin/docker/conf/acceptance/wordpress.env.sample
     networks:
       traefik_traefik:
       wordpress:

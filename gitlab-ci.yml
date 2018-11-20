@@ -29,10 +29,12 @@ deploy2recette:
   - sed -i "s/$(echo {HIPAY_SECRET_PASSPHRASE_RECETTE} | sed -e 's/\([[\/.*]\|\]\)/\\&/g')/$(echo '$HIPAY_SECRET_PASSPHRASE_RE7' | sed -e 's/[\/&]/\\&/g')/g" ./bin/docker/conf/acceptance/hipay.env.sample
   # Substitute env variables which doesn't exists on the distant machine
   - /tools/substitute-env-var.sh docker-compose.acceptance.yml
+  - /tools/substitute-env-var.sh ./bin/docker/conf/acceptance/wordpress.env.sample
   # Change path for relative path to environment files
   - sed -i -e "s|bin/docker/conf/acceptance/hipay.env.sample|hipay.env.sample|g" docker-compose.acceptance.yml
+  - sed -i -e "s|bin/docker/conf/acceptance/wordpress.env.sample|wordpress.env.sample|g" docker-compose.acceptance.yml
   script:
-  - bash /tools/deployToDockerMachine.sh -e ./bin/docker/conf/acceptance/hipay.env.sample -s docker-compose.acceptance.yml -n $DOCKER_STACK-$DOCKER_SERVICE-$CI_COMMIT_REF_SLUG
+  - bash /tools/deployToDockerMachine.sh -e ./bin/docker/conf/acceptance/hipay.env.sample -e ./bin/docker/conf/acceptance/wordpress.env.sample -s docker-compose.acceptance.yml -n $DOCKER_STACK-$DOCKER_SERVICE-$CI_COMMIT_REF_SLUG
   allow_failure: true
   tags:
   - pi-commerce-no-overlay
