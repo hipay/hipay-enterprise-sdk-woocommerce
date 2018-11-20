@@ -354,7 +354,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
         public function process_payment($order_id)
         {
             try {
-                $this->logs->logInfos(" # Process Payment for  " . $order_id);
+                $this->logs->logInfos(" # Process Payment for  " . $order_id );
 
                 $redirect = $this->apiRequestHandler->handleCreditCard(array("order_id" => $order_id));
 
