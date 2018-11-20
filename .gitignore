@@ -10,7 +10,6 @@ hipay\.enterprise\.woocommerce\.sdk\.sublime-workspace
 ######################
 wordpress/
 data/
-bin/package/
 src/woocommerce_hipayenterprise/vendor
 bin/docker/conf/development/hipay.env
 ######################
