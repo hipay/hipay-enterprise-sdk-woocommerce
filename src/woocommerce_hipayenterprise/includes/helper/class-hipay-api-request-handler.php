@@ -95,13 +95,13 @@ class Hipay_Api_Request_Handler
                 break;
             case TransactionState::DECLINED:
                 $reason = $response->getReason();
-                $this->logs->logInfos('There was an error request new transaction: ' . $reason['message']);
+                $this->plugin->logs->logInfos('There was an error request new transaction: ' . $reason['message']);
                 throw new Exception(
                     __('Sorry, we cannot process your payment.. Please try again.', "hipayenterprise")
                 );
             case TransactionState::ERROR:
                 $reason = $response->getReason();
-                $this->logs->logInfos('There was an error request new transaction: ' . $reason['message']);
+                $this->plugin->logs->logInfos('There was an error request new transaction: ' . $reason['message']);
                 throw new Exception(
                     __('Sorry, we cannot process your payment.. Please try again.', "hipayenterprise")
                 );

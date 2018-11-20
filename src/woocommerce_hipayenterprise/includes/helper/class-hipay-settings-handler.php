@@ -8,7 +8,6 @@ class Hipay_Settings_Handler
 
     protected $plugin;
 
-
     /**
      *
      */

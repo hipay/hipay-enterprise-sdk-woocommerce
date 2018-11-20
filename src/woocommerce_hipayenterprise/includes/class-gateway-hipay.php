@@ -61,6 +61,8 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
             $this->apiRequestHandler = new Hipay_Api_Request_Handler($this);
 
+            $this->settingsHandler = new Hipay_Settings_Handler($this);
+
             $this->icon = WC_HIPAYENTERPRISE_URL_ASSETS . '/images/credit_card.png';
 
             $this->title = __('Pay by Credit Card', $this->id);

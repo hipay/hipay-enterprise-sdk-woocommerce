@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 use HiPay\Fullservice\Enum\Transaction\ECI;
 
 abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abstact
@@ -15,7 +19,7 @@ abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abst
     /**
      * Map Request (Hosted or direct Post)
      *
-     * @param type $order
+     * @param type $orderRequest
      */
     protected function mapRequest(&$orderRequest)
     {
@@ -83,7 +87,6 @@ abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abst
     /**
      * Return welll formed description
      *
-     * @param type $order
      * @return string
      */
     protected function generateDescription()
@@ -111,40 +114,25 @@ abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abst
      */
     private function getCustomerBillingInfo()
     {
-        $customerBillingInfo = new \HiPay\Fullservice\Gateway\Request\Info\CustomerBillingInfoRequest();
-        $customerBillingInfo->firstname = $this->order->get_billing_first_name();
-        $customerBillingInfo->lastname = $this->order->get_billing_last_name();
-        $customerBillingInfo->email = $this->order->get_billing_email();
-        $customerBillingInfo->country = $this->order->get_billing_country();
-        $customerBillingInfo->streetaddress = $this->order->get_billing_address_1();
-        $customerBillingInfo->streetaddress2 = $this->order->get_billing_address_2();
-        $customerBillingInfo->city = $this->order->get_billing_city();
-        $customerBillingInfo->state = $this->order->get_billing_state();
-        $customerBillingInfo->zipcode = $this->order->get_billing_postcode();
 
-        //Todo use specific formatter
-        //$billingInfo = new CustomerBillingInfoFormatter($this->module, $this->cart, $this->params["method"]);
+        $billingInfo = new Hipay_Customer_Billing_Info_Formatter(
+            $this->plugin,
+            $this->order,
+            $this->params["paymentProduct"]
+        );
 
-        return $customerBillingInfo;
+        return $billingInfo->generate();
     }
 
     /**
      * return mapped customer shipping informations
+     *
      * @return \HiPay\Fullservice\Gateway\Request\Info\CustomerShippingInfoRequest
      */
     private function getCustomerShippingInfo()
     {
-        $customerShippingInfo = new \HiPay\Fullservice\Gateway\Request\Info\CustomerShippingInfoRequest();
-        $customerShippingInfo->shipto_firstname = $this->order->get_shipping_first_name();
-        $customerShippingInfo->shipto_lastname = $this->order->get_shipping_last_name();
-        $customerShippingInfo->shipto_country = $this->order->get_shipping_country();
-        $customerShippingInfo->shipto_streetaddress = $this->order->get_shipping_address_1();
-        $customerShippingInfo->shipto_streetaddress2 = $this->order->get_shipping_address_2();
-        $customerShippingInfo->shipto_city = $this->order->get_shipping_city();
-        $customerShippingInfo->shipto_state = $this->order->get_shipping_state();
-        $customerShippingInfo->shipto_zipcode = $this->order->get_shipping_postcode();
-        $customerShippingInfo->shipto_phone = $this->order->get_billing_phone();
+        $customerShippingInfo = new Hipay_Customer_Shipping_Info_Formatter($this->plugin, $this->order);
 
-        return $customerShippingInfo;
+        return $customerShippingInfo->generate();
     }
 }
