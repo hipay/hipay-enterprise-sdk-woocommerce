@@ -34,38 +34,3 @@
 	min-width: 180px !important;
 	min-height: 120px;
 }
-
-.wc_hipay_iframe_container {
-    position: relative;
-    padding-bottom: 56.25%;
-    padding-top: 35px;
-    height: 0;
-    overflow: hidden;
-}
-
-
-.wc_hipay_iframe_container iframe {
-    position: absolute;
-    top:0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-#saveTokenHipay {
-	float:left;
-}
-
-#hipayPaymentInformationsTitle {
-	font-weight: bold;
-	margin-bottom: 15px;
-}
-
-#hipayPaymentInformationsInfo {
-	font-weight: normal;
-	margin-bottom: 10px;
-}
-
-#hiPay_error_message {
-	font-weight: bold;
-}

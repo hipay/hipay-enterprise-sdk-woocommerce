@@ -52,6 +52,12 @@ class Hipay_Api
         return new \HiPay\Fullservice\Gateway\Client\GatewayClient($clientProvider);
     }
 
+    /**
+     * @param $order
+     * @param $params
+     * @return \HiPay\Fullservice\Gateway\Model\Transaction|\HiPay\Fullservice\Model\AbstractModel
+     * @throws Exception
+     */
     public function requestDirectPost($order, $params)
     {
         try {

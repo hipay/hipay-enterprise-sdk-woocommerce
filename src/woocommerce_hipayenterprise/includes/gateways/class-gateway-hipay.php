@@ -43,19 +43,45 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
             $this->init_settings();
 
-            // TODO faire une classe asset front
-            wp_enqueue_style(
-                'hipayenterprise-style',
-                plugins_url('/assets/css/style.css', __FILE__),
-                array(),
-                'all'
-            );
-            wp_enqueue_style(
-                'hipayenterprise-card-style',
-                plugins_url('/assets/css/card-js.min.css', __FILE__),
-                array(),
-                'all'
-            );
+            $this->confHelper->initConfigHiPay();
+
+            $this->addActions();
+
+            $this->logs = new Hipay_Log($this);
+
+            $this->apiRequestHandler = new Hipay_Api_Request_Handler($this);
+
+            $this->settingsHandler = new Hipay_Settings_Handler($this);
+
+            $this->icon = WC_HIPAYENTERPRISE_URL_ASSETS . '/images/credit_card.png';
+
+            $this->title = __('Pay by Credit Card', $this->id);
+
+            if (is_page() && is_checkout() &&  ! is_order_received_page() ) {
+                wp_enqueue_style(
+                    'hipayenterprise-style',
+                    plugins_url('/assets/css/frontend/hipay.css', WC_HIPAYENTERPRISE_BASE_FILE),
+                    array(),
+                    'all'
+                );
+
+                wp_enqueue_style(
+                    'hipayenterprise-style-hosted',
+                    plugins_url('/assets/css/frontend/hosted-fields.css', WC_HIPAYENTERPRISE_BASE_FILE),
+                    array(),
+                    'all'
+                );
+
+                wp_enqueue_script('hipay-js-hosted-fields-sdk',
+                    'https://libs.hipay.com/js/sdkjs.js', array(),
+                    'all',
+                    true);
+
+                wp_enqueue_script('hipay-js-front',
+                    plugins_url('/assets/js/frontend/hosted-fields.js', WC_HIPAYENTERPRISE_BASE_FILE),
+                    array(), 'all',
+                    true);
+            }
         }
 
         /**
@@ -65,7 +91,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
         {
             parent::addActions();
             add_action('woocommerce_receipt_' . $this->id, array($this, 'receipt_page'));
-            add_action('woocommerce_after_order_notes', array($this, 'custom_checkout_field_hipay_enterprise'));
+            add_action( 'wp_print_scripts', array($this, 'localize_scripts'), 5 );
         }
 
 
@@ -91,14 +117,17 @@ if (!class_exists('WC_Gateway_Hipay')) {
         {
             $paymentGlobal = $this->confHelper->getPaymentGlobal();
             if ($paymentGlobal['operating_mode'] == OperatingMode::HOSTED_PAGE) {
-                if ($paymentGlobal['display_hosted_page'] == "redirect") {
-                    _e(
-                        'You will be redirected to an external payment page. Please do not refresh the page during the process.',
-                        $this->id
-                    );
-                } else {
-                    _e('Pay with your credit card.', $this->id);
-                }
+                _e(
+                    'You will be redirected to an external payment page. Please do not refresh the page during the process.',
+                    $this->id
+                );
+            } else if ($paymentGlobal['operating_mode'] == OperatingMode::DIRECT_POST) {
+                $this->process_template(
+                    'hosted-fields.php',
+                    'frontend',
+                    array(
+                    )
+                );
             }
         }
 
@@ -122,6 +151,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
             ob_start();
             $this->process_template(
                 'admin-account-settings.php',
+                'admin',
                 array(
                     'account' => $this->confHelper->getAccount()
                 )
@@ -138,9 +168,28 @@ if (!class_exists('WC_Gateway_Hipay')) {
             ob_start();
             $this->process_template(
                 'admin-creditcard-settings.php',
+                'admin',
                 array(
                     'configurationPaymentMethod' => $this->confHelper->getPaymentCreditCard(),
                     'methods' => 'creditCard'
+                )
+            );
+
+            return ob_get_clean();
+        }
+
+        /**
+         *
+         */
+        public function generate_methods_local_payments_settings_html()
+        {
+            ob_start();
+            $this->process_template(
+                'admin-creditcard-settings.php',
+                'admin',
+                array(
+                    'configurationPaymentMethod' => $this->confHelper->getLocalPayment(),
+                    'methods' => 'local'
                 )
             );
 
@@ -155,6 +204,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
             ob_start();
             $this->process_template(
                 'admin-global-settings.php',
+                'admin',
                 array(
                     'paymentCommon' => $this->confHelper->getPaymentGlobal()
                 )
@@ -177,11 +227,42 @@ if (!class_exists('WC_Gateway_Hipay')) {
         /**
          * @return string
          */
+        public function generate_currencies_details_html()
+        {
+            ob_start();
+            $this->process_template(
+                'admin-currencies-settings.php',
+                'admin',
+                array(
+                    'woocommerce_currencies' => get_woocommerce_currencies(),
+                )
+            );
+
+            return ob_get_clean();
+        }
+
+        /**
+         * @return string
+         */
+        public function generate_logs_details_html()
+        {
+            ob_start();
+            $this->process_template('admin-logs-settings.php',
+                'admin',
+                array());
+
+            return ob_get_clean();
+        }
+
+        /**
+         * @return string
+         */
         public function generate_fraud_details_html()
         {
             ob_start();
             $this->process_template(
                 'admin-fraud-settings.php',
+                'admin',
                 array(
                     'fraud' => $this->confHelper->getFraud()
                 )
@@ -196,13 +277,41 @@ if (!class_exists('WC_Gateway_Hipay')) {
         public function admin_options()
         {
             parent::admin_options();
-            $this->process_template('admin-general-settings.php');
+            $this->process_template('admin-general-settings.php','admin');
         }
 
         public function thanks_page($order_id)
         {
             global $woocommerce;
         }
+
+        /**
+         *
+         */
+        public function localize_scripts() {
+            $sandbox = $this->confHelper->getAccount()["global"]["sandbox_mode"];
+            $username = ($sandbox) ? $this->confHelper->getAccount()["sandbox"]["api_tokenjs_username_sandbox"]
+                : $this->confHelper->getAccount()["production"]["api_tokenjs_username_production"];
+            $password = ($sandbox) ? $this->confHelper->getAccount()["sandbox"]["api_tokenjs_password_publickey_sandbox"]
+                : $this->confHelper->getAccount()["production"]["api_tokenjs_password_publickey_production"];
+
+            wp_localize_script( 'hipay-js-front', 'hipay_config', array(
+                "apiUsernameTokenJs" =>  $username,
+                "apiPasswordTokenJs" => $password,
+                "environment" => $sandbox ? "stage" : "production",
+                "fontFamily" => "",
+                "color" => "",
+                "fontSize" => "",
+                "fontWeight" => "",
+                "placeholderColor" => "",
+                "caretColor" => "",
+                "iconColor" => "",
+                "defaultFirstname" => "",
+                "defaultLastname" => "",
+            ));
+        }
+
+
 
         /**
          *
@@ -308,89 +417,5 @@ if (!class_exists('WC_Gateway_Hipay')) {
                   </div>';
         }
 
-        public function custom_checkout_field_hipay_enterprise($checkout)
-        {
-            echo "<div id='hipay_dp' style='display:none;'>";
-            woocommerce_form_field(
-                'hipay_token',
-                array(
-                    'type' => 'text',
-                ),
-                $checkout->get_value('hipay_token')
-            );
-            woocommerce_form_field(
-                'hipay_brand',
-                array(
-                    'type' => 'text',
-                ),
-                $checkout->get_value('hipay_brand')
-            );
-            woocommerce_form_field(
-                'hipay_pan',
-                array(
-                    'type' => 'text',
-                ),
-                $checkout->get_value('hipay_pan')
-            );
-            woocommerce_form_field(
-                'hipay_card_holder',
-                array(
-                    'type' => 'text',
-                ),
-                $checkout->get_value('hipay_card_holder')
-            );
-            woocommerce_form_field(
-                'hipay_card_expiry_month',
-                array(
-                    'type' => 'text',
-                ),
-                $checkout->get_value('hipay_card_expiry_month')
-            );
-            woocommerce_form_field(
-                'hipay_card_expiry_year',
-                array(
-                    'type' => 'text',
-                ),
-                $checkout->get_value('hipay_card_expiry_year')
-            );
-            woocommerce_form_field(
-                'hipay_issuer',
-                array(
-                    'type' => 'text',
-                ),
-                $checkout->get_value('hipay_issuer')
-            );
-            woocommerce_form_field(
-                'hipay_country',
-                array(
-                    'type' => 'text',
-                ),
-                $checkout->get_value('hipay_country')
-            );
-            woocommerce_form_field(
-                'hipay_multiuse',
-                array(
-                    'type' => 'text',
-                ),
-                $checkout->get_value('hipay_multiuse')
-            );
-            woocommerce_form_field(
-                'hipay_direct_error',
-                array(
-                    'type' => 'text',
-                ),
-                $checkout->get_value('hipay_direct_error')
-            );
-
-            woocommerce_form_field(
-                'hipay_delete_info',
-                array(
-                    'type' => 'text',
-                ),
-                $checkout->get_value('hipay_delete_info')
-            );
-
-            echo "</div>";
-        }
     }
 }

@@ -33,12 +33,41 @@ class Hipay_Api_Request_Handler
 
     /**
      * @param $params
+     */
+    public function initParamsDirectPost(&$params) {
+        $params["deviceFingerprint"] = $_POST['ioBB'];
+        $params["paymentProduct"] = $_POST['card-brand'];
+        $params["cardtoken"] = $_POST['card-token'];
+        $params["method"] = $_POST['card-brand'];
+        $params["authentication_indicator"] = $this->plugin->confHelper->getPaymentGlobal()["activate_3d_secure"];
+    }
+
+    /**
+     * @param $params
      * @return string
      * @throws Hipay_Payment_Exception
      */
     public function handleCreditCard($params)
     {
-        return $this->handleHostedPayment($params);
+        switch ($this->plugin->confHelper->getPaymentGlobal()["operating_mode"]) {
+            case OperatingMode::DIRECT_POST:
+                return $this->handleDirectOrder($params);
+            case OperatingMode::HOSTED_PAGE:
+                return $this->handleHostedPayment($params);
+        }
+    }
+
+    /**
+     * Return mapped payment method
+     *
+     * @param $params
+     * @param bool $creditCard
+     * @return \HiPay\Fullservice\Gateway\Request\PaymentMethod\CardTokenPaymentMethod|mixed
+     */
+    private function getPaymentMethod($params, $creditCard = true)
+    {
+        $paymentMethod = new Hipay_Card_Token_Formatter($this->plugin, $params);
+        return $paymentMethod->generate();
     }
 
     /**
@@ -88,13 +117,17 @@ class Hipay_Api_Request_Handler
     {
         $order = wc_get_order($params["order_id"]);
 
+        $this->initParamsDirectPost($params);
+        $params["paymentMethod"] = $this->getPaymentMethod($params);
+
         $response = $this->api->requestDirectPost($order, $params);
+
         $forwardUrl = $response->getForwardUrl();
-        $redirectUrl = '';
 
         switch ($response->getState()) {
             case TransactionState::COMPLETED:
             case TransactionState::PENDING:
+                $redirectUrl =  $order->get_checkout_order_received_url();
                 break;
             case TransactionState::FORWARDING:
                 $redirectUrl = $forwardUrl;
@@ -117,7 +150,7 @@ class Hipay_Api_Request_Handler
                 );
             default:
                 throw new Hipay_Payment_Exception(
-                    __('Sorry, we cannot process your payment.. Please try again.', "hipayenterprise")
+                    __('Sorry, we cannot process your payment. Please try again.', "hipayenterprise")
                 );
         }
 

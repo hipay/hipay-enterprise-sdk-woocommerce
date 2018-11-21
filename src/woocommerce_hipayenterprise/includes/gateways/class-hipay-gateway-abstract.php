@@ -124,10 +124,10 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
      * @param $template
      * @param array $args
      */
-    public function process_template($template, $args = array())
+    public function process_template($template, $type, $args = array())
     {
         extract($args);
-        $file = WC_HIPAYENTERPRISE_PATH . 'includes/admin/template/' . $template;
+        $file = WC_HIPAYENTERPRISE_PATH . 'includes/' . $type . '/template/' . $template;
         include $file;
     }
 }
