@@ -45,6 +45,7 @@ deploy2recette:
   - sed -i -e "s/{HIPAY_TOKENJS_USERNAME_RECETTE\}/$HIPAY_TOKENJS_USERNAME_RE7/" ./bin/docker/conf/acceptance/hipay.env.sample
   - sed -i -e "s/{HIPAY_SECRET_PASSPHRASE_RECETTE\}/$HIPAY_SECRET_PASSPHRASE_RE7/" ./bin/docker/conf/acceptance/hipay.env.sample
   - sed -i -e "s/{DB_HOST\}/${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}_database/" ./bin/docker/conf/acceptance/wordpress.env.sample
+  - sed -i -e "s/{WORDPRESS_URL\}/${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}.hipay-pos-platform.com/" ./bin/docker/conf/acceptance/wordpress.env.sample
   - sed -i "s/$(echo {HIPAY_SECRET_PASSPHRASE_RECETTE} | sed -e 's/\([[\/.*]\|\]\)/\\&/g')/$(echo '$HIPAY_SECRET_PASSPHRASE_RE7' | sed -e 's/[\/&]/\\&/g')/g" ./bin/docker/conf/acceptance/hipay.env.sample
   # Substitute env variables which doesn't exists on the distant machine
   - /tools/substitute-env-var.sh docker-compose.acceptance.yml
