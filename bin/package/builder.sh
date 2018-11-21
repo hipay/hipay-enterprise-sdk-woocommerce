@@ -3,24 +3,24 @@ version=1.0.0
 
 function cleanAndPackage()
 {
-    sudo cp -Rf src/woocommerce_hipayenterprise bin/package/hipay-enterprise-sdk-woocommerce
+    cp -Rf src/woocommerce_hipayenterprise bin/package/
     cd bin/package/
 
     ############################################
     #####          CLEAN IDEA FILE           ####
     ############################################
     if [ -d hipay_enterprise/nbproject ]; then
-        rm -R hipay-enterprise-sdk-woocommerce/nbproject
+        rm -R woocommerce_hipayenterprise/nbproject
     fi
 
     if [ -d hipay_enterprise/.idea ]; then
-        rm -R hipay-enterprise-sdk-woocommerce/.idea
+        rm -R woocommerce_hipayenterprise/.idea
     fi
 
-    find hipay-enterprise-sdk-woocommerce/ -type d -exec cp index.php {} \;
+    find woocommerce_hipayenterprise/ -type d -exec cp index.php {} \;
 
-    zip -r hipay-enterprise-sdk-woocommerce-$version.zip hipay-enterprise-sdk-woocommerce
-    sudo rm -R hipay-enterprise-sdk-woocommerce
+    zip -r hipay-enterprise-sdk-woocommerce-$version.zip woocommerce_hipayenterprise
+    rm -R woocommerce_hipayenterprise
 }
 
 function show_help()

@@ -11,7 +11,7 @@ sleep 20
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     printf "\n${COLOR_SUCCESS}            INSTALL WOOCOMMERCE           ${NC}\n"
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
-    wp core install --url=http://localhost:8000 --title="Test Wordpress" --admin_user=$ADMIN_USERNAME --admin_password=$ADMIN_PASSWORD --admin_email=$ADMIN_EMAIL --allow-root --path="/var/www/html"
+    wp core install --url=$WORDPRESS_URL --title="Test Wordpress" --admin_user=$ADMIN_USERNAME --admin_password=$ADMIN_PASSWORD --admin_email=$ADMIN_EMAIL --allow-root --path="/var/www/html"
     wp plugin install woocommerce --version=$WOOCOMMERCE_VERSION --allow-root --activate --path="/var/www/html"
     wp theme install storefront --allow-root --activate --path="/var/www/html"
     wp plugin install wordpress-importer --activate --allow-root --path="/var/www/html"
@@ -27,6 +27,11 @@ sleep 20
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     cd /var/www/html/wp-content/plugins/woocommerce_hipayenterprise/ \
     && composer install --no-dev
+
+    printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+    printf "\n${COLOR_SUCCESS}    INSTALL HIPAY WOOCOMMERCE MODULE     ${NC}\n"
+    printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+    wp plugin activate woocommerce_hipayenterprise --allow-root
 
     #==========================================
     # Import sample data
