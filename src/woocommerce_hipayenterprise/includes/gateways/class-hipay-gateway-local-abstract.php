@@ -13,7 +13,10 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
     public function admin_options()
     {
         parent::admin_options();
-        $this->process_template('admin-local-settings.php');
+        $this->process_template('admin-local-settings.php',
+            'admin',
+            array()
+        );
     }
 
     /**
@@ -39,6 +42,7 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
         ob_start();
         $this->process_template(
             'admin-paymentlocal-settings.php',
+            'admin',
             array(
                 'configurationPaymentMethod' => $this->confHelper->getLocalPayment($this->paymentProduct),
                 'method' => $this->paymentProduct

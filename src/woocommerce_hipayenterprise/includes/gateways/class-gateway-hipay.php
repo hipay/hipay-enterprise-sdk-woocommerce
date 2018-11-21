@@ -97,7 +97,10 @@ if (!class_exists('WC_Gateway_Hipay')) {
         {
             parent::addActions();
             add_action('woocommerce_receipt_' . $this->id, array($this, 'receipt_page'));
-            add_action('wp_print_scripts', array($this, 'localize_scripts'), 5);
+
+            if (is_page() && is_checkout() &&  ! is_order_received_page()) {
+                add_action('wp_print_scripts', array($this, 'localize_scripts'), 5);
+            }
         }
 
 
