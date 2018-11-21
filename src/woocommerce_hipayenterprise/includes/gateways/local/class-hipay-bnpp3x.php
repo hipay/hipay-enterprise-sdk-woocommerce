@@ -29,32 +29,4 @@ class Hipay_Bnpp3x extends Hipay_Gateway_Local_Abstract
             Hipay_Gateway_Abstract::TEXT_DOMAIN
         );
     }
-
-    function process_payment($order_id)
-    {
-        try {
-            $this->logs->logInfos(" # Process Payment for  " . $order_id);
-
-            $redirectUrl = $this->apiRequestHandler->handleLocalPayment(
-                array(
-                    "order_id" => $order_id,
-                    "paymentProduct" => $this->paymentProduct
-                )
-            );
-
-            return array(
-                'result' => 'success',
-                'redirect' => $redirectUrl,
-            );
-
-        } catch (Exception $e) {
-            wc_add_notice($e->getMessage(), 'error');
-            $this->logs->logException($e);
-            return array(
-                'result' => 'fail',
-                'redirect' => '',
-            );
-        }
-
-    }
 }

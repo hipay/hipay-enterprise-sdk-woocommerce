@@ -223,7 +223,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
                     'result' => 'success',
                     'redirect' => $redirect,
                 );
-            } catch (Exception $e) {
+            } catch (Hipay_Payment_Exception $e) {
                 wc_add_notice(
                     __('Sorry, we cannot process your payment.. Please try again.', 'woocommerce-gateway-hipay'),
                     'error'
@@ -231,7 +231,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 $this->logs->logException($e);
                 return array(
                     'result' => 'fail',
-                    'redirect' => '',
+                    'redirect' => $e->getRedirectUrl(),
                 );
             }
         }

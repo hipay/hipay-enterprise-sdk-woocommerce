@@ -47,4 +47,35 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
 
         return ob_get_clean();
     }
+
+    public function process_payment($order_id)
+    {
+        try {
+            $this->logs->logInfos(" # Process Payment for  " . $order_id);
+
+            $redirectUrl = $this->apiRequestHandler->handleLocalPayment(
+                array(
+                    "order_id" => $order_id,
+                    "paymentProduct" => $this->paymentProduct
+                )
+            );
+
+            return array(
+                'result' => 'success',
+                'redirect' => $redirectUrl,
+            );
+
+        } catch (Hipay_Payment_Exception $e) {
+            wc_add_notice(
+                __('Sorry, we cannot process your payment.. Please try again.', 'woocommerce-gateway-hipay'),
+                'error'
+            );
+            $this->logs->logException($e);
+            return array(
+                'result' => 'success',
+                'redirect' => $e->getRedirectUrl(),
+            );
+        }
+
+    }
 }
