@@ -115,6 +115,17 @@ class Hipay_Config
                     "iframe_hosted_page_template" => "basic-js",
                     "display_card_selector" => 0,
                     "display_hosted_page" => "redirect",
+                    "hosted_fields_style" => array(
+                        "base" => array(
+                            "color" => "#000000",
+                            "fontFamily" => "Roboto",
+                            "fontSize" => "15px",
+                            "fontWeight" => "400",
+                            "placeholderColor" => "",
+                            "caretColor" => "#00ADE9",
+                            "iconColor" => "#00ADE9",
+                        )
+                    ),
                     "css_url" => "",
                     "activate_3d_secure" => ThreeDS::THREE_D_S_DISABLED,
                     "capture_mode" => "automatic",
@@ -188,6 +199,13 @@ class Hipay_Config
     public function getPaymentGlobal()
     {
         return $this->getConfigHipay()["payment"]["global"];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHostedFieldsStyle() {
+        return $this->getPaymentGlobal()["hosted_fields_style"]["base"];
     }
 
     /**

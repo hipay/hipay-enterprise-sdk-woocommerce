@@ -1,3 +1,4 @@
+<?php $classHostedSettings = $paymentCommon["operating_mode"] == "hosted_page" ? $classHostedSettings = "hidden ": ""; ?>
 <tr valign="top">
     <th scope="row" class="titledesc"><?php _e('Operating mode', 'hipayenterprise'); ?></th>
     <td class="forminp">
@@ -64,6 +65,118 @@
                    value="<?php echo esc_textarea($paymentCommon["css_url"]); ?>"
                    placeholder="">
             <p class="description"><?php _e("URL to your CSS (style sheet) to customize your hosted page or iFrame (Important: the HTTPS protocol is required).", 'hipayenterprise'); ?></p>
+        </fieldset>
+    </td>
+</tr>
+
+<tr valign="top"
+    class="<?php echo $classHostedSettings; ?>directPost_page_config">
+    <th scope="row" class="titledesc"><?php _e('Color', 'hipayenterprise'); ?></th>
+    <td class="forminp">
+        <fieldset>
+            <legend class="screen-reader-text"><span><?php _e("Color", 'hipayenterprise'); ?></span>
+            </legend>
+            <input class="input-text regular-input " type="text"
+                   name="color"
+                   id="color" style=""
+                   value="<?php echo esc_textarea($paymentCommon["hosted_fields_style"]["base"]["color"]); ?>"
+                   placeholder="">
+        </fieldset>
+    </td>
+</tr>
+
+<tr valign="top"
+    class="<?php echo $classHostedSettings; ?>directPost_page_config">
+    <th scope="row" class="titledesc"><?php _e('Font Family', 'hipayenterprise'); ?></th>
+    <td class="forminp">
+        <fieldset>
+            <legend class="screen-reader-text"><span><?php _e("Font Family", 'hipayenterprise'); ?></span>
+            </legend>
+            <input class="input-text regular-input " type="text"
+                   name="fontFamily"
+                   id="fontFamily" style=""
+                   value="<?php echo esc_textarea($paymentCommon["hosted_fields_style"]["base"]["fontFamily"]); ?>"
+                   placeholder="">
+        </fieldset>
+    </td>
+</tr>
+
+<tr valign="top"
+    class="<?php echo $classHostedSettings; ?>directPost_page_config">
+    <th scope="row" class="titledesc"><?php _e('Font Size', 'hipayenterprise'); ?></th>
+    <td class="forminp">
+        <fieldset>
+            <legend class="screen-reader-text"><span><?php _e("Font Size", 'hipayenterprise'); ?></span>
+            </legend>
+            <input class="input-text regular-input " type="text"
+                   name="fontSize"
+                   id="fontSize" style=""
+                   value="<?php echo esc_textarea($paymentCommon["hosted_fields_style"]["base"]["fontSize"]); ?>"
+                   placeholder="">
+        </fieldset>
+    </td>
+</tr>
+
+<tr valign="top"
+    class="<?php echo $classHostedSettings; ?>directPost_page_config">
+    <th scope="row" class="titledesc"><?php _e('Font Weight', 'hipayenterprise'); ?></th>
+    <td class="forminp">
+        <fieldset>
+            <legend class="screen-reader-text"><span><?php _e("Font Weight", 'hipayenterprise'); ?></span>
+            </legend>
+            <input class="input-text regular-input " type="text"
+                   name="fontWeight"
+                   id="fontWeight" style=""
+                   value="<?php echo esc_textarea($paymentCommon["hosted_fields_style"]["base"]["fontWeight"]); ?>"
+                   placeholder="">
+        </fieldset>
+    </td>
+</tr>
+
+<tr valign="top"
+    class="<?php echo $classHostedSettings; ?>directPost_page_config">
+    <th scope="row" class="titledesc"><?php _e('PlaceHodler color', 'hipayenterprise'); ?></th>
+    <td class="forminp">
+        <fieldset>
+            <legend class="screen-reader-text"><span><?php _e("PlaceHodler color", 'hipayenterprise'); ?></span>
+            </legend>
+            <input class="input-text regular-input " type="text"
+                   name="placeholderColor"
+                   id="placeholderColor" style=""
+                   value="<?php echo esc_textarea($paymentCommon["hosted_fields_style"]["base"]["placeholderColor"]); ?>"
+                   placeholder="">
+        </fieldset>
+    </td>
+</tr>
+
+<tr valign="top"
+    class="<?php echo $classHostedSettings; ?>directPost_page_config">
+    <th scope="row" class="titledesc"><?php _e('Caret color', 'hipayenterprise'); ?></th>
+    <td class="forminp">
+        <fieldset>
+            <legend class="screen-reader-text"><span><?php _e("Caret Color", 'hipayenterprise'); ?></span>
+            </legend>
+            <input class="input-text regular-input " type="text"
+                   name="caretColor"
+                   id="caretColor" style=""
+                   value="<?php echo esc_textarea($paymentCommon["hosted_fields_style"]["base"]["caretColor"]); ?>"
+                   placeholder="">
+        </fieldset>
+    </td>
+</tr>
+
+<tr valign="top"
+    class="<?php echo $classHostedSettings; ?>directPost_page_config">
+    <th scope="row" class="titledesc"><?php _e('Icon color', 'hipayenterprise'); ?></th>
+    <td class="forminp">
+        <fieldset>
+            <legend class="screen-reader-text"><span><?php _e("Icon Color", 'hipayenterprise'); ?></span>
+            </legend>
+            <input class="input-text regular-input " type="text"
+                   name="iconColor"
+                   id="iconColor" style=""
+                   value="<?php echo esc_textarea($paymentCommon["hosted_fields_style"]["base"]["iconColor"]); ?>"
+                   placeholder="">
         </fieldset>
     </td>
 </tr>

@@ -4,6 +4,8 @@ jQuery(function($){
 
         init: function(){
             var self = this;
+
+            // Evenement plutot sur le onSubmit
             $(document.body).on('click', '#place_order', function(e) {
                 self.submitOrder(e,self);
             });
@@ -122,6 +124,10 @@ jQuery(function($){
             $("#card-country").val(country);
         },
 
+        /**
+         *
+         * @returns {boolean}
+         */
         isHipayHostedFieldsSelected: function(){
             return $('input[name="payment_method"]:checked').val() === hipay_config.hipay_gateway_id;
         },
@@ -137,9 +143,12 @@ jQuery(function($){
                 e.stopPropagation();
                 hostedFieldsInstance.createToken()
                     .then(function (response) {
-                            //TODO test card is activated
+                        if (isCardTypeActivated(response)) {
                             hostedFields.applyTokenization(response);
                             hostedFields.processPayment(response);
+                        } else {
+                            hostedFields.handleError(true, hipay_config_i18n.activated_card_error);
+                        }
                         },
                         function (error) {
                             hostedFields.handleError(true, error);
@@ -150,6 +159,21 @@ jQuery(function($){
         }
     };
 
-    hostedFields.init();
+    /**
+     *
+     * @param result
+     * @returns {boolean}
+     */
+    function isCardTypeActivated(result) {
+        var brand = "";
+        if (result.hasOwnProperty("domestic_network")) {
+            brand = result.domestic_network;
+        } else {
+            brand = result.brand;
+        }
 
+        return (hipay_config.activatedCreditCard.indexOf(brand.toLowerCase().replace(" ", "-")) !== -1);
+    }
+
+    hostedFields.init();
 });

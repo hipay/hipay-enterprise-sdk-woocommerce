@@ -73,6 +73,17 @@ class Hipay_Settings_Handler
                 'display_hosted_page' => sanitize_title($_POST['display_hosted_page']),
                 'display_card_selector' => sanitize_title($_POST['display_card_selector']),
                 'send_url_notification' => sanitize_title($_POST['send_url_notification']),
+                "hosted_fields_style" => array(
+                    "base" => array(
+                        "color" => $_POST['color'],
+                        "fontFamily" => $_POST['fontFamily'],
+                        "fontSize" => $_POST['fontSize'],
+                        "fontWeight" => $_POST['fontWeight'],
+                        "placeholderColor" => $_POST['placeholderColor'],
+                        "caretColor" => $_POST['caretColor'],
+                        "iconColor" => $_POST['iconColor'],
+                    )
+                )
             );
 
             $this->plugin->logs->logInfos($settings);

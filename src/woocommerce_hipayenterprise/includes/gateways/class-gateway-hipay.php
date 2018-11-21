@@ -14,7 +14,6 @@ if (!defined('ABSPATH')) {
 if (!class_exists('WC_Gateway_Hipay')) {
     class Gateway_Hipay extends Hipay_Gateway_Abstract
     {
-
         public function __construct()
         {
             $this->id = 'hipayenterprise_credit_card';
@@ -38,26 +37,17 @@ if (!class_exists('WC_Gateway_Hipay')) {
             );
 
             parent::__construct();
-
             $this->init_form_fields();
-
             $this->init_settings();
-
             $this->confHelper->initConfigHiPay();
-
             $this->addActions();
-
             $this->logs = new Hipay_Log($this);
-
             $this->apiRequestHandler = new Hipay_Api_Request_Handler($this);
-
             $this->settingsHandler = new Hipay_Settings_Handler($this);
-
             $this->icon = WC_HIPAYENTERPRISE_URL_ASSETS . '/images/credit_card.png';
-
             $this->title = __('Pay by Credit Card', $this->id);
 
-            if (is_page() && is_checkout() &&  ! is_order_received_page() ) {
+            if (is_page() && is_checkout() &&  ! is_order_received_page()) {
                 wp_enqueue_style(
                     'hipayenterprise-style',
                     plugins_url('/assets/css/frontend/hipay.css', WC_HIPAYENTERPRISE_BASE_FILE),
@@ -73,15 +63,21 @@ if (!class_exists('WC_Gateway_Hipay')) {
                         'all'
                     );
 
-                    wp_enqueue_script('hipay-js-hosted-fields-sdk',
-                        'https://libs.hipay.com/js/sdkjs.js', array(),
+                    wp_enqueue_script(
+                        'hipay-js-hosted-fields-sdk',
+                        'https://libs.hipay.com/js/sdkjs.js',
+                        array(),
                         'all',
-                        true);
+                        true
+                    );
 
-                    wp_enqueue_script('hipay-js-front',
+                    wp_enqueue_script(
+                        'hipay-js-front',
                         plugins_url('/assets/js/frontend/hosted-fields.js', WC_HIPAYENTERPRISE_BASE_FILE),
-                        array(), 'all',
-                        true);
+                        array(),
+                        'all',
+                        true
+                    );
                 }
             }
         }
@@ -89,7 +85,8 @@ if (!class_exists('WC_Gateway_Hipay')) {
         /**
          * @return bool
          */
-        private function isDirectPostActivated() {
+        private function isDirectPostActivated()
+        {
             return $this->confHelper->getPaymentGlobal()["operating_mode"] == OperatingMode::DIRECT_POST ? true : false;
         }
 
@@ -100,7 +97,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
         {
             parent::addActions();
             add_action('woocommerce_receipt_' . $this->id, array($this, 'receipt_page'));
-            add_action( 'wp_print_scripts', array($this, 'localize_scripts'), 5 );
+            add_action('wp_print_scripts', array($this, 'localize_scripts'), 5);
         }
 
 
@@ -130,7 +127,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
                     'You will be redirected to an external payment page. Please do not refresh the page during the process.',
                     $this->id
                 );
-            } else if ($paymentGlobal['operating_mode'] == OperatingMode::DIRECT_POST) {
+            } elseif ($paymentGlobal['operating_mode'] == OperatingMode::DIRECT_POST) {
                 $this->process_template(
                     'hosted-fields.php',
                     'frontend',
@@ -256,9 +253,11 @@ if (!class_exists('WC_Gateway_Hipay')) {
         public function generate_logs_details_html()
         {
             ob_start();
-            $this->process_template('admin-logs-settings.php',
+            $this->process_template(
+                'admin-logs-settings.php',
                 'admin',
-                array());
+                array()
+            );
 
             return ob_get_clean();
         }
@@ -286,7 +285,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
         public function admin_options()
         {
             parent::admin_options();
-            $this->process_template('admin-general-settings.php','admin');
+            $this->process_template('admin-general-settings.php', 'admin');
         }
 
         public function thanks_page($order_id)
@@ -297,7 +296,8 @@ if (!class_exists('WC_Gateway_Hipay')) {
         /**
          *
          */
-        public function localize_scripts() {
+        public function localize_scripts()
+        {
             if ($this->confHelper->getPaymentGlobal()["operating_mode"] == OperatingMode::DIRECT_POST) {
                 $sandbox = $this->confHelper->getAccount()["global"]["sandbox_mode"];
                 $username = ($sandbox) ? $this->confHelper->getAccount()["sandbox"]["api_tokenjs_username_sandbox"]
@@ -305,21 +305,36 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 $password = ($sandbox) ? $this->confHelper->getAccount()["sandbox"]["api_tokenjs_password_publickey_sandbox"]
                     : $this->confHelper->getAccount()["production"]["api_tokenjs_password_publickey_production"];
 
-                wp_localize_script( 'hipay-js-front', 'hipay_config', array(
+                $activatedCreditCard = Hipay_Helper::getActivatedPaymentByCountryAndCurrency(
+                    $this,
+                    "credit_card",
+                    WC()->customer->get_billing_country(),
+                    get_woocommerce_currency(),
+                    WC()->cart->get_totals()["total"],
+                    false
+                );
+
+                wp_localize_script('hipay-js-front', 'hipay_config', array(
                     "hipay_gateway_id" => $this->id,
                     "operating_mode" => $this->confHelper->getAccount()["global"]["operating_mode"],
+                    "activatedCreditCard" => $activatedCreditCard ,
                     "apiUsernameTokenJs" =>  $username,
                     "apiPasswordTokenJs" => $password,
                     "environment" => $sandbox ? "stage" : "production",
-                    "fontFamily" => "",
-                    "color" => "",
-                    "fontSize" => "",
-                    "fontWeight" => "",
-                    "placeholderColor" => "",
-                    "caretColor" => "",
-                    "iconColor" => "",
+                    "fontFamily" => $this->confHelper->getHostedFieldsStyle()["fontFamily"],
+                    "color" => $this->confHelper->getHostedFieldsStyle()["color"],
+                    "fontSize" => $this->confHelper->getHostedFieldsStyle()["fontSize"],
+                    "fontWeight" => $this->confHelper->getHostedFieldsStyle()["fontWeight"],
+                    "placeholderColor" => $this->confHelper->getHostedFieldsStyle()["placeholderColor"],
+                    "caretColor" => $this->confHelper->getHostedFieldsStyle()["caretColor"],
+                    "iconColor" => $this->confHelper->getHostedFieldsStyle()["iconColor"],
                     "defaultFirstname" => "",
                     "defaultLastname" => "",
+                ));
+
+                wp_localize_script('hipay-js-front', 'hipay_config_i18n', array(
+                    "activated_card_error" => __('This credit card type or the order currency is not supported. 
+                    Please choose an other payment method.', 'woocommerce-gateway-hipay'),
                 ));
             }
         }
@@ -429,6 +444,5 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 '" allowfullscreen="" frameborder="0"></iframe>
                   </div>';
         }
-
     }
 }

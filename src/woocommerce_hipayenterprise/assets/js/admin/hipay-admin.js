@@ -4,7 +4,9 @@ jQuery( function( $ ) {
     $('#operating_mode').change(function () {
         if ($(this).val() == "hosted_page") {
             $(".hosted_page_config").removeClass("hidden").show();
+            $(".directPost_page_config").hide();
         } else {
+            $(".directPost_page_config").removeClass("hidden").show();
             $(".hosted_page_config").hide();
         }
         return false;

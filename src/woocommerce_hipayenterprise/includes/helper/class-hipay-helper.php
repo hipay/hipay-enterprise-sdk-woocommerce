@@ -42,7 +42,8 @@ class Hipay_Helper
         $paymentMethodType,
         $country,
         $currency,
-        $orderTotal = 1
+        $orderTotal = 1,
+        $allConfiguration = true
     ) {
         $activatedPayment = array();
         foreach ($plugin->confHelper->getPayment()[$paymentMethodType] as $name => $conf) {
@@ -50,11 +51,18 @@ class Hipay_Helper
                 && in_array($currency, $conf["currencies"])
                 && in_array($country, $conf["countries"])
                 && Hipay_Helper::isInAuthorizedAmount($conf, $orderTotal)) {
-                $activatedPayment[$name] = $conf;
+
+                if ($allConfiguration) {
+                    $activatedPayment[$name] = $conf;
+                } else {
+                    $activatedPayment[] = $name;
+                }
             }
         }
         return $activatedPayment;
     }
+
+
 
     public static function checkSignature($plugin)
     {
