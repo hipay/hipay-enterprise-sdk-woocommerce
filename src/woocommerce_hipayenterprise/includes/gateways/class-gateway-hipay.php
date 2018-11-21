@@ -65,23 +65,32 @@ if (!class_exists('WC_Gateway_Hipay')) {
                     'all'
                 );
 
-                wp_enqueue_style(
-                    'hipayenterprise-style-hosted',
-                    plugins_url('/assets/css/frontend/hosted-fields.css', WC_HIPAYENTERPRISE_BASE_FILE),
-                    array(),
-                    'all'
-                );
+                if ($this->isDirectPostActivated()) {
+                    wp_enqueue_style(
+                        'hipayenterprise-style-hosted',
+                        plugins_url('/assets/css/frontend/hosted-fields.css', WC_HIPAYENTERPRISE_BASE_FILE),
+                        array(),
+                        'all'
+                    );
 
-                wp_enqueue_script('hipay-js-hosted-fields-sdk',
-                    'https://libs.hipay.com/js/sdkjs.js', array(),
-                    'all',
-                    true);
+                    wp_enqueue_script('hipay-js-hosted-fields-sdk',
+                        'https://libs.hipay.com/js/sdkjs.js', array(),
+                        'all',
+                        true);
 
-                wp_enqueue_script('hipay-js-front',
-                    plugins_url('/assets/js/frontend/hosted-fields.js', WC_HIPAYENTERPRISE_BASE_FILE),
-                    array(), 'all',
-                    true);
+                    wp_enqueue_script('hipay-js-front',
+                        plugins_url('/assets/js/frontend/hosted-fields.js', WC_HIPAYENTERPRISE_BASE_FILE),
+                        array(), 'all',
+                        true);
+                }
             }
+        }
+
+        /**
+         * @return bool
+         */
+        private function isDirectPostActivated() {
+            return $this->confHelper->getPaymentGlobal()["operating_mode"] == OperatingMode::DIRECT_POST ? true : false;
         }
 
         /**
@@ -289,26 +298,30 @@ if (!class_exists('WC_Gateway_Hipay')) {
          *
          */
         public function localize_scripts() {
-            $sandbox = $this->confHelper->getAccount()["global"]["sandbox_mode"];
-            $username = ($sandbox) ? $this->confHelper->getAccount()["sandbox"]["api_tokenjs_username_sandbox"]
-                : $this->confHelper->getAccount()["production"]["api_tokenjs_username_production"];
-            $password = ($sandbox) ? $this->confHelper->getAccount()["sandbox"]["api_tokenjs_password_publickey_sandbox"]
-                : $this->confHelper->getAccount()["production"]["api_tokenjs_password_publickey_production"];
+            if ($this->confHelper->getPaymentGlobal()["operating_mode"] == OperatingMode::DIRECT_POST) {
+                $sandbox = $this->confHelper->getAccount()["global"]["sandbox_mode"];
+                $username = ($sandbox) ? $this->confHelper->getAccount()["sandbox"]["api_tokenjs_username_sandbox"]
+                    : $this->confHelper->getAccount()["production"]["api_tokenjs_username_production"];
+                $password = ($sandbox) ? $this->confHelper->getAccount()["sandbox"]["api_tokenjs_password_publickey_sandbox"]
+                    : $this->confHelper->getAccount()["production"]["api_tokenjs_password_publickey_production"];
 
-            wp_localize_script( 'hipay-js-front', 'hipay_config', array(
-                "apiUsernameTokenJs" =>  $username,
-                "apiPasswordTokenJs" => $password,
-                "environment" => $sandbox ? "stage" : "production",
-                "fontFamily" => "",
-                "color" => "",
-                "fontSize" => "",
-                "fontWeight" => "",
-                "placeholderColor" => "",
-                "caretColor" => "",
-                "iconColor" => "",
-                "defaultFirstname" => "",
-                "defaultLastname" => "",
-            ));
+                wp_localize_script( 'hipay-js-front', 'hipay_config', array(
+                    "hipay_gateway_id" => $this->id,
+                    "operating_mode" => $this->confHelper->getAccount()["global"]["operating_mode"],
+                    "apiUsernameTokenJs" =>  $username,
+                    "apiPasswordTokenJs" => $password,
+                    "environment" => $sandbox ? "stage" : "production",
+                    "fontFamily" => "",
+                    "color" => "",
+                    "fontSize" => "",
+                    "fontWeight" => "",
+                    "placeholderColor" => "",
+                    "caretColor" => "",
+                    "iconColor" => "",
+                    "defaultFirstname" => "",
+                    "defaultLastname" => "",
+                ));
+            }
         }
 
 

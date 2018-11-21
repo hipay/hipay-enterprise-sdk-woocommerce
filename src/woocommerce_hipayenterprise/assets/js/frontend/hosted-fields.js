@@ -59,10 +59,10 @@ jQuery(function($){
          * Initialize Hipay Hosted Field
          */
         initializeHostedFields: function() {
-            hostedFieldInstance = this.hipaySDK.create("card", this.configHostedFields);
+            hostedFieldsInstance = this.hipaySDK.create("card", this.configHostedFields);
             var self= this;
 
-            hostedFieldInstance.on("change", function (data) {
+            hostedFieldsInstance.on("change", function (data) {
                 self.handleError(data.valid, data.error);
             });
 
@@ -121,25 +121,33 @@ jQuery(function($){
             $("#card-issuer").val(issuer);
             $("#card-country").val(country);
         },
+
+        isHipayHostedFieldsSelected: function(){
+            return $('input[name="payment_method"]:checked').val() === hipay_config.hipay_gateway_id;
+        },
+
         /**
          *
          * @param e
          * @param hostedFields
          */
-        submitOrder: function(e, hostedFields){
-            e.preventDefault();
-            e.stopPropagation();
-            hostedFieldInstance.createToken()
-                .then(function (response) {
-                    //TODO test card is activated
-                        hostedFields.applyTokenization(response);
-                        hostedFields.processPayment(response);
-                    },
-                    function (error) {
-                        hostedFields.handleError(true, error);
-                    }
-                );
-        },
+        submitOrder: function(e, hostedFields) {
+            if (hostedFields.isHipayHostedFieldsSelected()) {
+                e.preventDefault();
+                e.stopPropagation();
+                hostedFieldsInstance.createToken()
+                    .then(function (response) {
+                            //TODO test card is activated
+                            hostedFields.applyTokenization(response);
+                            hostedFields.processPayment(response);
+                        },
+                        function (error) {
+                            hostedFields.handleError(true, error);
+                        }
+                    );
+
+            }
+        }
     };
 
     hostedFields.init();
