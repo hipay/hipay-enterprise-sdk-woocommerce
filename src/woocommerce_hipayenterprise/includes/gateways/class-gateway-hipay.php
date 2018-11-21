@@ -233,37 +233,6 @@ if (!class_exists('WC_Gateway_Hipay')) {
             return ob_get_clean();
         }
 
-        /**
-         * @return string
-         */
-        public function generate_currencies_details_html()
-        {
-            ob_start();
-            $this->process_template(
-                'admin-currencies-settings.php',
-                'admin',
-                array(
-                    'woocommerce_currencies' => get_woocommerce_currencies(),
-                )
-            );
-
-            return ob_get_clean();
-        }
-
-        /**
-         * @return string
-         */
-        public function generate_logs_details_html()
-        {
-            ob_start();
-            $this->process_template(
-                'admin-logs-settings.php',
-                'admin',
-                array()
-            );
-
-            return ob_get_clean();
-        }
 
         /**
          * @return string
