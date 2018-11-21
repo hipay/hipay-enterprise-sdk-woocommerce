@@ -28,6 +28,11 @@ sleep 20
     cd /var/www/html/wp-content/plugins/woocommerce_hipayenterprise/ \
     && composer install --no-dev
 
+    printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+    printf "\n${COLOR_SUCCESS}    INSTALL HIPAY WOOCOMMERCE MODULE     ${NC}\n"
+    printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+    wp plugin activate woocommerce_hipayenterprise --allow-root
+
     #==========================================
     # Import sample data
     #==========================================
