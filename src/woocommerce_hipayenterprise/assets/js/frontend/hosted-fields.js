@@ -1,13 +1,13 @@
-jQuery(function($){
+jQuery(function ($) {
 
     var hostedFields = {
 
-        init: function(){
+        init: function () {
             var self = this;
 
             // Evenement plutot sur le onSubmit
-            $(document.body).on('click', '#place_order', function(e) {
-                self.submitOrder(e,self);
+            $(document.body).on('click', '#place_order', function (e) {
+                self.submitOrder(e, self);
             });
 
             this.hipaySDK = HiPay({
@@ -17,8 +17,8 @@ jQuery(function($){
                 lang: 'fr'
             });
 
-            var firstName = $( '#billing_first_name' ).val();
-            var lastName  = $( '#billing_last_name' ).val();
+            var firstName = $('#billing_first_name').val();
+            var lastName = $('#billing_last_name').val();
 
             this.configHostedFields = {
                 selector: "hipayHF-container",
@@ -42,7 +42,7 @@ jQuery(function($){
                     }
                 },
                 styles: {
-                       base: {
+                    base: {
                         fontFamily: hipay_config.fontFamily,
                         color: hipay_config.color,
                         fontSize: hipay_config.fontSize,
@@ -60,15 +60,17 @@ jQuery(function($){
         /**
          * Initialize Hipay Hosted Field
          */
-        initializeHostedFields: function() {
+        initializeHostedFields: function () {
             hostedFieldsInstance = this.hipaySDK.create("card", this.configHostedFields);
-            var self= this;
+            var self = this;
 
             hostedFieldsInstance.on("change", function (data) {
                 self.handleError(data.valid, data.error);
             });
 
-
+            hostedFieldsInstance.on("ready", function () {
+                $('.woocommerce-checkout-payment, .woocommerce-checkout-review-order-table').unblock();
+            });
         },
 
         /**
@@ -76,7 +78,7 @@ jQuery(function($){
          * @param valid
          * @param error
          */
-        handleError: function(valid, error) {
+        handleError: function (valid, error) {
             if (error) {
                 $("#error-js").show();
                 document.getElementById("error-js").innerHTML = error;
@@ -89,8 +91,8 @@ jQuery(function($){
          *
          * @param response
          */
-        processPayment: function(response){
-            $( 'form[name="checkout"]' ).submit();
+        processPayment: function (response) {
+            $('form[name="checkout"]').submit();
         },
 
         /**
@@ -98,7 +100,7 @@ jQuery(function($){
          *
          * @param result
          */
-        applyTokenization: function(result) {
+        applyTokenization: function (result) {
             var token = result.token;
             var brand = "";
             if (result.hasOwnProperty("domestic_network")) {
@@ -128,7 +130,7 @@ jQuery(function($){
          *
          * @returns {boolean}
          */
-        isHipayHostedFieldsSelected: function(){
+        isHipayHostedFieldsSelected: function () {
             return $('input[name="payment_method"]:checked').val() === hipay_config.hipay_gateway_id;
         },
 
@@ -137,18 +139,18 @@ jQuery(function($){
          * @param e
          * @param hostedFields
          */
-        submitOrder: function(e, hostedFields) {
+        submitOrder: function (e, hostedFields) {
             if (hostedFields.isHipayHostedFieldsSelected()) {
                 e.preventDefault();
                 e.stopPropagation();
                 hostedFieldsInstance.createToken()
                     .then(function (response) {
-                        if (isCardTypeActivated(response)) {
-                            hostedFields.applyTokenization(response);
-                            hostedFields.processPayment(response);
-                        } else {
-                            hostedFields.handleError(true, hipay_config_i18n.activated_card_error);
-                        }
+                            if (isCardTypeActivated(response)) {
+                                hostedFields.applyTokenization(response);
+                                hostedFields.processPayment(response);
+                            } else {
+                                hostedFields.handleError(true, hipay_config_i18n.activated_card_error);
+                            }
                         },
                         function (error) {
                             hostedFields.handleError(true, error);
@@ -175,5 +177,16 @@ jQuery(function($){
         return (hipay_config.activatedCreditCard.indexOf(brand.toLowerCase().replace(" ", "-")) !== -1);
     }
 
-    hostedFields.init();
+    $(document.body).on('updated_checkout', function () {
+        $('.woocommerce-checkout-payment, .woocommerce-checkout-review-order-table').block({
+            message: null,
+            overlayCSS: {
+                background: '#fff',
+                opacity: 0.6
+            }
+        });
+        hostedFields.init();
+        //    $('.woocommerce-checkout-payment, .woocommerce-checkout-review-order-table').unblock();
+    });
+
 });
