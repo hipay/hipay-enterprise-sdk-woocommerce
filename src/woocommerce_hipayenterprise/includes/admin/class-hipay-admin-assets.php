@@ -35,6 +35,8 @@ class Wc_Hipay_Admin_Assets {
         wp_register_style( 'wc_hipay_admin_multi_css', plugins_url( 'assets/css/admin/multi.min.css', WC_HIPAYENTERPRISE_BASE_FILE ), array(), WC_HIPAYENTERPRISE_VERSION );
         wp_enqueue_style( 'wc_hipay_admin_multi_css' );
 
+        wp_enqueue_script( 'accordion' );
+
         //Todo voir pour la minification des JS
         wp_enqueue_script( 'wc_hipay_admin_multi', plugins_url( 'assets/js/admin/multi.min.js', WC_HIPAYENTERPRISE_BASE_FILE ), array(), WC_HIPAYENTERPRISE_VERSION, true );
         wp_enqueue_script( 'wc_hipay_admin', plugins_url( 'assets/js/admin/hipay-admin.js', WC_HIPAYENTERPRISE_BASE_FILE ), array(), WC_HIPAYENTERPRISE_VERSION, true );
