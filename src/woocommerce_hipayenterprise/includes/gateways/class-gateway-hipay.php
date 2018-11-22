@@ -308,7 +308,13 @@ if (!class_exists('WC_Gateway_Hipay')) {
         public function admin_options()
         {
             parent::admin_options();
-            $this->process_template('admin-general-settings.php', 'admin');
+            $this->process_template('admin-general-settings.php',
+                'admin',array(
+                    'curl_active' => extension_loaded('curl'),
+                    'simplexml_active' => extension_loaded('simplexml'),
+                    'https_active' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off',
+                    'notifications' => $this->notifications,
+                ));
         }
 
         public function thanks_page($order_id)
