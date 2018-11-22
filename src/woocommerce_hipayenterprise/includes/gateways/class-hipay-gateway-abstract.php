@@ -84,40 +84,34 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
      */
     public function available_payment_gateways($available_gateways)
     {
-        global $woocommerce;
-
-        if (isset($woocommerce->cart)) {
+        if (isset(WC()->cart)) {
             foreach ($available_gateways as $id => $gateway) {
-                if ($id == "hipayenterprise"
+                if ($id == $this->id
                     && !$gateway->isAvailableForCurrentCart()) {
                     unset($available_gateways [$id]);
                 }
             }
         }
-
         return $available_gateways;
     }
 
     /**
      * Check if payment method is available for current cart
      *
-     * TODO Utiliser la methode getActivatedPaymentByCountryAndCurrency
      * @return boolean
      */
     public function isAvailableForCurrentCart()
     {
-        global $woocommerce;
-        $settingsCreditCard = $this->confHelper->getPaymentCreditCard();
-        $cartTotals = $woocommerce->cart->get_totals();
-        foreach ($settingsCreditCard as $card => $conf) {
-            if ($conf["activated"]
-                && in_array(get_woocommerce_currency(), $conf["currencies"])
-                && in_array($woocommerce->customer->get_billing_country(), $conf["countries"])
-                && Hipay_Helper::isInAuthorizedAmount($conf, $cartTotals["total"])) {
-                return true;
-            }
-        }
-        return false;
+        $cartTotals = WC()->cart->get_totals();
+        $activatedPayments = Hipay_Helper::getActivatedPaymentByCountryAndCurrency(
+            $this,
+            $this->paymentProduct,
+            WC()->customer->get_billing_country(),
+            get_woocommerce_currency(),
+            $cartTotals["total"]
+        );
+
+        return !empty($activatedPayments);
     }
 
     /**

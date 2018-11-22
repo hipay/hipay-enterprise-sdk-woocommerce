@@ -46,20 +46,36 @@ class Hipay_Helper
         $allConfiguration = true
     ) {
         $activatedPayment = array();
-        foreach ($plugin->confHelper->getPayment()[$paymentMethodType] as $name => $conf) {
-            if ($conf["activated"]
-                && in_array($currency, $conf["currencies"])
-                && in_array($country, $conf["countries"])
-                && Hipay_Helper::isInAuthorizedAmount($conf, $orderTotal)) {
-
-                if ($allConfiguration) {
-                    $activatedPayment[$name] = $conf;
-                } else {
-                    $activatedPayment[] = $name;
+        if ($paymentMethodType  == Gateway_Hipay::CREDIT_CARD_PAYMENT_PRODUCT) {
+            foreach ($plugin->confHelper->getPayment()[$paymentMethodType] as $name => $conf) {
+                if ( $conf["activated"] && self::isPaymentMethodAuthorized($conf,$currency, $country, $orderTotal) ) {
+                    if ($allConfiguration) {
+                        $activatedPayment[$name] = $conf;
+                    } else {
+                        $activatedPayment[] = $name;
+                    }
                 }
+            }
+        } else {
+            $conf = $plugin->confHelper->getPayment()["local_payment"][$paymentMethodType];
+            if (self::isPaymentMethodAuthorized($conf,$currency, $country, $orderTotal)) {
+                $activatedPayment[$paymentMethodType] =  $conf;
             }
         }
         return $activatedPayment;
+    }
+
+    /**
+     * @param $conf
+     * @param $currency
+     * @param $country
+     * @param $orderTotal
+     * @return bool
+     */
+    private static function isPaymentMethodAuthorized($conf,$currency, $country, $orderTotal) {
+        return  in_array($currency, $conf["currencies"])
+            && in_array($country, $conf["countries"])
+            && Hipay_Helper::isInAuthorizedAmount($conf, $orderTotal);
     }
 
 

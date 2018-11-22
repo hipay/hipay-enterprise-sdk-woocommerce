@@ -14,9 +14,13 @@ if (!defined('ABSPATH')) {
 if (!class_exists('WC_Gateway_Hipay')) {
     class Gateway_Hipay extends Hipay_Gateway_Abstract
     {
+
+        const CREDIT_CARD_PAYMENT_PRODUCT = "credit_card";
+
         public function __construct()
         {
             $this->id = 'hipayenterprise_credit_card';
+            $this->paymentProduct = self::CREDIT_CARD_PAYMENT_PRODUCT;
 
             $this->supports = array(
                 'products',
@@ -262,7 +266,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
         public function thanks_page($order_id)
         {
-            global $woocommerce;
+            WC();
         }
 
         /**
