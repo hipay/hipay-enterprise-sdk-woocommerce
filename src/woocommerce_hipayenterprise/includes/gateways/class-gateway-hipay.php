@@ -255,7 +255,10 @@ if (!class_exists('WC_Gateway_Hipay')) {
         public function generate_faqs_details_html()
         {
             ob_start();
-            include(plugin_dir_path(__FILE__) . 'includes/faqs.php');
+            $this->process_template(
+                'admin-faq-settings.php',
+                'admin'
+            );
 
             return ob_get_clean();
         }
