@@ -153,7 +153,7 @@ class Hipay_Api_Request_Handler
                         'Sorry, your payment has been declined. Please try again with an other means of payment.',
                         "hipayenterprise"
                     ),
-                    $redirectUrl,
+                    '',
                     "fail"
                 );
             case TransactionState::ERROR:
