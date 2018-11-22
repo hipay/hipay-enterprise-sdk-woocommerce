@@ -72,10 +72,12 @@ class Hipay_Log
      */
     public function logInfos($msg)
     {
-        if (is_array($msg)) {
-            $this->logger->info(print_r($this->filterDebugData($msg), true), array('source' => $this->plugin->id));
-        } else {
-            $this->logger->info($msg, array('source' => $this->plugin->id));
+        if ((bool)$this->plugin->confHelper->getPaymentGlobal()[SettingsField::PAYMENT_GLOBAL_LOGS_INFOS]) {
+            if (is_array($msg)) {
+                $this->logger->info(print_r($this->filterDebugData($msg), true), array('source' => $this->plugin->id));
+            } else {
+                $this->logger->info($msg, array('source' => $this->plugin->id));
+            }
         }
     }
 
