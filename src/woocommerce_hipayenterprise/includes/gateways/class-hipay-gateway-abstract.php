@@ -50,7 +50,6 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
 
     public function addActions()
     {
-        add_action('woocommerce_api_wc_hipayenterprise', array($this, 'check_callback_response'));
         add_filter('woocommerce_available_payment_gateways', array($this, 'available_payment_gateways'));
         add_action(
             'woocommerce_update_options_payment_gateways_' . $this->id,
@@ -58,6 +57,7 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
         );
         add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'save_settings'));
     }
+
 
 
     /**
@@ -106,28 +106,6 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
         extract($args);
         $file = WC_HIPAYENTERPRISE_PATH . 'includes/' . $type . '/template/' . $template;
         include $file;
-    }
-
-    /**
-     *  Action for HiPay Notification
-     *  Check Signature and process Transaction
-     */
-    public function check_callback_response()
-    {
-        $transactionReference = (isset($_POST["transaction_reference"])) ? $_POST["transaction_reference"] : '';
-
-        if (!Hipay_Helper::checkSignature($this)) {
-            $this->logs->logErrors("Notify : Signature is wrong for Transaction $transactionReference.");
-            header('HTTP/1.1 403 Forbidden');
-            die('Bad Callback initiated - signature');
-        }
-
-        try {
-            $notification = new Hipay_Notification($this, $_POST);
-            $notification->processTransaction();
-        } catch (Exception $e) {
-            header("HTTP/1.0 500 Internal server error");
-        }
     }
 
     /**
