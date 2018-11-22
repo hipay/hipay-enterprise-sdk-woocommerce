@@ -2,7 +2,7 @@
 if (!defined('ABSPATH')) {
     exit;
 }
-
+use \HiPay\Fullservice\Enum\Transaction\TransactionStatus;
 use \HiPay\Fullservice\Helper\Signature;
 use \HiPay\Fullservice\HTTP\Configuration\Configuration;
 
@@ -142,6 +142,38 @@ class Hipay_Helper
         }
 
         return $exist;
+    }
+
+    /**
+     * Format and Add Message about transaction
+     *
+     * @param type $transaction
+     * @return type
+     */
+    public static function formatOrderData($transaction)
+    {
+        $message = "HiPay Notification " . $transaction->getState() . "\n";
+        switch ($transaction->getStatus()) {
+            case TransactionStatus::CAPTURED: //118
+            case TransactionStatus::CAPTURE_REQUESTED: //117
+                $message .= __('Registered notification from HiPay about captured amount of ') .
+                    $transaction->getCapturedAmount() .
+                    "\n";
+                break;
+            case TransactionStatus::REFUND_REQUESTED: //124
+            case TransactionStatus::REFUNDED: //125
+                $message .= __('Registered notification from HiPay about refunded amount of ') .
+                    $transaction->getRefundedAmount() .
+                    "\n";
+                break;
+        }
+
+        $message .= __('Order total amount :') . $transaction->getAuthorizedAmount() . "\n";
+        $message .= "\n";
+        $message .= __('Transaction ID: ') . $transaction->getTransactionReference() . "\n";
+        $message .= __('HiPay status: ') . $transaction->getStatus() . "\n";
+
+        return $message;
     }
 
 }

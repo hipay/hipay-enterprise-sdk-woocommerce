@@ -200,7 +200,7 @@
     </td>
 </tr>
 
-<tr valign="top">
+<tr valign="top" class="hidden">
     <th scope="row" class="titledesc"><?php _e('Use Oneclick', 'hipayenterprise'); ?></th>
     <td class="forminp">
         <fieldset>
@@ -214,7 +214,7 @@
     </td>
 </tr>
 
-<tr valign="top">
+<tr valign="top" class="hidden">
     <th scope="row" class="titledesc"><?php _e('Customer\'s cart sending', 'hipayenterprise'); ?></th>
     <td class="forminp">
         <fieldset>
