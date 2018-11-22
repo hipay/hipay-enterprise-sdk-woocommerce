@@ -29,7 +29,7 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
 
         load_plugin_textdomain(self::TEXT_DOMAIN, false, basename(dirname(__FILE__)) . '/languages');
 
-        $this->confHelper = new Hipay_Config($this);
+        $this->confHelper = new Hipay_Config();
 
         $this->confHelper->getConfigHipay();
 
