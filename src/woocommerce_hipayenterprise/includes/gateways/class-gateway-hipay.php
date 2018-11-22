@@ -54,7 +54,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
             if ($this->isAvailable()
                 && is_page()
                 && is_checkout()
-                &&  !is_order_received_page()) {
+                && !is_order_received_page()) {
                 wp_enqueue_style(
                     'hipayenterprise-style',
                     plugins_url('/assets/css/frontend/hipay.css', WC_HIPAYENTERPRISE_BASE_FILE),
@@ -114,7 +114,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
             parent::addActions();
             add_action('woocommerce_receipt_' . $this->id, array($this, 'receipt_page'));
 
-            if ($this->isAvailable() && is_page() && is_checkout() &&  ! is_order_received_page()) {
+            if ($this->isAvailable() && is_page() && is_checkout() && !is_order_received_page()) {
                 add_action('wp_print_scripts', array($this, 'localize_scripts'), 5);
             }
         }
@@ -161,7 +161,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
                     'hosted-fields.php',
                     'frontend',
                     array(
-                        'activatedCreditCard' => '"'. implode( '","', $activatedCreditCard). '"'
+                        'activatedCreditCard' => '"' . implode('","', $activatedCreditCard) . '"'
                     )
                 );
             }
@@ -301,31 +301,42 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 $sandbox = $this->confHelper->getAccount()["global"]["sandbox_mode"];
                 $username = ($sandbox) ? $this->confHelper->getAccount()["sandbox"]["api_tokenjs_username_sandbox"]
                     : $this->confHelper->getAccount()["production"]["api_tokenjs_username_production"];
-                $password = ($sandbox) ? $this->confHelper->getAccount()["sandbox"]["api_tokenjs_password_publickey_sandbox"]
+                $password = ($sandbox) ? $this->confHelper->getAccount(
+                )["sandbox"]["api_tokenjs_password_publickey_sandbox"]
                     : $this->confHelper->getAccount()["production"]["api_tokenjs_password_publickey_production"];
 
-                wp_localize_script('hipay-js-front', 'hipay_config', array(
-                    "hipay_gateway_id" => $this->id,
-                    "operating_mode" => $this->confHelper->getAccount()["global"]["operating_mode"],
-                    "apiUsernameTokenJs" =>  $username,
-                    "apiPasswordTokenJs" => $password,
-                    "environment" => $sandbox ? "stage" : "production",
-                    "fontFamily" => $this->confHelper->getHostedFieldsStyle()["fontFamily"],
-                    "color" => $this->confHelper->getHostedFieldsStyle()["color"],
-                    "fontSize" => $this->confHelper->getHostedFieldsStyle()["fontSize"],
-                    "fontWeight" => $this->confHelper->getHostedFieldsStyle()["fontWeight"],
-                    "placeholderColor" => $this->confHelper->getHostedFieldsStyle()["placeholderColor"],
-                    "caretColor" => $this->confHelper->getHostedFieldsStyle()["caretColor"],
-                    "iconColor" => $this->confHelper->getHostedFieldsStyle()["iconColor"],
-                ));
+                wp_localize_script(
+                    'hipay-js-front',
+                    'hipay_config',
+                    array(
+                        "hipay_gateway_id" => $this->id,
+                        "operating_mode" => $this->confHelper->getAccount()["global"]["operating_mode"],
+                        "apiUsernameTokenJs" => $username,
+                        "apiPasswordTokenJs" => $password,
+                        "environment" => $sandbox ? "stage" : "production",
+                        "fontFamily" => $this->confHelper->getHostedFieldsStyle()["fontFamily"],
+                        "color" => $this->confHelper->getHostedFieldsStyle()["color"],
+                        "fontSize" => $this->confHelper->getHostedFieldsStyle()["fontSize"],
+                        "fontWeight" => $this->confHelper->getHostedFieldsStyle()["fontWeight"],
+                        "placeholderColor" => $this->confHelper->getHostedFieldsStyle()["placeholderColor"],
+                        "caretColor" => $this->confHelper->getHostedFieldsStyle()["caretColor"],
+                        "iconColor" => $this->confHelper->getHostedFieldsStyle()["iconColor"],
+                    )
+                );
 
-                wp_localize_script('hipay-js-front', 'hipay_config_i18n', array(
-                    "activated_card_error" => __('This credit card type or the order currency is not supported. 
-                    Please choose an other payment method.', 'woocommerce-gateway-hipay'),
-                ));
+                wp_localize_script(
+                    'hipay-js-front',
+                    'hipay_config_i18n',
+                    array(
+                        "activated_card_error" => __(
+                            'This credit card type or the order currency is not supported. 
+                    Please choose an other payment method.',
+                            'woocommerce-gateway-hipay'
+                        ),
+                    )
+                );
             }
         }
-
 
 
         /**
@@ -348,15 +359,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
                     'redirect' => $redirect,
                 );
             } catch (Hipay_Payment_Exception $e) {
-                wc_add_notice(
-                    __('Sorry, we cannot process your payment.. Please try again.', 'woocommerce-gateway-hipay'),
-                    'error'
-                );
-                $this->logs->logException($e);
-                return array(
-                    'result' => 'fail',
-                    'redirect' => $e->getRedirectUrl(),
-                );
+                return $this->handlePaymentError($e);
             }
         }
 

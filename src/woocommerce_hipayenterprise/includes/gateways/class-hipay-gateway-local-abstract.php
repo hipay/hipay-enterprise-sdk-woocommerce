@@ -13,7 +13,8 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
     public function admin_options()
     {
         parent::admin_options();
-        $this->process_template('admin-local-settings.php',
+        $this->process_template(
+            'admin-local-settings.php',
             'admin',
             array()
         );
@@ -70,16 +71,7 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
             );
 
         } catch (Hipay_Payment_Exception $e) {
-            wc_add_notice(
-                __('Sorry, we cannot process your payment.. Please try again.', 'woocommerce-gateway-hipay'),
-                'error'
-            );
-            $this->logs->logException($e);
-            return array(
-                'result' => 'success',
-                'redirect' => $e->getRedirectUrl(),
-            );
+            return $this->handlePaymentError($e);
         }
-
     }
 }

@@ -124,4 +124,23 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
         $file = WC_HIPAYENTERPRISE_PATH . 'includes/' . $type . '/template/' . $template;
         include $file;
     }
+
+    /**
+     * @param Hipay_Payment_Exception $e
+     * @return array
+     */
+    protected function handlePaymentError(Hipay_Payment_Exception $e)
+    {
+        wc_add_notice(
+            $e->getMessage(),
+            'error'
+        );
+
+        $this->logs->logException($e);
+
+        return array(
+            'result' => $e->getType(),
+            'redirect' => $e->getRedirectUrl(),
+        );
+    }
 }
