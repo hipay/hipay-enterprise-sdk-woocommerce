@@ -51,7 +51,10 @@ if (!class_exists('WC_Gateway_Hipay')) {
             $this->icon = WC_HIPAYENTERPRISE_URL_ASSETS . '/images/credit_card.png';
             $this->title = __('Pay by Credit Card', $this->id);
 
-            if (is_page() && is_checkout() &&  ! is_order_received_page()) {
+            if ($this->isAvailable()
+                && is_page()
+                && is_checkout()
+                &&  !is_order_received_page()) {
                 wp_enqueue_style(
                     'hipayenterprise-style',
                     plugins_url('/assets/css/frontend/hipay.css', WC_HIPAYENTERPRISE_BASE_FILE),
@@ -89,6 +92,15 @@ if (!class_exists('WC_Gateway_Hipay')) {
         /**
          * @return bool
          */
+        public function isAvailable()
+        {
+            return ('yes' === $this->enabled);
+        }
+
+
+        /**
+         * @return bool
+         */
         private function isDirectPostActivated()
         {
             return $this->confHelper->getPaymentGlobal()["operating_mode"] == OperatingMode::DIRECT_POST ? true : false;
@@ -102,7 +114,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
             parent::addActions();
             add_action('woocommerce_receipt_' . $this->id, array($this, 'receipt_page'));
 
-            if (is_page() && is_checkout() &&  ! is_order_received_page()) {
+            if ($this->isAvailable() && is_page() && is_checkout() &&  ! is_order_received_page()) {
                 add_action('wp_print_scripts', array($this, 'localize_scripts'), 5);
             }
         }
@@ -135,10 +147,21 @@ if (!class_exists('WC_Gateway_Hipay')) {
                     $this->id
                 );
             } elseif ($paymentGlobal['operating_mode'] == OperatingMode::DIRECT_POST) {
+
+                $activatedCreditCard = Hipay_Helper::getActivatedPaymentByCountryAndCurrency(
+                    $this,
+                    "credit_card",
+                    WC()->customer->get_billing_country(),
+                    get_woocommerce_currency(),
+                    WC()->cart->get_totals()["total"],
+                    false
+                );
+
                 $this->process_template(
                     'hosted-fields.php',
                     'frontend',
                     array(
+                        'activatedCreditCard' => '"'. implode( '","', $activatedCreditCard). '"'
                     )
                 );
             }
@@ -281,19 +304,9 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 $password = ($sandbox) ? $this->confHelper->getAccount()["sandbox"]["api_tokenjs_password_publickey_sandbox"]
                     : $this->confHelper->getAccount()["production"]["api_tokenjs_password_publickey_production"];
 
-                $activatedCreditCard = Hipay_Helper::getActivatedPaymentByCountryAndCurrency(
-                    $this,
-                    "credit_card",
-                    WC()->customer->get_billing_country(),
-                    get_woocommerce_currency(),
-                    WC()->cart->get_totals()["total"],
-                    false
-                );
-
                 wp_localize_script('hipay-js-front', 'hipay_config', array(
                     "hipay_gateway_id" => $this->id,
                     "operating_mode" => $this->confHelper->getAccount()["global"]["operating_mode"],
-                    "activatedCreditCard" => $activatedCreditCard ,
                     "apiUsernameTokenJs" =>  $username,
                     "apiPasswordTokenJs" => $password,
                     "environment" => $sandbox ? "stage" : "production",
@@ -304,8 +317,6 @@ if (!class_exists('WC_Gateway_Hipay')) {
                     "placeholderColor" => $this->confHelper->getHostedFieldsStyle()["placeholderColor"],
                     "caretColor" => $this->confHelper->getHostedFieldsStyle()["caretColor"],
                     "iconColor" => $this->confHelper->getHostedFieldsStyle()["iconColor"],
-                    "defaultFirstname" => "",
-                    "defaultLastname" => "",
                 ));
 
                 wp_localize_script('hipay-js-front', 'hipay_config_i18n', array(

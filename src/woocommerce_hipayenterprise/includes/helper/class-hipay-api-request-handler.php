@@ -36,9 +36,9 @@ class Hipay_Api_Request_Handler
      */
     public function initParamsDirectPost(&$params) {
         $params["deviceFingerprint"] = $_POST['ioBB'];
-        $params["paymentProduct"] = !isset($params["paymentProduct"]) ? $_POST['card-brand'] : $params["paymentProduct"];
+        $params["paymentProduct"] = !isset($params["paymentProduct"]) ? $_POST['payment-product'] : $params["paymentProduct"];
         $params["cardtoken"] = $_POST['card-token'];
-        $params["method"] = $_POST['card-brand'];
+        $params["method"] = $_POST['payment-product'];
         $params["authentication_indicator"] = $this->plugin->confHelper->getPaymentGlobal()["activate_3d_secure"];
     }
 

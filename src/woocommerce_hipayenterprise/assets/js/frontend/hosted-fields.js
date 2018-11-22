@@ -101,29 +101,8 @@ jQuery(function ($) {
          * @param result
          */
         applyTokenization: function (result) {
-            var token = result.token;
-            var brand = "";
-            if (result.hasOwnProperty("domestic_network")) {
-                brand = result.domestic_network;
-            } else {
-                brand = result.brand;
-            }
-            var pan = result.pan;
-            var card_expiry_month = result.card_expiry_month;
-            var card_expiry_year = result.card_expiry_year;
-            var card_holder = result.card_holder;
-            var issuer = result.issuer;
-            var country = result.country;
-
-            // set tokenization response
-            $("#card-token").val(token);
-            $("#card-brand").val(brand);
-            $("#card-pan").val(pan);
-            $("#card-holder").val(card_holder);
-            $("#card-expiry-month").val(card_expiry_month);
-            $("#card-expiry-year").val(card_expiry_year);
-            $("#card-issuer").val(issuer);
-            $("#card-country").val(country);
+            $("#payment-product").val(result.payment_product);
+            $("#card-token").val(result.token);
         },
 
         /**
@@ -167,26 +146,20 @@ jQuery(function ($) {
      * @returns {boolean}
      */
     function isCardTypeActivated(result) {
-        var brand = "";
-        if (result.hasOwnProperty("domestic_network")) {
-            brand = result.domestic_network;
-        } else {
-            brand = result.brand;
-        }
-
-        return (hipay_config.activatedCreditCard.indexOf(brand.toLowerCase().replace(" ", "-")) !== -1);
+        return (hipay_config_current_cart.activatedCreditCard.includes(result.payment_product));
     }
 
     $(document.body).on('updated_checkout', function () {
-        $('.woocommerce-checkout-payment, .woocommerce-checkout-review-order-table').block({
-            message: null,
-            overlayCSS: {
-                background: '#fff',
-                opacity: 0.6
-            }
-        });
-        hostedFields.init();
-        //    $('.woocommerce-checkout-payment, .woocommerce-checkout-review-order-table').unblock();
+        if (hostedFields.isHipayHostedFieldsSelected()) {
+            $('.woocommerce-checkout-payment, .woocommerce-checkout-review-order-table').block({
+                message: null,
+                overlayCSS: {
+                    background: '#fff',
+                    opacity: 0.6
+                }
+            });
+            hostedFields.init();
+        }
     });
 
 });

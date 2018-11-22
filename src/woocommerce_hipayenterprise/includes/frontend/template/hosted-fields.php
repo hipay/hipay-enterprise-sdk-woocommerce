@@ -33,17 +33,32 @@
             <div class="hipay-baseline"></div>
         </div>
     </div>
+    <div class="hipay-row">
+        <div class="hipay-element-container">
+            <div id="hipay-help-cvc"></div>
+        </div>
+    </div>
     <div id="error-js" style="display:none" class="woocommerce-hipay-error">
         <ul>
             <li class="error"></li>
         </ul>
     </div>
-   <input type="hidden" class="payment-method-hidden-fields" id="card-token" name="card-token" value="" />
-   <input type="hidden" class="payment-method-hidden-fields" id="card-brand" name="card-brand" value="" />
-   <input type="hidden" class="payment-method-hidden-fields" id="card-pan" name="card-pan" value="" />
-    <input type="hidden" class="payment-method-hidden-fields" id="card-holder" name="card-holder" value="" />
-    <input type="hidden" class="payment-method-hidden-fields" id="card-expiry-month" name="card-expiry-month" value="" />
-    <input type="hidden" class="payment-method-hidden-fields" id="card-expiry-year" name="card-expiry-year" value="" />
-    <input type="hidden" class="payment-method-hidden-fields" id="card-issuer" name="card-issuer" value="" />
-    <input type="hidden" class="payment-method-hidden-fields" id="card-country" name="card-country" value="" />
+    <input type="hidden" class="payment-method-hidden-fields" id="payment-product" name="payment-product" value="" />
+    <input type="hidden" class="payment-method-hidden-fields" id="card-token" name="card-token" value="" />
 </div>
+<script type="text/javascript">
+    /* <![CDATA[ */
+    var hipay_config_current_cart = {
+        'activatedCreditCard':
+            [
+                <?php
+                    echo $activatedCreditCard;
+                ?>
+            ],
+        'defaultFirstname'  : '',
+        'defaultLastname' :  ''
+    };
+    /* ]]> */
+</script>
+
+

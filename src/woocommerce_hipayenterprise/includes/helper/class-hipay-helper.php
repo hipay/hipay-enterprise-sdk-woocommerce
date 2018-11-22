@@ -11,10 +11,8 @@ class Hipay_Helper
     protected $plugin;
 
     /**
-     * Check if cart amount is authorized
-     *
-     * @param array $conf
-     * @param double $totals
+     * @param $conf
+     * @param $total
      * @return bool
      */
     public static function isInAuthorizedAmount($conf, $total)
@@ -22,8 +20,8 @@ class Hipay_Helper
         $minAmount = $conf["minAmount"]["EUR"];
         $maxAmount = $conf["maxAmount"]["EUR"];
 
-        if ((($maxAmount != 0 && $total > $maxAmount) || (!empty($maxAmount)))
-            || ($minAmount != 0 && $total < $minAmount)) {
+        if (($maxAmount != 0 && $total > $maxAmount || !empty($maxAmount))
+            && ($minAmount != 0 && $total < $minAmount)) {
             return false;
         }
         return true;
