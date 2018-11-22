@@ -18,6 +18,8 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
 
     protected $apiRequestHandler;
 
+    protected $notifications;
+
     public function __construct()
     {
         if (is_admin()) {
@@ -36,6 +38,11 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
         $this->apiRequestHandler = new Hipay_Api_Request_Handler($this);
 
         $this->settingsHandler = new Hipay_Settings_Handler($this);
+
+        if ( version_compare( WOOCOMMERCE_VERSION, '3.0.0', '<=' ) ) {
+            $this->notifications[] = __(sprintf('Your Woocommerce version (%s) is not compatible with HiPay module.Please upgrade to minimum version 3.0.0',WOOCOMMERCE_VERSION));
+        }
+
 
         $this->addActions();
     }

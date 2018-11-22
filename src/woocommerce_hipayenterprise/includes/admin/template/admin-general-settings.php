@@ -1,23 +1,18 @@
-<?php
-
-$curl_active = false;
-$simplexml_active = false;
-$https_active = false;
-
-if (extension_loaded('curl')) {
-    $curl_active = true;
-}
-if (extension_loaded('simplexml')) {
-    $simplexml_active = true;
-}
-
-if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
-    $https_active = true;
-}
-
-?>
 <table class="wc_emails widefat" cellspacing="0">
     <tbody>
+    <tr>
+        <td class="wc-email-settings-table-status">  <span class="dashicons dashicons-warning"></span></td>
+        <td class="wc-email-settings-table-name"><?php _e('Notifications', 'hipayenterprise'); ?></td>
+        <td>
+            <?php
+            if (!empty($notifications)) {
+                foreach ($notifications as $notification) {
+                    echo $notification;
+                }
+            }
+            ?>
+        </td>
+    </tr>
     <tr>
         <td class="wc-email-settings-table-status">
             <?php
