@@ -68,7 +68,6 @@ class Hipay_Settings_Handler
                 'log_infos' => sanitize_title($_POST['log_infos']),
                 'card_token' => sanitize_title($_POST['card_token']),
                 'activate_basket' => sanitize_title($_POST['activate_basket']),
-                'regenerate_cart_on_decline' => sanitize_title($_POST['regenerate_cart_on_decline']),
                 'css_url' => sanitize_title($_POST['css_url']),
                 'display_hosted_page' => sanitize_title($_POST['display_hosted_page']),
                 'display_card_selector' => sanitize_title($_POST['display_card_selector']),

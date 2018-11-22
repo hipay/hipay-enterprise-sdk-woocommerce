@@ -142,7 +142,6 @@ jQuery(function ($) {
                             hostedFields.handleError(true, error);
                         }
                     );
-
             }
         }
     };

@@ -131,8 +131,7 @@ class Hipay_Config
                     "capture_mode" => "automatic",
                     "activate_basket" => 0,
                     "card_token" => 0,
-                    "log_infos" => 1,
-                    "regenerate_cart_on_decline" => 1,
+                    SettingsField::PAYMENT_GLOBAL_LOGS_INFOS => 1,
                     "send_url_notification" => 0
                 ),
                 "credit_card" => array(),

@@ -146,7 +146,6 @@ class Hipay_Api_Request_Handler
                 $redirectUrl = $forwardUrl;
                 break;
             case TransactionState::DECLINED:
-                $redirectUrl = $order->get_cancel_order_url_raw();
                 $reason = $response->getReason();
                 $this->plugin->logs->logErrors('There was an error requesting new transaction: ' . $reason['message']);
                 throw new Hipay_Payment_Exception(

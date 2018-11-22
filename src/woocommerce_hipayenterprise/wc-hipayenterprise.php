@@ -90,6 +90,7 @@ if (!class_exists('WC_HipayEnterprise')) {
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/ThreeDS.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/OperatingMode.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/CaptureMode.php');
+            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/SettingsField.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/formatter/class-hipay-api-formatter-abstract.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-request-formatter-abstract.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-hosted-payment-formatter.php');

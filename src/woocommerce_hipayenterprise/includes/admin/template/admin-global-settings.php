@@ -200,7 +200,7 @@
     </td>
 </tr>
 
-<tr valign="top">
+<tr valign="top" class="hidden">
     <th scope="row" class="titledesc"><?php _e('Use Oneclick', 'hipayenterprise'); ?></th>
     <td class="forminp">
         <fieldset>
@@ -214,7 +214,7 @@
     </td>
 </tr>
 
-<tr valign="top">
+<tr valign="top" class="hidden">
     <th scope="row" class="titledesc"><?php _e('Customer\'s cart sending', 'hipayenterprise'); ?></th>
     <td class="forminp">
         <fieldset>
@@ -223,20 +223,6 @@
             <input class="" type="checkbox" name="activate_basket"
                    id="activate_basket" style=""
                    value="1" <?php if ($paymentCommon["activate_basket"]) echo 'checked="checked"'; ?>>
-            <br>
-        </fieldset>
-    </td>
-</tr>
-
-<tr valign="top">
-    <th scope="row" class="titledesc"><?php _e('Keep cart when payment fails', 'hipayenterprise'); ?></th>
-    <td class="forminp">
-        <fieldset>
-            <legend class="screen-reader-text">
-                <span><?php _e('Keep cart when payment fails', 'hipayenterprise'); ?></span></legend>
-            <input class="" type="checkbox" name="regenerate_cart_on_decline"
-                   id="regenerate_cart_on_decline" style=""
-                   value="1" <?php if ($paymentCommon["regenerate_cart_on_decline"]) echo 'checked="checked"'; ?>>
             <br>
         </fieldset>
     </td>

@@ -14,6 +14,8 @@ class Hipay_Notification
 
     protected $plugin;
 
+    protected $order;
+
     public function __construct($plugin, $data)
     {
         $this->plugin = $plugin;
@@ -29,15 +31,15 @@ class Hipay_Notification
 
         $orderId = strtok($this->transaction->getOrder()->getId(), "-");
 
-        $order = wc_get_order($orderId);
+        $this->order = wc_get_order($orderId);
 
-        if (!$order) {
+        if (!$this->order) {
             $plugin->logs->logErrors('Bad Callback initiated, order could not be initiated ');
             header("HTTP/1.0 500 Internal server error");
             die('Order is doesnt exist');
         }
 
-        $this->orderHandler = new Hipay_Order_Handler($order);
+        $this->orderHandler = new Hipay_Order_Handler($this->order);
     }
 
     /**
@@ -56,6 +58,7 @@ class Hipay_Notification
                 $this->transaction->getStatus()
             );
 
+            $this->orderHandler->addNote(Hipay_Helper::formatOrderData($this->transaction));
             switch ($this->transaction->getStatus()) {
                 case TransactionStatus::CREATED:
                 case TransactionStatus::CARD_HOLDER_ENROLLED:
@@ -110,10 +113,12 @@ class Hipay_Notification
                             ) . " " . $this->transaction->getTransactionReference()
                         );
                     } else {
-                        $this->orderHandler->paymentComplete(
-                            $this->transaction->getTransactionReference(),
-                            "Payment complete"
-                        );
+                        if ($this->order->get_status() == 'on-hold') {
+                            $this->orderHandler->paymentComplete(
+                                $this->transaction->getTransactionReference(),
+                                "Payment complete"
+                            );
+                        }
                     }
 
                     break;
