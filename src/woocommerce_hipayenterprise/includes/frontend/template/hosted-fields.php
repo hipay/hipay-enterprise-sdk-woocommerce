@@ -1,4 +1,4 @@
-<div class="hipay-container-hosted-fields" id="hipay-container-hosted-fields-woocomerce">
+<div class="hipay-container-hosted-fields" id="hipayHF-container">
     <div class="hipay-row">
         <div class="hipay-field-container">
             <div class="hipay-field" id="hipay-card-holder"></div>

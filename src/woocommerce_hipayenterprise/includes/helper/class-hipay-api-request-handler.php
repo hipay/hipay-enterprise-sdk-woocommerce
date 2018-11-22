@@ -34,7 +34,8 @@ class Hipay_Api_Request_Handler
     /**
      * @param $params
      */
-    public function initParamsDirectPost(&$params) {
+    public function initParamsDirectPost(&$params)
+    {
         $params["deviceFingerprint"] = $_POST['ioBB'];
         $params["paymentProduct"] = !isset($params["paymentProduct"]) ? $_POST['payment-product'] : $params["paymentProduct"];
         $params["cardtoken"] = $_POST['card-token'];
@@ -92,8 +93,11 @@ class Hipay_Api_Request_Handler
         try {
             $response = $this->api->requestHostedPaymentPage($order);
         } catch (Exception $e) {
+            $this->plugin->logs->logException($e);
             throw new Hipay_Payment_Exception(
-                __('Sorry, we cannot process your payment.. Please try again.', "hipayenterprise")
+                __('An error occured, process has been cancelled..', "hipayenterprise"),
+                $order->get_cancel_order_url_raw(),
+                "success"
             );
         }
 
@@ -120,35 +124,50 @@ class Hipay_Api_Request_Handler
         $this->initParamsDirectPost($params);
         $params["paymentMethod"] = $this->getPaymentMethod($params);
 
-        $response = $this->api->requestDirectPost($order, $params);
+        try {
+            $response = $this->api->requestDirectPost($order, $params);
+        } catch (Exception $e) {
+            $this->plugin->logs->logException($e);
+            throw new Hipay_Payment_Exception(
+                __('An error occured, process has been cancelled.', "hipayenterprise"),
+                $order->get_cancel_order_url_raw(),
+                "success"
+            );
+        }
 
         $forwardUrl = $response->getForwardUrl();
 
         switch ($response->getState()) {
             case TransactionState::COMPLETED:
             case TransactionState::PENDING:
-                $redirectUrl =  $order->get_checkout_order_received_url();
+                $redirectUrl = $order->get_checkout_order_received_url();
                 break;
             case TransactionState::FORWARDING:
                 $redirectUrl = $forwardUrl;
                 break;
             case TransactionState::DECLINED:
                 $reason = $response->getReason();
-                $this->plugin->logs->logInfos('There was an error request new transaction: ' . $reason['message']);
+                $this->plugin->logs->logErrors('There was an error requesting new transaction: ' . $reason['message']);
                 throw new Hipay_Payment_Exception(
-                    __('Sorry, we cannot process your payment. Please try again.', "hipayenterprise")
+                    __(
+                        'Sorry, your payment has been declined. Please try again with an other means of payment.',
+                        "hipayenterprise"
+                    ),
+                    '',
+                    "fail"
                 );
             case TransactionState::ERROR:
                 $redirectUrl = $order->get_cancel_order_url_raw();
                 $reason = $response->getReason();
-                $this->plugin->logs->logInfos('There was an error request new transaction: ' . $reason['message']);
+                $this->plugin->logs->logErrors('There was an error requesting new transaction: ' . $reason['message']);
                 throw new Hipay_Payment_Exception(
-                    __('Sorry, an error occured during payment process.', "hipayenterprise"),
-                    $redirectUrl
+                    __('An error occured, process has been cancelled.', "hipayenterprise"),
+                    $redirectUrl,
+                    "success"
                 );
             default:
                 throw new Hipay_Payment_Exception(
-                    __('Sorry, we cannot process your payment. Please try again.', "hipayenterprise")
+                    __('An error occured, process has been cancelled.', "hipayenterprise")
                 );
         }
 

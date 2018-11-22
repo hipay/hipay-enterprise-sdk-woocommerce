@@ -114,6 +114,13 @@ jQuery(function ($) {
         },
 
         /**
+         * @returns {boolean}
+         */
+        containerExist: function () {
+            return $("#hipayHF-container").length;
+        },
+
+        /**
          *
          * @param e
          * @param hostedFields
@@ -149,7 +156,7 @@ jQuery(function ($) {
     }
 
     $(document.body).on('updated_checkout', function () {
-        if (hostedFields.isHipayHostedFieldsSelected()) {
+        if (hostedFields.containerExist()) {
             $('.woocommerce-checkout-payment, .woocommerce-checkout-review-order-table').block({
                 message: null,
                 overlayCSS: {
