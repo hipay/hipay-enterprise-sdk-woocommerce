@@ -113,10 +113,12 @@ class Hipay_Notification
                             ) . " " . $this->transaction->getTransactionReference()
                         );
                     } else {
-                        $this->orderHandler->paymentComplete(
-                            $this->transaction->getTransactionReference(),
-                            "Payment complete"
-                        );
+                        if ($this->order->get_status() == 'on-hold') {
+                            $this->orderHandler->paymentComplete(
+                                $this->transaction->getTransactionReference(),
+                                "Payment complete"
+                            );
+                        }
                     }
 
                     break;
