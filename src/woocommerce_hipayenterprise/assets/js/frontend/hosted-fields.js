@@ -2,8 +2,14 @@ jQuery(function ($) {
 
     var hostedFields = {
 
+        checkout_form: $( 'form.checkout' ),
+
         init: function () {
             var self = this;
+
+            this.checkout_form.on( 'change', '#billing_first_name, #billing_last_name', function(){
+                $( document.body ).trigger( 'update_checkout' );
+            });
 
             // Evenement plutot sur le onSubmit
             $(document.body).on('click', '#place_order', function (e) {
