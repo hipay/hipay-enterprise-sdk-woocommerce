@@ -15,13 +15,31 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+/**
+ *
+ * @author      HiPay <support.tpp@hipay.com>
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
+ */
 class Hipay_Card_Token_Formatter
 {
-
+    /**
+     * @var
+     */
     private $cardToken;
 
+    /**
+     * @var
+     */
     private $authenticationIndicator;
 
+    /**
+     * Hipay_Card_Token_Formatter constructor.
+     * @param $plugin
+     * @param $params
+     * @param bool $order
+     */
     public function __construct($plugin, $params, $order = false)
     {
         $this->cardToken = $params["cardtoken"];

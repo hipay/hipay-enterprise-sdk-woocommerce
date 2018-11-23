@@ -15,12 +15,26 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-use HiPay\Fullservice\Enum\Transaction\ECI;
-
+/**
+ *
+ * @author      HiPay <support.tpp@hipay.com>
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
+ */
 abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abstact
 {
+    /**
+     * @var
+     */
     protected $params;
 
+    /**
+     * Hipay_Request_Formatter_Abstract constructor.
+     * @param $plugin
+     * @param $params
+     * @param bool $order
+     */
     public function __construct($plugin, $params, $order = false)
     {
         parent::__construct($plugin, $order);
@@ -68,11 +82,6 @@ abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abst
         $orderRequest->ipaddr = $_SERVER ['REMOTE_ADDR'];
         $orderRequest->language = $orderRequest->language = get_locale();
         $orderRequest->http_user_agent = $_SERVER ['HTTP_USER_AGENT'];
-
-        //        $order->basket = $this->params["basket"];
-//        $order->delivery_information = $this->params["delivery_informations"];
-//        $order->authentication_indicator = $this->params["authentication_indicator"];
-        //$this->setCustomData($orderRequest, $this->cart, $this->params);
     }
 
     /**
@@ -83,6 +92,9 @@ abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abst
         return site_url() . '/wc-api/WC_HipayEnterprise/';
     }
 
+    /**
+     * @return false|mixed|string|void
+     */
     private function getRequestSource()
     {
         $source = array(

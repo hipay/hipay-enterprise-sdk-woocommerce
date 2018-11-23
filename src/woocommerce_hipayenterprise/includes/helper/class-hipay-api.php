@@ -17,13 +17,24 @@ if (!defined('ABSPATH')) {
 
 use \HiPay\Fullservice\HTTP\Configuration\Configuration;
 
+/**
+ *
+ * @author      HiPay <support.tpp@hipay.com>
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
+ */
 class Hipay_Api
 {
 
+    /**
+     * @var Hipay_Gateway_Abstract
+     */
     protected $plugin;
 
     /**
-     *
+     * Hipay_Api constructor.
+     * @param $plugin
      */
     public function __construct($plugin)
     {
@@ -33,11 +44,12 @@ class Hipay_Api
     /**
      * create gateway client from config and client provider
      *
-     * @param bool $forceConfig
+     * @param bool $forceConfig : Configuration::API_ENV_STAGE | Configuration::API_ENV_PRODUCTION | false
      * @return \HiPay\Fullservice\Gateway\Client\GatewayClient
      */
     private function createGatewayClient($forceConfig = false)
     {
+        //@TODO implements proxy configuration
         $proxy = array();
 
         if (!$forceConfig) {
@@ -64,6 +76,8 @@ class Hipay_Api
     }
 
     /**
+     * Create Direct Post request and send it
+     *
      * @param $order
      * @param $params
      * @return \HiPay\Fullservice\Gateway\Model\Transaction|\HiPay\Fullservice\Model\AbstractModel
@@ -86,6 +100,8 @@ class Hipay_Api
     }
 
     /**
+     * Create Hosted Page request and send it
+     *
      * @param $order
      * @return string
      * @throws Exception
@@ -149,13 +165,13 @@ class Hipay_Api
     /**
      * Init params send to the api caller
      *
+     * @param $params
      */
     private function iniParamsWithConfiguration(&$params)
     {
         $params["basket"] = null;
         $params["delivery_informations"] = null;
-        $params["iframe"] = $this->plugin->confHelper->getPaymentGlobal()["display_hosted_page"] ==
-        "iframe" ? true : false;
+        $params["iframe"] = $this->plugin->confHelper->getPaymentGlobal()["display_hosted_page"] === "iframe";
         $params["authentication_indicator"] = $this->plugin->confHelper->getPaymentGlobal()["activate_3d_secure"];
     }
 }

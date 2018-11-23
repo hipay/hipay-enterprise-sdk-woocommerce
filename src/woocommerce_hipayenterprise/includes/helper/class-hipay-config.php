@@ -17,15 +17,30 @@ if (!defined('ABSPATH')) {
 
 use HiPay\Fullservice\Enum\Helper\HashAlgorithm;
 
+/**
+ *
+ * @author      HiPay <support.tpp@hipay.com>
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
+ */
 class Hipay_Config
 {
 
     const OPTION_KEY = "hipay_enterprise";
 
+    /**
+     * @var array
+     */
     private $configHipay = array();
 
     /**
-     *
+     * @var string
+     */
+    private $jsonFilesPath;
+
+    /**
+     * Hipay_Config constructor.
      */
     public function __construct()
     {

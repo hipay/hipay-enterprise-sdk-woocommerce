@@ -17,11 +17,24 @@ if (!defined('ABSPATH')) {
 
 use HiPay\Fullservice\Enum\Transaction\TransactionState;
 
+/**
+ *
+ * @author      HiPay <support.tpp@hipay.com>
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
+ */
 class Hipay_Api_Request_Handler
 {
 
+    /**
+     * @var Hipay_Api
+     */
     private $api;
 
+    /**
+     * @var Hipay_Gateway_Abstract
+     */
     private $plugin;
 
     /**

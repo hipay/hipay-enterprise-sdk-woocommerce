@@ -16,21 +16,51 @@ if (!defined('ABSPATH')) {
     // Exit if accessed directly
 }
 
+/**
+ *
+ * @author      HiPay <support.tpp@hipay.com>
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
+ */
 class Hipay_Gateway_Abstract extends WC_Payment_Gateway
 {
 
     const TEXT_DOMAIN = "hipay_enterprise";
 
+    /**
+     * @var Hipay_Log
+     */
     public $logs;
 
+    /**
+     * @var Hipay_Settings_Handler
+     */
     public $settingsHandler;
 
+    /**
+     * @var Hipay_Config
+     */
     public $confHelper;
 
+    /**
+     * @var Hipay_Api_Request_Handler
+     */
     protected $apiRequestHandler;
 
+    /**
+     * @var
+     */
     protected $notifications;
 
+    /**
+     * @var
+     */
+    protected $paymentProduct;
+
+    /**
+     * Hipay_Gateway_Abstract constructor.
+     */
     public function __construct()
     {
         if (is_admin()) {
@@ -50,10 +80,14 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
 
         $this->settingsHandler = new Hipay_Settings_Handler($this);
 
-        if ( version_compare( WOOCOMMERCE_VERSION, '3.0.0', '<=' ) ) {
-            $this->notifications[] = __(sprintf('Your Woocommerce version (%s) is not compatible with HiPay module.Please upgrade to minimum version 3.0.0',WOOCOMMERCE_VERSION));
+        if (version_compare(WOOCOMMERCE_VERSION, '3.0.0', '<=')) {
+            $this->notifications[] = __(
+                sprintf(
+                    'Your Woocommerce version (%s) is not compatible with HiPay module.Please upgrade to minimum version 3.0.0',
+                    WOOCOMMERCE_VERSION
+                )
+            );
         }
-
 
         $this->addActions();
     }
@@ -66,6 +100,9 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
         return $this->apiRequestHandler->getApi();
     }
 
+    /**
+     * Add common action callback
+     */
     public function addActions()
     {
         add_filter('woocommerce_available_payment_gateways', array($this, 'available_payment_gateways'));
@@ -77,10 +114,8 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
     }
 
 
-
     /**
-     * @param $methods
-     *
+     * @param $available_gateways
      * @return mixed
      */
     public function available_payment_gateways($available_gateways)

@@ -15,8 +15,18 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+/**
+ *
+ * @author      HiPay <support.tpp@hipay.com>
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
+ */
 class Hipay_Customer_Billing_Info_Formatter extends Hipay_Api_Formatter_Abstact
 {
+    /**
+     * @var
+     */
     private $payment_product;
 
     /**

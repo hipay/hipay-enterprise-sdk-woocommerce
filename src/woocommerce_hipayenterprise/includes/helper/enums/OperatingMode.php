@@ -15,6 +15,13 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+/**
+ *
+ * @author      HiPay <support.tpp@hipay.com>
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
+ */
 class OperatingMode
 {
     const DIRECT_POST = 'direct_post';

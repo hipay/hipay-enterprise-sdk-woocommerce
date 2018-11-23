@@ -16,18 +16,31 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Class Hipay_Log
  * @TODO : Créer un custom handler
+ *
+ * @author      HiPay <support.tpp@hipay.com>
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
  */
 class Hipay_Log
 {
 
-    private $plugin;
-
-    private $logger;
-
     const DEBUG_KEYS_MASK = '****';
 
+    /**
+     * @var Hipay_Gateway_Abstract
+     */
+    private $plugin;
+
+    /**
+     * @var WC_Logger
+     */
+    private $logger;
+
+    /**
+     * @var array
+     */
     private $privateDataKeys = array(
         'token',
         'cardtoken',

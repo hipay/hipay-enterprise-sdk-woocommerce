@@ -17,17 +17,41 @@ if (!defined('ABSPATH')) {
 
 use \HiPay\Fullservice\Enum\Transaction\TransactionStatus;
 
+/**
+ *
+ * @author      HiPay <support.tpp@hipay.com>
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
+ */
 class Hipay_Notification
 {
 
+    /**
+     * @var \HiPay\Fullservice\Model\AbstractModel
+     */
     protected $transaction;
 
+    /**
+     * @var Hipay_Order_Handler
+     */
     protected $orderHandler;
 
+    /**
+     * @var Hipay_Gateway_Abstract
+     */
     protected $plugin;
 
+    /**
+     * @var bool|WC_Order|WC_Refund
+     */
     protected $order;
 
+    /**
+     * Hipay_Notification constructor.
+     * @param Hipay_Gateway_Abstract $plugin
+     * @param $data
+     */
     public function __construct($plugin, $data)
     {
         $this->plugin = $plugin;

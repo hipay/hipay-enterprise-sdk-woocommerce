@@ -15,6 +15,13 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+/**
+ *
+ * @author      HiPay <support.tpp@hipay.com>
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
+ */
 class Hipay_Direct_Post_Formatter extends Hipay_Request_Formatter_Abstract
 {
     /**
@@ -27,6 +34,12 @@ class Hipay_Direct_Post_Formatter extends Hipay_Request_Formatter_Abstract
      */
     private $paymentMethod;
 
+    /**
+     * Hipay_Direct_Post_Formatter constructor.
+     * @param $plugin
+     * @param $params
+     * @param bool $order
+     */
     public function __construct($plugin, $params, $order = false)
     {
         parent::__construct($plugin, $params, $order);

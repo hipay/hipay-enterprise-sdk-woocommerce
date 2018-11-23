@@ -16,11 +16,19 @@ if (!defined('ABSPATH')) {
     // Exit if accessed directly
 }
 
+/**
+ *
+ * @author      HiPay <support.tpp@hipay.com>
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
+ */
 class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
 {
 
-    protected $paymentProduct;
-
+    /**
+     *
+     */
     public function admin_options()
     {
         parent::admin_options();
@@ -49,6 +57,9 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
         $this->confHelper->setConfigHiPay("payment", $settings, "local_payment");
     }
 
+    /**
+     * @return false|string
+     */
     public function generate_methods_local_payments_settings_html()
     {
         ob_start();
@@ -64,6 +75,10 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
         return ob_get_clean();
     }
 
+    /**
+     * @param int $order_id
+     * @return array
+     */
     public function process_payment($order_id)
     {
         try {

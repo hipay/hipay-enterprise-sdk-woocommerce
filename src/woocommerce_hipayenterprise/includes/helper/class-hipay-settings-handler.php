@@ -15,15 +15,28 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+/**
+ *
+ * @author      HiPay <support.tpp@hipay.com>
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
+ */
 class Hipay_Settings_Handler
 {
+    /**
+     * @var Hipay_Gateway_Abstract
+     */
     protected $plugin;
 
+    /**
+     * @var array
+     */
     protected $errors;
 
     /**
      * Hipay_Settings_Handler constructor.
-     * @param $plugin
+     * @param Hipay_Gateway_Abstract $plugin
      */
     public function __construct($plugin)
     {

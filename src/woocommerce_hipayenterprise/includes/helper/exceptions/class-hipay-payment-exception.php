@@ -16,12 +16,25 @@ if (!defined('ABSPATH')) {
     // Exit if accessed directly
 }
 
-
+/**
+ *
+ * @author      HiPay <support.tpp@hipay.com>
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
+ */
 class Hipay_Payment_Exception extends Exception
 {
 
+    /**
+     * @var string
+     */
     private $redirectUrl;
 
+    /**
+     * Fail | success : Woocommerce only in case of success
+     * @var string
+     */
     private $type;
 
     /**

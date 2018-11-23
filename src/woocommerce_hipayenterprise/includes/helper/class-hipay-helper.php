@@ -14,15 +14,23 @@
 if (!defined('ABSPATH')) {
     exit;
 }
+
 use \HiPay\Fullservice\Enum\Transaction\TransactionStatus;
 use \HiPay\Fullservice\Helper\Signature;
 use \HiPay\Fullservice\HTTP\Configuration\Configuration;
 
+/**
+ *
+ * @author      HiPay <support.tpp@hipay.com>
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
+ */
 class Hipay_Helper
 {
-    protected $plugin;
-
     /**
+     * Check if order amount is between minAmount and maxAmount
+     *
      * @param $conf
      * @param $total
      * @return bool
@@ -45,6 +53,7 @@ class Hipay_Helper
      * @param $country
      * @param $currency
      * @param int $orderTotal
+     * @param bool $allConfiguration
      * @return array
      */
     public static function getActivatedPaymentByCountryAndCurrency(
@@ -56,9 +65,9 @@ class Hipay_Helper
         $allConfiguration = true
     ) {
         $activatedPayment = array();
-        if ($paymentMethodType  == Gateway_Hipay::CREDIT_CARD_PAYMENT_PRODUCT) {
+        if ($paymentMethodType == Gateway_Hipay::CREDIT_CARD_PAYMENT_PRODUCT) {
             foreach ($plugin->confHelper->getPayment()[$paymentMethodType] as $name => $conf) {
-                if ( $conf["activated"] && self::isPaymentMethodAuthorized($conf,$currency, $country, $orderTotal) ) {
+                if ($conf["activated"] && self::isPaymentMethodAuthorized($conf, $currency, $country, $orderTotal)) {
                     if ($allConfiguration) {
                         $activatedPayment[$name] = $conf;
                     } else {
@@ -68,8 +77,8 @@ class Hipay_Helper
             }
         } else {
             $conf = $plugin->confHelper->getPayment()["local_payment"][$paymentMethodType];
-            if (self::isPaymentMethodAuthorized($conf,$currency, $country, $orderTotal)) {
-                $activatedPayment[$paymentMethodType] =  $conf;
+            if (self::isPaymentMethodAuthorized($conf, $currency, $country, $orderTotal)) {
+                $activatedPayment[$paymentMethodType] = $conf;
             }
         }
         return $activatedPayment;
@@ -82,14 +91,18 @@ class Hipay_Helper
      * @param $orderTotal
      * @return bool
      */
-    private static function isPaymentMethodAuthorized($conf,$currency, $country, $orderTotal) {
-        return  in_array($currency, $conf["currencies"])
+    private static function isPaymentMethodAuthorized($conf, $currency, $country, $orderTotal)
+    {
+        return in_array($currency, $conf["currencies"])
             && in_array($country, $conf["countries"])
             && Hipay_Helper::isInAuthorizedAmount($conf, $orderTotal);
     }
 
-
-
+    /**
+     * Check notification signature
+     * @param $plugin
+     * @return bool
+     */
     public static function checkSignature($plugin)
     {
 
@@ -159,8 +172,8 @@ class Hipay_Helper
     /**
      * Format and Add Message about transaction
      *
-     * @param type $transaction
-     * @return type
+     * @param $transaction
+     * @return string
      */
     public static function formatOrderData($transaction)
     {

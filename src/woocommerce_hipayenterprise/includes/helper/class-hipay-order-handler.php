@@ -15,9 +15,19 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+/**
+ *
+ * @author      HiPay <support.tpp@hipay.com>
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
+ */
 class Hipay_Order_Handler
 {
 
+    /**
+     * @var WC_Order
+     */
     private $order;
 
     public function __construct($order)
@@ -76,6 +86,14 @@ class Hipay_Order_Handler
         WC()->cart->empty_cart();
     }
 
+    /**
+     * Partially refund order
+     * Order is still to "On hold" status but a refund is created
+     *
+     * @param $amount
+     * @param string $reason
+     * @throws Exception
+     */
     public function paymentPartiallyRefunded($amount, $reason = '')
     {
         $this->paymentOnHold($reason);

@@ -18,9 +18,10 @@ if (!defined('ABSPATH')) {
 
 /**
  *
- * WC_Gateway_Hipay
- *
- * @extends     WC_Payment_Gateway
+ * @author      HiPay <support.tpp@hipay.com>
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
  */
 if (!class_exists('WC_Gateway_Hipay')) {
     class Gateway_Hipay extends Hipay_Gateway_Abstract
@@ -28,6 +29,9 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
         const CREDIT_CARD_PAYMENT_PRODUCT = "credit_card";
 
+        /**
+         * Gateway_Hipay constructor.
+         */
         public function __construct()
         {
             $this->id = 'hipayenterprise_credit_card';
@@ -118,7 +122,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
         }
 
         /**
-         *
+         * @see parent::addActions
          */
         public function addActions()
         {
@@ -152,8 +156,6 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 header("HTTP/1.0 500 Internal server error");
             }
         }
-
-
 
         /**
          * Save HiPay Admin Settings
@@ -322,15 +324,21 @@ if (!class_exists('WC_Gateway_Hipay')) {
         public function admin_options()
         {
             parent::admin_options();
-            $this->process_template('admin-general-settings.php',
-                'admin',array(
+            $this->process_template(
+                'admin-general-settings.php',
+                'admin',
+                array(
                     'curl_active' => extension_loaded('curl'),
                     'simplexml_active' => extension_loaded('simplexml'),
                     'https_active' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off',
                     'notifications' => $this->notifications,
-                ));
+                )
+            );
         }
 
+        /**
+         * @param $order_id
+         */
         public function thanks_page($order_id)
         {
             WC();
@@ -384,8 +392,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
 
         /**
-         *
-         *  Process payment
+         * Process payment
          *
          * @param int $order_id
          * @return array
@@ -443,7 +450,6 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
         /**
          *  Generate HTML for error in iframe request
-         *
          */
         private function generate_error_receipt()
         {
@@ -455,7 +461,6 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
         /**
          *  Generate HTML for direct integration
-         *
          */
         private function generate_common_receipt()
         {
