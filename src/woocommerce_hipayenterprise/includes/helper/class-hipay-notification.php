@@ -106,21 +106,22 @@ class Hipay_Notification
                     break;
                 case TransactionStatus::CAPTURED: //118
                 case TransactionStatus::CAPTURE_REQUESTED: //117
-                    if ($this->transaction->getCapturedAmount() < $this->transaction->getAuthorizedAmount()) {
-                        $this->orderHandler->paymentOnHold(
-                            __(
-                                "Payment partially captured, amount:." . " " . $this->transaction->getCapturedAmount(),
-                                'hipayenterprise'
-                            ) . " " . $this->transaction->getTransactionReference()
-                        );
-                    } else {
-                        if ($this->order->get_status() == 'on-hold') {
-                            $this->orderHandler->paymentComplete(
-                                $this->transaction->getTransactionReference(),
-                                "Payment complete"
+                    if ($this->order->get_status() == 'on-hold') {
+                        if ($this->transaction->getCapturedAmount() < $this->transaction->getAuthorizedAmount()) {
+                            $this->orderHandler->paymentOnHold(
+                                __(
+                                    "Payment partially captured, amount:" . " " . $this->transaction->getCapturedAmount(),
+                                    'hipayenterprise'
+                                ) . " " . $this->transaction->getTransactionReference()
                             );
+                        } else {
+
+                                $this->orderHandler->paymentComplete(
+                                    $this->transaction->getTransactionReference(),
+                                    "Payment complete"
+                                );
                         }
-                    }
+                }
 
                     break;
                 case TransactionStatus::PARTIALLY_CAPTURED: //119
