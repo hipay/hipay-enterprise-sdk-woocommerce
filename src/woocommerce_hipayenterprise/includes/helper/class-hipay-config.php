@@ -10,16 +10,13 @@ class Hipay_Config
 
     const OPTION_KEY = "hipay_enterprise";
 
-    protected $plugin;
-
     private $configHipay = array();
 
     /**
      *
      */
-    public function __construct($plugin)
+    public function __construct()
     {
-        $this->plugin = $plugin;
         $this->jsonFilesPath = dirname(__FILE__) . "/../../paymentConfigFiles/";
     }
 
@@ -48,7 +45,6 @@ class Hipay_Config
         // if config exist but empty, init new object for configHipay
         if (!$this->configHipay || empty($this->configHipay)) {
             $this->insertConfigHiPay();
-            $this->plugin->init_settings();
         }
     }
 

@@ -1,7 +1,7 @@
 <p>
     <?php
     echo sprintf(
-        __('All other general Stripe settings can be adjusted <a href="%s">here</a>.', 'woocommerce-gateway-stripe'),
+        __('All other general HiPay settings can be adjusted <a href="%s">here</a>.', 'hipayenterprise'),
         admin_url('admin.php?page=wc-settings&tab=checkout&section=hipayenterprise_credit_card')
     );
     ?>
