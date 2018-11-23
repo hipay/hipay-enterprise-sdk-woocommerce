@@ -46,7 +46,7 @@ class Hipay_Helper
         $activatedPayment = array();
         if ($paymentMethodType  == Gateway_Hipay::CREDIT_CARD_PAYMENT_PRODUCT) {
             foreach ($plugin->confHelper->getPayment()[$paymentMethodType] as $name => $conf) {
-                if ( $conf["activated"] && self::isPaymentMethodAuthorized($conf,$currency, $country, $orderTotal) ) {
+                if ($conf["activated"] && self::isPaymentMethodAuthorized($conf, $currency, $country, $orderTotal)) {
                     if ($allConfiguration) {
                         $activatedPayment[$name] = $conf;
                     } else {
@@ -56,7 +56,7 @@ class Hipay_Helper
             }
         } else {
             $conf = $plugin->confHelper->getPayment()["local_payment"][$paymentMethodType];
-            if (self::isPaymentMethodAuthorized($conf,$currency, $country, $orderTotal)) {
+            if (self::isPaymentMethodAuthorized($conf, $currency, $country, $orderTotal)) {
                 $activatedPayment[$paymentMethodType] =  $conf;
             }
         }
@@ -70,7 +70,8 @@ class Hipay_Helper
      * @param $orderTotal
      * @return bool
      */
-    private static function isPaymentMethodAuthorized($conf,$currency, $country, $orderTotal) {
+    private static function isPaymentMethodAuthorized($conf, $currency, $country, $orderTotal)
+    {
         return  in_array($currency, $conf["currencies"])
             && in_array($country, $conf["countries"])
             && Hipay_Helper::isInAuthorizedAmount($conf, $orderTotal);
@@ -80,7 +81,6 @@ class Hipay_Helper
 
     public static function checkSignature($plugin)
     {
-
         if ($plugin->confHelper->isSandbox()) {
             $passphrase = $plugin->confHelper->getAccount()["sandbox"]["api_secret_passphrase_sandbox"];
             $environment = Configuration::API_ENV_STAGE;
@@ -145,6 +145,40 @@ class Hipay_Helper
     }
 
     /**
+     *  Send email to admin and BCC when fraud transaction is detected
+     *
+     * @param $orderId
+     */
+    public static function sendEmailFraud($orderId,$plugin) {
+        $subject = sprintf(__('A payment transaction is awaiting validation for the order %s'), $orderId);
+        $urlAdmin = admin_url('admin.php?edit.php?post_type=shop_order');
+        $listEmails[] = get_option('admin_email');
+
+        $settingsFraud = $plugin->confHelper->getFraud();
+        if ($settingsFraud['copy_to']) {
+            $listEmails[] = $settingsFraud['copy_to'];
+        };
+
+        foreach ($listEmails as $email) {
+            self::sendEmail($email,$subject,
+                sprintf(__('You can accept or decline this transaction by visiting the administration of your store. <a href="%s">here</a>'), $urlAdmin));
+        }
+    }
+
+    /**
+     * Send Email with default wordpress template
+     *
+     * @param $message
+     * @param $subject
+     */
+    public static function sendEmail($to, $subject, $message)
+    {
+        $mailer = WC()->mailer();
+        $mailer->send($to ,$subject,  $mailer->wrap_message($subject, $message));
+    }
+
+
+    /**
      * Format and Add Message about transaction
      *
      * @param type $transaction
@@ -175,5 +209,4 @@ class Hipay_Helper
 
         return $message;
     }
-
 }

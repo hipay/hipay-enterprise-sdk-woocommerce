@@ -85,7 +85,8 @@ class Hipay_Notification
                     );
                     break;
                 case TransactionStatus::AUTHORIZED_AND_PENDING:
-                    $this->orderHandler->paymentOnHold("payment challenged");
+                    $this->orderHandler->paymentOnHold("Payment challenged");
+                    Hipay_Helper::sendEmailFraud($this->transaction->getOrder()->getId(), $this->plugin);
                     break;
                 case TransactionStatus::AUTHENTICATION_REQUESTED:
                 case TransactionStatus::AUTHORIZATION_REQUESTED:
