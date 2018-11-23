@@ -65,6 +65,20 @@ class Hipay_Order_Handler
         WC()->cart->empty_cart();
     }
 
+    public function paymentPartiallyRefunded($amount, $reason = '')
+    {
+        $this->paymentOnHold($reason);
+
+        $refund = array(
+            "amount" => $amount,
+            "reason" => $reason,
+            "order_id" => $this->order->get_id()
+        );
+
+        wc_create_refund($refund);
+        WC()->cart->empty_cart();
+    }
+
     /**
      * Add note to order
      *

@@ -137,7 +137,8 @@ class Hipay_Notification
                     $this->orderHandler->paymentRefunded("Payment refunded");
                     break;
                 case TransactionStatus::PARTIALLY_REFUNDED: //126
-                    $this->orderHandler->paymentOnHold(
+                    $this->orderHandler->paymentPartiallyRefunded(
+                        $this->transaction->getRefundedAmount() - $this->order->get_total_refunded(),
                         __(
                             "Payment partially refunded, amount:." . " " . $this->transaction->getRefundedAmount(),
                             'hipayenterprise'
