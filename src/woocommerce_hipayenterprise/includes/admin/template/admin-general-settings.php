@@ -1,3 +1,4 @@
+<?php settings_errors(); ?>
 <table class="wc_emails widefat" cellspacing="0">
     <tbody>
     <tr>

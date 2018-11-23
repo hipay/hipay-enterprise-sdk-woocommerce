@@ -5,22 +5,67 @@ if (!defined('ABSPATH')) {
 
 class Hipay_Settings_Handler
 {
-
     protected $plugin;
 
+    protected $errors;
+
     /**
-     *
+     * Hipay_Settings_Handler constructor.
+     * @param $plugin
      */
     public function __construct($plugin)
     {
         $this->plugin = $plugin;
+        $this->errors = array();
     }
 
+    /**
+     * @param $settings
+     * @return bool
+     */
     public function saveAccountSettings(&$settings)
     {
         $this->plugin->logs->logInfos("# saveAccountSettings");
 
         try {
+            if (
+                !empty($_POST['woocommerce_hipayenterprise_account_sandbox_username'])
+                && empty($_POST['woocommerce_hipayenterprise_account_sandbox_password'])
+            ) {
+                $this->addError(__("If sandbox api username is filled sandbox api password is mandatory"));
+            }
+
+            $settings["account"]["global"] = array(
+                "sandbox_mode" => sanitize_title($_POST['woocommerce_hipayenterprise_sandbox'])
+            );
+
+            if (
+                !empty($_POST['woocommerce_hipayenterprise_account_sandbox_tokenjs_username'])
+                && empty($_POST['woocommerce_hipayenterprise_account_sandbox_password_publickey'])
+            ) {
+                $this->addError(
+                    __("If sandbox api TokenJS username is filled sandbox api TokenJS password is mandatory")
+                );
+            }
+
+            if (
+                !empty($_POST['woocommerce_hipayenterprise_account_production_username'])
+                && empty($_POST['woocommerce_hipayenterprise_account_production_password'])
+            ) {
+                $this->addError(__("If production api username is filled production api password is mandatory"));
+            }
+
+            if (
+                !empty($_POST['woocommerce_hipayenterprise_account_production_tokenjs_username'])
+                && empty($_POST['woocommerce_hipayenterprise_account_production_password_publickey'])
+            ) {
+                $this->addError(
+                    __("If production api TokenJS username is filled production api TokenJS password is mandatory")
+                );
+            }
+
+            $this->handleErrors();
+
             $settings["account"]["global"] = array(
                 "sandbox_mode" => sanitize_title($_POST['woocommerce_hipayenterprise_sandbox'])
             );
@@ -45,8 +90,13 @@ class Hipay_Settings_Handler
 
             $this->plugin->logs->logInfos($settings);
             return true;
+        } catch (Hipay_Settings_Exception $e) {
+            $this->plugin->logs->logInfos($e);
+            $settings["account"]["production"] = $this->plugin->confHelper->getAccountProduction();
+            $settings["account"]["sandbox"] = $this->plugin->confHelper->getAccountSandbox();
+            $settings["account"]["global"] = $this->plugin->confHelper->getAccount()["global"];
         } catch (Exception $e) {
-            $this->plugin->log->logException($e);
+            $this->plugin->logs->logException($e);
         }
 
         return false;
@@ -61,6 +111,8 @@ class Hipay_Settings_Handler
         $this->plugin->logs->logInfos("# SavePaymentGlobal");
 
         try {
+            $this->handleErrors();
+
             $settings["payment"]["global"] = array(
                 'operating_mode' => sanitize_title($_POST['operating_mode']),
                 'capture_mode' => sanitize_title($_POST['capture_mode']),
@@ -86,7 +138,11 @@ class Hipay_Settings_Handler
             );
 
             $this->plugin->logs->logInfos($settings);
+
             return true;
+        } catch (Hipay_Settings_Exception $e) {
+            $this->plugin->logs->logInfos($e);
+            $settings["payment"]["global"] = $this->plugin->confHelper->getPaymentGlobal();
         } catch (Exception $e) {
             $this->plugin->logs->logException($e);
         }
@@ -103,6 +159,12 @@ class Hipay_Settings_Handler
         $this->plugin->logs->logInfos("# SaveFraudSettings");
 
         try {
+
+            if(empty(sanitize_email($_POST['woocommerce_hipayenterprise_fraud_copy_to']))){
+                $this->addError(__('"Copy to should" be a valid email'));
+            }
+            $this->handleErrors();
+
             $settings['fraud']['copy_to'] = sanitize_email(
                 $_POST['woocommerce_hipayenterprise_fraud_copy_to']
             );
@@ -111,19 +173,28 @@ class Hipay_Settings_Handler
             );
 
             $this->plugin->logs->logInfos($settings);
-            return true;
-        } catch (Exception $e) {
-            $this->plugin->log->logException($e);
-        }
 
+            return true;
+        } catch (Hipay_Settings_Exception $e) {
+            $this->plugin->logs->logInfos($e);
+            $settings['fraud'] = $this->plugin->confHelper->getFraud();
+        } catch (Exception $e) {
+            $this->plugin->logs->logException($e);
+        }
         return false;
     }
 
+    /**
+     * @param $settings
+     * @return bool
+     */
     public function saveCreditCardSettings(&$settings)
     {
         $this->plugin->logs->logInfos("# SaveCreditCardInformations");
 
         try {
+            $this->handleErrors();
+
             $keySaved = array(
                 "activated",
                 "currencies",
@@ -147,18 +218,28 @@ class Hipay_Settings_Handler
             $this->plugin->logs->logInfos($settings);
 
             return true;
+        } catch (Hipay_Settings_Exception $e) {
+            $this->plugin->logs->logInfos($e);
+            $settings["payment"]["credit_card"] = $this->plugin->confHelper->getPaymentCreditCard();
         } catch (Exception $e) {
-            $this->plugin->log->logException($e);
+            $this->plugin->logs->logException($e);
         }
 
         return false;
     }
 
+    /**
+     * @param $settings
+     * @param $methods
+     * @return bool
+     */
     public function saveLocalPaymentSettings(&$settings, $methods)
     {
         $this->plugin->logs->logInfos("# SaveLocalPaymentSettings");
 
         try {
+            $this->handleErrors();
+
             $keySaved = array(
                 "currencies",
                 "countries",
@@ -174,13 +255,43 @@ class Hipay_Settings_Handler
                 }
             }
 
+
             $this->plugin->logs->logInfos($settings);
 
             return true;
+        } catch (Hipay_Settings_Exception $e) {
+            $this->plugin->logs->logInfos($e);
+            $settings = $this->plugin->confHelper->getLocalPayments();
         } catch (Exception $e) {
-            $this->plugin->log->logException($e);
+            $this->plugin->logs->logException($e);
         }
 
         return false;
+    }
+
+    /**
+     * @return bool
+     * @throws Hipay_Settings_Exception
+     */
+    private function handleErrors()
+    {
+        if (!empty($this->errors)) {
+            foreach ($this->errors as $error) {
+                add_settings_error(__("HiPay"), null, $error);
+            }
+            $this->errors = array();
+
+            throw new Hipay_Settings_Exception();
+        }
+
+        return true;
+    }
+
+    /**
+     * @param $message
+     */
+    private function addError($message)
+    {
+        $this->errors[] = $message;
     }
 }
