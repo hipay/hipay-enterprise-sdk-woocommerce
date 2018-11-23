@@ -36,20 +36,18 @@ class Hipay_Card_Token_Formatter
 
     /**
      * Hipay_Card_Token_Formatter constructor.
-     * @param $plugin
      * @param $params
-     * @param bool $order
      */
-    public function __construct($plugin, $params, $order = false)
+    public function __construct($params)
     {
         $this->cardToken = $params["cardtoken"];
         $this->authenticationIndicator = $params['authentication_indicator'];
     }
 
     /**
-     * Generate request data before API call
+     *  Generate request data before API call
      *
-     * @return \HiPay\Fullservice\Gateway\Request\Order\OrderRequest
+     * @return \HiPay\Fullservice\Gateway\Request\PaymentMethod\CardTokenPaymentMethod
      */
     public function generate()
     {

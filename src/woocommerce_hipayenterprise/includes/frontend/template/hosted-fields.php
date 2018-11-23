@@ -3,7 +3,7 @@
         <div class="hipay-field-container">
             <div class="hipay-field" id="hipay-card-holder"></div>
             <label class="hipay-label" for="hipay-card-holder">
-                <?php _e('Card Owner Name', 'hipayenterprise'); ?>
+                <?php _e('Card Owner Name', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?>
             </label>
             <div class="hipay-baseline"></div>
         </div>
@@ -12,7 +12,7 @@
         <div class="hipay-field-container">
             <div class="hipay-field" id="hipay-card-number"></div>
             <label class="hipay-label" for="hipay-card-number">
-                <?php _e('Credit Card Number', 'hipayenterprise'); ?>
+                <?php _e('Credit Card Number', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?>
             </label>
             <div class="hipay-baseline"></div>
         </div>
@@ -21,14 +21,14 @@
         <div class="hipay-field-container hipay-field-container-half">
             <div class="hipay-field" id="hipay-date-expiry"></div>
             <label class="hipay-label" for="hipay-date-expiry">
-                <?php _e('Expiration Date', 'hipayenterprise'); ?>
+                <?php _e('Expiration Date', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?>
             </label>
             <div class="hipay-baseline"></div>
         </div>
         <div class="hipay-field-container hipay-field-container-half">
             <div class="hipay-field" id="hipay-cvc"></div>
             <label class="hipay-label" for="hipay-cvc">
-                <?php _e('Card Verification Number', 'hipayenterprise'); ?>
+                <?php _e('Card Verification Number', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?>
             </label>
             <div class="hipay-baseline"></div>
         </div>

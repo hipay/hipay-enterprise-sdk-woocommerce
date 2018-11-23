@@ -1,25 +1,25 @@
 <?php $classHostedSettings = $paymentCommon["operating_mode"] ==
 "hosted_page" ? $classHostedSettings = "hidden " : ""; ?>
 <tr valign="top">
-    <th scope="row" class="titledesc"><?php _e('Operating mode', 'hipayenterprise'); ?></th>
+    <th scope="row" class="titledesc"><?php _e('Operating mode', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></th>
     <td class="forminp">
         <fieldset>
             <legend class="screen-reader-text">
-                <span><?php _e("Operating Mode", 'hipayenterprise'); ?></span></legend>
+                <span><?php _e("Operating Mode", Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></span></legend>
             <select class="select " name="operating_mode"
                     id="operating_mode" style="">
                 <option
-                        value="hosted_page" <?php if ($paymentCommon["operating_mode"] == "hosted_page") {
+                        value="hosted_page" <?php if ($paymentCommon["operating_mode"] == OperatingMode::HOSTED_PAGE) {
                     echo " SELECTED";
-                } ?>><?php _e('Hosted page', 'hipayenterprise'); ?></option>
+                } ?>><?php _e('Hosted page', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></option>
                 <option
-                        value="direct_post" <?php if ($paymentCommon["operating_mode"] == "direct_post") {
+                        value="direct_post" <?php if ($paymentCommon["operating_mode"] == OperatingMode::DIRECT_POST) {
                     echo " SELECTED";
-                } ?>><?php _e('Direct Post', 'hipayenterprise'); ?></option>
+                } ?>><?php _e('Direct Post', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></option>
             </select>
             <p class="description"><?php _e(
                     "Api if the customer will fill his bank information directly on merchants OR Hosted if the customer is redirected to a secured payment page hosted by HiPay.",
-                    'hipayenterprise'
+                    Hipay_Gateway_Abstract::TEXT_DOMAIN
                 ); ?></p>
         </fieldset>
     </td>
@@ -27,24 +27,24 @@
 
 
 <tr valign="top"
-    class="<?php if ($paymentCommon["operating_mode"] != "hosted_page") {
+    class="<?php if ($paymentCommon["operating_mode"] != OperatingMode::HOSTED_PAGE) {
         echo "hidden ";
     } ?>hosted_page_config">
-    <th scope="row" class="titledesc"><?php _e('Display Hosted Page', 'hipayenterprise'); ?></th>
+    <th scope="row" class="titledesc"><?php _e('Display Hosted Page', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></th>
     <td class="forminp">
         <fieldset>
             <legend class="screen-reader-text">
-                <span><?php _e("Display Hosted Page", 'hipayenterprise'); ?></span></legend>
+                <span><?php _e("Display Hosted Page", Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></span></legend>
             <select class="select " name="display_hosted_page"
                     id="display_hosted_page" style="">
                 <option
                         value="redirect" <?php if ($paymentCommon["display_hosted_page"] == "redirect") {
                     echo " SELECTED";
-                } ?>><?php _e('Redirect', 'hipayenterprise'); ?></option>
+                } ?>><?php _e('Redirect', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></option>
                 <option
                         value="iframe" <?php if ($paymentCommon["display_hosted_page"] == "iframe") {
                     echo " SELECTED";
-                } ?>><?php _e('IFrame', 'hipayenterprise'); ?></option>
+                } ?>><?php _e('IFrame', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></option>
             </select>
         </fieldset>
     </td>
@@ -55,11 +55,11 @@
     class="<?php if ($paymentCommon["operating_mode"] != "hosted_page") {
         echo "hidden ";
     } ?>hosted_page_config">
-    <th scope="row" class="titledesc"><?php _e('Display card selector', 'hipayenterprise'); ?></th>
+    <th scope="row" class="titledesc"><?php _e('Display card selector', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></th>
     <td class="forminp">
         <fieldset>
             <legend class="screen-reader-text">
-                <span><?php _e('Display card selector', 'hipayenterprise'); ?></span></legend>
+                <span><?php _e('Display card selector', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></span></legend>
             <input class="" type="checkbox" name="display_card_selector"
                    id="display_card_selector" style=""
                    value="1" <?php if ($paymentCommon["display_card_selector"]) {
@@ -74,10 +74,10 @@
     class="<?php if ($paymentCommon["operating_mode"] != "hosted_page") {
         echo "hidden ";
     } ?>hosted_page_config">
-    <th scope="row" class="titledesc"><?php _e('CSS url', 'hipayenterprise'); ?></th>
+    <th scope="row" class="titledesc"><?php _e('CSS url', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></th>
     <td class="forminp">
         <fieldset>
-            <legend class="screen-reader-text"><span><?php _e("CSS Url", 'hipayenterprise'); ?></span>
+            <legend class="screen-reader-text"><span><?php _e("CSS Url", Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></span>
             </legend>
             <input class="input-text regular-input " type="text"
                    name="css_url"
@@ -86,7 +86,7 @@
                    placeholder="">
             <p class="description"><?php _e(
                     "URL to your CSS (style sheet) to customize your hosted page or iFrame (Important: the HTTPS protocol is required).",
-                    'hipayenterprise'
+                    Hipay_Gateway_Abstract::TEXT_DOMAIN
                 ); ?></p>
         </fieldset>
     </td>
@@ -94,10 +94,10 @@
 
 <tr valign="top"
     class="<?php echo $classHostedSettings; ?>directPost_page_config">
-    <th scope="row" class="titledesc"><?php _e('Color', 'hipayenterprise'); ?></th>
+    <th scope="row" class="titledesc"><?php _e('Color', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></th>
     <td class="forminp">
         <fieldset>
-            <legend class="screen-reader-text"><span><?php _e("Color", 'hipayenterprise'); ?></span>
+            <legend class="screen-reader-text"><span><?php _e("Color", Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></span>
             </legend>
             <input class="input-text regular-input " type="text"
                    name="color"
@@ -110,10 +110,13 @@
 
 <tr valign="top"
     class="<?php echo $classHostedSettings; ?>directPost_page_config">
-    <th scope="row" class="titledesc"><?php _e('Font Family', 'hipayenterprise'); ?></th>
+    <th scope="row" class="titledesc"><?php _e('Font Family', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></th>
     <td class="forminp">
         <fieldset>
-            <legend class="screen-reader-text"><span><?php _e("Font Family", 'hipayenterprise'); ?></span>
+            <legend class="screen-reader-text"><span><?php _e(
+                        "Font Family",
+                        Hipay_Gateway_Abstract::TEXT_DOMAIN
+                    ); ?></span>
             </legend>
             <input class="input-text regular-input " type="text"
                    name="fontFamily"
@@ -126,10 +129,13 @@
 
 <tr valign="top"
     class="<?php echo $classHostedSettings; ?>directPost_page_config">
-    <th scope="row" class="titledesc"><?php _e('Font Size', 'hipayenterprise'); ?></th>
+    <th scope="row" class="titledesc"><?php _e('Font Size', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></th>
     <td class="forminp">
         <fieldset>
-            <legend class="screen-reader-text"><span><?php _e("Font Size", 'hipayenterprise'); ?></span>
+            <legend class="screen-reader-text"><span><?php _e(
+                        "Font Size",
+                        Hipay_Gateway_Abstract::TEXT_DOMAIN
+                    ); ?></span>
             </legend>
             <input class="input-text regular-input " type="text"
                    name="fontSize"
@@ -142,10 +148,13 @@
 
 <tr valign="top"
     class="<?php echo $classHostedSettings; ?>directPost_page_config">
-    <th scope="row" class="titledesc"><?php _e('Font Weight', 'hipayenterprise'); ?></th>
+    <th scope="row" class="titledesc"><?php _e('Font Weight', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></th>
     <td class="forminp">
         <fieldset>
-            <legend class="screen-reader-text"><span><?php _e("Font Weight", 'hipayenterprise'); ?></span>
+            <legend class="screen-reader-text"><span><?php _e(
+                        "Font Weight",
+                        Hipay_Gateway_Abstract::TEXT_DOMAIN
+                    ); ?></span>
             </legend>
             <input class="input-text regular-input " type="text"
                    name="fontWeight"
@@ -158,10 +167,13 @@
 
 <tr valign="top"
     class="<?php echo $classHostedSettings; ?>directPost_page_config">
-    <th scope="row" class="titledesc"><?php _e('PlaceHodler color', 'hipayenterprise'); ?></th>
+    <th scope="row" class="titledesc"><?php _e('PlaceHodler color', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></th>
     <td class="forminp">
         <fieldset>
-            <legend class="screen-reader-text"><span><?php _e("PlaceHodler color", 'hipayenterprise'); ?></span>
+            <legend class="screen-reader-text"><span><?php _e(
+                        "PlaceHodler color",
+                        Hipay_Gateway_Abstract::TEXT_DOMAIN
+                    ); ?></span>
             </legend>
             <input class="input-text regular-input " type="text"
                    name="placeholderColor"
@@ -176,10 +188,13 @@
 
 <tr valign="top"
     class="<?php echo $classHostedSettings; ?>directPost_page_config">
-    <th scope="row" class="titledesc"><?php _e('Caret color', 'hipayenterprise'); ?></th>
+    <th scope="row" class="titledesc"><?php _e('Caret color', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></th>
     <td class="forminp">
         <fieldset>
-            <legend class="screen-reader-text"><span><?php _e("Caret Color", 'hipayenterprise'); ?></span>
+            <legend class="screen-reader-text"><span><?php _e(
+                        "Caret Color",
+                        Hipay_Gateway_Abstract::TEXT_DOMAIN
+                    ); ?></span>
             </legend>
             <input class="input-text regular-input " type="text"
                    name="caretColor"
@@ -192,10 +207,13 @@
 
 <tr valign="top"
     class="<?php echo $classHostedSettings; ?>directPost_page_config">
-    <th scope="row" class="titledesc"><?php _e('Icon color', 'hipayenterprise'); ?></th>
+    <th scope="row" class="titledesc"><?php _e('Icon color', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></th>
     <td class="forminp">
         <fieldset>
-            <legend class="screen-reader-text"><span><?php _e("Icon Color", 'hipayenterprise'); ?></span>
+            <legend class="screen-reader-text"><span><?php _e(
+                        "Icon Color",
+                        Hipay_Gateway_Abstract::TEXT_DOMAIN
+                    ); ?></span>
             </legend>
             <input class="input-text regular-input " type="text"
                    name="iconColor"
@@ -208,35 +226,38 @@
 
 
 <tr valign="top">
-    <th scope="row" class="titledesc"><?php _e('Capture', 'hipayenterprise'); ?></th>
+    <th scope="row" class="titledesc"><?php _e('Capture', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></th>
     <td class="forminp">
         <fieldset>
-            <legend class="screen-reader-text"><span><?php _e("Capture", 'hipayenterprise'); ?></span>
+            <legend class="screen-reader-text"><span><?php _e("Capture", Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></span>
             </legend>
             <select class="select " name="capture_mode"
                     id="capture_mode" style="">
                 <option
                         value="automatic" <?php if ($paymentCommon["capture_mode"] == "automatic") {
                     echo " SELECTED";
-                } ?>><?php _e('Automatic', 'hipayenterprise'); ?></option>
+                } ?>><?php _e('Automatic', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></option>
                 <option
                         value="manual" <?php if ($paymentCommon["capture_mode"] == "manual") {
                     echo " SELECTED";
-                } ?>><?php _e('Manual', 'hipayenterprise'); ?></option>
+                } ?>><?php _e('Manual', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></option>
             </select>
             <p class="description"><?php _e(
                     "Manual if all transactions will be captured manually either from the Hipay Back office or from your admin in Woocommerce OR Automatic if all transactions will be captured automatically.",
-                    'hipayenterprise'
+                    Hipay_Gateway_Abstract::TEXT_DOMAIN
                 ); ?></p>
         </fieldset>
     </td>
 </tr>
 
 <tr valign="top" class="hidden">
-    <th scope="row" class="titledesc"><?php _e('Use Oneclick', 'hipayenterprise'); ?></th>
+    <th scope="row" class="titledesc"><?php _e('Use Oneclick', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></th>
     <td class="forminp">
         <fieldset>
-            <legend class="screen-reader-text"><span><?php _e('Use Oneclick', 'hipayenterprise'); ?></span>
+            <legend class="screen-reader-text"><span><?php _e(
+                        'Use Oneclick',
+                        Hipay_Gateway_Abstract::TEXT_DOMAIN
+                    ); ?></span>
             </legend>
             <input class="" type="checkbox" name="card_token"
                    id="card_token" style=""
@@ -249,11 +270,11 @@
 </tr>
 
 <tr valign="top" class="hidden">
-    <th scope="row" class="titledesc"><?php _e('Customer\'s cart sending', 'hipayenterprise'); ?></th>
+    <th scope="row" class="titledesc"><?php _e('Customer\'s cart sending', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></th>
     <td class="forminp">
         <fieldset>
             <legend class="screen-reader-text">
-                <span><?php _e('Customer\'s cart sending', 'hipayenterprise'); ?></span></legend>
+                <span><?php _e('Customer\'s cart sending', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></span></legend>
             <input class="" type="checkbox" name="activate_basket"
                    id="activate_basket" style=""
                    value="1" <?php if ($paymentCommon["activate_basket"]) {
@@ -265,11 +286,11 @@
 </tr>
 
 <tr valign="top">
-    <th scope="row" class="titledesc"><?php _e('Logs information', 'hipayenterprise'); ?></th>
+    <th scope="row" class="titledesc"><?php _e('Logs information', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></th>
     <td class="forminp">
         <fieldset>
             <legend class="screen-reader-text">
-                <span><?php _e('Logs information', 'hipayenterprise'); ?></span></legend>
+                <span><?php _e('Logs information', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></span></legend>
             <input class="" type="checkbox" name="log_infos"
                    id="log_infos" style=""
                    value="1" <?php if ($paymentCommon["log_infos"]) {
@@ -281,11 +302,11 @@
 </tr>
 
 <tr valign="top">
-    <th scope="row" class="titledesc"><?php _e('Send url Notification', 'hipayenterprise'); ?></th>
+    <th scope="row" class="titledesc"><?php _e('Send url Notification', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></th>
     <td class="forminp">
         <fieldset>
             <legend class="screen-reader-text">
-                <span><?php _e('Send url Notification', 'hipayenterprise'); ?></span></legend>
+                <span><?php _e('Send url Notification', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></span></legend>
             <input class="" type="checkbox" name="send_url_notification"
                    id="log_infos" style=""
                    value="1" <?php if ($paymentCommon["send_url_notification"]) {
@@ -297,25 +318,26 @@
 </tr>
 
 <tr valign="top">
-    <th scope="row" class="titledesc"><?php _e('Activate 3-D Secure', 'hipayenterprise'); ?></th>
+    <th scope="row" class="titledesc"><?php _e('Activate 3-D Secure', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></th>
     <td class="forminp">
         <fieldset>
             <legend class="screen-reader-text">
-                <span><?php _e("Activate 3-D Secure", 'hipayenterprise'); ?></span></legend>
+                <span><?php _e("Activate 3-D Secure", Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></span></legend>
             <select class="select " name="activate_3d_secure"
                     id="activate_3d_secure" style="">
                 <option
-                        value="0" <?php if ($paymentCommon["activate_3d_secure"] == "0") {
+                        value="0" <?php if ($paymentCommon["activate_3d_secure"] == ThreeDS::THREE_D_S_DISABLED) {
                     echo " SELECTED";
-                } ?>><?php _e('Deactivated', 'hipayenterprise'); ?></option>
+                } ?>><?php _e('Deactivated', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></option>
                 <option
-                        value="1" <?php if ($paymentCommon["activate_3d_secure"] == "1") {
+                        value="1" <?php if ($paymentCommon["activate_3d_secure"] == ThreeDS::THREE_D_S_TRY_ENABLE_ALL) {
                     echo " SELECTED";
-                } ?>><?php _e('Try to enable for all transactions', 'hipayenterprise'); ?></option>
+                } ?>><?php _e('Try to enable for all transactions', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></option>
                 <option
-                        value="2" <?php if ($paymentCommon["activate_3d_secure"] == "2") {
+                        value="2" <?php if ($paymentCommon["activate_3d_secure"] ==
+                    ThreeDS::THREE_D_S_FORCE_ENABLE_ALL) {
                     echo " SELECTED";
-                } ?>><?php _e('Force for all transactions', 'hipayenterprise'); ?></option>
+                } ?>><?php _e('Force for all transactions', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></option>
             </select>
             <p class="description"></p>
         </fieldset>

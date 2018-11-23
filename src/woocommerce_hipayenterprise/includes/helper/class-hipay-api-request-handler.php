@@ -87,12 +87,11 @@ class Hipay_Api_Request_Handler
      * Return mapped payment method
      *
      * @param $params
-     * @param bool $creditCard
-     * @return \HiPay\Fullservice\Gateway\Request\PaymentMethod\CardTokenPaymentMethod|mixed
+     * @return \HiPay\Fullservice\Gateway\Request\Order\OrderRequest
      */
-    private function getPaymentMethod($params, $creditCard = true)
+    private function getPaymentMethod($params)
     {
-        $paymentMethod = new Hipay_Card_Token_Formatter($this->plugin, $params);
+        $paymentMethod = new Hipay_Card_Token_Formatter($params);
         return $paymentMethod->generate();
     }
 
@@ -120,7 +119,7 @@ class Hipay_Api_Request_Handler
         } catch (Exception $e) {
             $this->plugin->logs->logException($e);
             throw new Hipay_Payment_Exception(
-                __('An error occured, process has been cancelled..', "hipayenterprise"),
+                __('An error occured, process has been cancelled..', Hipay_Gateway_Abstract::TEXT_DOMAIN),
                 $order->get_cancel_order_url_raw(),
                 "success"
             );
@@ -154,7 +153,7 @@ class Hipay_Api_Request_Handler
         } catch (Exception $e) {
             $this->plugin->logs->logException($e);
             throw new Hipay_Payment_Exception(
-                __('An error occured, process has been cancelled.', "hipayenterprise"),
+                __('An error occured, process has been cancelled.', Hipay_Gateway_Abstract::TEXT_DOMAIN),
                 $order->get_cancel_order_url_raw(),
                 "success"
             );
@@ -176,7 +175,7 @@ class Hipay_Api_Request_Handler
                 throw new Hipay_Payment_Exception(
                     __(
                         'Sorry, your payment has been declined. Please try again with an other means of payment.',
-                        "hipayenterprise"
+                        Hipay_Gateway_Abstract::TEXT_DOMAIN
                     ),
                     '',
                     "fail"
@@ -186,13 +185,13 @@ class Hipay_Api_Request_Handler
                 $reason = $response->getReason();
                 $this->plugin->logs->logErrors('There was an error requesting new transaction: ' . $reason['message']);
                 throw new Hipay_Payment_Exception(
-                    __('An error occured, process has been cancelled.', "hipayenterprise"),
+                    __('An error occured, process has been cancelled.', Hipay_Gateway_Abstract::TEXT_DOMAIN),
                     $redirectUrl,
                     "success"
                 );
             default:
                 throw new Hipay_Payment_Exception(
-                    __('An error occured, process has been cancelled.', "hipayenterprise")
+                    __('An error occured, process has been cancelled.', Hipay_Gateway_Abstract::TEXT_DOMAIN)
                 );
         }
 

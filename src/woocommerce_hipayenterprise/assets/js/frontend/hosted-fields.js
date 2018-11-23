@@ -1,5 +1,7 @@
 jQuery(function ($) {
 
+    var hostedFieldsInstance;
+
     var hostedFields = {
 
         checkout_form: $( 'form.checkout' ),

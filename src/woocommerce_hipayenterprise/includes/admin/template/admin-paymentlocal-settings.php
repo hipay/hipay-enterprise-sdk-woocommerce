@@ -1,11 +1,11 @@
 <table>
     <tr valign="top">
         <td valign="top"
-            align="right"><?php _e('Minimum order amount', 'hipayenterprise'); ?></td>
+            align="right"><?php _e('Minimum order amount', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></td>
         <td class="forminp">
             <fieldset>
                 <legend class="screen-reader-text">
-                    <span><?php _e("Minimum order amount", 'hipayenterprise'); ?></span>
+                    <span><?php _e("Minimum order amount", Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></span>
                 </legend>
                 <input class="input-text regular-input " type="text"
                        name="woocommerce_hipayenterprise_methods_minAmount[<?php echo $method; ?>][EUR]"
@@ -17,11 +17,11 @@
     </tr>
 
     <tr valign="top">
-        <td align="right"><?php _e('Maximum order amount', 'hipayenterprise'); ?></td>
+        <td align="right"><?php _e('Maximum order amount', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></td>
         <td class="forminp">
             <fieldset>
                 <legend class="screen-reader-text">
-                    <span><?php _e("Maximum order amount", 'hipayenterprise'); ?></span>
+                    <span><?php _e("Maximum order amount", Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></span>
                 </legend>
                 <input class="input-text regular-input " type="text"
                        name="woocommerce_hipayenterprise_methods_maxAmount[<?php echo $method; ?>][EUR]"
@@ -35,12 +35,12 @@
 
     <tr valign="top">
         <td valign="top"
-            align="right"><?php _e('Currencies', 'hipayenterprise'); ?></td>
+            align="right"><?php _e('Currencies', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></td>
 
         <td class="forminp">
             <fieldset>
                 <legend class="screen-reader-text">
-                    <span><?php _e("Currencies", 'hipayenterprise'); ?></span></legend>
+                    <span><?php _e("Currencies", Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></span></legend>
                 <?php if ($configurationPaymentMethod["currencySelectorReadOnly"]): ?>
                     <?php foreach ($configurationPaymentMethod["currencies"] as $currency): ?>
                         <span class="label-value col-lg-2"><?php echo $currency ?></span>
@@ -57,12 +57,12 @@
 
     <tr valign="top">
         <td valign="top" align="right"
-            style='vertical-align:top;'><?php _e('Countries', 'hipayenterprise'); ?></td>
+            style='vertical-align:top;'><?php _e('Countries', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></td>
 
         <td class="forminp">
             <fieldset>
                 <legend class="screen-reader-text">
-                    <span><?php _e("Countries", 'hipayenterprise'); ?></span></legend>
+                    <span><?php _e("Countries", Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></span></legend>
                 <?php if ($configurationPaymentMethod["countrySelectorReadOnly"]): ?>
                     <?php foreach ($configurationPaymentMethod["countries"] as $country): ?>
                         <span class="label-value col-lg-2"><?php echo $country ?></span>

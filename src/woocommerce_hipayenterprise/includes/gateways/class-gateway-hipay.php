@@ -52,7 +52,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
             $this->method_description = __(
                 'Local and international payments using Hipay Enterprise.',
-                'hipayenterprise'
+                Hipay_Gateway_Abstract::TEXT_DOMAIN
             );
 
             parent::__construct();

@@ -41,11 +41,11 @@
                     ?>
                     <table>
                         <tr valign="top">
-                            <td align="right"><?php _e('Activated', 'hipayenterprise'); ?></td>
+                            <td align="right"><?php _e('Activated', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></td>
                             <td class="forminp">
                                 <fieldset>
                                     <legend class="screen-reader-text">
-                                        <span><?php _e('Use Oneclick', 'hipayenterprise'); ?></span>
+                                        <span><?php _e('Use Oneclick', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></span>
                                     </legend>
                                     <input class="" type="checkbox"
                                            name="woocommerce_hipayenterprise_methods_<?php echo $methods; ?>_activated[<?php echo $card; ?>]"
@@ -61,11 +61,11 @@
 
                         <tr valign="top">
                             <td valign="top"
-                                align="right"><?php _e('Minimum order amount', 'hipayenterprise'); ?></td>
+                                align="right"><?php _e('Minimum order amount', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></td>
                             <td class="forminp">
                                 <fieldset>
                                     <legend class="screen-reader-text">
-                                        <span><?php _e("Minimum order amount", 'hipayenterprise'); ?></span>
+                                        <span><?php _e("Minimum order amount", Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></span>
                                     </legend>
                                     <input class="input-text regular-input " type="text"
                                            name="woocommerce_hipayenterprise_methods_<?php echo $methods; ?>_minAmount[<?php echo $card; ?>][EUR]"
@@ -78,11 +78,11 @@
                         </tr>
 
                         <tr valign="top">
-                            <td align="right"><?php _e('Maximum order amount', 'hipayenterprise'); ?></td>
+                            <td align="right"><?php _e('Maximum order amount', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></td>
                             <td class="forminp">
                                 <fieldset>
                                     <legend class="screen-reader-text">
-                                        <span><?php _e("Maximum order amount", 'hipayenterprise'); ?></span>
+                                        <span><?php _e("Maximum order amount", Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></span>
                                     </legend>
                                     <input class="input-text regular-input " type="text"
                                            name="woocommerce_hipayenterprise_methods_<?php echo $methods; ?>_maxAmount[<?php echo $card; ?>][EUR]"
@@ -96,14 +96,13 @@
 
                         <tr valign="top">
                             <td valign="top"
-                                align="right"><?php _e('Currencies', 'hipayenterprise'); ?></td>
+                                align="right"><?php _e('Currencies', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></td>
                             <td class="forminp">
                                 <fieldset>
                                     <legend class="screen-reader-text">
-                                        <span><?php _e("Currencies", 'hipayenterprise'); ?></span></legend>
+                                        <span><?php _e("Currencies", Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></span></legend>
                                     <?php
                                     $activatedCurrencies = get_woocommerce_currency();
-                                    //foreach ($activatedCurrencies as $currencyKey => $currencyValue) {
                                     echo '<input class="" type="checkbox" name="woocommerce_hipayenterprise_methods_' .
                                         $methods .
                                         '_currencies[' .
@@ -118,7 +117,6 @@
                                         echo ' checked="checked"';
                                     }
                                     echo "><span style='padding-right:18px;'>" . $activatedCurrencies . "</span>";
-                                    //}
                                     ?>
                                 </fieldset>
                             </td>
@@ -128,7 +126,7 @@
                         <tr valign="top">
                             <td valign="top" align="right"
                                 style='vertical-align:top;'>
-                                <?php _e('Countries', 'hipayenterprise'); ?></td>
+                                <?php _e('Countries', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></td>
 
                             <td class="forminp">
                                 <fieldset>
