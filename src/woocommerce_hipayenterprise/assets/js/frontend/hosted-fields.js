@@ -103,6 +103,7 @@ jQuery(function ($) {
         applyTokenization: function (result) {
             $("#payment-product").val(result.payment_product);
             $("#card-token").val(result.token);
+            $("#card-holder").val(result.card_holder);
         },
 
         /**

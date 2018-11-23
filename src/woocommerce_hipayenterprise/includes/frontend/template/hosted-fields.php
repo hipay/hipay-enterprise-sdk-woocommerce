@@ -45,6 +45,7 @@
     </div>
     <input type="hidden" class="payment-method-hidden-fields" id="payment-product" name="payment-product" value=""/>
     <input type="hidden" class="payment-method-hidden-fields" id="card-token" name="card-token" value=""/>
+    <input type="hidden" class="payment-method-hidden-fields" id="card-holder" name="card-holder" value=""/>
 </div>
 <script type="text/javascript">
     /* <![CDATA[ */

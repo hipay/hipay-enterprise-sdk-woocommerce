@@ -35,6 +35,11 @@ class Hipay_Direct_Post_Formatter extends Hipay_Request_Formatter_Abstract
     private $paymentMethod;
 
     /**
+     * @var
+     */
+    private $cardHolder;
+
+    /**
      * Hipay_Direct_Post_Formatter constructor.
      * @param $plugin
      * @param $params
@@ -45,6 +50,7 @@ class Hipay_Direct_Post_Formatter extends Hipay_Request_Formatter_Abstract
         parent::__construct($plugin, $params, $order);
         $this->paymentProduct = $params["paymentProduct"];
         $this->paymentMethod = $params["paymentMethod"];
+        $this->cardHolder = $params["card_holder"];
     }
 
     /**
@@ -72,5 +78,20 @@ class Hipay_Direct_Post_Formatter extends Hipay_Request_Formatter_Abstract
 
         $orderRequest->payment_product = $this->paymentProduct;
         $orderRequest->paymentMethod = $this->paymentMethod;
+        $this->getCustomerNames($orderRequest);
+    }
+
+    /**
+     * Get correct Names for transaction, must be equivalent to the card holder(only for Amex)
+     *
+     * @param $orderRequest
+     */
+    public function getCustomerNames(&$orderRequest)
+    {
+        if ($this->paymentProduct === "american-express") {
+            $names = explode(' ', trim($this->cardHolder));
+            $orderRequest->firstname = $names[0];
+            $orderRequest->lastname = trim(preg_replace('/' . $names[0] . '/', "", $this->cardHolder, 1));
+        }
     }
 }

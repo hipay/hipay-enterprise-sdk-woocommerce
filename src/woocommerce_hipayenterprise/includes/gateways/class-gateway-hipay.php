@@ -213,7 +213,6 @@ if (!class_exists('WC_Gateway_Hipay')) {
             $this->fraud = include(plugin_dir_path(__FILE__) . '../admin/settings/settings-fraud.php');
             $this->methods = include(plugin_dir_path(__FILE__) . '../admin/settings/settings-methods.php');
             $this->faqs = include(plugin_dir_path(__FILE__) . '../admin/settings/settings-faq.php');
-            $this->log = include(plugin_dir_path(__FILE__) . '../admin/settings/settings-logs.php');
         }
 
         /**
