@@ -116,11 +116,15 @@ class Hipay_Notification
                 case TransactionStatus::DENIED:
                 case TransactionStatus::REFUSED:
                     $this->orderHandler->paymentFailed(
-                        __("Transaction  refused. Order was cancelled with transaction:", Hipay_Gateway_Abstract::TEXT_DOMAIN)
+                        __(
+                            "Transaction  refused. Order was cancelled with transaction:",
+                            Hipay_Gateway_Abstract::TEXT_DOMAIN
+                        )
                     );
                     break;
                 case TransactionStatus::AUTHORIZED_AND_PENDING:
-                    $this->orderHandler->paymentOnHold("payment challenged");
+                    $this->orderHandler->paymentOnHold("Payment challenged");
+                    Hipay_Helper::sendEmailFraud($this->transaction->getOrder()->getId(), $this->plugin);
                     break;
                 case TransactionStatus::AUTHENTICATION_REQUESTED:
                 case TransactionStatus::AUTHORIZATION_REQUESTED:
@@ -130,7 +134,10 @@ class Hipay_Notification
                 case TransactionStatus::EXPIRED:
                 case TransactionStatus::CANCELLED:
                     $this->orderHandler->paymentFailed(
-                        __("Authorization cancelled. Order was cancelled with transaction:", Hipay_Gateway_Abstract::TEXT_DOMAIN)
+                        __(
+                            "Authorization cancelled. Order was cancelled with transaction:",
+                            Hipay_Gateway_Abstract::TEXT_DOMAIN
+                        )
                     );
                     break;
                 case TransactionStatus::AUTHORIZED: //116
@@ -148,14 +155,11 @@ class Hipay_Notification
                             ) . " " . $this->transaction->getTransactionReference()
                         );
                     } else {
-                        if ($this->order->get_status() == 'on-hold') {
-                            $this->orderHandler->paymentComplete(
-                                $this->transaction->getTransactionReference(),
-                                "Payment complete"
-                            );
-                        }
+                        $this->orderHandler->paymentComplete(
+                            $this->transaction->getTransactionReference(),
+                            "Payment complete"
+                        );
                     }
-
                     break;
                 case TransactionStatus::PARTIALLY_CAPTURED: //119
                     $this->orderHandler->paymentOnHold(

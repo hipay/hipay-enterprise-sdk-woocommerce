@@ -15,6 +15,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+
 use \HiPay\Fullservice\Enum\Transaction\TransactionStatus;
 use \HiPay\Fullservice\Helper\Signature;
 use \HiPay\Fullservice\HTTP\Configuration\Configuration;
@@ -105,7 +106,6 @@ class Hipay_Helper
      */
     public static function checkSignature($plugin)
     {
-
         if ($plugin->confHelper->isSandbox()) {
             $passphrase = $plugin->confHelper->getAccount()["sandbox"]["api_secret_passphrase_sandbox"];
             $environment = Configuration::API_ENV_STAGE;
@@ -168,6 +168,52 @@ class Hipay_Helper
 
         return $exist;
     }
+
+
+    /**
+     * Send email to admin and BCC when fraud transaction is detected
+     *
+     * @param $orderId
+     * @param $plugin
+     */
+    public static function sendEmailFraud($orderId, $plugin)
+    {
+        $subject = sprintf(__('A payment transaction is awaiting validation for the order %s'), $orderId);
+        $urlAdmin = admin_url('admin.php?edit.php?post_type=shop_order');
+        $listEmails[] = get_option('admin_email');
+
+        $settingsFraud = $plugin->confHelper->getFraud();
+        if ($settingsFraud['copy_to']) {
+            $listEmails[] = $settingsFraud['copy_to'];
+        };
+
+        foreach ($listEmails as $email) {
+            self::sendEmail(
+                $email,
+                $subject,
+                sprintf(
+                    __(
+                        'You can accept or decline this transaction by visiting the administration of your store. <a href="%s">here</a>'
+                    ),
+                    $urlAdmin
+                )
+            );
+        }
+    }
+
+    /**
+     * Send Email with default wordpress template
+     *
+     * @param $to
+     * @param $subject
+     * @param $message
+     */
+    public static function sendEmail($to, $subject, $message)
+    {
+        $mailer = WC()->mailer();
+        $mailer->send($to, $subject, $mailer->wrap_message($subject, $message));
+    }
+
 
     /**
      * Format and Add Message about transaction
