@@ -9,13 +9,12 @@ Author: Hi-Pay Portugal
 Author URI: https://www.hipaycomprafacil.com
 */
 
-
 if (!class_exists('WC_HipayEnterprise')) {
     define('WC_HIPAYENTERPRISE_VERSION', '1.0.0');
     define('WC_HIPAYENTERPRISE_PATH', plugin_dir_path(__FILE__));
     define('WC_HIPAYENTERPRISE_URL_ASSETS', plugin_dir_url(__FILE__) . 'assets/');
     define('WC_HIPAYENTERPRISE_PLUGIN_NAME', plugin_basename(__FILE__));
-    define( 'WC_HIPAYENTERPRISE_BASE_FILE', __FILE__ );
+    define('WC_HIPAYENTERPRISE_BASE_FILE', __FILE__);
 
     class WC_HipayEnterprise
     {
@@ -38,7 +37,10 @@ if (!class_exists('WC_HipayEnterprise')) {
 
         public function __construct()
         {
-            if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins'))) || in_array('woocommerce/woocommerce.php', array_keys(get_site_option('active_sitewide_plugins')))) {
+            if (in_array(
+                    'woocommerce/woocommerce.php',
+                    apply_filters('active_plugins', get_option('active_plugins'))
+                ) || in_array('woocommerce/woocommerce.php', array_keys(get_site_option('active_sitewide_plugins')))) {
                 add_action('plugins_loaded', array($this, 'wc_hipay_gateway_load'), 0);
             }
         }
@@ -92,12 +94,17 @@ if (!class_exists('WC_HipayEnterprise')) {
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/CaptureMode.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/SettingsField.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/formatter/class-hipay-api-formatter-abstract.php');
-            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-request-formatter-abstract.php');
-            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-hosted-payment-formatter.php');
+            require_once(WC_HIPAYENTERPRISE_PATH .
+                'includes/formatter/request/class-hipay-request-formatter-abstract.php');
+            require_once(WC_HIPAYENTERPRISE_PATH .
+                'includes/formatter/request/class-hipay-hosted-payment-formatter.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-direct-post-formatter.php');
-            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/formatter/info/class-hipay-customer-billing-info-formatter.php');
-            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/formatter/info/class-hipay-customer-shipping-info-formatter.php');
-            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/formatter/payment-method/class-hipay-card-token-formatter.php');
+            require_once(WC_HIPAYENTERPRISE_PATH .
+                'includes/formatter/info/class-hipay-customer-billing-info-formatter.php');
+            require_once(WC_HIPAYENTERPRISE_PATH .
+                'includes/formatter/info/class-hipay-customer-shipping-info-formatter.php');
+            require_once(WC_HIPAYENTERPRISE_PATH .
+                'includes/formatter/payment-method/class-hipay-card-token-formatter.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-api-request-handler.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/exceptions/class-hipay-payment-exception.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/exceptions/class-hipay-settings-exception.php');

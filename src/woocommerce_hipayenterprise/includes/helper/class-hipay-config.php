@@ -328,5 +328,4 @@ class Hipay_Config
 
         return $creditCard;
     }
-
 }

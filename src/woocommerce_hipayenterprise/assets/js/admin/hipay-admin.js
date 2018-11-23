@@ -1,5 +1,5 @@
-jQuery( function( $ ) {
-	'use strict';
+jQuery(function ($) {
+    'use strict';
 
     $('#operating_mode').change(function () {
         if ($(this).val() == "hosted_page") {
@@ -12,14 +12,14 @@ jQuery( function( $ ) {
         return false;
     });
 
-    $( '.woocommerce_hipayenterprise_methods_creditCard_countries' ).multi({
+    $('.woocommerce_hipayenterprise_methods_creditCard_countries').multi({
         enable_search: false,
         non_selected_header: 'Available countries',
-    	selected_header: 'Authorized countries'
-	});
+        selected_header: 'Authorized countries'
+    });
 
     //Todo à merger avec creditCard
-    $( '.woocommerce_hipayenterprise_methods_local_countries' ).multi({
+    $('.woocommerce_hipayenterprise_methods_local_countries').multi({
         enable_search: false,
         non_selected_header: 'Available countries',
         selected_header: 'Authorized countries'
@@ -43,6 +43,4 @@ jQuery( function( $ ) {
         $('.local_admin_config_' + id).removeClass("hidden");
         return false;
     });
-
-
-} );
+});

@@ -5,7 +5,15 @@
         if (is_array($configurationPaymentMethod)) {
             foreach ($configurationPaymentMethod as $card => $value) {
                 $selected = $first ? $methods . "_admin_menu_sel" : "";
-                echo "<div data-id='" . $card . "' class='" . $methods . "_admin_menu " . $selected . "'>" . $card . "<br></div>";
+                echo "<div data-id='" .
+                    $card .
+                    "' class='" .
+                    $methods .
+                    "_admin_menu " .
+                    $selected .
+                    "'>" .
+                    $card .
+                    "<br></div>";
                 $first = false;
             }
         }
@@ -14,11 +22,21 @@
     <td class="forminp" valign="top">
         <fieldset>
             <?php
-            $first=true;
+            $first = true;
             if (is_array($configurationPaymentMethod)) {
                 foreach ($configurationPaymentMethod as $card => $value) {
                     $selected = !$first ? "hidden" : "";
-                    echo "<div data-id='" . $card . "' class='" . $methods . "_admin_config_" . $card . " " . $methods . "_admin_config " . $selected . "'>";
+                    echo "<div data-id='" .
+                        $card .
+                        "' class='" .
+                        $methods .
+                        "_admin_config_" .
+                        $card .
+                        " " .
+                        $methods .
+                        "_admin_config " .
+                        $selected .
+                        "'>";
                     echo "<b>" . $card . "</b><hr>";
                     ?>
                     <table>
@@ -31,8 +49,11 @@
                                     </legend>
                                     <input class="" type="checkbox"
                                            name="woocommerce_hipayenterprise_methods_<?php echo $methods; ?>_activated[<?php echo $card; ?>]"
-                                           id="woocommerce_hipayenterprise_methods_<?php echo $methods; ?>_activated" style=""
-                                           value="1" <?php if ($value["activated"]) echo 'checked="checked"'; ?>>
+                                           id="woocommerce_hipayenterprise_methods_<?php echo $methods; ?>_activated"
+                                           style=""
+                                           value="1" <?php if ($value["activated"]) {
+                                        echo 'checked="checked"';
+                                    } ?>>
                                     <br>
                                 </fieldset>
                             </td>
@@ -48,7 +69,8 @@
                                     </legend>
                                     <input class="input-text regular-input " type="text"
                                            name="woocommerce_hipayenterprise_methods_<?php echo $methods; ?>_minAmount[<?php echo $card; ?>][EUR]"
-                                           id="woocommerce_hipayenterprise_methods_<?php echo $methods; ?>_minAmount" style=""
+                                           id="woocommerce_hipayenterprise_methods_<?php echo $methods; ?>_minAmount"
+                                           style=""
                                            value="<?php echo $value["minAmount"]["EUR"]; ?>"
                                            placeholder="">
                                 </fieldset>
@@ -64,7 +86,8 @@
                                     </legend>
                                     <input class="input-text regular-input " type="text"
                                            name="woocommerce_hipayenterprise_methods_<?php echo $methods; ?>_maxAmount[<?php echo $card; ?>][EUR]"
-                                           id="woocommerce_hipayenterprise_methods_<?php echo $methods; ?>_maxAmount" style=""
+                                           id="woocommerce_hipayenterprise_methods_<?php echo $methods; ?>_maxAmount"
+                                           style=""
                                            value="<?php echo $value["maxAmount"]["EUR"]; ?>"
                                            placeholder="">
                                 </fieldset>
@@ -81,11 +104,20 @@
                                     <?php
                                     $activatedCurrencies = get_woocommerce_currency();
                                     //foreach ($activatedCurrencies as $currencyKey => $currencyValue) {
-                                        echo '<input class="" type="checkbox" name="woocommerce_hipayenterprise_methods_' . $methods .'_currencies[' . $card . '][]" id="woocommerce_hipayenterprise_methods_' . $methods .'_currencies" style="" value="' . $activatedCurrencies . '"';
-                                        if (is_array($value["currencies"]) && array_search($activatedCurrencies, $value["currencies"]) !== false) {
-                                            echo ' checked="checked"';
-                                        }
-                                        echo "><span style='padding-right:18px;'>" . $activatedCurrencies . "</span>";
+                                    echo '<input class="" type="checkbox" name="woocommerce_hipayenterprise_methods_' .
+                                        $methods .
+                                        '_currencies[' .
+                                        $card .
+                                        '][]" id="woocommerce_hipayenterprise_methods_' .
+                                        $methods .
+                                        '_currencies" style="" value="' .
+                                        $activatedCurrencies .
+                                        '"';
+                                    if (is_array($value["currencies"]) &&
+                                        array_search($activatedCurrencies, $value["currencies"]) !== false) {
+                                        echo ' checked="checked"';
+                                    }
+                                    echo "><span style='padding-right:18px;'>" . $activatedCurrencies . "</span>";
                                     //}
                                     ?>
                                 </fieldset>
@@ -112,11 +144,18 @@
 
                                             foreach ($countries as $countryKey => $countryValue) {
                                                 $class = "";
-                                                if (is_array($value["countries"]) && array_search($countryKey, $value["countries"]) !== false ||
+                                                if (is_array($value["countries"]) &&
+                                                    array_search($countryKey, $value["countries"]) !== false ||
                                                     $value["countries"] == $countryKey) {
                                                     $class = "selected";
                                                 }
-                                                echo "<option value='" . $countryKey . "' " . $class . ">" . $countryValue . "</option>";
+                                                echo "<option value='" .
+                                                    $countryKey .
+                                                    "' " .
+                                                    $class .
+                                                    ">" .
+                                                    $countryValue .
+                                                    "</option>";
                                             }
                                             ?>
                                         </select>

@@ -200,5 +200,4 @@ class Hipay_Helper
 
         return $message;
     }
-
 }

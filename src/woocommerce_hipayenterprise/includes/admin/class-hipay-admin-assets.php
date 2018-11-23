@@ -76,8 +76,6 @@ class Wc_Hipay_Admin_Assets
             true
         );
     }
-
-
 }
 
 Wc_Hipay_Admin_Assets::get_instance();

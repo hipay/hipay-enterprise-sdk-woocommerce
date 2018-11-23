@@ -1,36 +1,36 @@
-.credit_card_admin_menu,.local_payment_admin_menu {
-	margin:0 0 4px 0;
-	padding:5px;
-	border-radius:4px;
-	border:solid #ccc;
-	text-align:center;
-	color: #000;
-	background: #fff;
-	cursor:pointer;
+.credit_card_admin_menu, .local_payment_admin_menu {
+    margin: 0 0 4px 0;
+    padding: 5px;
+    border-radius: 4px;
+    border: solid #ccc;
+    text-align: center;
+    color: #000;
+    background: #fff;
+    cursor: pointer;
 }
 
 .credit_card_admin_menu_sel, .local_payment_admin_menu_sel {
-	margin:0 0 4px 0;
-	padding:5px;
-	border-radius:4px;
-	border:solid #ccc;
-	text-align:center;
-	color: #000;
-	background: #ccc;
-	cursor:auto;
+    margin: 0 0 4px 0;
+    padding: 5px;
+    border-radius: 4px;
+    border: solid #ccc;
+    text-align: center;
+    color: #000;
+    background: #ccc;
+    cursor: auto;
 }
 
-.credit_card_admin_config,.local_payment_admin_config {
-	border-radius: 4px;
-	border: 1px solid #ccc;
-	padding: 5px;
+.credit_card_admin_config, .local_payment_admin_config {
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    padding: 5px;
 }
 
 .is_pointer {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .woocommerce_hipayenterprise_methods_cc_countries, .woocommerce_hipayenterprise_methods_cc_countries_available, .woocommerce_hipayenterprise_methods_lp_countries, .woocommerce_hipayenterprise_methods_lp_countries_available {
-	min-width: 180px !important;
-	min-height: 120px;
+    min-width: 180px !important;
+    min-height: 120px;
 }

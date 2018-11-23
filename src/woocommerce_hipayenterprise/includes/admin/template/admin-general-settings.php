@@ -2,7 +2,7 @@
 <table class="wc_emails widefat" cellspacing="0">
     <tbody>
     <tr>
-        <td class="wc-email-settings-table-status">  <span class="dashicons dashicons-warning"></span></td>
+        <td class="wc-email-settings-table-status"><span class="dashicons dashicons-warning"></span></td>
         <td class="wc-email-settings-table-name"><?php _e('Notifications', 'hipayenterprise'); ?></td>
         <td>
             <?php

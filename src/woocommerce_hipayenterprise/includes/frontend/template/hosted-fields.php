@@ -43,8 +43,8 @@
             <li class="error"></li>
         </ul>
     </div>
-    <input type="hidden" class="payment-method-hidden-fields" id="payment-product" name="payment-product" value="" />
-    <input type="hidden" class="payment-method-hidden-fields" id="card-token" name="card-token" value="" />
+    <input type="hidden" class="payment-method-hidden-fields" id="payment-product" name="payment-product" value=""/>
+    <input type="hidden" class="payment-method-hidden-fields" id="card-token" name="card-token" value=""/>
 </div>
 <script type="text/javascript">
     /* <![CDATA[ */
@@ -52,11 +52,11 @@
         'activatedCreditCard':
             [
                 <?php
-                    echo $activatedCreditCard;
+                echo $activatedCreditCard;
                 ?>
             ],
-        'defaultFirstname'  : '',
-        'defaultLastname' :  ''
+        'defaultFirstname': '',
+        'defaultLastname': ''
     };
     /* ]]> */
 </script>

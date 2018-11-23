@@ -16,6 +16,7 @@ sleep 20
     wp theme install storefront --allow-root --activate --path="/var/www/html"
     wp plugin install wordpress-importer --activate --allow-root --path="/var/www/html"
     php -f /tmp/setup-wizard-woocommerce.php
+    chmod 777 -R /var/www/html/wp-content/uploads/
 
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     printf "\n${COLOR_SUCCESS}            COPY  MODULE FILE            ${NC}\n"
