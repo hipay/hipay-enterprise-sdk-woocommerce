@@ -334,7 +334,7 @@
                     echo " SELECTED";
                 } ?>><?php _e('Try to enable for all transactions', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></option>
                 <option
-                        value="2" <?php if ($paymentCommon["activate_3d_secure"] ==
+                        value="3" <?php if ($paymentCommon["activate_3d_secure"] ==
                     ThreeDS::THREE_D_S_FORCE_ENABLE_ALL) {
                     echo " SELECTED";
                 } ?>><?php _e('Force for all transactions', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></option>
