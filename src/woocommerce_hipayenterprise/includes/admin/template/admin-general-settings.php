@@ -116,13 +116,13 @@
 
     <h2 class="nav-tab-wrapper">
         <a href="#accounts" id="accounts-tab" class="nav-tab hipayenterprise-tab" data-toggle="accounts"><i
-                    class="dashicons dashicons-admin-generic"></i> <?php _e("Plugin Settings"); ?></a>
+                    class="dashicons dashicons-admin-generic"></i> <?php _e("Plugin Settings","hipayenterprise"); ?></a>
         <a href="#methods" id="methods-tab" class="nav-tab hipayenterprise-tab" data-toggle="methods"><span
-                    class="dashicons dashicons-cart"></span> <?php _e("Payment Methods"); ?></a>
+                    class="dashicons dashicons-cart"></span> <?php _e("Payment Methods","hipayenterprise"); ?></a>
         <a href="#fraud" id="fraud-tab" class="nav-tab hipayenterprise-tab" data-toggle="fraud"><span
-                    class="dashicons dashicons-warning"></span> <?php _e("Fraud"); ?></a>
+                    class="dashicons dashicons-warning"></span> <?php _e("Fraud","hipayenterprise"); ?></a>
         <a href="#faqs" id="faqs-tab" class="nav-tab hipayenterprise-tab" data-toggle="faqs"><span
-                    class="dashicons dashicons-admin-comments"></span> <?php _e("FAQ"); ?></a>
+                    class="dashicons dashicons-admin-comments"></span> <?php _e("FAQ","hipayenterprise"); ?></a>
     </h2>
 
 

@@ -24,7 +24,7 @@ return array(
                 'When a transaction is likely to be a fraud then an email is sent to the contact email ' .
                 'from your shop as well as to an additional sender. Here you can configure ' .
                 'the additional recipient email'
-            ) .
+            ,'hipayenterprise') .
             "</div>"
     ),
     'fraud_details' => array(

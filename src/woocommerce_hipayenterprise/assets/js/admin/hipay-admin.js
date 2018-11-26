@@ -14,15 +14,15 @@ jQuery(function ($) {
 
     $('.woocommerce_hipayenterprise_methods_creditCard_countries').multi({
         enable_search: false,
-        non_selected_header: 'Available countries',
-        selected_header: 'Authorized countries'
+        non_selected_header: hipay_config_i18n.available_countries,
+        selected_header: hipay_config_i18n.authorized_countries
     });
 
     //Todo à merger avec creditCard
     $('.woocommerce_hipayenterprise_methods_local_countries').multi({
         enable_search: false,
-        non_selected_header: 'Available countries',
-        selected_header: 'Authorized countries'
+        non_selected_header: hipay_config_i18n.available_countries,
+        selected_header:  hipay_config_i18n.authorized_countries
     });
 
     $('.creditCard_admin_menu').click(function () {

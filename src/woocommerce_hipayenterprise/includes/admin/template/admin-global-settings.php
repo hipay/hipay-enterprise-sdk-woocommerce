@@ -17,10 +17,14 @@
                     echo " SELECTED";
                 } ?>><?php _e('Direct Post', "hipayenterprise"); ?></option>
             </select>
-            <p class="description"><?php _e(
-                    "Api if the customer will fill his bank information directly on merchants OR Hosted if the customer is redirected to a secured payment page hosted by HiPay.",
-                    "hipayenterprise"
-                ); ?></p>
+            <p class="description">
+                <ul>
+                    <li><?php _e("Direct Post:  The customer will fill his bank information directly on merchant's site.","hipayenterprise") ;?></li>
+                    <li><?php _e("Hosted Page: The customer is redirected to a secured payment page hosted by HiPay.",
+                            "hipayenterprise"
+                        ); ?></li>
+            </ul>
+            </p>
         </fieldset>
     </td>
 </tr>
@@ -242,10 +246,15 @@
                     echo " SELECTED";
                 } ?>><?php _e('Manual', "hipayenterprise"); ?></option>
             </select>
-            <p class="description"><?php _e(
-                    "Manual if all transactions will be captured manually either from the Hipay Back office or from your admin in Woocommerce OR Automatic if all transactions will be captured automatically.",
-                    "hipayenterprise"
-                ); ?></p>
+            <p class="description">
+            <ul>
+                <li><?php _e("Manual: All transactions will be captured manually either from the Hipay Back office or from your admin in Woocommerce","hipayenterprise") ;?></li>
+                <li><?php _e(
+                        "Automatic: All transactions will be captured automatically.\"",
+                        "hipayenterprise"
+                    ); ?></li>
+            </ul>
+            </p>
         </fieldset>
     </td>
 </tr>

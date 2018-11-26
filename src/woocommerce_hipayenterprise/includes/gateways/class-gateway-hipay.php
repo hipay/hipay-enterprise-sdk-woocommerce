@@ -132,6 +132,9 @@ if (!class_exists('WC_Gateway_Hipay')) {
             if ($this->isAvailable() && is_page() && is_checkout() && !is_order_received_page()) {
                 add_action('wp_print_scripts', array($this, 'localize_scripts'), 5);
             }
+            if ( is_admin()) {
+            add_action('wp_print_scripts', array($this, 'localize_scripts_admin'), 5);
+            }
         }
 
         /**
@@ -345,6 +348,21 @@ if (!class_exists('WC_Gateway_Hipay')) {
         /**
          *
          */
+        public function localize_scripts_admin()
+        {
+                wp_localize_script(
+                    'hipay-js-admin',
+                    'hipay_config_i18n',
+                    array(
+                        "available_countries" => __("Available countries","hipayenterprise"),
+                        "authorized_countries"=> __("Authorized countries","hipayenterprise")
+                    )
+                );
+        }
+
+        /**
+         *
+         */
         public function localize_scripts()
         {
             if ($this->confHelper->getPaymentGlobal()["operating_mode"] == OperatingMode::DIRECT_POST) {
@@ -375,13 +393,22 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 );
 
                 wp_localize_script(
+                    'hipay-js-admin',
+                    'hipay_config_i18n',
+                    array(
+                        "available_countries" => _("Available countries","hipayenterprise"),
+                        "authorized_countries" => __("Authorized countries","hipayenterprise")
+                    )
+                );
+
+                wp_localize_script(
                     'hipay-js-front',
                     'hipay_config_i18n',
                     array(
                         "activated_card_error" => __(
                             'This credit card type or the order currency is not supported. 
                     Please choose an other payment method.',
-                            'woocommerce-gateway-hipay'
+                            'hipayenterprise'
                         ),
                     )
                 );

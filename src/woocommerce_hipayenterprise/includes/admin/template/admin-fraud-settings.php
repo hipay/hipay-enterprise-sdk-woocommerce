@@ -16,7 +16,7 @@
     </td>
 </tr>
 
-<tr valign="top">
+<tr valign="top" class="hidden">
     <th scope="row" class="titledesc"><?php _e('Copy Method', "hipayenterprise"); ?></th>
     <td class="forminp">
         <fieldset>

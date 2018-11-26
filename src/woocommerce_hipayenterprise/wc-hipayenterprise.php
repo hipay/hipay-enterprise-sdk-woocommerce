@@ -1,12 +1,12 @@
 <?php
 /*
 Plugin Name: WooCommerce HiPay Enterprise
-Plugin URI: https://hipay.com/en/payment-solution-enterprise
+Plugin URI: https://hipay.com/en/
 Description: WooCommerce Plugin for Hipay Enterprise.
 Version: 1.0.0
 Text Domain: hipayenterprise
-Author: Hi-Pay
-Author URI: https://www.hipaycomprafacil.com
+Author: HiPay
+Author URI: https://www.hipay.com
 */
 
 if (!class_exists('WC_HipayEnterprise')) {
