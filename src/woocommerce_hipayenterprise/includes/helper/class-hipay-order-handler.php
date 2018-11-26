@@ -43,9 +43,14 @@ class Hipay_Order_Handler
      */
     public function paymentComplete($txnId = '', $note = '')
     {
-        $this->order->add_order_note($note);
-        $this->order->payment_complete($txnId);
-        WC()->cart->empty_cart();
+        if (
+            !in_array($this->order->get_status(), array('completed', 'refunded'), true)
+            && (int)$this->order->get_total_refunded() === 0
+        ) {
+            $this->order->add_order_note($note);
+            $this->order->payment_complete($txnId);
+            WC()->cart->empty_cart();
+        }
     }
 
     /**
@@ -96,16 +101,18 @@ class Hipay_Order_Handler
      */
     public function paymentPartiallyRefunded($amount, $reason = '')
     {
-        $this->paymentOnHold($reason);
+        if ($amount > 0) {
+            $this->paymentOnHold($reason);
 
-        $refund = array(
-            "amount" => $amount,
-            "reason" => $reason,
-            "order_id" => $this->order->get_id()
-        );
+            $refund = array(
+                "amount" => $amount,
+                "reason" => $reason,
+                "order_id" => $this->order->get_id()
+            );
 
-        wc_create_refund($refund);
-        WC()->cart->empty_cart();
+            wc_create_refund($refund);
+            WC()->cart->empty_cart();
+        }
     }
 
     /**

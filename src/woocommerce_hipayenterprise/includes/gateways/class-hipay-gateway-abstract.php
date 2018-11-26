@@ -122,8 +122,7 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
     {
         if (isset(WC()->cart)) {
             foreach ($available_gateways as $id => $gateway) {
-                if ($id == $this->id
-                    && !$gateway->isAvailableForCurrentCart()) {
+                if ($id == $this->id && !$gateway->isAvailableForCurrentCart()) {
                     unset($available_gateways [$id]);
                 }
             }

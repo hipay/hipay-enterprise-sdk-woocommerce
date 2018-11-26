@@ -185,8 +185,11 @@ class Hipay_Settings_Handler
 
         try {
 
-            if (empty(sanitize_email($_POST['woocommerce_hipayenterprise_fraud_copy_to']))) {
-                $this->addError(__('"Copy to should" be a valid email'));
+            if (
+                !empty($_POST['woocommerce_hipayenterprise_fraud_copy_to'])
+                && empty(sanitize_email($_POST['woocommerce_hipayenterprise_fraud_copy_to']))
+            ) {
+                $this->addError(__('"Copy to" should be a valid email'));
             }
             $this->handleErrors();
 
