@@ -118,7 +118,7 @@ class Hipay_Notification
                     $this->orderHandler->paymentFailed(
                         __(
                             "Transaction  refused. Order was cancelled with transaction:",
-                            Hipay_Gateway_Abstract::TEXT_DOMAIN
+                            "hipayenterprise"
                         )
                     );
                     break;
@@ -136,13 +136,13 @@ class Hipay_Notification
                     $this->orderHandler->paymentFailed(
                         __(
                             "Authorization cancelled. Order was cancelled with transaction:",
-                            Hipay_Gateway_Abstract::TEXT_DOMAIN
+                            "hipayenterprise"
                         )
                     );
                     break;
                 case TransactionStatus::AUTHORIZED: //116
                     $this->orderHandler->paymentOnHold(
-                        __("Authorization successful for transaction.", Hipay_Gateway_Abstract::TEXT_DOMAIN)
+                        __("Authorization successful for transaction.", "hipayenterprise")
                     );
                     break;
                 case TransactionStatus::CAPTURED: //118
@@ -151,7 +151,7 @@ class Hipay_Notification
                         $this->orderHandler->paymentOnHold(
                             __(
                                 "Payment partially captured, amount:." . " " . $this->transaction->getCapturedAmount(),
-                                Hipay_Gateway_Abstract::TEXT_DOMAIN
+                                "hipayenterprise"
                             ) . " " . $this->transaction->getTransactionReference()
                         );
                     } else {
@@ -165,7 +165,7 @@ class Hipay_Notification
                     $this->orderHandler->paymentOnHold(
                         __(
                             "Payment partially captured, amount:." . " " . $this->transaction->getCapturedAmount(),
-                            Hipay_Gateway_Abstract::TEXT_DOMAIN
+                            "hipayenterprise"
                         ) . " " . $this->transaction->getTransactionReference()
                     );
                     break;
@@ -180,7 +180,7 @@ class Hipay_Notification
                         $this->transaction->getRefundedAmount() - $this->order->get_total_refunded(),
                         __(
                             "Payment partially refunded, amount:." . " " . $this->transaction->getRefundedAmount(),
-                            Hipay_Gateway_Abstract::TEXT_DOMAIN
+                            "hipayenterprise"
                         ) . " " . $this->transaction->getTransactionReference()
                     );
                     break;

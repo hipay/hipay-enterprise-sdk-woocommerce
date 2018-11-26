@@ -3,7 +3,7 @@
     <tbody>
     <tr>
         <td class="wc-email-settings-table-status"><span class="dashicons dashicons-warning"></span></td>
-        <td class="wc-email-settings-table-name"><?php _e('Notifications', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></td>
+        <td class="wc-email-settings-table-name"><?php _e('Notifications', "hipayenterprise"); ?></td>
         <td>
             <?php
             if (!empty($notifications)) {
@@ -26,14 +26,14 @@
             } ?>
         </td>
 
-        <td class="wc-email-settings-table-name"><?php _e('cURL Extension', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></td>
+        <td class="wc-email-settings-table-name"><?php _e('cURL Extension', "hipayenterprise"); ?></td>
 
         <td>
             <?php
             if (!$curl_active) {
-                _e('Please install and activate cURL extension.', Hipay_Gateway_Abstract::TEXT_DOMAIN);
+                _e('Please install and activate cURL extension.', "hipayenterprise");
             } else {
-                _e('cURL Extension is correcly installed.', Hipay_Gateway_Abstract::TEXT_DOMAIN);
+                _e('cURL Extension is correcly installed.', "hipayenterprise");
             }
 
             ?>
@@ -51,13 +51,13 @@
                 <?php
             } ?>
         </td>
-        <td class="wc-email-settings-table-name"><?php _e('SimpleXML Extension', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></td>
+        <td class="wc-email-settings-table-name"><?php _e('SimpleXML Extension', "hipayenterprise"); ?></td>
         <td>
             <?php
             if (!$simplexml_active) {
-                _e('Please install and activate SimpleXML Extension.', Hipay_Gateway_Abstract::TEXT_DOMAIN);
+                _e('Please install and activate SimpleXML Extension.', "hipayenterprise");
             } else {
-                _e('SimpleXML Extension is correcly installed.', Hipay_Gateway_Abstract::TEXT_DOMAIN);
+                _e('SimpleXML Extension is correcly installed.', "hipayenterprise");
             }
             ?>
         </td>
@@ -70,10 +70,10 @@
             <td class="wc-email-settings-table-status">
                 <span class="dashicons dashicons-warning" style="color:orange;"></span>
             </td>
-            <td class="wc-email-settings-table-name"><?php _e('Mode TEST activated', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></td>
+            <td class="wc-email-settings-table-name"><?php _e('Mode TEST activated', "hipayenterprise"); ?></td>
             <td>
                 <?php
-                _e('This plugin is configured to use a Test Account.', Hipay_Gateway_Abstract::TEXT_DOMAIN);
+                _e('This plugin is configured to use a Test Account.', "hipayenterprise");
                 ?>
             </td>
         </tr>
@@ -85,11 +85,11 @@
                         <span class="dashicons <?php echo $https_active ? 'dashicons-lock' : 'dashicons-warning'; ?>"
                               <?php echo (!$https_active) ? 'style="color:orange"' : ''; ?>;></span>
         </td>
-        <td class="wc-email-settings-table-name"><?php _e('SSL Certificate', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></td>
+        <td class="wc-email-settings-table-name"><?php _e('SSL Certificate', "hipayenterprise"); ?></td>
         <td>
             <?php
             if (!$https_active) {
-                _e('You need a SSL Certificate to process credit card paymets using HiPay.', Hipay_Gateway_Abstract::TEXT_DOMAIN);
+                _e('You need a SSL Certificate to process credit card paymets using HiPay.', "hipayenterprise");
             }
             ?>
         </td>
@@ -99,10 +99,10 @@
         <td class="wc-email-settings-table-status">
             <span class="dashicons dashicons-wordpress"></span>
         </td>
-        <td class="wc-email-settings-table-name"><?php _e('Woocommerce REST API', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></td>
+        <td class="wc-email-settings-table-name"><?php _e('Woocommerce REST API', "hipayenterprise"); ?></td>
         <td>
             <?php
-            _e('Please ensure you have Woocommerce REST API activated.', Hipay_Gateway_Abstract::TEXT_DOMAIN);
+            _e('Please ensure you have Woocommerce REST API activated.', "hipayenterprise");
             ?>
         </td>
     </tr>

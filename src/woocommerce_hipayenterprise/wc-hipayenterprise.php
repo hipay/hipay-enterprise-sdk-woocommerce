@@ -5,7 +5,7 @@ Plugin URI: https://hipay.com/en/payment-solution-enterprise
 Description: WooCommerce Plugin for Hipay Enterprise.
 Version: 1.0.0
 Text Domain: hipayenterprise
-Author: Hi-Pay Portugal
+Author: Hi-Pay
 Author URI: https://www.hipaycomprafacil.com
 */
 

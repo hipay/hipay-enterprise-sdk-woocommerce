@@ -119,7 +119,7 @@ class Hipay_Api_Request_Handler
         } catch (Exception $e) {
             $this->plugin->logs->logException($e);
             throw new Hipay_Payment_Exception(
-                __('An error occured, process has been cancelled..', Hipay_Gateway_Abstract::TEXT_DOMAIN),
+                __('An error occured, process has been cancelled..', "hipayenterprise"),
                 $order->get_cancel_order_url_raw(),
                 "success"
             );
@@ -153,7 +153,7 @@ class Hipay_Api_Request_Handler
         } catch (Exception $e) {
             $this->plugin->logs->logException($e);
             throw new Hipay_Payment_Exception(
-                __('An error occured, process has been cancelled.', Hipay_Gateway_Abstract::TEXT_DOMAIN),
+                __('An error occured, process has been cancelled.', "hipayenterprise"),
                 $order->get_cancel_order_url_raw(),
                 "success"
             );
@@ -175,7 +175,7 @@ class Hipay_Api_Request_Handler
                 throw new Hipay_Payment_Exception(
                     __(
                         'Sorry, your payment has been declined. Please try again with an other means of payment.',
-                        Hipay_Gateway_Abstract::TEXT_DOMAIN
+                        "hipayenterprise"
                     ),
                     '',
                     "fail"
@@ -185,13 +185,13 @@ class Hipay_Api_Request_Handler
                 $reason = $response->getReason();
                 $this->plugin->logs->logErrors('There was an error requesting new transaction: ' . $reason['message']);
                 throw new Hipay_Payment_Exception(
-                    __('An error occured, process has been cancelled.', Hipay_Gateway_Abstract::TEXT_DOMAIN),
+                    __('An error occured, process has been cancelled.', "hipayenterprise"),
                     $redirectUrl,
                     "success"
                 );
             default:
                 throw new Hipay_Payment_Exception(
-                    __('An error occured, process has been cancelled.', Hipay_Gateway_Abstract::TEXT_DOMAIN)
+                    __('An error occured, process has been cancelled.', "hipayenterprise")
                 );
         }
 

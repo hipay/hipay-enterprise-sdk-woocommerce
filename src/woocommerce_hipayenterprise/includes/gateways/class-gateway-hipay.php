@@ -46,13 +46,13 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
             $this->icon = WC_HIPAYENTERPRISE_URL_ASSETS . '/images/credit_card.png';
 
-            $this->title = __('Pay by Credit Card', $this->id);
+            $this->title = __('Pay by Credit Card',  "hipayenterprise");
 
-            $this->method_title = __('HiPay Enterprise Credit Card', $this->id);
+            $this->method_title = __('HiPay Enterprise Credit Card',  "hipayenterprise");
 
             $this->method_description = __(
                 'Local and international payments using Hipay Enterprise.',
-                Hipay_Gateway_Abstract::TEXT_DOMAIN
+                "hipayenterprise"
             );
 
             parent::__construct();
@@ -64,7 +64,6 @@ if (!class_exists('WC_Gateway_Hipay')) {
             $this->apiRequestHandler = new Hipay_Api_Request_Handler($this);
             $this->settingsHandler = new Hipay_Settings_Handler($this);
             $this->icon = WC_HIPAYENTERPRISE_URL_ASSETS . '/images/credit_card.png';
-            $this->title = __('Pay by Credit Card', $this->id);
 
             if ($this->isAvailable()
                 && is_page()

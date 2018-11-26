@@ -32,10 +32,10 @@ class Hipay_Bnpp3x extends Hipay_Gateway_Local_Abstract
     {
         $this->id = 'hipayenterprise_bnpp-3xcb';
         $this->paymentProduct = 'bnpp-3xcb';
-        $this->method_title = __('Bnppf-3xcb', Hipay_Gateway_Abstract::TEXT_DOMAIN);
+        $this->method_title = __('Bnppf-3xcb', "hipayenterprise");
         $this->supports = array('products');
-        $this->title = __('3x Carte Bancaire - BNP Personal Finance', Hipay_Gateway_Abstract::TEXT_DOMAIN);
-        $this->method_description = __('3x Carte Bancaire - BNP Personal Finance', Hipay_Gateway_Abstract::TEXT_DOMAIN);
+        $this->title = __('3x Carte Bancaire - BNP Personal Finance', "hipayenterprise");
+        $this->method_description = __('3x Carte Bancaire - BNP Personal Finance', "hipayenterprise");
 
         parent::__construct();
 
@@ -51,7 +51,7 @@ class Hipay_Bnpp3x extends Hipay_Gateway_Local_Abstract
     {
         _e(
             'You will be redirected to an external payment page. Please do not refresh the page during the process.',
-            Hipay_Gateway_Abstract::TEXT_DOMAIN
+            "hipayenterprise"
         );
     }
 }

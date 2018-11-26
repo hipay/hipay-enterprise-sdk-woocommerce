@@ -1,9 +1,9 @@
 <table class="form-table">
     <tr valign="top">
-        <th scope="row" class="titledesc"><?php _e('Sandbox', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></th>
+        <th scope="row" class="titledesc"><?php _e('Sandbox', "hipayenterprise"); ?></th>
         <td class="forminp">
             <fieldset>
-                <legend class="screen-reader-text"><span><?php _e("Sandbox", Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></span>
+                <legend class="screen-reader-text"><span><?php _e("Sandbox", "hipayenterprise"); ?></span>
                 </legend>
                 <input class="input-checkbox" type="checkbox"
                        name="woocommerce_hipayenterprise_sandbox"
@@ -14,7 +14,7 @@
                        value="1">
                 <p class="description"><?php _e(
                         "When in test mode, payment cards are not really charged. Enable this option for testing purposes only.",
-                        Hipay_Gateway_Abstract::TEXT_DOMAIN
+                        "hipayenterprise"
                     ); ?></p>
             </fieldset>
         </td>
@@ -24,16 +24,16 @@
 <h3 class="wc-settings-sub-title " id="woocommerce_hipayenterprise_api_tab_methods_2">
     <hr>
     <i class='dashicons dashicons-admin-network'></i>
-    <?php _e('Production configuration', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?>
+    <?php _e('Production configuration', "hipayenterprise"); ?>
 </h3>
 
 <table class="form-table">
 
     <tr valign="top">
-        <th scope="row" class="titledesc"><?php _e('Username', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></th>
+        <th scope="row" class="titledesc"><?php _e('Username', "hipayenterprise"); ?></th>
         <td class="forminp">
             <fieldset>
-                <legend class="screen-reader-text"><span><?php _e("Username", Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></span>
+                <legend class="screen-reader-text"><span><?php _e("Username", "hipayenterprise"); ?></span>
                 </legend>
                 <input class="input-text regular-input " type="text"
                        name="woocommerce_hipayenterprise_account_production_username"
@@ -44,10 +44,10 @@
     </tr>
 
     <tr valign="top">
-        <th scope="row" class="titledesc"><?php _e('Password', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></th>
+        <th scope="row" class="titledesc"><?php _e('Password', "hipayenterprise"); ?></th>
         <td class="forminp">
             <fieldset>
-                <legend class="screen-reader-text"><span><?php _e("Password", Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></span>
+                <legend class="screen-reader-text"><span><?php _e("Password", "hipayenterprise"); ?></span>
                 </legend>
                 <input class="input-text regular-input " type="password"
                        name="woocommerce_hipayenterprise_account_production_password"
@@ -58,10 +58,10 @@
     </tr>
 
     <tr valign="top">
-        <th scope="row" class="titledesc"><?php _e('Secret passphrase', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></th>
+        <th scope="row" class="titledesc"><?php _e('Secret passphrase', "hipayenterprise"); ?></th>
         <td class="forminp">
             <fieldset>
-                <legend class="screen-reader-text"><span><?php _e("Secret passphrase", Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></span>
+                <legend class="screen-reader-text"><span><?php _e("Secret passphrase", "hipayenterprise"); ?></span>
                 </legend>
                 <input class="input-text regular-input " type="password"
                        name="woocommerce_hipayenterprise_account_production_secret_passphrase"
@@ -72,10 +72,10 @@
     </tr>
 
     <tr valign="top">
-        <th scope="row" class="titledesc"><?php _e('Tokenization (Public)', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></th>
+        <th scope="row" class="titledesc"><?php _e('Tokenization (Public)', "hipayenterprise"); ?></th>
         <td class="forminp">
             <fieldset>
-                <legend class="screen-reader-text"><span><?php _e("Tokenization (Public)", Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></span>
+                <legend class="screen-reader-text"><span><?php _e("Tokenization (Public)", "hipayenterprise"); ?></span>
                 </legend>
                 <input class="input-text regular-input " type="text"
                        name="woocommerce_hipayenterprise_account_production_tokenjs_username"
@@ -86,10 +86,10 @@
     </tr>
 
     <tr valign="top">
-        <th scope="row" class="titledesc"><?php _e('Password', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></th>
+        <th scope="row" class="titledesc"><?php _e('Password', "hipayenterprise"); ?></th>
         <td class="forminp">
             <fieldset>
-                <legend class="screen-reader-text"><span><?php _e("Password", Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></span>
+                <legend class="screen-reader-text"><span><?php _e("Password", "hipayenterprise"); ?></span>
                 </legend>
                 <input class="input-text regular-input " type="text"
                        name="woocommerce_hipayenterprise_account_production_password_publickey"
@@ -105,14 +105,14 @@
 <h3 class="wc-settings-sub-title " id="woocommerce_hipayenterprise_api_tab_methods_2">
     <hr>
     <i class='dashicons dashicons-admin-network'></i>
-    <?php _e('Sandbox configuration', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?>
+    <?php _e('Sandbox configuration', "hipayenterprise"); ?>
 </h3>
 <table class="form-table">
     <tr valign="top">
-        <th scope="row" class="titledesc"><?php _e('Username', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></th>
+        <th scope="row" class="titledesc"><?php _e('Username', "hipayenterprise"); ?></th>
         <td class="forminp">
             <fieldset>
-                <legend class="screen-reader-text"><span><?php _e("Username", Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></span>
+                <legend class="screen-reader-text"><span><?php _e("Username", "hipayenterprise"); ?></span>
                 </legend>
                 <input class="input-text regular-input " type="text"
                        name="woocommerce_hipayenterprise_account_sandbox_username"
@@ -123,10 +123,10 @@
     </tr>
 
     <tr valign="top">
-        <th scope="row" class="titledesc"><?php _e('Password', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></th>
+        <th scope="row" class="titledesc"><?php _e('Password', "hipayenterprise"); ?></th>
         <td class="forminp">
             <fieldset>
-                <legend class="screen-reader-text"><span><?php _e("Password", Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></span>
+                <legend class="screen-reader-text"><span><?php _e("Password", "hipayenterprise"); ?></span>
                 </legend>
                 <input class="input-text regular-input " type="password"
                        name="woocommerce_hipayenterprise_account_sandbox_password"
@@ -137,10 +137,10 @@
     </tr>
 
     <tr valign="top">
-        <th scope="row" class="titledesc"><?php _e('Secret passphrase', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></th>
+        <th scope="row" class="titledesc"><?php _e('Secret passphrase', "hipayenterprise"); ?></th>
         <td class="forminp">
             <fieldset>
-                <legend class="screen-reader-text"><span><?php _e("Secret passphrase", Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></span>
+                <legend class="screen-reader-text"><span><?php _e("Secret passphrase", "hipayenterprise"); ?></span>
                 </legend>
                 <input class="input-text regular-input " type="password"
                        name="woocommerce_hipayenterprise_account_sandbox_secret_passphrase"
@@ -151,10 +151,10 @@
     </tr>
 
     <tr valign="top">
-        <th scope="row" class="titledesc"><?php _e('Tokenization (Public)', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></th>
+        <th scope="row" class="titledesc"><?php _e('Tokenization (Public)', "hipayenterprise"); ?></th>
         <td class="forminp">
             <fieldset>
-                <legend class="screen-reader-text"><span><?php _e("Tokenization (Public)", Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></span>
+                <legend class="screen-reader-text"><span><?php _e("Tokenization (Public)", "hipayenterprise"); ?></span>
                 </legend>
                 <input class="input-text regular-input " type="text"
                        name="woocommerce_hipayenterprise_account_sandbox_tokenjs_username"
@@ -165,10 +165,10 @@
     </tr>
 
     <tr valign="top">
-        <th scope="row" class="titledesc"><?php _e('Password', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></th>
+        <th scope="row" class="titledesc"><?php _e('Password', "hipayenterprise"); ?></th>
         <td class="forminp">
             <fieldset>
-                <legend class="screen-reader-text"><span><?php _e("Password", Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></span>
+                <legend class="screen-reader-text"><span><?php _e("Password", "hipayenterprise"); ?></span>
                 </legend>
                 <input class="input-text regular-input " type="text"
                        name="woocommerce_hipayenterprise_account_sandbox_password_publickey"
