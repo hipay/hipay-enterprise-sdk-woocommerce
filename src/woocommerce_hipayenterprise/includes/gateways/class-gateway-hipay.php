@@ -28,13 +28,14 @@ if (!class_exists('WC_Gateway_Hipay')) {
     {
 
         const CREDIT_CARD_PAYMENT_PRODUCT = "credit_card";
+        const GATEWAY_CREDIT_CARD_ID = 'hipayenterprise_credit_card';
 
         /**
          * Gateway_Hipay constructor.
          */
         public function __construct()
         {
-            $this->id = 'hipayenterprise_credit_card';
+            $this->id = self::GATEWAY_CREDIT_CARD_ID;
             $this->paymentProduct = self::CREDIT_CARD_PAYMENT_PRODUCT;
 
             $this->supports = array(

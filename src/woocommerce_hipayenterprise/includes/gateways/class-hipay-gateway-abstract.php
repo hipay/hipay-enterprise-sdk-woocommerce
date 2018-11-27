@@ -114,6 +114,7 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
     }
 
 
+
     /**
      * @param $available_gateways
      * @return mixed

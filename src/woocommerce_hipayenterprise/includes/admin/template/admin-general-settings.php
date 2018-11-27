@@ -106,75 +106,47 @@
             ?>
         </td>
     </tr>
-
-
     </tbody>
 </table>
 
+<div role="tabpanel" class="col-md-12 hipay-container-admin">
+    <ul class="hipay-enterprise nav nav-tabs nav-pills" role="tablist">
+        <li role="presentation" class="active">
+            <a href="#accounts" id="accounts-tab" class="" data-toggle="tab">
+                <i class="dashicons dashicons-admin-generic"></i>
+                <?php _e("Plugin Settings", "hipayenterprise"); ?>
+            </a>
+        </li>
+        <li role="presentation">
+            <a href="#methods" id="methods-tab" class="" data-toggle="tab">
+                <span  class="dashicons dashicons-cart"></span>
+                <?php _e("Payment Methods", "hipayenterprise"); ?>
+            </a>
+        </li>
+        <li role="presentation">
+            <a href="#fraud" id="fraud-tab" class="" data-toggle="tab">
+                <span class="dashicons dashicons-warning"></span> <?php _e("Fraud", "hipayenterprise"); ?>
+            </a>
+        </li>
+        <li role="presentation">
+            <a href="#faqs" id="faqs-tab" class="" data-toggle="tab">
+                <span class="dashicons dashicons-admin-comments"></span> <?php _e("FAQ", "hipayenterprise"); ?>
+            </a>
+        </li>
+    </ul>
 
-<div class="wrap">
-
-    <h2 class="nav-tab-wrapper">
-        <a href="#accounts" id="accounts-tab" class="nav-tab hipayenterprise-tab" data-toggle="accounts"><i
-                    class="dashicons dashicons-admin-generic"></i> <?php _e("Plugin Settings","hipayenterprise"); ?></a>
-        <a href="#methods" id="methods-tab" class="nav-tab hipayenterprise-tab" data-toggle="methods"><span
-                    class="dashicons dashicons-cart"></span> <?php _e("Payment Methods","hipayenterprise"); ?></a>
-        <a href="#fraud" id="fraud-tab" class="nav-tab hipayenterprise-tab" data-toggle="fraud"><span
-                    class="dashicons dashicons-warning"></span> <?php _e("Fraud","hipayenterprise"); ?></a>
-        <a href="#faqs" id="faqs-tab" class="nav-tab hipayenterprise-tab" data-toggle="faqs"><span
-                    class="dashicons dashicons-admin-comments"></span> <?php _e("FAQ","hipayenterprise"); ?></a>
-    </h2>
-
-
-    <div id="accounts" class="hidden hipayenterprise-tab-content">
-        <?php
-        $this->generate_settings_html($this->account);
-        ?>
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="accounts">
+            <?php $this->generate_settings_html($this->account); ?>
+        </div>
+        <div role="tabpanel" id="methods" class="tab-pane">
+            <?php $this->generate_settings_html($this->methods); ?>
+        </div>
+        <div role="tabpanel" id="fraud" class="tab-pane">
+            <?php $this->generate_settings_html($this->fraud); ?>
+        </div>
+        <div role="tabpanel" id="faqs" class="tab-pane">
+            <?php $this->generate_settings_html($this->faqs); ?>
+        </div>
     </div>
-    <div id="methods" class="hidden hipayenterprise-tab-content">
-        <table class="form-table">
-            <?php
-            $this->generate_settings_html($this->methods);
-            ?>
-        </table>
-    </div>
-    <div id="fraud" class="hidden hipayenterprise-tab-content">
-        <table class="form-table">
-            <?php
-            $this->generate_settings_html($this->fraud);
-            ?>
-        </table>
-    </div>
-    <div id="faqs" class="hidden hipayenterprise-tab-content">
-        <table class="form-table">
-            <?php
-            $this->generate_settings_html($this->faqs);
-            ?>
-        </table>
-    </div>
-</div><!-- /.wrap -->
-
-<script type="text/javascript">
-    jQuery(function () {
-
-
-        $hipayTab = window.location.hash;
-        if ($hipayTab == "") {
-            jQuery("#accounts").removeClass("hidden").show(111);
-            jQuery("#accounts-tab").addClass("nav-tab-active");
-        } else {
-            jQuery($hipayTab).removeClass("hidden").show(111);
-            jQuery($hipayTab + "-tab").addClass("nav-tab-active");
-        }
-        jQuery('.hipayenterprise-tab').click(function (event) {
-            event.preventDefault();
-            var tab = jQuery(this).attr('data-toggle');
-            window.location.hash = tab;
-            jQuery('.hipayenterprise-tab-content').hide();
-            jQuery("#" + tab).removeClass("hidden").show(111);
-            jQuery('.hipayenterprise-tab').removeClass("nav-tab-active");
-            jQuery(this).addClass("nav-tab-active");
-            return false;
-        });
-    });
-</script>
+</div>

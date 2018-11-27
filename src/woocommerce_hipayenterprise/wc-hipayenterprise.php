@@ -56,6 +56,7 @@ if (!class_exists('WC_HipayEnterprise')) {
 
             add_filter('woocommerce_payment_gateways', 'wc_hipay_add_gateway');
 
+
             /**
              * @param $methods
              * @return array
@@ -68,6 +69,7 @@ if (!class_exists('WC_HipayEnterprise')) {
                 $methods[] = 'Hipay_Bnpp4x';
                 return $methods;
             }
+
         }
 
         /**

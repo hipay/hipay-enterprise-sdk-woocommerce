@@ -26,6 +26,7 @@ if (!defined('ABSPATH')) {
 class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
 {
 
+
     /**
      *
      */

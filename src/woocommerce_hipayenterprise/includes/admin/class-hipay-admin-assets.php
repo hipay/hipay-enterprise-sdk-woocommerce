@@ -50,30 +50,53 @@ class Wc_Hipay_Admin_Assets
      */
     public function enqueue_scripts()
     {
-        wp_register_style(
-            'wc_hipay_admin_multi_css',
-            plugins_url('assets/css/admin/multi.min.css', WC_HIPAYENTERPRISE_BASE_FILE),
-            array(),
-            WC_HIPAYENTERPRISE_VERSION
-        );
-        wp_enqueue_style('wc_hipay_admin_multi_css');
-
-        wp_enqueue_script('accordion');
-
-        wp_enqueue_script(
-            'hipay-js-admin-multi',
-            plugins_url('assets/js/admin/multi.min.js', WC_HIPAYENTERPRISE_BASE_FILE),
-            array(),
-            WC_HIPAYENTERPRISE_VERSION,
-            true
-        );
-        wp_enqueue_script(
-            'hipay-js-admin',
-            plugins_url('assets/js/admin/hipay-admin.js', WC_HIPAYENTERPRISE_BASE_FILE),
-            array(),
-            WC_HIPAYENTERPRISE_VERSION,
-            true
-        );
+        $currentSection = $_GET["section"];
+        if (is_admin()
+            && preg_match("/^hipayenterprise/", $currentSection)) {
+            wp_register_style(
+                'wc_hipay_admin_multi_css',
+                plugins_url('assets/css/admin/multi.min.css', WC_HIPAYENTERPRISE_BASE_FILE),
+                array(),
+                WC_HIPAYENTERPRISE_VERSION
+            );
+            wp_enqueue_style('wc_hipay_admin_multi_css');
+            wp_register_style(
+                'hipay-boostrap-css',
+                plugins_url('assets/css/admin/bootstrap.min.css', WC_HIPAYENTERPRISE_BASE_FILE),
+                array(),
+                WC_HIPAYENTERPRISE_VERSION
+            );
+            wp_enqueue_style('hipay-boostrap-css');
+            wp_register_style(
+                'hipay-admin-css',
+                plugins_url('assets/css/admin/hipay-admin.css', WC_HIPAYENTERPRISE_BASE_FILE),
+                array(),
+                WC_HIPAYENTERPRISE_VERSION
+            );
+            wp_enqueue_style('hipay-admin-css');
+            wp_enqueue_script('accordion');
+            wp_enqueue_script(
+                'hipay-js-admin-multi',
+                plugins_url('assets/js/admin/multi.min.js', WC_HIPAYENTERPRISE_BASE_FILE),
+                array(),
+                WC_HIPAYENTERPRISE_VERSION,
+                true
+            );
+            wp_enqueue_script(
+                'hipay-js-admin',
+                plugins_url('assets/js/admin/hipay-admin.js', WC_HIPAYENTERPRISE_BASE_FILE),
+                array(),
+                WC_HIPAYENTERPRISE_VERSION,
+                true
+            );
+            wp_enqueue_script(
+                'hipay-js-boostrap',
+                plugins_url('assets/js/admin/bootstrap.min.js', WC_HIPAYENTERPRISE_BASE_FILE),
+                array(),
+                WC_HIPAYENTERPRISE_VERSION,
+                true
+            );
+        }
     }
 }
 

@@ -16,11 +16,6 @@ if (!defined('ABSPATH')) {
 }
 
 return array(
-    'api_tab_module_configuration' => array(
-        'title' => "<hr><i class='dashicons dashicons-admin-tools'></i> " .
-            __('PLUGIN CONFIGURATION', 'hipayenterprise'),
-        'type' => 'title',
-    ),
     'account_details' => array(
         'type' => 'account_details',
     ),
