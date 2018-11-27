@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce HiPay Enterprise\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-26 14:27+0000\n"
+"POT-Creation-Date: 2018-11-26 15:14+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -32,21 +32,21 @@ msgid "Available countries"
 msgstr ""
 
 #: includes/gateways/class-gateway-hipay.php:358
-#: includes/gateways/class-gateway-hipay.php:400
+#: includes/gateways/class-gateway-hipay.php:401
 msgid "Authorized countries"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:408
+#: includes/gateways/class-gateway-hipay.php:409
 msgid ""
 "This credit card type or the order currency is not supported. \n"
 "                    Please choose an other payment method."
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:481
+#: includes/gateways/class-gateway-hipay.php:482
 msgid "Sorry, we cannot process your payment.. Please try again."
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:492
+#: includes/gateways/class-gateway-hipay.php:493
 msgid ""
 "We have received your order payment. We will process the order as soon as we "
 "get the payment confirmation."
@@ -81,19 +81,19 @@ msgid ""
 msgstr ""
 
 #: includes/frontend/template/hosted-fields.php:6
-msgid "Card Owner Name"
+msgid "Fullname"
 msgstr ""
 
 #: includes/frontend/template/hosted-fields.php:15
-msgid "Credit Card Number"
+msgid "Card Number"
 msgstr ""
 
 #: includes/frontend/template/hosted-fields.php:24
-msgid "Expiration Date"
+msgid "Expiry Date"
 msgstr ""
 
 #: includes/frontend/template/hosted-fields.php:31
-msgid "Card Verification Number"
+msgid "CVC"
 msgstr ""
 
 #: includes/admin/settings/settings-fraud.php:20
@@ -156,8 +156,8 @@ msgid "Activated"
 msgstr ""
 
 #: includes/admin/template/admin-creditcard-settings.php:48
-#: includes/admin/template/admin-global-settings.php:265
-#: includes/admin/template/admin-global-settings.php:268
+#: includes/admin/template/admin-global-settings.php:274
+#: includes/admin/template/admin-global-settings.php:277
 msgid "Use Oneclick"
 msgstr ""
 
@@ -201,13 +201,14 @@ msgid "Hosted page"
 msgstr ""
 
 #: includes/admin/template/admin-global-settings.php:18
-msgid "Direct Post"
+msgid "Hosted Fields"
 msgstr ""
 
 #: includes/admin/template/admin-global-settings.php:22
 msgid ""
-"Direct Post:  The customer will fill his bank information directly on "
-"merchant's site."
+"Hosted Fields: The customer completes his banking information directly on "
+"the merchant's site but the form fields are hosted by HiPay. \n"
+"                    This mode is only valid for credit cards."
 msgstr ""
 
 #: includes/admin/template/admin-global-settings.php:24
@@ -217,131 +218,131 @@ msgid ""
 msgstr ""
 
 #: includes/admin/template/admin-global-settings.php:39
-#: includes/admin/template/admin-global-settings.php:43
-msgid "Display Hosted Page"
+#: includes/admin/template/admin-global-settings.php:42
+msgid "Color"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:49
-msgid "Redirect"
+#: includes/admin/template/admin-global-settings.php:55
+#: includes/admin/template/admin-global-settings.php:58
+msgid "Font Family"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:53
-msgid "IFrame"
-msgstr ""
-
-#: includes/admin/template/admin-global-settings.php:64
-#: includes/admin/template/admin-global-settings.php:68
-msgid "Display card selector"
-msgstr ""
-
-#: includes/admin/template/admin-global-settings.php:83
-msgid "CSS url"
-msgstr ""
-
-#: includes/admin/template/admin-global-settings.php:86
-msgid "CSS Url"
+#: includes/admin/template/admin-global-settings.php:74
+#: includes/admin/template/admin-global-settings.php:77
+msgid "Font Size"
 msgstr ""
 
 #: includes/admin/template/admin-global-settings.php:93
+#: includes/admin/template/admin-global-settings.php:96
+msgid "Font Weight"
+msgstr ""
+
+#: includes/admin/template/admin-global-settings.php:112
+#: includes/admin/template/admin-global-settings.php:115
+msgid "PlaceHodler color"
+msgstr ""
+
+#: includes/admin/template/admin-global-settings.php:133
+msgid "Caret color"
+msgstr ""
+
+#: includes/admin/template/admin-global-settings.php:136
+msgid "Caret Color"
+msgstr ""
+
+#: includes/admin/template/admin-global-settings.php:152
+msgid "Icon color"
+msgstr ""
+
+#: includes/admin/template/admin-global-settings.php:155
+msgid "Icon Color"
+msgstr ""
+
+#: includes/admin/template/admin-global-settings.php:177
+#: includes/admin/template/admin-global-settings.php:181
+msgid "Display Hosted Page"
+msgstr ""
+
+#: includes/admin/template/admin-global-settings.php:187
+msgid "Redirect"
+msgstr ""
+
+#: includes/admin/template/admin-global-settings.php:191
+msgid "IFrame"
+msgstr ""
+
+#: includes/admin/template/admin-global-settings.php:203
+#: includes/admin/template/admin-global-settings.php:207
+msgid "Display card selector"
+msgstr ""
+
+#: includes/admin/template/admin-global-settings.php:222
+msgid "CSS url"
+msgstr ""
+
+#: includes/admin/template/admin-global-settings.php:225
+msgid "CSS Url"
+msgstr ""
+
+#: includes/admin/template/admin-global-settings.php:232
 msgid ""
 "URL to your CSS (style sheet) to customize your hosted page or iFrame "
 "(Important: the HTTPS protocol is required)."
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:103
-#: includes/admin/template/admin-global-settings.php:106
-msgid "Color"
-msgstr ""
-
-#: includes/admin/template/admin-global-settings.php:119
-#: includes/admin/template/admin-global-settings.php:122
-msgid "Font Family"
-msgstr ""
-
-#: includes/admin/template/admin-global-settings.php:138
-#: includes/admin/template/admin-global-settings.php:141
-msgid "Font Size"
-msgstr ""
-
-#: includes/admin/template/admin-global-settings.php:157
-#: includes/admin/template/admin-global-settings.php:160
-msgid "Font Weight"
-msgstr ""
-
-#: includes/admin/template/admin-global-settings.php:176
-#: includes/admin/template/admin-global-settings.php:179
-msgid "PlaceHodler color"
-msgstr ""
-
-#: includes/admin/template/admin-global-settings.php:197
-msgid "Caret color"
-msgstr ""
-
-#: includes/admin/template/admin-global-settings.php:200
-msgid "Caret Color"
-msgstr ""
-
-#: includes/admin/template/admin-global-settings.php:216
-msgid "Icon color"
-msgstr ""
-
-#: includes/admin/template/admin-global-settings.php:219
-msgid "Icon Color"
-msgstr ""
-
-#: includes/admin/template/admin-global-settings.php:235
-#: includes/admin/template/admin-global-settings.php:238
+#: includes/admin/template/admin-global-settings.php:244
+#: includes/admin/template/admin-global-settings.php:247
 #: includes/admin/template/admin-faq-settings.php:93
 msgid "Capture"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:245
+#: includes/admin/template/admin-global-settings.php:254
 msgid "Automatic"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:249
+#: includes/admin/template/admin-global-settings.php:258
 msgid "Manual"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:253
+#: includes/admin/template/admin-global-settings.php:262
 msgid ""
 "Manual: All transactions will be captured manually either from the Hipay "
 "Back office or from your admin in Woocommerce"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:254
+#: includes/admin/template/admin-global-settings.php:263
 msgid "Automatic: All transactions will be captured automatically.\""
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:284
-#: includes/admin/template/admin-global-settings.php:288
+#: includes/admin/template/admin-global-settings.php:293
+#: includes/admin/template/admin-global-settings.php:297
 msgid "Customer's cart sending"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:300
-#: includes/admin/template/admin-global-settings.php:304
+#: includes/admin/template/admin-global-settings.php:309
+#: includes/admin/template/admin-global-settings.php:313
 msgid "Logs information"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:316
-#: includes/admin/template/admin-global-settings.php:320
+#: includes/admin/template/admin-global-settings.php:325
+#: includes/admin/template/admin-global-settings.php:329
 msgid "Send url Notification"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:332
-#: includes/admin/template/admin-global-settings.php:336
+#: includes/admin/template/admin-global-settings.php:341
+#: includes/admin/template/admin-global-settings.php:345
 msgid "Activate 3-D Secure"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:342
+#: includes/admin/template/admin-global-settings.php:351
 msgid "Deactivated"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:346
+#: includes/admin/template/admin-global-settings.php:355
 msgid "Try to enable for all transactions"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:351
+#: includes/admin/template/admin-global-settings.php:360
 msgid "Force for all transactions"
 msgstr ""
 

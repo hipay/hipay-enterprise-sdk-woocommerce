@@ -134,7 +134,7 @@ class Hipay_Config
             ),
             "payment" => array(
                 "global" => array(
-                    "operating_mode" => OperatingMode::DIRECT_POST,
+                    "operating_mode" => OperatingMode::HOSTED_FIELDS,
                     "iframe_hosted_page_template" => "basic-js",
                     "display_card_selector" => 0,
                     "display_hosted_page" => "redirect",
@@ -155,7 +155,7 @@ class Hipay_Config
                     "activate_basket" => 0,
                     "card_token" => 0,
                     SettingsField::PAYMENT_GLOBAL_LOGS_INFOS => 1,
-                    "send_url_notification" => 0
+                    "send_url_notification" => 1
                 ),
                 "credit_card" => array(),
                 "local_payment" => array()

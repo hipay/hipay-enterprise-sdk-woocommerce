@@ -22,7 +22,7 @@ jQuery(function ($) {
                 username: hipay_config.apiUsernameTokenJs,
                 password: hipay_config.apiPasswordTokenJs,
                 environment: hipay_config.environment,
-                lang: 'fr'
+                lang: hipay_config.lang
             });
 
             var firstName = $('#billing_first_name').val();

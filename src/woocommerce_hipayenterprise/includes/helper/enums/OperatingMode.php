@@ -24,7 +24,7 @@ if (!defined('ABSPATH')) {
  */
 class OperatingMode
 {
-    const DIRECT_POST = 'direct_post';
+    const HOSTED_FIELDS = 'hosted_fields';
 
     const HOSTED_PAGE = 'hosted_page';
 

@@ -117,7 +117,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
          */
         private function isDirectPostActivated()
         {
-            return $this->confHelper->getPaymentGlobal()["operating_mode"] == OperatingMode::DIRECT_POST ? true : false;
+            return $this->confHelper->getPaymentGlobal()["operating_mode"] == OperatingMode::HOSTED_FIELDS ? true : false;
         }
 
         /**
@@ -185,7 +185,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
                     'You will be redirected to an external payment page. Please do not refresh the page during the process.',
                     $this->id
                 );
-            } elseif ($paymentGlobal['operating_mode'] == OperatingMode::DIRECT_POST) {
+            } elseif ($paymentGlobal['operating_mode'] == OperatingMode::HOSTED_FIELDS) {
 
                 $activatedCreditCard = Hipay_Helper::getActivatedPaymentByCountryAndCurrency(
                     $this,
@@ -365,7 +365,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
          */
         public function localize_scripts()
         {
-            if ($this->confHelper->getPaymentGlobal()["operating_mode"] == OperatingMode::DIRECT_POST) {
+            if ($this->confHelper->getPaymentGlobal()["operating_mode"] == OperatingMode::HOSTED_FIELDS) {
                 $sandbox = $this->confHelper->getAccount()["global"]["sandbox_mode"];
                 $username = ($sandbox) ? $this->confHelper->getAccount()["sandbox"]["api_tokenjs_username_sandbox"]
                     : $this->confHelper->getAccount()["production"]["api_tokenjs_username_production"];
@@ -381,6 +381,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
                         "operating_mode" => $this->confHelper->getAccount()["global"]["operating_mode"],
                         "apiUsernameTokenJs" => $username,
                         "apiPasswordTokenJs" => $password,
+                        "lang" => substr(get_locale(),0,2),
                         "environment" => $sandbox ? "stage" : "production",
                         "fontFamily" => $this->confHelper->getHostedFieldsStyle()["fontFamily"],
                         "color" => $this->confHelper->getHostedFieldsStyle()["color"],
@@ -457,7 +458,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
                     $this->logs->logInfos(" # Receipt_page " . $order_id);
 
                     switch ($this->confHelper->getPaymentGlobal()["operating_mode"]) {
-                        case OperatingMode::DIRECT_POST:
+                        case OperatingMode::HOSTED_FIELDS:
                             $this->generate_common_receipt();
                             break;
                         case  OperatingMode::HOSTED_PAGE:

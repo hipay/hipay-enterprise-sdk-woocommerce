@@ -76,7 +76,7 @@ class Hipay_Api_Request_Handler
     public function handleCreditCard($params)
     {
         switch ($this->plugin->confHelper->getPaymentGlobal()["operating_mode"]) {
-            case OperatingMode::DIRECT_POST:
+            case OperatingMode::HOSTED_FIELDS:
                 return $this->handleDirectOrder($params);
             case OperatingMode::HOSTED_PAGE:
                 return $this->handleHostedPayment($params);
