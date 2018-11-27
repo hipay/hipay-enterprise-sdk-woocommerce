@@ -41,8 +41,8 @@ class Hipay_Helper
         $minAmount = $conf["minAmount"]["EUR"];
         $maxAmount = $conf["maxAmount"]["EUR"];
 
-        if (($maxAmount != 0 && $total > $maxAmount || !empty($maxAmount))
-            && ($minAmount != 0 && $total < $minAmount)) {
+        if ((!empty($maxAmount) && $maxAmount != 0 && $total > $maxAmount)
+            || ($minAmount != 0 && $total < $minAmount)) {
             return false;
         }
         return true;
@@ -94,7 +94,9 @@ class Hipay_Helper
      */
     private static function isPaymentMethodAuthorized($conf, $currency, $country, $orderTotal)
     {
-        return in_array($currency, $conf["currencies"])
+        return !empty($conf["currencies"])
+            && !empty($conf["countries"])
+            && in_array($currency, $conf["currencies"])
             && in_array($country, $conf["countries"])
             && Hipay_Helper::isInAuthorizedAmount($conf, $orderTotal);
     }
@@ -179,13 +181,13 @@ class Hipay_Helper
     public static function sendEmailFraud($orderId, $plugin)
     {
         $subject = sprintf(__('A payment transaction is awaiting validation for the order %s'), $orderId);
-        $urlAdmin = admin_url('admin.php?edit.php?post_type=shop_order');
+        $urlAdmin = admin_url('post.php?post=' . $orderId . '&action=edit');
         $listEmails[] = get_option('admin_email');
 
         $settingsFraud = $plugin->confHelper->getFraud();
         if ($settingsFraud['copy_to']) {
             $listEmails[] = $settingsFraud['copy_to'];
-        };
+        }
 
         foreach ($listEmails as $email) {
             self::sendEmail(
