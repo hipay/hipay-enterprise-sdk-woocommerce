@@ -108,11 +108,12 @@ class Hipay_Notification
                 case TransactionStatus::ACQUIRER_FOUND:
                 case TransactionStatus::ACQUIRER_NOT_FOUND:
                 case TransactionStatus::RISK_ACCEPTED:
-                default:
+                case TransactionStatus::CAPTURE_REFUSED:
                     break;
                 case TransactionStatus::BLOCKED:
                 case TransactionStatus::CHARGED_BACK:
                     $this->orderHandler->paymentFailed("Charged back");
+                    break;
                 case TransactionStatus::DENIED:
                 case TransactionStatus::REFUSED:
                     $this->orderHandler->paymentFailed(
@@ -124,7 +125,7 @@ class Hipay_Notification
                     break;
                 case TransactionStatus::AUTHORIZED_AND_PENDING:
                     $this->orderHandler->paymentOnHold("Payment challenged");
-                    Hipay_Helper::sendEmailFraud($this->transaction->getOrder()->getId(), $this->plugin);
+                    Hipay_Helper::sendEmailFraud($this->order->get_id(), $this->plugin);
                     break;
                 case TransactionStatus::AUTHENTICATION_REQUESTED:
                 case TransactionStatus::AUTHORIZATION_REQUESTED:
@@ -184,7 +185,7 @@ class Hipay_Notification
                         ) . " " . $this->transaction->getTransactionReference()
                     );
                     break;
-                case TransactionStatus::CAPTURE_REFUSED:
+                default:
                     break;
             }
 
