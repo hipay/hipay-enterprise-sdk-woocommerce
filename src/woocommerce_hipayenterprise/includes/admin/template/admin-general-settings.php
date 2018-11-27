@@ -109,8 +109,8 @@
     </tbody>
 </table>
 
-<div role="tabpanel" class="col-md-12 hipay-container-admin">
-    <ul class="hipay-enterprise nav nav-tabs nav-pills" role="tablist">
+<div role="tabpanel" class="tab col-md-12 hipay-container-admin">
+    <ul class="hipay-enterprise nav nav-tabs" role="tablist">
         <li role="presentation" class="active">
             <a href="#accounts" id="accounts-tab" class="" data-toggle="tab">
                 <i class="dashicons dashicons-admin-generic"></i>

@@ -66,7 +66,6 @@ class Wc_Hipay_Admin_Assets
                 array(),
                 WC_HIPAYENTERPRISE_VERSION
             );
-            wp_enqueue_style('hipay-boostrap-css');
             wp_register_style(
                 'hipay-admin-css',
                 plugins_url('assets/css/admin/hipay-admin.css', WC_HIPAYENTERPRISE_BASE_FILE),
@@ -74,6 +73,8 @@ class Wc_Hipay_Admin_Assets
                 WC_HIPAYENTERPRISE_VERSION
             );
             wp_enqueue_style('hipay-admin-css');
+            wp_enqueue_style('hipay-boostrap-css');
+
             wp_enqueue_script('accordion');
             wp_enqueue_script(
                 'hipay-js-admin-multi',
