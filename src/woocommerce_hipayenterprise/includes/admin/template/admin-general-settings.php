@@ -119,7 +119,7 @@
         </li>
         <li role="presentation">
             <a href="#methods" id="methods-tab" class="" data-toggle="tab">
-                <span  class="dashicons dashicons-cart"></span>
+                <span class="dashicons dashicons-cart"></span>
                 <?php _e("Payment Methods", "hipayenterprise"); ?>
             </a>
         </li>
@@ -150,3 +150,31 @@
         </div>
     </div>
 </div>
+
+<script>
+    jQuery(document).ready(function ($) {
+        var url = location.href.replace(/\/$/, "");
+
+        if (location.hash) {
+            const hash = url.split("#");
+            $('#hipay-container-admin a[href="#' + hash[1] + '"]').tab("show");
+            url = location.href.replace(/\/#/, "#");
+            history.replaceState(null, null, url);
+            setTimeout(function () {
+                $(window).scrollTop(0);
+            }, 400);
+        }
+
+        $('a[data-toggle="tab"]').on("click", function () {
+            var newUrl;
+            const hash = $(this).attr("href");
+            if (hash == "#home") {
+                newUrl = url.split("#")[0];
+            } else {
+                newUrl = url.split("#")[0] + hash;
+            }
+            newUrl += "/";
+            history.replaceState(null, null, newUrl);
+        });
+    });
+</script>

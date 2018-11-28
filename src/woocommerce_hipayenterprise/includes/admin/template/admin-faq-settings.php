@@ -347,11 +347,28 @@
                 </li>
             </ul>
         </li>
+        <li class="control-section accordion-section" id="accordion-section-title_tagline-1">
+            <h3 title="" tabindex="1" class="accordion-section-title">
+                <span class="dashicons dashicons-editor-help"></span>
+                <?php _e(
+                    'Why orders are “Completed” and not “Processing” after the payment is fully captured',
+                    "hipayenterprise"
+                ); ?>
+            </h3>
+            <ul class="accordion-section-content">
+                <li>
+                    <?php _e(
+                        'If you are selling downloadable content such as softwares, you should desactivate the “Grant access to downloadable products after payment” parameter, which is in the following section : “Products” > “Downloadable products”.',
+                        "hipayenterprise"
+                    ); ?>
+                </li>
+                <li>
+                    <?php _e(
+                        'If this options is disabled, the order won’t proceed to the “completed” status but it will stay on “processing” until it is fully sent.',
+                        "hipayenterprise"
+                    ); ?>
+                </li>
+            </ul>
+        </li>
     </ul>
 </div>
-
-<script>
-    jquery(function ($) {
-        $("#accordion-faq").accordion();
-    });
-</script>
