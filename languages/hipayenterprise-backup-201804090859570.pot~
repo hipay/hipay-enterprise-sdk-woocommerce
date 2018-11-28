@@ -1,0 +1,415 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: WooCommerce HiPay Enterprise\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-04-05 17:10+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/"
+
+#: wc-hipayenterprise.php:203 wc-hipayenterprise.php:219
+msgid "Credit Card"
+msgstr ""
+
+#: wc-hipayenterprise.php:215 wc-hipayenterprise.php:218
+msgid "Display name"
+msgstr ""
+
+#: wc-hipayenterprise.php:220
+msgid "Display name for payment by credit card on your checkout page."
+msgstr ""
+
+#: wc-hipayenterprise.php:250
+msgid "Activated"
+msgstr ""
+
+#: wc-hipayenterprise.php:253 wc-hipayenterprise.php:505
+#: wc-hipayenterprise.php:508
+msgid "Use Oneclick"
+msgstr ""
+
+#: wc-hipayenterprise.php:260 wc-hipayenterprise.php:263
+msgid "Minimum order amount"
+msgstr ""
+
+#: wc-hipayenterprise.php:270 wc-hipayenterprise.php:273
+msgid "Maximum order amount"
+msgstr ""
+
+#: wc-hipayenterprise.php:281 wc-hipayenterprise.php:285
+msgid "Currencies"
+msgstr ""
+
+#: wc-hipayenterprise.php:306
+msgid "Countries"
+msgstr ""
+
+#: wc-hipayenterprise.php:311
+msgid "Available Countries"
+msgstr ""
+
+#: wc-hipayenterprise.php:339
+msgid "Authorized Countries"
+msgstr ""
+
+#: wc-hipayenterprise.php:439
+msgid "Operating mode"
+msgstr ""
+
+#: wc-hipayenterprise.php:442
+msgid "Operating Mode"
+msgstr ""
+
+#: wc-hipayenterprise.php:444
+msgid "Hosted page"
+msgstr ""
+
+#: wc-hipayenterprise.php:445
+msgid "Direct Post"
+msgstr ""
+
+#: wc-hipayenterprise.php:445 wc-hipayenterprise.php:460
+msgid "(SOON)"
+msgstr ""
+
+#: wc-hipayenterprise.php:447
+msgid ""
+"Api if the customer will fill his bank information directly on merchants OR "
+"Hosted if the customer is redirected to a secured payment page hosted by "
+"HiPay."
+msgstr ""
+
+#: wc-hipayenterprise.php:454 wc-hipayenterprise.php:457
+msgid "Display Hosted Page"
+msgstr ""
+
+#: wc-hipayenterprise.php:459
+msgid "Redirect"
+msgstr ""
+
+#: wc-hipayenterprise.php:460
+msgid "IFrame"
+msgstr ""
+
+#: wc-hipayenterprise.php:468 wc-hipayenterprise.php:471
+msgid "Display card selector"
+msgstr ""
+
+#: wc-hipayenterprise.php:478
+msgid "CSS url"
+msgstr ""
+
+#: wc-hipayenterprise.php:481
+msgid "CSS Url"
+msgstr ""
+
+#: wc-hipayenterprise.php:483
+msgid ""
+"URL to your CSS (style sheet) to customize your hosted page or iFrame "
+"(Important: the HTTPS protocol is required)."
+msgstr ""
+
+#: wc-hipayenterprise.php:491 wc-hipayenterprise.php:494
+msgid "Capture"
+msgstr ""
+
+#: wc-hipayenterprise.php:496
+msgid "Automatic"
+msgstr ""
+
+#: wc-hipayenterprise.php:497
+msgid "Manual"
+msgstr ""
+
+#: wc-hipayenterprise.php:499
+msgid ""
+"Manual if all transactions will be captured manually either from the Hipay "
+"Back office or from your admin in Woocommerce OR Automatic if all "
+"transactions will be captured automatically."
+msgstr ""
+
+#: wc-hipayenterprise.php:515 wc-hipayenterprise.php:518
+msgid "Customer's cart sending"
+msgstr ""
+
+#: wc-hipayenterprise.php:525 wc-hipayenterprise.php:528
+msgid "Keep cart when payment fails"
+msgstr ""
+
+#: wc-hipayenterprise.php:535 wc-hipayenterprise.php:538
+msgid "Logs information"
+msgstr ""
+
+#: wc-hipayenterprise.php:545 wc-hipayenterprise.php:548
+msgid "Activate 3-D Secure"
+msgstr ""
+
+#: wc-hipayenterprise.php:550
+msgid "Deactivated"
+msgstr ""
+
+#: wc-hipayenterprise.php:551
+msgid "Try to enable for all transactions"
+msgstr ""
+
+#: wc-hipayenterprise.php:552
+msgid "Force for all transactions"
+msgstr ""
+
+#: wc-hipayenterprise.php:666
+msgid "TYPE"
+msgstr ""
+
+#: wc-hipayenterprise.php:667
+msgid "ORDER"
+msgstr ""
+
+#: wc-hipayenterprise.php:668
+msgid "DATE"
+msgstr ""
+
+#: wc-hipayenterprise.php:669
+msgid "DESCRIPTION"
+msgstr ""
+
+#: wc-hipayenterprise.php:698 wc-hipayenterprise.php:701
+msgid "Copy To"
+msgstr ""
+
+#: wc-hipayenterprise.php:703
+msgid ""
+"Enter a valid email, during a transaction challenged an email will be sent "
+"to this address."
+msgstr ""
+
+#: wc-hipayenterprise.php:709 wc-hipayenterprise.php:712
+msgid "Copy Method"
+msgstr ""
+
+#: wc-hipayenterprise.php:714
+msgid "Bcc"
+msgstr ""
+
+#: wc-hipayenterprise.php:715
+msgid "Separate email"
+msgstr ""
+
+#: wc-hipayenterprise.php:717
+msgid ""
+"Select Bcc if the recipient will be in copy of the email or Separate email "
+"for sending two emails."
+msgstr ""
+
+#: wc-hipayenterprise.php:731
+msgid "refund:"
+msgstr ""
+
+#: wc-hipayenterprise.php:752
+msgid "Payments with HiPay Enterprise"
+msgstr ""
+
+#: wc-hipayenterprise.php:769
+msgid "cURL Extension"
+msgstr ""
+
+#: wc-hipayenterprise.php:774
+msgid "Please install and activate cURL extension."
+msgstr ""
+
+#: wc-hipayenterprise.php:776
+msgid "cURL Extension is correcly installed."
+msgstr ""
+
+#: wc-hipayenterprise.php:793
+msgid "SimpleXML Extension"
+msgstr ""
+
+#: wc-hipayenterprise.php:797
+msgid "Please install and activate SimpleXML Extension."
+msgstr ""
+
+#: wc-hipayenterprise.php:799
+msgid "SimpleXML Extension is correcly installed."
+msgstr ""
+
+#: wc-hipayenterprise.php:811
+msgid "Mode TEST activated"
+msgstr ""
+
+#: wc-hipayenterprise.php:814
+msgid "This plugin is configured to use a Test Account."
+msgstr ""
+
+#: wc-hipayenterprise.php:825
+msgid "SSL Certificate"
+msgstr ""
+
+#: wc-hipayenterprise.php:828
+msgid "You need a SSL Certificate to process credit card paymets using HiPay."
+msgstr ""
+
+#: wc-hipayenterprise.php:837
+msgid "Woocommerce REST API"
+msgstr ""
+
+#: wc-hipayenterprise.php:840
+msgid "Please ensure you have Woocommerce REST API activated."
+msgstr ""
+
+#: wc-hipayenterprise.php:1037
+msgid "Payment URL:"
+msgstr ""
+
+#: wc-hipayenterprise.php:1043
+msgid "Payment created with url:"
+msgstr ""
+
+#: wc-hipayenterprise.php:1051
+msgid "Error on creation:"
+msgstr ""
+
+#: wc-hipayenterprise.php:1094
+msgid "Callback received for transation:"
+msgstr ""
+
+#: wc-hipayenterprise.php:1097
+msgid "Payment successful for transaction"
+msgstr ""
+
+#: wc-hipayenterprise.php:1100
+msgid "Payment captured and Order changed to processing status."
+msgstr ""
+
+#: wc-hipayenterprise.php:1102
+msgid "Waiting for manual capture. Authorization successful for transaction."
+msgstr ""
+
+#: wc-hipayenterprise.php:1105
+msgid ""
+"Payment authorized and Order changed to on-hold status, waiting for capture."
+msgstr ""
+
+#: includes/form_fields.php:6
+msgid "PLUGIN CONFIGURATION"
+msgstr ""
+
+#: includes/form_fields.php:11
+msgid "Enable/Disable"
+msgstr ""
+
+#: includes/form_fields.php:13
+msgid "Activate Hipay Enterprise payments"
+msgstr ""
+
+#: includes/form_fields.php:18
+msgid "Sandbox"
+msgstr ""
+
+#: includes/form_fields.php:20
+msgid ""
+"When in test mode, payment cards are not really charged. Enable this option "
+"for testing purposes only."
+msgstr ""
+
+#: includes/form_fields.php:26
+msgid "PRODUCTION ACCOUNT CONFIGURATION"
+msgstr ""
+
+#: includes/form_fields.php:33 includes/form_fields.php:106
+msgid "Account (Private)"
+msgstr ""
+
+#: includes/form_fields.php:38 includes/form_fields.php:62
+#: includes/form_fields.php:79 includes/form_fields.php:112
+#: includes/form_fields.php:136 includes/form_fields.php:155
+#: includes/form_fields.php:196
+msgid "Username"
+msgstr ""
+
+#: includes/form_fields.php:44 includes/form_fields.php:68
+#: includes/form_fields.php:85 includes/form_fields.php:118
+#: includes/form_fields.php:142 includes/form_fields.php:161
+#: includes/form_fields.php:202
+msgid "Password"
+msgstr ""
+
+#: includes/form_fields.php:50 includes/form_fields.php:91
+#: includes/form_fields.php:124 includes/form_fields.php:167
+#: includes/form_fields.php:185 includes/form_fields.php:190
+msgid "Secret Passphrase"
+msgstr ""
+
+#: includes/form_fields.php:57 includes/form_fields.php:131
+msgid "Tokenization (Public)"
+msgstr ""
+
+#: includes/form_fields.php:74 includes/form_fields.php:150
+msgid "MO/TO account credentials"
+msgstr ""
+
+#: includes/form_fields.php:98
+msgid "SANDBOX CONFIGURATION"
+msgstr ""
+
+#: includes/form_fields.php:173
+msgid "TECHNICAL CONFIGURATION"
+msgstr ""
+
+#: includes/form_fields.php:180
+msgid "Proxy Settings"
+msgstr ""
+
+#: includes/form_fields.php:215
+msgid "GLOBAL SETTINGS"
+msgstr ""
+
+#: includes/form_fields.php:226
+msgid "CREDIT CARD"
+msgstr ""
+
+#: includes/form_fields.php:237
+msgid "LOCAL PAYMENT"
+msgstr ""
+
+#: includes/form_fields.php:258
+msgid "PAYMENT FRAUD EMAIL"
+msgstr ""
+
+#: includes/form_fields.php:273
+msgid "ACTIVE CURRENCIES SELECTION"
+msgstr ""
+
+#: includes/form_fields.php:289
+msgid "FAQ"
+msgstr ""
+
+#: includes/form_fields.php:304
+msgid "LAST 100 LOGS"
+msgstr ""
+
+#. Name of the plugin
+msgid "WooCommerce HiPay Enterprise"
+msgstr ""
+
+#. Description of the plugin
+msgid "WooCommerce Plugin for Hipay Enterprise."
+msgstr ""
+
+#. URI of the plugin
+msgid "https://hipay.com/en/payment-solution-enterprise"
+msgstr ""
+
+#. Author of the plugin
+msgid "Hi-Pay Portugal"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://www.hipaycomprafacil.com"
+msgstr ""

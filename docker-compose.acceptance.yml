@@ -1,0 +1,48 @@
+version: '3.3'
+
+networks:
+  traefik_traefik:
+    external: true
+  wordpress:
+    internal: true
+  outside-pi-overlay:
+    external: true
+
+services:
+  wordpress:
+    image: ${REGISTRY_URL}/${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
+    build:
+      context: .
+      dockerfile: bin/docker/images/woocommerce/Dockerfile
+    restart: always
+    env_file:
+      - ./bin/docker/conf/acceptance/hipay.env.sample
+      - bin/docker/conf/acceptance/wordpress.env.sample
+    labels:
+      - "com.hipay.ir.publish=1"
+      - "com.hipay.ir.name=web"
+      - "com.hipay.ir.branch=${CI_COMMIT_REF_SLUG}"
+      - "com.hipay.ir.gitlab.feature.link=${CI_PROJECT_URL}/tree/${CI_COMMIT_REF_NAME}"
+      - "com.hipay.ir.gitlab.org=pi-ecommerce"
+      - "com.hipay.ir.gitlab.project=hipay-enterprise-sdk-woocommerce"
+      - "com.hipay.ir.admin.url=${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}.hipay-pos-platform.com/wp-admin"
+      - "com.hipay.ir.url=${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}.hipay-pos-platform.com"
+    deploy:
+      labels:
+      - "traefik.frontend.rule=Host:${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}.hipay-pos-platform.com"
+      - "traefik.port=80"
+      - "traefik.docker.network=traefik_traefik"
+    networks:
+      outside-pi-overlay:
+      traefik_traefik:
+      wordpress:
+  database:
+    image: mysql:5.7
+    restart: always
+    env_file:
+      - bin/docker/conf/acceptance/wordpress.env.sample
+    networks:
+      traefik_traefik:
+      wordpress:
+        aliases:
+        - ${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}_database
