@@ -236,6 +236,38 @@ if (!class_exists('WC_Gateway_Hipay')) {
         }
 
         /**
+         * Get list of Gateway provided by Hipay
+         *
+         * @return array
+         */
+        private function getHipayGateways() {
+            $hipayGateways = array();
+            $availableGateways = WC()->payment_gateways->payment_gateways();
+            foreach ($availableGateways as $gateway) {
+                if ($gateway instanceof Hipay_Gateway_Abstract) {
+                    $hipayGateways[$gateway->id] = $gateway->method_title;
+                }
+            }
+            return $hipayGateways;
+        }
+
+        /**
+         *
+         */
+        public function generate_methods_global_local_payment_settings_html()
+        {
+            ob_start();
+            $this->process_template(
+                'admin-link-paymentlocal-settings.php',
+                'admin',
+                array(
+                    'availableHipayGateways' => $this->getHipayGateways(),
+                )
+            );
+            return ob_get_clean();
+        }
+
+        /**
          *
          */
         public function generate_methods_credit_card_settings_html()

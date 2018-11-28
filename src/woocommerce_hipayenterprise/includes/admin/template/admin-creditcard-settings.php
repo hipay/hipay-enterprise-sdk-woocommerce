@@ -1,6 +1,5 @@
 <div class="panel panel-default row ">
     <h3 class="wc-settings-sub-title " id="woocommerce_hipayenterprise_api_tab_methods_2">
-        <i class='dashicons dashicons-admin-network'></i>
         <?php _e('Credit card', "hipayenterprise"); ?>
     </h3>
 

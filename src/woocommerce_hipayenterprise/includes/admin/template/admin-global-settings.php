@@ -1,7 +1,7 @@
 <?php $classHostedSettings = $paymentCommon["operating_mode"] == "hosted_page" ? $classHostedSettings = "hidden " : ""; ?>
 
 <h3 class="wc-settings-sub-title " id="woocommerce_hipayenterprise_api_tab_methods_2">
-    <i class='dashicons dashicons-admin-network'></i>
+    <i class='dashicons dashicons-admin-generic'></i>
     <?php _e('Global settings', "hipayenterprise"); ?>
 </h3>
 
@@ -20,15 +20,15 @@
                     echo " SELECTED";
                 } ?>><?php _e('Hosted Fields', "hipayenterprise"); ?></option>
             </select>
-            <p class="help-block">
-            <ul>
-                <li><?php _e("Hosted Fields: The customer completes his banking information directly on the merchant's site but the form fields are hosted by HiPay. 
-                        This mode is only valid for credit cards.", "hipayenterprise"); ?></li>
-                <li><?php _e("Hosted Page: The customer is redirected to a secured payment page hosted by HiPay.",
-                        "hipayenterprise"
-                    ); ?></li>
-            </ul>
-            </p>
+            <div class="help-block">
+                <ul>
+                    <li><?php _e("Hosted Fields: The customer completes his banking information directly on the merchant's site but the form fields are hosted by HiPay. 
+                            This mode is only valid for credit cards.", "hipayenterprise"); ?></li>
+                    <li><?php _e("Hosted Page: The customer is redirected to a secured payment page hosted by HiPay.",
+                            "hipayenterprise"
+                        ); ?></li>
+                </ul>
+            </div>
         </div>
     </div>
 

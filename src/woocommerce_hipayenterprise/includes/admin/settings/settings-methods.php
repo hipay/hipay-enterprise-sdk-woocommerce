@@ -22,5 +22,8 @@ return array(
     'methods_credit_card_settings' => array(
         'type' => 'methods_credit_card_settings',
     ),
+    'methods_global_local_payment_settings' => array(
+        'type' => 'methods_global_local_payment_settings',
+    ),
 );
 

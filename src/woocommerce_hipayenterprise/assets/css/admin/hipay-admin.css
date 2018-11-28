@@ -1,11 +1,18 @@
-.hipay-container-admin {
+#hipay-container-admin {
     margin-top: 20px;
 }
 
-.credit_card_admin_config, .local_payment_admin_config {
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    padding: 5px;
+#hipay-container-admin ul {
+    list-style: inherit;
+}
+
+#hipay-container-admin ul.hipay-local-payment-list {
+    margin: 20px;
+}
+
+#hipay-container-admin .help-block {
+ font-style: italic;
+ padding: 10px;
 }
 
 .is_pointer {

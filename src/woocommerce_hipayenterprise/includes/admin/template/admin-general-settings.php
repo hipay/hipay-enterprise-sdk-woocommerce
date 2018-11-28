@@ -109,7 +109,7 @@
     </tbody>
 </table>
 
-<div role="tabpanel" class="tab col-md-12 hipay-container-admin">
+<div role="tabpanel" id="hipay-container-admin" class="tab col-md-">
     <ul class="hipay-enterprise nav nav-tabs" role="tablist">
         <li role="presentation" class="active">
             <a href="#accounts" id="accounts-tab" class="" data-toggle="tab">
