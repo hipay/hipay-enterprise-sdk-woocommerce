@@ -6,6 +6,10 @@
     list-style: inherit;
 }
 
+#hipay-container-admin #accordion-faq ul {
+    list-style: none;
+}
+
 #hipay-container-admin ul.hipay-local-payment-list {
     margin: 20px;
 }
