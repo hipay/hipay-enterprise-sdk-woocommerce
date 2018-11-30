@@ -28,7 +28,7 @@ msgstr "Paiements locaux et internationaux avec Hipay Enterprise."
 
 #: includes/gateways/class-gateway-hipay.php:389
 msgid "Available countries"
-msgstr ""
+msgstr "Pays disponibles"
 
 #: includes/gateways/class-gateway-hipay.php:390
 #: includes/gateways/class-gateway-hipay.php:433
@@ -267,8 +267,7 @@ msgid ""
 "Manual: if all transactions will be captured manually either from the Hipay "
 "Back office or from your admin in Woocommerce."
 msgstr ""
-"Manuel: toutes les transactions seront capturées manuellement à partir du "
-"Back office HiPay ou  à partir de  Woocommerce."
+"Manuel: toutes les transactions seront capturées manuellement à partir du Back office HiPay ou à partir de  Woocommerce."
 
 #: includes/admin/template/admin-global-settings.php:184
 msgid "Automatic: if all transactions will be captured automatically."
@@ -712,7 +711,7 @@ msgstr "Configuration sandbox"
 
 #: includes/admin/template/admin-link-paymentlocal-settings.php:4
 msgid "Local payment"
-msgstr "Paiement locaux"
+msgstr "Paiements locaux"
 
 #: includes/admin/template/admin-link-paymentlocal-settings.php:9
 msgid ""
@@ -720,7 +719,7 @@ msgid ""
 "configure them click on:"
 msgstr ""
 "Voici les différentes méthodes de paiements locales proposées par Hipay. "
-"Pour lesconfigurez cliquez sur le lien:"
+"Pour les configurer cliquez sur le lien:"
 
 #: includes/admin/template/admin-paymentlocal-settings.php:3
 msgid "Display name"
