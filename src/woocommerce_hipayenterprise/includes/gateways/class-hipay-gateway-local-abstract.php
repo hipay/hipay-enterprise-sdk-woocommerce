@@ -26,8 +26,35 @@ if (!defined('ABSPATH')) {
 class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
 {
 
+    /**
+     * Hipay_Bnpp3x constructor.
+     */
+    public function __construct()
+    {
+        $this->supports = array('products');
+        $this->has_fields = true;
+        parent::__construct();
+        $this->title = $this->confHelper->getLocalPayment($this->paymentProduct)["displayName"][Hipay_Helper::getLanguage()];
+
+        $this->init_form_fields();
+
+        $this->init_settings();
+    }
+
 
     /**
+     *
+     */
+    public function payment_fields()
+    {
+        _e(
+            'You will be redirected to an external payment page. Please do not refresh the page during the process.',
+            "hipayenterprise"
+        );
+    }
+
+
+        /**
      *
      */
     public function admin_options()

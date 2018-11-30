@@ -290,16 +290,27 @@ class Hipay_Settings_Handler
                 "currencies",
                 "countries",
                 "minAmount",
-                "maxAmount"
+                "maxAmount",
+                "displayName"
             );
 
             $settings = $this->plugin->confHelper->getLocalPayments();
 
             foreach ($settings[$methods] as $key => $value) {
                 if (in_array($key, $keySaved)) {
-                    $settings[$methods][$key] = Hipay_Helper::getPostData(
+                    $value = Hipay_Helper::getPostData(
                         "woocommerce_hipayenterprise_methods_" . $key . "_" . $methods
                     );
+
+                    if ($key == 'displayName') {
+                        $lang = Hipay_Helper::getLanguage();
+                        if (isset($value[$lang])) {
+                            $settings[$methods][$key][$lang] = $value[$lang];
+                        }
+                    } else {
+                        $settings[$methods][$key] = $value;
+                    }
+
                 }
             }
 

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce HiPay Enterprise\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-28 11:01+0000\n"
+"POT-Creation-Date: 2018-11-30 09:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -14,6 +14,49 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
 "X-Loco-Version: 2.2.0; wp-4.9.8"
+
+#: includes/gateways/class-gateway-hipay.php:48
+msgid "Pay by Credit Card"
+msgstr ""
+
+#: includes/gateways/class-gateway-hipay.php:49
+msgid "HiPay Enterprise Credit Card"
+msgstr ""
+
+#: includes/gateways/class-gateway-hipay.php:51
+msgid "Local and international payments using Hipay Enterprise."
+msgstr ""
+
+#: includes/gateways/class-gateway-hipay.php:389
+msgid "Available countries"
+msgstr ""
+
+#: includes/gateways/class-gateway-hipay.php:390
+#: includes/gateways/class-gateway-hipay.php:433
+msgid "Authorized countries"
+msgstr ""
+
+#: includes/gateways/class-gateway-hipay.php:441
+msgid ""
+"This credit card type or the order currency is not supported. \n"
+"                    Please choose an other payment method."
+msgstr ""
+
+#: includes/gateways/class-gateway-hipay.php:514
+msgid "Sorry, we cannot process your payment.. Please try again."
+msgstr ""
+
+#: includes/gateways/class-gateway-hipay.php:525
+msgid ""
+"We have received your order payment. We will process the order as soon as we "
+"get the payment confirmation."
+msgstr ""
+
+#: includes/gateways/class-hipay-gateway-local-abstract.php:50
+msgid ""
+"You will be redirected to an external payment page. Please do not refresh "
+"the page during the process."
+msgstr ""
 
 #: includes/helper/class-hipay-notification.php:120
 msgid "Transaction  refused. Order was cancelled with transaction:"
@@ -27,82 +70,81 @@ msgstr ""
 msgid "Authorization successful for transaction."
 msgstr ""
 
-#: includes/helper/class-hipay-api-request-handler.php:122
+#: includes/helper/class-hipay-api-request-handler.php:123
 msgid "An error occured, process has been cancelled.."
 msgstr ""
 
-#: includes/helper/class-hipay-api-request-handler.php:156
-#: includes/helper/class-hipay-api-request-handler.php:188
-#: includes/helper/class-hipay-api-request-handler.php:194
+#: includes/helper/class-hipay-api-request-handler.php:157
+#: includes/helper/class-hipay-api-request-handler.php:189
+#: includes/helper/class-hipay-api-request-handler.php:195
 msgid "An error occured, process has been cancelled."
 msgstr ""
 
-#: includes/helper/class-hipay-api-request-handler.php:176
+#: includes/helper/class-hipay-api-request-handler.php:177
 msgid ""
 "Sorry, your payment has been declined. Please try again with an other means "
 "of payment."
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:50
-msgid "Pay by Credit Card"
+#: includes/frontend/template/hosted-fields.php:6
+msgid "Fullname"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:52
-msgid "HiPay Enterprise Credit Card"
+#: includes/frontend/template/hosted-fields.php:15
+msgid "Card Number"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:54
-msgid "Local and international payments using Hipay Enterprise."
+#: includes/frontend/template/hosted-fields.php:24
+msgid "Expiry Date"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:390
-msgid "Available countries"
+#: includes/frontend/template/hosted-fields.php:31
+msgid "CVC"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:391
-#: includes/gateways/class-gateway-hipay.php:434
-msgid "Authorized countries"
+#: includes/admin/template/admin-fraud-settings.php:3
+#: includes/admin/template/admin-general-settings.php:111
+msgid "Fraud"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:442
+#: includes/admin/template/admin-fraud-settings.php:8
+#: includes/admin/template/admin-account-settings.php:35
+#: includes/admin/template/admin-account-settings.php:96
+msgid "Username"
+msgstr ""
+
+#: includes/admin/template/admin-fraud-settings.php:15
 msgid ""
-"This credit card type or the order currency is not supported. \n"
-"                    Please choose an other payment method."
+"Enter a valid email, during a transaction challenged an email will be sent "
+"to this address."
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:515
-msgid "Sorry, we cannot process your payment.. Please try again."
+#: includes/admin/template/admin-creditcard-settings.php:3
+msgid "Credit card"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:526
-msgid ""
-"We have received your order payment. We will process the order as soon as we "
-"get the payment confirmation."
+#: includes/admin/template/admin-creditcard-settings.php:37
+msgid "Activated"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-bnpp4x.php:35
-msgid "Bnppf-4xcb"
+#: includes/admin/template/admin-creditcard-settings.php:50
+#: includes/admin/template/admin-paymentlocal-settings.php:14
+msgid "Minimum order amount"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-bnpp4x.php:37
-#: includes/gateways/local/class-hipay-bnpp4x.php:38
-msgid "4x Carte Bancaire - BNP Personal Finance"
+#: includes/admin/template/admin-creditcard-settings.php:62
+#: includes/admin/template/admin-paymentlocal-settings.php:25
+msgid "Maximum order amount"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-bnpp4x.php:52
-#: includes/gateways/local/class-hipay-bnpp3x.php:52
-msgid ""
-"You will be redirected to an external payment page. Please do not refresh "
-"the page during the process."
+#: includes/admin/template/admin-creditcard-settings.php:74
+#: includes/admin/template/admin-paymentlocal-settings.php:36
+msgid "Currencies"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-bnpp3x.php:35
-msgid "Bnppf-3xcb"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-bnpp3x.php:37
-#: includes/gateways/local/class-hipay-bnpp3x.php:38
-msgid "3x Carte Bancaire - BNP Personal Finance"
+#: includes/admin/template/admin-creditcard-settings.php:97
+#: includes/admin/template/admin-paymentlocal-settings.php:50
+msgid "Countries"
 msgstr ""
 
 #: includes/admin/template/admin-global-settings.php:5
@@ -143,18 +185,21 @@ msgid "Font Family"
 msgstr ""
 
 #: includes/admin/template/admin-global-settings.php:61
-msgid "Font Weight"
+msgid "Font Size"
 msgstr ""
 
 #: includes/admin/template/admin-global-settings.php:72
+msgid "Font Weight"
+msgstr ""
+
+#: includes/admin/template/admin-global-settings.php:83
 msgid "PlaceHodler color"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:82
+#: includes/admin/template/admin-global-settings.php:93
 msgid "Caret color"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:93
 #: includes/admin/template/admin-global-settings.php:104
 msgid "Icon color"
 msgstr ""
@@ -186,74 +231,58 @@ msgid ""
 msgstr ""
 
 #: includes/admin/template/admin-global-settings.php:162
-msgid "Customer's cart sending"
+#: includes/admin/template/admin-faq-settings.php:93
+msgid "Capture"
+msgstr ""
+
+#: includes/admin/template/admin-global-settings.php:169
+msgid "Automatic"
 msgstr ""
 
 #: includes/admin/template/admin-global-settings.php:173
-msgid "Logs information"
+msgid "Manual"
+msgstr ""
+
+#: includes/admin/template/admin-global-settings.php:178
+msgid ""
+"Manual: if all transactions will be captured manually either from the Hipay "
+"Back office or from your admin in Woocommerce."
 msgstr ""
 
 #: includes/admin/template/admin-global-settings.php:184
+msgid "Automatic: if all transactions will be captured automatically."
+msgstr ""
+
+#: includes/admin/template/admin-global-settings.php:194
+msgid "Use Oneclick"
+msgstr ""
+
+#: includes/admin/template/admin-global-settings.php:205
+msgid "Customer's cart sending"
+msgstr ""
+
+#: includes/admin/template/admin-global-settings.php:216
+msgid "Logs information"
+msgstr ""
+
+#: includes/admin/template/admin-global-settings.php:227
 msgid "Send url Notification"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:195
+#: includes/admin/template/admin-global-settings.php:238
 msgid "Activate 3-D Secure"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:202
+#: includes/admin/template/admin-global-settings.php:245
 msgid "Deactivated"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:206
+#: includes/admin/template/admin-global-settings.php:249
 msgid "Try to enable for all transactions"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:211
+#: includes/admin/template/admin-global-settings.php:254
 msgid "Force for all transactions"
-msgstr ""
-
-#: includes/admin/template/admin-paymentlocal-settings.php:3
-#: includes/admin/template/admin-creditcard-settings.php:50
-msgid "Minimum order amount"
-msgstr ""
-
-#: includes/admin/template/admin-paymentlocal-settings.php:14
-#: includes/admin/template/admin-creditcard-settings.php:62
-msgid "Maximum order amount"
-msgstr ""
-
-#: includes/admin/template/admin-paymentlocal-settings.php:25
-#: includes/admin/template/admin-creditcard-settings.php:74
-msgid "Currencies"
-msgstr ""
-
-#: includes/admin/template/admin-paymentlocal-settings.php:39
-#: includes/admin/template/admin-creditcard-settings.php:97
-msgid "Countries"
-msgstr ""
-
-#: includes/admin/template/admin-local-settings.php:4
-#, php-format
-msgid ""
-"All other general HiPay settings can be adjusted <a href=\"%s\">here</a>."
-msgstr ""
-
-#: includes/admin/template/admin-fraud-settings.php:3
-#: includes/admin/template/admin-general-settings.php:128
-msgid "Fraud"
-msgstr ""
-
-#: includes/admin/template/admin-fraud-settings.php:8
-#: includes/admin/template/admin-account-settings.php:35
-#: includes/admin/template/admin-account-settings.php:96
-msgid "Username"
-msgstr ""
-
-#: includes/admin/template/admin-fraud-settings.php:15
-msgid ""
-"Enter a valid email, during a transaction challenged an email will be sent "
-"to this address."
 msgstr ""
 
 #: includes/admin/template/admin-general-settings.php:6
@@ -284,40 +313,38 @@ msgstr ""
 msgid "SimpleXML Extension is correcly installed."
 msgstr ""
 
-#: includes/admin/template/admin-general-settings.php:73
-msgid "Mode TEST activated"
-msgstr ""
-
-#: includes/admin/template/admin-general-settings.php:76
-msgid "This plugin is configured to use a Test Account."
-msgstr ""
-
-#: includes/admin/template/admin-general-settings.php:88
+#: includes/admin/template/admin-general-settings.php:71
 msgid "SSL Certificate"
 msgstr ""
 
-#: includes/admin/template/admin-general-settings.php:92
+#: includes/admin/template/admin-general-settings.php:75
 msgid "You need a SSL Certificate to process credit card paymets using HiPay."
 msgstr ""
 
-#: includes/admin/template/admin-general-settings.php:102
+#: includes/admin/template/admin-general-settings.php:85
 msgid "Woocommerce REST API"
 msgstr ""
 
-#: includes/admin/template/admin-general-settings.php:105
+#: includes/admin/template/admin-general-settings.php:88
 msgid "Please ensure you have Woocommerce REST API activated."
 msgstr ""
 
-#: includes/admin/template/admin-general-settings.php:117
+#: includes/admin/template/admin-general-settings.php:100
 msgid "Plugin Settings"
 msgstr ""
 
-#: includes/admin/template/admin-general-settings.php:123
+#: includes/admin/template/admin-general-settings.php:106
 msgid "Payment Methods"
 msgstr ""
 
-#: includes/admin/template/admin-general-settings.php:133
+#: includes/admin/template/admin-general-settings.php:116
 msgid "FAQ"
+msgstr ""
+
+#: includes/admin/template/admin-local-settings.php:4
+#, php-format
+msgid ""
+"All other general HiPay settings can be adjusted <a href=\"%s\">here</a>."
 msgstr ""
 
 #: includes/admin/template/admin-faq-settings.php:6
@@ -379,10 +406,6 @@ msgstr ""
 
 #: includes/admin/template/admin-faq-settings.php:86
 msgid "Maintenance"
-msgstr ""
-
-#: includes/admin/template/admin-faq-settings.php:93
-msgid "Capture"
 msgstr ""
 
 #: includes/admin/template/admin-faq-settings.php:99
@@ -569,16 +592,6 @@ msgid ""
 "status but it will stay on “processing” until it is fully sent."
 msgstr ""
 
-#: includes/admin/template/admin-link-paymentlocal-settings.php:4
-msgid "Local payment"
-msgstr ""
-
-#: includes/admin/template/admin-link-paymentlocal-settings.php:9
-msgid ""
-"Here are the different methods of local payments proposed by Hipay. To "
-"configure them click on:"
-msgstr ""
-
 #: includes/admin/template/admin-account-settings.php:3
 msgid "Plugin mode"
 msgstr ""
@@ -618,28 +631,35 @@ msgstr ""
 msgid "Sandbox configuration"
 msgstr ""
 
-#: includes/admin/template/admin-creditcard-settings.php:3
-msgid "Credit card"
+#: includes/admin/template/admin-link-paymentlocal-settings.php:4
+msgid "Local payment"
 msgstr ""
 
-#: includes/admin/template/admin-creditcard-settings.php:37
-msgid "Activated"
+#: includes/admin/template/admin-link-paymentlocal-settings.php:9
+msgid ""
+"Here are the different methods of local payments proposed by Hipay. To "
+"configure them click on:"
 msgstr ""
 
-#: includes/frontend/template/hosted-fields.php:6
-msgid "Fullname"
+#: includes/admin/template/admin-paymentlocal-settings.php:3
+msgid "Display name"
 msgstr ""
 
-#: includes/frontend/template/hosted-fields.php:15
-msgid "Card Number"
+#: includes/gateways/local/class-hipay-bnpp3x.php:35
+msgid "HiPay Enterprise Bnppf-3xcb"
 msgstr ""
 
-#: includes/frontend/template/hosted-fields.php:24
-msgid "Expiry Date"
+#: includes/gateways/local/class-hipay-bnpp3x.php:36
+msgid "3x Carte Bancaire - BNP Personal Finance"
 msgstr ""
 
-#: includes/frontend/template/hosted-fields.php:31
-msgid "CVC"
+#: includes/gateways/local/class-hipay-bnpp4x.php:35
+msgid "HiPay Enterprise Bnppf-4xcb"
+msgstr ""
+
+#: includes/gateways/local/class-hipay-bnpp4x.php:36
+#: includes/gateways/local/class-hipay-bnpp4x.php:37
+msgid "4x Carte Bancaire - BNP Personal Finance"
 msgstr ""
 
 #. Name of the plugin
