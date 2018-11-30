@@ -1,5 +1,16 @@
 <div class="form-horizontal">
     <div class="form-group">
+        <label class="control-label col-lg-2"><?php _e('Display name', "hipayenterprise"); ?></label>
+        <div class="col-lg-8">
+            <input class="form-control" type="text"
+                   name="woocommerce_hipayenterprise_methods_displayName_<?php echo $method; ?>[<?php echo substr(get_locale(), 0, 2);?>]"
+                   id="woocommerce_hipayenterprise_methods_displayName<?php echo $method; ?>"
+                   style=""
+                   value="<?php echo $configurationPaymentMethod["displayName"][substr(get_locale(), 0, 2)] ?>"
+                   placeholder="">
+        </div>
+    </div>
+    <div class="form-group">
         <label class="control-label col-lg-2"><?php _e('Minimum order amount', "hipayenterprise"); ?></label>
         <div class="col-lg-8">
             <input class="form-control" type="text"

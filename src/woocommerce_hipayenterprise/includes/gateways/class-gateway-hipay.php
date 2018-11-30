@@ -44,11 +44,8 @@ if (!class_exists('WC_Gateway_Hipay')) {
             );
 
             $this->has_fields = true;
-
             $this->icon = WC_HIPAYENTERPRISE_URL_ASSETS . '/images/credit_card.png';
-
             $this->title = __('Pay by Credit Card', "hipayenterprise");
-
             $this->method_title = __('HiPay Enterprise Credit Card', "hipayenterprise");
 
             $this->method_description = __(

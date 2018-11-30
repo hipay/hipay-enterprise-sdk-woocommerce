@@ -264,4 +264,13 @@ class Hipay_Helper
 
         return $default;
     }
+
+    /**
+     * Get Language
+     *
+     * @return string
+     */
+    public static function getLanguage() {
+        return substr(get_locale(), 0, 2);
+    }
 }

@@ -166,11 +166,11 @@
                 <option
                         value="automatic" <?php if ($paymentCommon["capture_mode"] == "automatic") {
                     echo " SELECTED";
-                } ?>><?php _e('Automatic', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></option>
+                } ?>><?php _e('Automatic', "hipayenterprise"); ?></option>
                 <option
                         value="manual" <?php if ($paymentCommon["capture_mode"] == "manual") {
                     echo " SELECTED";
-                } ?>><?php _e('Manual', Hipay_Gateway_Abstract::TEXT_DOMAIN); ?></option>
+                } ?>><?php _e('Manual', "hipayenterprise"); ?></option>
             </select>
             <div class="help-block">
                 <ul>
@@ -190,7 +190,7 @@
             </div>
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group hidden">
         <label class="control-label col-lg-2"><?php _e('Use Oneclick', "hipayenterprise"); ?></label>
         <div class="col-lg-8">
             <input class="form-control" type="checkbox" name="card_token"
@@ -201,7 +201,7 @@
         </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group hidden">
         <label class="control-label col-lg-2"><?php _e('Customer\'s cart sending', "hipayenterprise"); ?></label>
         <div class="col-lg-8">
             <input class="form-control" type="checkbox" name="activate_basket"
