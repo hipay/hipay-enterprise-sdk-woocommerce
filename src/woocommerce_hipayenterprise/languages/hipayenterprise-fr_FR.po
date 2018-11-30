@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WooCommerce HiPay Enterprise\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-11-30 09:25+0000\n"
-"PO-Revision-Date: 2018-11-30 09:26+0000\n"
+"PO-Revision-Date: 2018-11-30 10:28+0000\n"
 "Last-Translator: admin <admin-wordpress@hipay.com>\n"
 "Language-Team: Français\n"
 "Language: fr_FR\n"
@@ -159,7 +159,7 @@ msgstr "Pays"
 
 #: includes/admin/template/admin-global-settings.php:5
 msgid "Global settings"
-msgstr ""
+msgstr "Paramètres généraux"
 
 #: includes/admin/template/admin-global-settings.php:10
 msgid "Operating mode"
@@ -267,12 +267,12 @@ msgid ""
 "Manual: if all transactions will be captured manually either from the Hipay "
 "Back office or from your admin in Woocommerce."
 msgstr ""
-"Manuel: toutes les transactions seront capturées manuellement à partir du Back office HiPay ou à partir de  Woocommerce."
+"Manuel: toutes les transactions seront capturées manuellement à partir du "
+"Back office HiPay ou à partir de  Woocommerce."
 
 #: includes/admin/template/admin-global-settings.php:184
 msgid "Automatic: if all transactions will be captured automatically."
-msgstr ""
-"Automatique: toutes les transactions seront capturées automatiquement."
+msgstr "Automatique: toutes les transactions seront capturées automatiquement."
 
 #: includes/admin/template/admin-global-settings.php:194
 msgid "Use Oneclick"
