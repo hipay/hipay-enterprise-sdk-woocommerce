@@ -252,11 +252,11 @@ class Hipay_Settings_Handler
             foreach ($methodsCreditCard as $card => $conf) {
                 foreach ($conf as $key => $value) {
                     if (in_array($key, $keySaved)) {
-                        $settings["payment"]["credit_card"][$card][$key] = Hipay_Helper::getPostData(
+                        $settings["payment"][Hipay_Config::KEY_CREDIT_CARD][$card][$key] = Hipay_Helper::getPostData(
                             "woocommerce_hipayenterprise_methods_creditCard_" . $key . "_" . $card
                         );
                     } else {
-                        $settings["payment"]["credit_card"][$card][$key] = $methodsCreditCard[$card][$key];
+                        $settings["payment"][Hipay_Config::KEY_CREDIT_CARD][$card][$key] = $methodsCreditCard[$card][$key];
                     }
                 }
             }
@@ -266,7 +266,7 @@ class Hipay_Settings_Handler
             return true;
         } catch (Hipay_Settings_Exception $e) {
             $this->plugin->logs->logInfos($e);
-            $settings["payment"]["credit_card"] = $this->plugin->confHelper->getPaymentCreditCard();
+            $settings["payment"][Hipay_Config::KEY_CREDIT_CARD] = $this->plugin->confHelper->getPaymentCreditCard();
         } catch (Exception $e) {
             $this->plugin->logs->logException($e);
         }

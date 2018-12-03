@@ -77,7 +77,7 @@ class Hipay_Helper
                 }
             }
         } else {
-            $conf = $plugin->confHelper->getPayment()["local_payment"][$paymentMethodType];
+            $conf = $plugin->confHelper->getPayment()[Hipay_Config::KEY_LOCAL_PAYMENT][$paymentMethodType];
             if (self::isPaymentMethodAuthorized($conf, $currency, $country, $orderTotal)) {
                 $activatedPayment[$paymentMethodType] = $conf;
             }
@@ -238,6 +238,9 @@ class Hipay_Helper
                 $message .= __('Registered notification from HiPay about refunded amount of ') .
                     $transaction->getRefundedAmount() .
                     "\n";
+                break;
+            default:
+                $message .= __('Registered notification ' . $transaction->getStatus());
                 break;
         }
 
