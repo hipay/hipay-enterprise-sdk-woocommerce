@@ -12,6 +12,8 @@ wordpress/
 data/
 src/woocommerce_hipayenterprise/vendor
 bin/docker/conf/development/hipay.env
+bin/tests/node_modules
+bin/tests/cypress/videos
 ######################
 # Logs and databases #
 ######################
