@@ -116,8 +116,8 @@ deploy2recette:
     name: review/${CI_COMMIT_REF_SLUG}
     url: https://${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}.hipay-pos-platform.com
     on_stop: stop_review
-    only:
-      - branches
+  only:
+    - branches
 
 stop_review:
   stage: deploy
