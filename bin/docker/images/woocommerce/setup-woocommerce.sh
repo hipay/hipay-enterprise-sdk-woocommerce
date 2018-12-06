@@ -34,6 +34,12 @@ sleep 20
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     wp plugin activate woocommerce_hipayenterprise --allow-root
 
+    printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+    printf "\n${COLOR_SUCCESS}    SET HIPAY WOOCOMMERCE MODULE OPTION  ${NC}\n"
+    printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+    # HIPAY_OPTION=`wp option get hipay_enterprise`
+    # wp option update hipay_enterprise HIPAY_OPTION
+
     #==========================================
     # Import sample data
     #==========================================
