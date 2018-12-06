@@ -1,5 +1,5 @@
 Cypress.Commands.add("goToFront", () => {
-    cy.visit('http://localhost:8000');
+    cy.visit('/');
 });
 
 Cypress.Commands.add("selectItemAndGoToCart", () => {

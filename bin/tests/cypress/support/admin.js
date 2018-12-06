@@ -1,5 +1,5 @@
 Cypress.Commands.add("logToAdmin", () => {
-    cy.visit('http://localhost:8000/wp-admin');
+    cy.visit('/wp-admin');
     cy.wait(300);
     cy.get('#user_login').type("admin-wordpress@hipay.com");
     cy.get('#user_pass').type('hipay');
