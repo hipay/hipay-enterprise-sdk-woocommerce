@@ -3,6 +3,7 @@ image: hipay/gitlab-ci-base:jessie
 stages:
 - build-test
 - test
+- clean-stack
 - package
 - build
 - deploy
