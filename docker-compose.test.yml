@@ -3,7 +3,7 @@ version: '3.3'
 networks:
   wordpress:
     internal: true
-  outside-pi-overlay:
+  outside:
     external: true
 
 services:
@@ -20,7 +20,7 @@ services:
       - bin/docker/conf/test/wordpress.env.sample
     networks:
       wordpress:
-      outside-pi-overlay:
+      outside:
         aliases:
           - ${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}-web
   database:
