@@ -13,7 +13,7 @@ Cypress.Commands.add("adminLogOut", () => {
 
 Cypress.Commands.add("goToPaymentsTab", () => {
     cy.get('#toplevel_page_woocommerce > .wp-submenu > :nth-child(5) > a').click({force: true});
-    cy.get('[href="http://localhost:8000/wp-admin/admin.php?page=wc-settings&tab=checkout"]').click({force: true});
+    cy.get('[href="' + Cypress.config('baseUrl') + '/wp-admin/admin.php?page=wc-settings&tab=checkout"]').click({force: true});
 });
 
 Cypress.Commands.add("goToAdminHipayConfig", () => {
