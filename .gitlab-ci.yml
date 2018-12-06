@@ -42,6 +42,11 @@ test-cypress:
   after_script:
     - /tools/clean-job.sh $PROJECT_NAME_TEST docker-compose.test.yml wordpress ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
   allow_failure: false
+  artifacts:
+    paths:
+      - bin/tests/cypress/videos
+      - bin/tests/cypress/screenshots
+    when: always
   tags:
     - pi-commerce-no-overlay
 
