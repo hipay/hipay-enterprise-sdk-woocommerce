@@ -7,5 +7,5 @@
     ?>
 </p>
 <p>
-    <?php $this->generate_settings_html($this->local); ?>
+    <?php $plugin->generate_settings_html($plugin->local); ?>
 </p>
