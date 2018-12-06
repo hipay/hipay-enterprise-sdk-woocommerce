@@ -38,7 +38,7 @@ test-cypress:
     - curl --retry 10 --retry-delay 20 -v http:\/\/${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}-web/
     - cd bin/tests
     - yarn install
-    - yarn test:cypress --config baseUrl=http://${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}-web/
+   # - yarn test:cypress --config baseUrl=http://${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}-web/
   after_script:
     - /tools/clean-job.sh $PROJECT_NAME_TEST docker-compose.test.yml wordpress ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
   allow_failure: false
@@ -49,6 +49,16 @@ test-cypress:
     when: always
   tags:
     - pi-commerce-no-overlay
+
+clean-stack-test:
+  stage: clean-stack
+  script:
+  - echo "Clean remaining containers, network and images"
+  after_script:
+    - /tools/clean-job.sh $PROJECT_NAME_TEST docker-compose.test.yml wordpress ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
+  tags:
+    - pi-commerce-no-overlay
+  when: always
 
 package:
   stage: package
@@ -102,6 +112,23 @@ deploy2recette:
   allow_failure: true
   tags:
   - pi-commerce-no-overlay
+  environment:
+    name: review/${CI_COMMIT_REF_SLUG}
+    url: https://${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}.hipay-pos-platform.com
+    on_stop: stop_review
+    only:
+      - branches
+
+stop_review:
+  stage: deploy
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - bash /tools/docker-rm-stack.sh -n $DOCKER_STACK-$DOCKER_SERVICE-$CI_COMMIT_REF_SLUG
+  when: manual
+  environment:
+    name: review/${CI_COMMIT_REF_SLUG}
+    action: stop
 
 sync:
   stage: sync
