@@ -36,7 +36,7 @@ test-cypress:
     - sleep 300
     - docker-compose -p $PROJECT_NAME_TEST -f docker-compose.test.yml logs
     - curl --retry 10 --retry-delay 20 -v http:\/\/${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}-web/
-    - cd bin/test
+    - cd bin/tests
     - yarn install
     - yarn test:cypress --config baseUrl=http://${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}-web/
   after_script:
