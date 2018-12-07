@@ -140,7 +140,7 @@ abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abst
         $billingInfo = new Hipay_Customer_Billing_Info_Formatter(
             $this->plugin,
             $this->order,
-            (isset($this->params["paymentProduct"])) ? $this->params["paymentProduct"] : false
+            (isset($this->params["paymentProduct"])) ? $this->params["paymentProduct"] : 0
         );
 
         return $billingInfo->generate();

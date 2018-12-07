@@ -1,3 +1,12 @@
+.bg-primary-hipay {
+    background-color: #28a1c5;
+    color: #FFFFFF;
+}
+
+#version-plugin {
+    padding: 15px;
+}
+
 #hipay-container-admin {
     margin-top: 20px;
 }

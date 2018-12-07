@@ -1,19 +1,30 @@
-<?php settings_errors(); ?>
+<div class="bg-primary-hipay col-md-12" id="version-plugin">
+    <span class=""><strong><?php _e('Plugin Version', "hipayenterprise"); ?>:</strong></span> <?php echo $currentPluginVersion; ?>
+</div>
+
+<?php if (!empty($notifications)) : ?>
+    <table class="wc_emails widefat" cellspacing="0">
+        <tbody>
+        <tr>
+            <td class="wc-email-settings-table-status"><span class="dashicons dashicons-warning"></span></td>
+            <td class="wc-email-settings-table-name"><?php _e('Notifications', "hipayenterprise"); ?></td>
+            <td>
+                <?php
+                if (!empty($notifications)) {
+                    foreach ($notifications as $notification) {
+                        echo $notification;
+                    }
+                }
+                ?>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+<?php endif; ?>
+
+<div class="" id="requirments-hipay">
 <table class="wc_emails widefat" cellspacing="0">
     <tbody>
-    <tr>
-        <td class="wc-email-settings-table-status"><span class="dashicons dashicons-warning"></span></td>
-        <td class="wc-email-settings-table-name"><?php _e('Notifications', "hipayenterprise"); ?></td>
-        <td>
-            <?php
-            if (!empty($notifications)) {
-                foreach ($notifications as $notification) {
-                    echo $notification;
-                }
-            }
-            ?>
-        </td>
-    </tr>
     <tr>
         <td class="wc-email-settings-table-status">
             <?php
@@ -91,8 +102,13 @@
     </tr>
     </tbody>
 </table>
+</div>
 
-<div role="tabpanel" id="hipay-container-admin" class="tab col-md-">
+<div class="bg-danger" id="error-message">
+    <?php settings_errors(); ?>
+</div>
+
+<div role="tabpanel" id="hipay-container-admin" class="tab col-md-12">
     <ul class="hipay-enterprise nav nav-tabs" role="tablist">
         <li role="presentation" class="">
             <a href="#accounts" id="accounts-tab" class="" data-toggle="tab">
@@ -133,6 +149,8 @@
         </div>
     </div>
 </div>
+
+
 
 <script>
     jQuery(document).ready(function ($) {

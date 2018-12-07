@@ -19,6 +19,8 @@ if (!class_exists('WC_HipayEnterprise')) {
     class WC_HipayEnterprise
     {
 
+        const OPTION_PLUGIN_VERSION = "hipay_enterprise_version";
+
         /**
          * @var
          */
@@ -41,10 +43,32 @@ if (!class_exists('WC_HipayEnterprise')) {
                     'woocommerce/woocommerce.php',
                     apply_filters('active_plugins', get_option('active_plugins'))
                 ) || in_array('woocommerce/woocommerce.php', array_keys(get_site_option('active_sitewide_plugins')))) {
+                WC_HipayEnterprise::loadClassesHipay();
                 add_action('plugins_loaded', array($this, 'wc_hipay_gateway_load'), 0);
             }
         }
 
+
+        /**
+         * @param $currentPluginVersion
+         */
+        public function updatePlugin($currentPluginVersion) {
+            //Update initial configuration
+            $upgradeHelper = new Hipay_Upgrade_Helper();
+            $upgradeHelper->upgrade($currentPluginVersion);
+
+            // Update Plugin Version
+            update_option( 'hipay_enterprise_version', WC_HIPAYENTERPRISE_VERSION );
+        }
+
+        /**
+         * @param $currentPluginVersion
+         */
+        public function installPlugin() {
+            //Update initial configuration
+            $upgradeHelper = new Hipay_Upgrade_Helper();
+            $upgradeHelper->install();
+        }
 
         /**
          *
@@ -63,13 +87,22 @@ if (!class_exists('WC_HipayEnterprise')) {
             $menus = new Hipay_Admin_Menus();
             $postTypes = new Hipay_Admin_Post_Types();
 
-            // Init HiPay Post Type
+            add_filter('woocommerce_payment_gateways', 'addGateway');
+
+            $currentPluginVersion = get_option( 'hipay_enterprise_version' );
+            if (!empty($currentPluginVersion)
+                && WC_HIPAYENTERPRISE_VERSION !== $currentPluginVersion) {
+                $this->updatePlugin($currentPluginVersion);
+            } else if (empty($currentPluginVersion)) {
+                $this->installPlugin();
+            }
+
 
             /**
              * @param $methods
              * @return array
              */
-            function wc_hipay_add_gateway($methods)
+            function addGateway($methods)
             {
                 $methods[] = 'Gateway_Hipay';
                 $methods[] = 'Hipay_Bnpp3x';
@@ -92,6 +125,7 @@ if (!class_exists('WC_HipayEnterprise')) {
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-mapping-delivery-controller.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-admin-post-types.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-admin-menus.php');
+            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-upgrade-helper.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/gateways/class-hipay-gateway-abstract.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/gateways/class-hipay-gateway-local-abstract.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/gateways/class-gateway-hipay.php');

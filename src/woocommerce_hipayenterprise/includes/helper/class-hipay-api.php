@@ -85,7 +85,6 @@ class Hipay_Api
      */
     public function requestDirectPost($order, $params)
     {
-        try {
             $this->plugin->logs->logInfos("# requestDirectPost " . $order->id);
 
             $gatewayClient = $this->createGatewayClient();
@@ -97,10 +96,6 @@ class Hipay_Api
             $this->plugin->logs->logRequest($orderRequest);
 
             return $gatewayClient->requestNewOrder($orderRequest);
-        } catch (Exception $e) {
-            $this->plugin->logs->logException($e);
-            throw new Exception($e->getMessage());
-        }
     }
 
     /**
@@ -108,17 +103,15 @@ class Hipay_Api
      *
      * @param $order
      * @return string
-     * @throws Exception
      */
     public function requestHostedPaymentPage($order)
     {
-        try {
-            $gatewayClient = $this->createGatewayClient();
+        $gatewayClient = $this->createGatewayClient();
 
-            $params = array();
-            $this->iniParamsWithConfiguration($params);
+        $params = array();
+        $this->iniParamsWithConfiguration($params);
 
-            $activatedPayment = Hipay_Helper::getActivatedPaymentByCountryAndCurrency(
+        $activatedPayment = Hipay_Helper::getActivatedPaymentByCountryAndCurrency(
                 $this->plugin,
                 "credit_card",
                 $order->get_billing_country(),
@@ -126,21 +119,17 @@ class Hipay_Api
                 $order->get_total()
             );
 
-            $params["productlist"] = join(",", array_keys($activatedPayment));
+        $params["productlist"] = join(",", array_keys($activatedPayment));
 
-            $hostedPaymentFormatter = new Hipay_Hosted_Payment_Formatter($this->plugin, $params, $order);
-            $orderRequest = $hostedPaymentFormatter->generate();
+        $hostedPaymentFormatter = new Hipay_Hosted_Payment_Formatter($this->plugin, $params, $order);
+        $orderRequest = $hostedPaymentFormatter->generate();
 
-            $this->plugin->logs->logRequest($orderRequest);
-            $transaction = $gatewayClient->requestHostedPaymentPage($orderRequest);
+        $this->plugin->logs->logRequest($orderRequest);
+        $transaction = $gatewayClient->requestHostedPaymentPage($orderRequest);
 
-            $this->plugin->logs->logInfos("# RequestHostedPaymentPage " . $order->get_id());
+        $this->plugin->logs->logInfos("# RequestHostedPaymentPage " . $order->get_id());
 
-            return $transaction->getForwardUrl();
-        } catch (Exception $e) {
-            $this->plugin->logs->logException($e);
-            throw new Exception($e->getMessage());
-        }
+        return $transaction->getForwardUrl();
     }
 
     /**
