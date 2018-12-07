@@ -70,16 +70,18 @@ class Hipay_Api_Request_Handler
     }
 
     /**
+     *  Handle process payment for an Operating mode
+     *
      * @param $params
      * @return string
      * @throws Hipay_Payment_Exception
+     * @throws Exception
      */
     public function handleCreditCard($params)
     {
-        switch ($this->plugin->confHelper->getPaymentGlobal()["operating_mode"]) {
-            case OperatingMode::HOSTED_FIELDS:
-                return $this->handleDirectOrder($params);
-            case OperatingMode::HOSTED_PAGE:
+        if  ($this->plugin->confHelper->getPaymentGlobal()["operating_mode"] == OperatingMode::HOSTED_FIELDS) {
+            return $this->handleDirectOrder($params);
+        } else if  ($this->plugin->confHelper->getPaymentGlobal()["operating_mode"] == OperatingMode::HOSTED_PAGE) {
                 return $this->handleHostedPayment($params);
         }
     }
