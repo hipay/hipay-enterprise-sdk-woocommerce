@@ -12,11 +12,7 @@ jQuery(function ($) {
         return false;
     });
 
-    $('.woocommerce_hipayenterprise_methods_countries').multi({
-        enable_search: false,
-        non_selected_header: hipay_config_i18n.available_countries,
-        selected_header: hipay_config_i18n.authorized_countries
-    });
+
 
     $('#hipay-container-admin ul a').click(function(e) {
         e.preventDefault();
@@ -30,4 +26,20 @@ jQuery(function ($) {
 
     var hash = window.location.hash;
     $('#hipay-container-admin ul a[href="' + hash + '"]').tab('show');
+
+    $(".decimal-input").change(function validate() {
+        var value = $(this).val();
+        var parsedValue = parseFloat(value.replace(/,/g, "."));
+
+        if (isNaN(parsedValue) || parsedValue === "") {
+            parsedValue = 0;
+        }
+        $(this).val(parsedValue);
+    });
+
+    $('.woocommerce_hipayenterprise_methods_countries').multi({
+        enable_search: false,
+        non_selected_header: hipay_config_i18n.available_countries,
+        selected_header: hipay_config_i18n.authorized_countries
+    });
 });

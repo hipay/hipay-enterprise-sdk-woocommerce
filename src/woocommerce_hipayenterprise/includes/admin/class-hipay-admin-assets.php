@@ -40,7 +40,7 @@ class Wc_Hipay_Admin_Assets
         if (is_null(self::$instance)) {
             self::$instance = new self();
 
-            add_action('admin_enqueue_scripts', array(self::$instance, 'enqueue_scripts'));
+            add_action('admin_enqueue_scripts', array(self::$instance, 'admin_enqueue_scripts'));
         }
         return self::$instance;
     }
@@ -48,11 +48,11 @@ class Wc_Hipay_Admin_Assets
     /**
      *
      */
-    public function enqueue_scripts()
+    public function admin_enqueue_scripts()
     {
-        $currentSection = $_GET["section"];
-        if (is_admin()
-            && preg_match("/^hipayenterprise/", $currentSection)) {
+        $isHipaySectionSettings = isset($_GET['section']) && preg_match("/^hipayenterprise/", $_GET['section']) ;
+        $isHipayPageSettings = isset($_GET['page']) && preg_match("/^hipay/", $_GET['page']);
+        if (is_admin() && ($isHipaySectionSettings || $isHipayPageSettings)) {
             wp_register_style(
                 'wc_hipay_admin_multi_css',
                 plugins_url('assets/css/admin/multi.min.css', WC_HIPAYENTERPRISE_BASE_FILE),

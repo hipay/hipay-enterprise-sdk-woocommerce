@@ -32,7 +32,9 @@
         </div>
     </div>
 
-    <div class="row <?php if ($paymentCommon["operating_mode"] == OperatingMode::HOSTED_PAGE) { echo "hidden "; }?>directPost_page_config ">
+    <div class="row <?php if ($paymentCommon["operating_mode"] == OperatingMode::HOSTED_PAGE) {
+        echo "hidden ";
+    } ?>directPost_page_config ">
         <div class="col-lg-2"></div>
         <div class="col-lg-8">
             <div class="form-group">
@@ -112,7 +114,9 @@
             </div>
         </div>
     </div>
-    <div class="row <?php if ($paymentCommon["operating_mode"] != OperatingMode::HOSTED_PAGE) { echo "hidden "; } ?>hosted_page_config">
+    <div class="row <?php if ($paymentCommon["operating_mode"] != OperatingMode::HOSTED_PAGE) {
+        echo "hidden ";
+    } ?>hosted_page_config">
         <div class="form-group">
             <label class="control-label col-lg-2"><?php _e('Display Hosted Page', "hipayenterprise"); ?></label>
             <div class="col-lg-8">

@@ -10,12 +10,12 @@
         </div>
         <div class="col-md-12">
             <ul class="hipay-local-payment-list">
-            <?php foreach ($availableHipayGateways as $gateway => $title):?>
-                <li><a title="Open configuration" target="_blank" href="
-                <?php  echo admin_url('admin.php?page=wc-settings&tab=checkout&section=' . $gateway) ?>">
-                        <?php echo $title ?></a></li>
-            <?php endforeach; ?>
-        </ul>
+                <?php foreach ($availableHipayGateways as $gateway => $title): ?>
+                    <li><a title="Open configuration" target="_blank" href="
+                <?php echo admin_url('admin.php?page=wc-settings&tab=checkout&section=' . $gateway) ?>">
+                            <?php echo $title ?></a></li>
+                <?php endforeach; ?>
+            </ul>
         </div>
     </div>
 

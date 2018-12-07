@@ -48,6 +48,7 @@ if (!class_exists('WC_HipayEnterprise')) {
             }
         }
 
+
         /**
          * @param $currentPluginVersion
          */
@@ -78,9 +79,14 @@ if (!class_exists('WC_HipayEnterprise')) {
                 return;
             }
 
-            load_plugin_textdomain("hipayenterprise",
-                false,
-                "woocommerce_hipayenterprise/languages/");
+            load_plugin_textdomain("hipayenterprise",false,"woocommerce_hipayenterprise/languages/");
+            add_filter('woocommerce_payment_gateways', 'wc_hipay_add_gateway');
+            WC_HipayEnterprise::loadClassesHipay();
+
+            // Init Admin menus
+            $menus = new Hipay_Admin_Menus();
+            $postTypes = new Hipay_Admin_Post_Types();
+
             add_filter('woocommerce_payment_gateways', 'addGateway');
 
             $currentPluginVersion = get_option( 'hipay_enterprise_version' );
@@ -90,6 +96,7 @@ if (!class_exists('WC_HipayEnterprise')) {
             } else if (empty($currentPluginVersion)) {
                 $this->installPlugin();
             }
+
 
             /**
              * @param $methods
@@ -111,6 +118,13 @@ if (!class_exists('WC_HipayEnterprise')) {
         public static function loadClassesHipay()
         {
             require_once(WC_HIPAYENTERPRISE_PATH . 'vendor/autoload.php');
+            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/admin/post/class-hipay-mapping-category.php');
+            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/admin/post/class-hipay-mapping-delivery.php');
+            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-mapping-abstract.php');
+            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-mapping-category-controller.php');
+            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-mapping-delivery-controller.php');
+            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-admin-post-types.php');
+            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-admin-menus.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-upgrade-helper.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/gateways/class-hipay-gateway-abstract.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/gateways/class-hipay-gateway-local-abstract.php');
@@ -125,6 +139,7 @@ if (!class_exists('WC_HipayEnterprise')) {
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-settings-handler.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-helper.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-api.php');
+            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-helper-mapping.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/ThreeDS.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/OperatingMode.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/CaptureMode.php');

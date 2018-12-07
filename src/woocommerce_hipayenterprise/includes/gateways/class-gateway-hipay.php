@@ -402,8 +402,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 $sandbox = $this->confHelper->getAccount()["global"]["sandbox_mode"];
                 $username = ($sandbox) ? $this->confHelper->getAccount()["sandbox"]["api_tokenjs_username_sandbox"]
                     : $this->confHelper->getAccount()["production"]["api_tokenjs_username_production"];
-                $password = ($sandbox) ? $this->confHelper->getAccount(
-                )["sandbox"]["api_tokenjs_password_publickey_sandbox"]
+                $password = ($sandbox) ? $this->confHelper->getAccount()["sandbox"]["api_tokenjs_password_publickey_sandbox"]
                     : $this->confHelper->getAccount()["production"]["api_tokenjs_password_publickey_production"];
 
                 wp_localize_script(
@@ -541,6 +540,18 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 esc_html($paymentUrl) .
                 '" allowfullscreen="" frameborder="0"></iframe>
                   </div>';
+        }
+
+
+        /**
+         * @param $template
+         * @param array $args
+         */
+        public function process_template($template, $type, $args = array())
+        {
+            extract($args);
+            $file = WC_HIPAYENTERPRISE_PATH . 'includes/' . $type . '/template/' . $template;
+            include $file;
         }
     }
 }
