@@ -24,7 +24,7 @@ describe('Pay by credit card iframe', function () {
         cy.goToCheckout();
         cy.fillBillingForm();
 
-        cy.get('.payment_method_hipayenterprise_credit_card > label').click();
+        cy.get('.payment_method_hipayenterprise_credit_card > label').click({force: true});
         cy.get('#place_order').click();
     });
 

@@ -18,7 +18,7 @@ describe('Pay by bnppf', function () {
         cy.goToCheckout();
         cy.fillBillingForm();
 
-        cy.get('.payment_method_hipayenterprise_bnpp-3xcb > label').click();
+        cy.get('.payment_method_hipayenterprise_bnpp-3xcb > label').click({force: true});
         cy.get('#place_order').click();
         cy.payBnppf();
         cy.checkOrderSuccess();
