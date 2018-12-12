@@ -79,7 +79,7 @@ if (!class_exists('WC_HipayEnterprise')) {
                 return;
             }
 
-            load_plugin_textdomain("hipayenterprise",false,"woocommerce_hipayenterprise/languages/");
+            load_plugin_textdomain("hipayenterprise", false, "woocommerce_hipayenterprise/languages/");
             add_filter('woocommerce_payment_gateways', 'wc_hipay_add_gateway');
             WC_HipayEnterprise::loadClassesHipay();
 
@@ -104,12 +104,56 @@ if (!class_exists('WC_HipayEnterprise')) {
              */
             function addGateway($methods)
             {
+                $localMethod = WC_HipayEnterprise::loadClassesHipay();
                 $methods[] = 'Gateway_Hipay';
-                $methods[] = 'Hipay_Bnpp3x';
-                $methods[] = 'Hipay_Bnpp4x';
-                return $methods;
+                return array_merge($methods, $localMethod);
             }
 
+        }
+
+        private static function requireLocalMethods()
+        {
+            $method = array();
+
+            $dir = new RecursiveDirectoryIterator(WC_HIPAYENTERPRISE_PATH . '/includes/gateways/local');
+            $iterator = new RecursiveIteratorIterator($dir);
+            foreach ($iterator as $file) {
+                $fname = $file->getFilename();
+                if (preg_match('%\.php$%', $fname)) {
+                    require_once($file->getPathname());
+                    $method[] = self::getClassNameFromFile($file->getPathname());
+                }
+            }
+
+            return $method;
+        }
+
+        private static function getClassNameFromFile($path)
+        {
+            //Grab the contents of the file
+            $contents = file_get_contents($path);
+
+            //Start with a blank namespace and class
+            $class = "";
+            $nextStringIsClass = false;
+            //Go through each token and evaluate it as necessary
+            foreach (token_get_all($contents) as $token) {
+
+                if (is_array($token) && $token[0] == T_CLASS) {
+                    $nextStringIsClass = true;
+                }
+
+                if (is_array($token) && $nextStringIsClass && $token[0] == T_STRING) {
+
+                    //Store the token's value as the class name
+                    $class = $token[1];
+
+                    //Got what we need, stop here
+                    break;
+                }
+            }
+
+            return $class;
         }
 
         /**
@@ -129,8 +173,9 @@ if (!class_exists('WC_HipayEnterprise')) {
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/gateways/class-hipay-gateway-abstract.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/gateways/class-hipay-gateway-local-abstract.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/gateways/class-gateway-hipay.php');
-            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/gateways/local/class-hipay-bnpp3x.php');
-            require_once(WC_HIPAYENTERPRISE_PATH . 'includes/gateways/local/class-hipay-bnpp4x.php');
+
+            $methods = self::requireLocalMethods();
+
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-log.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-notification.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-order-handler.php');
@@ -145,20 +190,27 @@ if (!class_exists('WC_HipayEnterprise')) {
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/CaptureMode.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/SettingsField.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/formatter/class-hipay-api-formatter-abstract.php');
-            require_once(WC_HIPAYENTERPRISE_PATH .
-                'includes/formatter/request/class-hipay-request-formatter-abstract.php');
-            require_once(WC_HIPAYENTERPRISE_PATH .
-                'includes/formatter/request/class-hipay-hosted-payment-formatter.php');
+            require_once(
+                WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-request-formatter-abstract.php'
+            );
+            require_once(
+                WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-hosted-payment-formatter.php'
+            );
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-direct-post-formatter.php');
-            require_once(WC_HIPAYENTERPRISE_PATH .
-                'includes/formatter/info/class-hipay-customer-billing-info-formatter.php');
-            require_once(WC_HIPAYENTERPRISE_PATH .
-                'includes/formatter/info/class-hipay-customer-shipping-info-formatter.php');
-            require_once(WC_HIPAYENTERPRISE_PATH .
-                'includes/formatter/payment-method/class-hipay-card-token-formatter.php');
+            require_once(
+                WC_HIPAYENTERPRISE_PATH . 'includes/formatter/info/class-hipay-customer-billing-info-formatter.php'
+            );
+            require_once(
+                WC_HIPAYENTERPRISE_PATH . 'includes/formatter/info/class-hipay-customer-shipping-info-formatter.php'
+            );
+            require_once(
+                WC_HIPAYENTERPRISE_PATH . 'includes/formatter/payment-method/class-hipay-card-token-formatter.php'
+            );
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-api-request-handler.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/exceptions/class-hipay-payment-exception.php');
             require_once(WC_HIPAYENTERPRISE_PATH . 'includes/helper/exceptions/class-hipay-settings-exception.php');
+
+            return $methods;
         }
     }
 
