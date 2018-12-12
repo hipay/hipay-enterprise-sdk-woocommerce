@@ -80,7 +80,6 @@ if (!class_exists('WC_HipayEnterprise')) {
             }
 
             load_plugin_textdomain("hipayenterprise",false,"woocommerce_hipayenterprise/languages/");
-            add_filter('woocommerce_payment_gateways', 'wc_hipay_add_gateway');
             WC_HipayEnterprise::loadClassesHipay();
 
             // Init Admin menus
