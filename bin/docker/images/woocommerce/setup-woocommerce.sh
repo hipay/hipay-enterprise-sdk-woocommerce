@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 COLOR_SUCCESS='\033[0;32m'
 NC='\033[0m'
+ENV_DEVELOPMENT="development"
+ENV_STAGE="stage"
+ENV_PROD="production"
 
 sleep 10
 /bin/bash /tmp/docker-entrypoint.sh "apache2-foreground"
@@ -45,7 +48,7 @@ sleep 20
     HIPAY_OPTION=${HIPAY_OPTION/'"api_secret_passphrase_sandbox":""'/'"api_secret_passphrase_sandbox":"'$HIPAY_SECRET_PASSPHRASE_TEST'"'}
 
     if [ "$ENVIRONMENT" != "$ENV_PROD" ];then
-        CONFIG=${CONFIG/'"send_url_notification":1'/'"send_url_notification":0'}
+        HIPAY_OPTION=${HIPAY_OPTION/'"send_url_notification":1'/'"send_url_notification":0'}
     fi
 
     wp option update hipay_enterprise "$HIPAY_OPTION"  --format=json --allow-root
