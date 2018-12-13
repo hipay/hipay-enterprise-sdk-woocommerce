@@ -24,8 +24,10 @@ if (!defined('ABSPATH')) {
  */
 class Hipay_Autoloader
 {
+
     public static $classArray = array(
         WC_HIPAYENTERPRISE_PATH . 'vendor/autoload.php',
+        WC_HIPAYENTERPRISE_PATH . 'class-wc-hipay-enterprise.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/admin/post/class-hipay-mapping-category.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/admin/post/class-hipay-mapping-delivery.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-mapping-abstract.php',
@@ -62,7 +64,9 @@ class Hipay_Autoloader
         WC_HIPAYENTERPRISE_PATH . 'includes/helper/exceptions/class-hipay-settings-exception.php'
     );
 
-
+    /**
+     * Load all needed classes
+     */
     public static function loader()
     {
         foreach (Hipay_Autoloader::$classArray as $class) {
@@ -74,6 +78,11 @@ class Hipay_Autoloader
         }
     }
 
+    /**
+     * Get Local Methods Class name from file
+     *
+     * @return array
+     */
     public static function getLocalMethodsNames()
     {
         $methods = array();
@@ -85,6 +94,11 @@ class Hipay_Autoloader
         return $methods;
     }
 
+    /**
+     * Get all local methods class file from directory
+     *
+     * @return array
+     */
     private static function getLocalMethodsFiles()
     {
         $filePaths = array();
@@ -101,6 +115,12 @@ class Hipay_Autoloader
         return $filePaths;
     }
 
+    /**
+     * Get Class name from a file
+     *
+     * @param $path
+     * @return mixed|string
+     */
     private static function getClassNameFromFile($path)
     {
         //Grab the contents of the file
@@ -130,4 +150,5 @@ class Hipay_Autoloader
     }
 }
 
+// autoload loader
 spl_autoload_register('Hipay_Autoloader::loader');
