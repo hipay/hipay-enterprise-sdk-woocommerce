@@ -172,4 +172,16 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
             'redirect' => $e->getRedirectUrl(),
         );
     }
+
+    /**
+     * @param $template
+     * @param $type
+     * @param array $args
+     */
+    public function process_template($template, $type, $args = array())
+    {
+        extract($args);
+        $file = WC_HIPAYENTERPRISE_PATH . 'includes/' . $type . '/template/' . $template;
+        include $file;
+    }
 }

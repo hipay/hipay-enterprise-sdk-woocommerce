@@ -43,6 +43,19 @@
                             name="woocommerce_hipayenterprise_methods_currencies_<?php echo $method; ?>[]"
                     />
                 <?php endforeach; ?>
+            <?php else: ?>
+                <?php
+                $activatedCurrencies = get_woocommerce_currency();
+                echo '<input class="form-control" type="checkbox" name="woocommerce_hipayenterprise_methods_currencies_' .
+                    $method . '[]" id="woocommerce_hipayenterprise_methods_currencies_' . '_currencies" style="" value="' .
+                    $activatedCurrencies .
+                    '"';
+                if (is_array($configurationPaymentMethod["currencies"]) &&
+                    array_search($activatedCurrencies, $configurationPaymentMethod["currencies"]) !== false) {
+                    echo ' checked="checked"';
+                }
+                echo "><span style='padding-right:18px;'>" . $activatedCurrencies . "</span>";
+                ?>
             <?php endif; ?>
         </div>
     </div>
@@ -57,6 +70,32 @@
                             name="woocommerce_hipayenterprise_methods_countries_<?php echo $method; ?>[]"
                     />
                 <?php endforeach; ?>
+            <?php else: ?>
+                <select multiple
+                        class="form-control woocommerce_hipayenterprise_methods_countries"
+                        name="woocommerce_hipayenterprise_methods_countries_<?php echo $method; ?>[]"
+                        id="woocommerce_hipayenterprise_methods<?php echo $method; ?>countries">
+                    <?php
+                    $countries_wc = new WC_Countries();
+                    $countries = $countries_wc->__get('countries');
+
+                    foreach ($countries as $countryKey => $countryValue) {
+                        $class = "";
+                        if (is_array($configurationPaymentMethod["countries"]) &&
+                            array_search($countryKey, $configurationPaymentMethod["countries"]) !== false ||
+                            $configurationPaymentMethod["countries"] == $countryKey) {
+                            $class = "selected";
+                        }
+                        echo "<option value='" .
+                            $countryKey .
+                            "' " .
+                            $class .
+                            ">" .
+                            $countryValue .
+                            "</option>";
+                    }
+                    ?>
+                </select>
             <?php endif; ?>
         </div>
     </div>
