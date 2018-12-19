@@ -1,3 +1,5 @@
+import cards from '@hipay/hipay-cypress-utils/fixtures/payment-means/card';
+
 describe('Pay by credit card iframe', function () {
 
     before(function () {
@@ -34,14 +36,14 @@ describe('Pay by credit card iframe', function () {
 
     it('pay by visa', function () {
         cy.get('#wc_hipay_iframe').then(function ($iframe) {
-            cy.payCcIframe($iframe, "visa");
+            cy.payCcIframe($iframe, cards.visa.ok);
         });
         cy.checkOrderSuccess();
     });
 
     it('pay by visa refused', function () {
         cy.get('#wc_hipay_iframe').then(function ($iframe) {
-            cy.payCcIframe($iframe, "visaRefused");
+            cy.payCcIframe($iframe, cards.visa.refused);
         });
         cy.checkOrderCancelled();
     });

@@ -28,7 +28,7 @@ describe('Send order notifications', function () {
     it('Send captured notification', function () {
         cy.HiPayBOGoToTransaction(this.order.lastOrderId + "-");
         cy.HiPayBOOpenNotifications(118).then(() => {
-            cy.sendNotification(notification.url, {data: this.data, hash: this.hash});
+            cy.sendNotification(this.notification.url, {data: this.data, hash: this.hash});
         });
     });
 });
