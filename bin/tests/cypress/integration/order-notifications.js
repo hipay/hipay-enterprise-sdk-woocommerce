@@ -14,14 +14,14 @@ describe('Send order notifications', function () {
     it('Send authorization notification', function () {
         cy.HiPayBOGoToTransaction(this.order.lastOrderId + "-");
         cy.HiPayBOOpenNotifications(116).then(() => {
-            cy.sendNotification({data: this.data, hash: this.hash});
+            cy.sendNotification(this.notification.url, {data: this.data, hash: this.hash});
         });
     });
 
     it('Send capture requested notification', function () {
         cy.HiPayBOGoToTransaction(this.order.lastOrderId + "-");
         cy.HiPayBOOpenNotifications(117).then(() => {
-            cy.sendNotification({data: this.data, hash: this.hash});
+            cy.sendNotification(this.notification.url, {data: this.data, hash: this.hash});
         });
     });
 
