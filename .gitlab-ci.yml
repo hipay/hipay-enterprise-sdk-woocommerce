@@ -30,6 +30,8 @@ test-cypress:
     - sed -i "s/$(echo {HIPAY_SECRET_PASSPHRASE_TEST} | sed -e 's/\([[\/.*]\|\]\)/\\&/g')/$(echo '$HIPAY_SECRET_PASSPHRASE_TEST' | sed -e 's/[\/&]/\\&/g')/g" ./bin/docker/conf/test/hipay.env.sample
     - sed -i -e "s/{DB_HOST\}/${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}_database/" ./bin/docker/conf/test/wordpress.env.sample
     - sed -i -e "s/{WORDPRESS_URL\}/${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}-web/" ./bin/docker/conf/test/wordpress.env.sample
+    - cp ./bin/tests/.npmrc.sample ./bin/tests/.npmrc
+    - sed -i -e "s/\${NPM_REGISTRY_TOKEN\}/$NPM_REGISTRY_TOKEN/" ./bin/tests/.npmrc
   script:
     - docker-compose -p $PROJECT_NAME_TEST -f docker-compose.test.yml stop
     - docker-compose -p $PROJECT_NAME_TEST -f docker-compose.test.yml rm -fv
