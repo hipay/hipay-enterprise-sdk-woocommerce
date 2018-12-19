@@ -1,4 +1,3 @@
 {
-  "url": "/wc-api/WC_HipayEnterprise",
-  "signatureHeader" : "X-ALLOPASS-SIGNATURE"
+  "url": "/wc-api/WC_HipayEnterprise"
 }

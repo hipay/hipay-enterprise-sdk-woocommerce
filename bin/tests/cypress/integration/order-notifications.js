@@ -4,6 +4,7 @@ describe('Send order notifications', function () {
         cy.HiPayBOConnect();
         cy.HiPayBOSelectAccount();
         cy.fixture('order').as("order");
+        cy.fixture('notification').as("notification");
     });
 
     afterEach(() => {
@@ -27,7 +28,7 @@ describe('Send order notifications', function () {
     it('Send captured notification', function () {
         cy.HiPayBOGoToTransaction(this.order.lastOrderId + "-");
         cy.HiPayBOOpenNotifications(118).then(() => {
-            cy.sendNotification({data: this.data, hash: this.hash});
+            cy.sendNotification(notification.url, {data: this.data, hash: this.hash});
         });
     });
 });
