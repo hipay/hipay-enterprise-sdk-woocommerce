@@ -72,7 +72,7 @@ class Hipay_Direct_Post_Formatter extends Hipay_Request_Formatter_Abstract
      *
      * @param $orderRequest
      */
-    protected function mapRequest(&$orderRequest)
+    public function mapRequest(&$orderRequest)
     {
         parent::mapRequest($orderRequest);
 

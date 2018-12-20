@@ -22,12 +22,14 @@ if (!defined('ABSPATH')) {
  * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
  */
-class Hipay_Customer_Billing_Info_Formatter extends Hipay_Api_Formatter_Abstact
+class Hipay_Customer_Billing_Info_Formatter implements Hipay_Api_Formatter
 {
-    /**
-     * @var
-     */
+
     private $payment_product;
+
+    protected $plugin;
+
+    protected $order;
 
     /**
      * Hipay_Customer_Billing_Info_Formatter constructor.
@@ -37,7 +39,8 @@ class Hipay_Customer_Billing_Info_Formatter extends Hipay_Api_Formatter_Abstact
      */
     public function __construct($plugin, $order, $payment_product)
     {
-        parent::__construct($plugin, $order);
+        $this->plugin = $plugin;
+        $this->order = $order;
         $this->payment_product = $payment_product;
     }
 
@@ -60,7 +63,7 @@ class Hipay_Customer_Billing_Info_Formatter extends Hipay_Api_Formatter_Abstact
      *
      * @param \HiPay\Fullservice\Gateway\Request\Info\CustomerBillingInfoRequest $customerBillingInfo
      */
-    protected function mapRequest(&$customerBillingInfo)
+    public function mapRequest(&$customerBillingInfo)
     {
         $customerBillingInfo->firstname = $this->order->get_billing_first_name();
         $customerBillingInfo->lastname = $this->order->get_billing_last_name();
