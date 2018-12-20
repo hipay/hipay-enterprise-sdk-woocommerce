@@ -306,6 +306,7 @@ class Hipay_Config
     /**
      * init local config
      *
+     * @param $folderName
      * @return array
      */
     public function insertPaymentsConfig($folderName)

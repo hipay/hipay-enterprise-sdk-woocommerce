@@ -98,7 +98,7 @@ class Hipay_Mapping_Delivery_Controller extends Hipay_Mapping_Abstract
                         $this->updateMapping($mapping,$idPost);
                     } else {
                         $this->logs->logInfos("# createDeliveryMapping " . print_r($mapping, true));
-                        $this->createDeliveryMapping($mapping);
+                        $this->createMapping($mapping);
                     }
 
                 } else {

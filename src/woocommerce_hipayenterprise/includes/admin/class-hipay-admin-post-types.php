@@ -1,6 +1,6 @@
 <?php
 
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 
 /**
  *
@@ -11,6 +11,8 @@ defined( 'ABSPATH' ) || exit;
  */
 class Hipay_Admin_Post_Types
 {
+
+    private static $instance;
 
     /**
      * @var string
@@ -36,38 +38,52 @@ class Hipay_Admin_Post_Types
     public function register_post()
     {
         // Register Mapping Categories
-        register_post_type( self::POST_TYPE_MAPPING_CATEGORIES, array (
-            'label' => __( 'HiPay Mapping Categories', 'hipayenterprise' ),
-            'description' => __( 'HiPay Mapping Categories', 'hipayenterprise' ),
-            'labels' => array (
-                'name' => __( 'HiPay Mapping Categories', 'hipayenterprise' ),
-            ),
-            'public' => false,
-            'capabilities' => array (
-                'create_posts' => false
-            ),
-            'map_meta_cap' => true,
-            'show_in_menu' => 'false',
-            'show_in_nav_menus' => false,
-            'show_in_admin_bar' => false,
-            'show_ui' => true
-        ) );
+        register_post_type(
+            self::POST_TYPE_MAPPING_CATEGORIES,
+            array(
+                'label' => __('HiPay Mapping Categories', 'hipayenterprise'),
+                'description' => __('HiPay Mapping Categories', 'hipayenterprise'),
+                'labels' => array(
+                    'name' => __('HiPay Mapping Categories', 'hipayenterprise'),
+                ),
+                'public' => false,
+                'capabilities' => array(
+                    'create_posts' => false
+                ),
+                'map_meta_cap' => true,
+                'show_in_menu' => 'false',
+                'show_in_nav_menus' => false,
+                'show_in_admin_bar' => false,
+                'show_ui' => true
+            )
+        );
         // Register Mapping delivery
-        register_post_type( self::POST_TYPE_MAPPING_DELIVERY, array (
-            'label' => __( 'HiPay Delivery Mapping', 'hipayenterprise' ),
-            'description' => __( 'HiPay Delivery Mapping', 'hipayenterprise' ),
-            'labels' => array (
-                'name' => __( 'HiPay Delivery Mapping', 'hipayenterprise' ),
-            ),
-            'public' => false,
-            'capabilities' => array (
-                'create_posts' => false
-            ),
-            'map_meta_cap' => true,
-            'show_in_menu' => 'false',
-            'show_in_nav_menus' => false,
-            'show_in_admin_bar' => false,
-            'show_ui' => true
-        ) );
+        register_post_type(
+            self::POST_TYPE_MAPPING_DELIVERY,
+            array(
+                'label' => __('HiPay Delivery Mapping', 'hipayenterprise'),
+                'description' => __('HiPay Delivery Mapping', 'hipayenterprise'),
+                'labels' => array(
+                    'name' => __('HiPay Delivery Mapping', 'hipayenterprise'),
+                ),
+                'public' => false,
+                'capabilities' => array(
+                    'create_posts' => false
+                ),
+                'map_meta_cap' => true,
+                'show_in_menu' => 'false',
+                'show_in_nav_menus' => false,
+                'show_in_admin_bar' => false,
+                'show_ui' => true
+            )
+        );
+    }
+
+    public static function initHiPayCustomPostTypes()
+    {
+        if (null === self::$instance) {
+            self::$instance = new self();
+        }
+        return self::$instance;
     }
 }
