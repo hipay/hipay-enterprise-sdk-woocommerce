@@ -166,7 +166,8 @@ class Hipay_Config
                     "activate_basket" => 0,
                     "card_token" => 0,
                     SettingsField::PAYMENT_GLOBAL_LOGS_INFOS => 1,
-                    "send_url_notification" => 1
+                    "send_url_notification" => 1,
+                    "ccDisplayName" => array("fr" => "Carte de crédit", "en" => "Credit card"),
                 ),
                 "credit_card" => array(),
                 "local_payment" => array()

@@ -34,9 +34,7 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
         $this->supports = array('products');
         $this->has_fields = true;
         parent::__construct();
-        $this->title = $this->confHelper->getLocalPayment(
-            $this->paymentProduct
-        )["displayName"][Hipay_Helper::getLanguage()];
+        $this->title = $this->confHelper->getLocalPayment($this->paymentProduct)["displayName"][Hipay_Helper::getLanguage()];
         $this->init_form_fields();
         $this->init_settings();
     }
