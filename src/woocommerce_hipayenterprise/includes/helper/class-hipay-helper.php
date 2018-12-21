@@ -15,7 +15,6 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-
 use \HiPay\Fullservice\Enum\Transaction\TransactionStatus;
 use \HiPay\Fullservice\Helper\Signature;
 use \HiPay\Fullservice\HTTP\Configuration\Configuration;
@@ -180,7 +179,10 @@ class Hipay_Helper
      */
     public static function sendEmailFraud($orderId, $plugin)
     {
-        $subject = sprintf(__('A payment transaction is awaiting validation for the order %s',"hipayenterprise"), $orderId);
+        $subject = sprintf(
+            __('A payment transaction is awaiting validation for the order %s', "hipayenterprise"),
+            $orderId
+        );
         $urlAdmin = admin_url('post.php?post=' . $orderId . '&action=edit');
         $listEmails[] = get_option('admin_email');
 
@@ -196,7 +198,8 @@ class Hipay_Helper
                 sprintf(
                     __(
                         'You can accept or decline this transaction by visiting the administration of your store. <a href="%s">here</a>',
-                    "hipayenterprise"),
+                        "hipayenterprise"
+                    ),
                     $urlAdmin
                 )
             );
@@ -229,7 +232,7 @@ class Hipay_Helper
         switch ($transaction->getStatus()) {
             case TransactionStatus::CAPTURED: //118
             case TransactionStatus::CAPTURE_REQUESTED: //117
-                $message .= __('Registered notification from HiPay about captured amount of ',"hipayenterprise") .
+                $message .= __('Registered notification from HiPay about captured amount of ', "hipayenterprise") .
                     $transaction->getCapturedAmount() .
                     "\n";
                 break;
@@ -244,10 +247,10 @@ class Hipay_Helper
                 break;
         }
 
-        $message .= __('Order total amount :',"hipayenterprise") . $transaction->getAuthorizedAmount() . "\n";
+        $message .= __('Order total amount :', "hipayenterprise") . $transaction->getAuthorizedAmount() . "\n";
         $message .= "\n";
-        $message .= __('Transaction ID: ',"hipayenterprise") . $transaction->getTransactionReference() . "\n";
-        $message .= __('HiPay status: ',"hipayenterprise") . $transaction->getStatus() . "\n";
+        $message .= __('Transaction ID: ', "hipayenterprise") . $transaction->getTransactionReference() . "\n";
+        $message .= __('HiPay status: ', "hipayenterprise") . $transaction->getStatus() . "\n";
 
         return $message;
     }
@@ -273,7 +276,8 @@ class Hipay_Helper
      *
      * @return string
      */
-    public static function getLanguage() {
+    public static function getLanguage()
+    {
         return substr(get_locale(), 0, 2);
     }
 

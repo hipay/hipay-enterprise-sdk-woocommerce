@@ -30,9 +30,12 @@ class Hipay_Order_Handler
      */
     private $order;
 
-    public function __construct($order)
+    private $plugin;
+
+    public function __construct($order, $plugin)
     {
         $this->order = $order;
+        $this->plugin = $plugin;
     }
 
     /**
@@ -43,6 +46,8 @@ class Hipay_Order_Handler
      */
     public function paymentComplete($txnId = '', $note = '')
     {
+        $this->plugin->logs->logInfos("### paymentComplete : ".$txnId." ".$this->order->get_id());
+
         if (
             !in_array($this->order->get_status(), array('completed', 'refunded'), true)
             && (int)$this->order->get_total_refunded() === 0
@@ -50,6 +55,7 @@ class Hipay_Order_Handler
             $this->order->add_order_note($note);
             $this->order->payment_complete($txnId);
             WC()->cart->empty_cart();
+            $this->plugin->logs->logInfos("### paymentComplete change status : ".$txnId." ".$this->order->get_id());
         }
     }
 
@@ -60,11 +66,15 @@ class Hipay_Order_Handler
      */
     public function paymentOnHold($reason = '')
     {
+        $this->plugin->logs->logInfos("### paymentOnHold : ".$this->order->get_id());
+
         if (!in_array($this->order->get_status(), array('processing', 'completed', 'on-hold'), true)) {
+            $this->plugin->logs->logInfos("### paymentOnHold change status: ".$this->order->get_id());
             $this->order->update_status('on-hold', $reason);
             wc_reduce_stock_levels($this->order->get_id());
             WC()->cart->empty_cart();
         } else {
+            $this->plugin->logs->logInfos("### paymentOnHold add Note: ".$this->order->get_id());
             $this->addNote($reason);
         }
     }
@@ -76,6 +86,8 @@ class Hipay_Order_Handler
      */
     public function paymentFailed($reason = '')
     {
+        $this->plugin->logs->logInfos("### paymentFailed change status: ".$this->order->get_id());
+
         $this->order->update_status('failed', $reason);
         WC()->cart->empty_cart();
     }
@@ -87,6 +99,8 @@ class Hipay_Order_Handler
      */
     public function paymentRefunded($reason = '')
     {
+        $this->plugin->logs->logInfos("### paymentRefunded change status: ".$this->order->get_id());
+
         $this->order->update_status('refunded', $reason);
         WC()->cart->empty_cart();
     }
@@ -101,6 +115,8 @@ class Hipay_Order_Handler
      */
     public function paymentPartiallyRefunded($amount, $reason = '')
     {
+        $this->plugin->logs->logInfos("### paymentPartiallyRefunded change status: ".$this->order->get_id());
+
         if ($amount > 0) {
             $this->paymentOnHold($reason);
 

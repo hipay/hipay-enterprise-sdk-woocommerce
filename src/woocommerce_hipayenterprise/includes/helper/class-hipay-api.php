@@ -85,17 +85,17 @@ class Hipay_Api
      */
     public function requestDirectPost($order, $params)
     {
-            $this->plugin->logs->logInfos("# requestDirectPost " . $order->id);
+        $this->plugin->logs->logInfos("# requestDirectPost " . $order->id);
 
-            $gatewayClient = $this->createGatewayClient();
-            $this->iniParamsWithConfiguration($params);
+        $gatewayClient = $this->createGatewayClient();
+        $this->iniParamsWithConfiguration($params);
 
-            $directPostFormatter = new Hipay_Direct_Post_Formatter($this->plugin, $params, $order);
-            $orderRequest = $directPostFormatter->generate();
+        $directPostFormatter = new Hipay_Direct_Post_Formatter($this->plugin, $params, $order);
+        $orderRequest = $directPostFormatter->generate();
 
-            $this->plugin->logs->logRequest($orderRequest);
+        $this->plugin->logs->logRequest($orderRequest);
 
-            return $gatewayClient->requestNewOrder($orderRequest);
+        return $gatewayClient->requestNewOrder($orderRequest);
     }
 
     /**
@@ -112,12 +112,12 @@ class Hipay_Api
         $this->iniParamsWithConfiguration($params);
 
         $activatedPayment = Hipay_Helper::getActivatedPaymentByCountryAndCurrency(
-                $this->plugin,
-                "credit_card",
-                $order->get_billing_country(),
-                $order->get_currency(),
-                $order->get_total()
-            );
+            $this->plugin,
+            "credit_card",
+            $order->get_billing_country(),
+            $order->get_currency(),
+            $order->get_total()
+        );
 
         $params["productlist"] = join(",", array_keys($activatedPayment));
 

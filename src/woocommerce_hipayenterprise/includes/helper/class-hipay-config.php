@@ -88,8 +88,8 @@ class Hipay_Config
         update_option( 'hipay_enterprise_version', WC_HIPAYENTERPRISE_VERSION );
     }
 
-    /*
-     * Oveerride all Hipay configuration
+    /**
+     * Override all Hipay configuration
      *
      * @param $newConfiguration
      */
