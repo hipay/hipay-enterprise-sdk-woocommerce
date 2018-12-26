@@ -87,3 +87,17 @@
     position: relative;
 }
 
+/* ORDER STYLES */
+#woocommerce-order-items .woocommerce_order_items_wrapper table.woocommerce_order_items small.captured {
+    display: block;
+    color: #17aa00;
+    white-space: nowrap;
+    margin-top: .5em;
+    text-align: center;
+}
+
+#woocommerce-order-items tr.hipay-captured td {
+    padding: 0 !important;
+}
+
+

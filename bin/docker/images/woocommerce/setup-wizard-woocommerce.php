@@ -5,7 +5,7 @@ echo "Setup default values...\n";
 $address        	= "Rue de la Paix";
 $address_2      	= "";
 $city           	= "Nantes";
-$country_state  	= "BR:RJ";
+$country_state  	= "FR";
 $postcode       	= "440000";
 $currency_code  	= "EUR";
 $product_type   	= "both";

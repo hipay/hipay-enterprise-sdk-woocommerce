@@ -133,7 +133,7 @@ class Hipay_Mapping_Delivery_Controller extends Hipay_Mapping_Abstract
      *
      * @return array
      */
-    private function getAllDeliveryMapping()
+    public function getAllDeliveryMapping()
     {
         $posts = $this->getPosts();
         $mappings = array();

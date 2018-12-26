@@ -1,6 +1,17 @@
 <?php
+/**
+ * HiPay Enterprise SDK WooCommerce
+ *
+ * 2018 HiPay
+ *
+ * NOTICE OF LICENSE
+ *
+ * @author    HiPay <support.tpp@hipay.com>
+ * @copyright 2018 HiPay
+ * @license   https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
+ */
 
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 
 /**
  *
@@ -12,7 +23,7 @@ defined( 'ABSPATH' ) || exit;
 class Hipay_Mapping_Delivery
 {
     /**
-     * @var string
+     * @var WP_Post
      */
     public $post;
 
@@ -34,12 +45,14 @@ class Hipay_Mapping_Delivery
     }
 
     /**
+     *  Magic Getter for search in meta-data
+     *
      * @param $key
      * @return mixed
      */
-    public function __get( $key )
+    public function __get($key)
     {
-        return get_post_meta( $this->id, $key, true );
+        return get_post_meta($this->id, $key, true);
     }
 
 

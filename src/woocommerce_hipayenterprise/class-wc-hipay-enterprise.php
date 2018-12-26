@@ -58,6 +58,8 @@ class WC_HipayEnterprise
         // Init Admin menus
         Hipay_Admin_Menus::initHiPayAdminMenus();
         Hipay_Admin_Post_Types::initHiPayCustomPostTypes();
+        //Hipay_Admin_Meta_Boxes::initHiPayAdminMetaBoxes();
+        Hipay_Admin_Capture::initHiPayAdminCapture();
 
         add_filter('woocommerce_payment_gateways', array($this, 'addGateway'));
     }

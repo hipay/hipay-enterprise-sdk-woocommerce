@@ -61,8 +61,7 @@ msgid ""
 "You will be redirected to an external payment page. Please do not refresh "
 "the page during the process."
 msgstr ""
-"Vous allez être redirigé vers une page de paiement externe. S'il vous plaît, "
-"n'actualiser la page pendant le processus."
+"Vous allez être redirigé vers une page de paiement externe. Veuillez ne pas actualiser la page pendant le processus."
 
 #: includes/helper/class-hipay-notification.php:120
 msgid "Transaction  refused. Order was cancelled with transaction:"

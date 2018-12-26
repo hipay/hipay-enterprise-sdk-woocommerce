@@ -205,7 +205,7 @@
         </div>
     </div>
 
-    <div class="form-group hidden">
+    <div class="form-group">
         <label class="control-label col-lg-2"><?php _e('Customer\'s cart sending', "hipayenterprise"); ?></label>
         <div class="col-lg-8">
             <input class="form-control" type="checkbox" name="activate_basket"

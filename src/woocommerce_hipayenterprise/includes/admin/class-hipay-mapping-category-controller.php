@@ -113,7 +113,7 @@ class Hipay_Mapping_Category_Controller extends Hipay_Mapping_Abstract
     /**
      * @return array
      */
-    private function getAllMappingCategories()
+    public function getAllMappingCategories()
     {
         $posts = $this->getPosts();
         $mappings = array ();

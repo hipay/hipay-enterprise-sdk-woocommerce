@@ -30,9 +30,15 @@ class Hipay_Order_Handler
      */
     private $order;
 
+    /**
+     * @var Hipay_Admin_Capture
+     */
+    protected $adminCapture;
+
     public function __construct($order)
     {
         $this->order = $order;
+        $this->adminCapture = Hipay_Admin_Capture::initHiPayAdminCapture();
     }
 
     /**
@@ -47,9 +53,27 @@ class Hipay_Order_Handler
             !in_array($this->order->get_status(), array('completed', 'refunded'), true)
             && (int)$this->order->get_total_refunded() === 0
         ) {
+            if (in_array($this->order->get_status(),array('partial-captured', 'partial-refunded'))) {
+                $this->order->update_status('on-hold');
+            }
+
             $this->order->add_order_note($note);
             $this->order->payment_complete($txnId);
             WC()->cart->empty_cart();
+        }
+    }
+
+
+    /**
+     *  Payment update status order to custom status
+     *
+     * @param $status
+     * @param string $reason
+     */
+    public function paymentUpdateStatus($status, $reason = '')
+    {
+        if (!in_array($this->order->get_status(), array('completed'), true)) {
+            $this->order->update_status($status, $reason);
         }
     }
 
@@ -92,26 +116,56 @@ class Hipay_Order_Handler
     }
 
     /**
+     * Partially capture order ( from HiPay BO)
+     *
+     * @param HiPay\Fullservice\Gateway\Mapper\TransactionMapper $transaction
+     * @param string $reason
+     * @throws Exception
+     */
+    public function paymentPartiallyCaptured($transaction, $reason = '')
+    {
+        if ( $transaction->getCapturedAmount() > 0) {
+            $this->paymentUpdateStatus('partial-captured', $reason);
+
+            // Test if capture is from HiPay BO
+            if ($transaction->getOperation() == null && $transaction->getAttemptId() < 2) {
+                $capture = array(
+                    "amount" => $transaction->getCapturedAmount(),
+                    "reason" => $reason,
+                    "order_id" => $this->order->get_id()
+                );
+
+                $this->adminCapture->create_capture_item($capture);
+                WC()->cart->empty_cart();
+            }
+        }
+    }
+
+    /**
      * Partially refund order
      * Order is still to "On hold" status but a refund is created
      *
+     * @param \HiPay\Fullservice\Gateway\Model\Transaction $transaction
      * @param $amount
      * @param string $reason
      * @throws Exception
      */
-    public function paymentPartiallyRefunded($amount, $reason = '')
+    public function paymentPartiallyRefunded($transaction, $amount, $reason = '')
     {
         if ($amount > 0) {
-            $this->paymentOnHold($reason);
+            $this->paymentUpdateStatus('partial-refunded', $reason);
 
-            $refund = array(
-                "amount" => $amount,
-                "reason" => $reason,
-                "order_id" => $this->order->get_id()
-            );
+            if ($transaction->getOperation() == null && $transaction->getAttemptId() < 2) {
+                $refund = array(
+                    "amount" => $amount,
+                    "reason" => $reason,
+                    "order_id" => $this->order->get_id()
+                );
 
-            wc_create_refund($refund);
-            WC()->cart->empty_cart();
+                wc_create_refund($refund);
+                WC()->cart->empty_cart();
+            }
+
         }
     }
 

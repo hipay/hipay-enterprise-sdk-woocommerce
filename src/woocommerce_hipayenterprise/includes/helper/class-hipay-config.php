@@ -340,4 +340,27 @@ class Hipay_Config
 
         return $creditCard;
     }
+
+    /**
+     *
+     * Check basket requirements for HiPay Platform compliance
+     *
+     * @param $notifications
+     */
+    public function checkBasketRequirements(&$notifications)
+    {
+        if ($this->getPaymentGlobal()["activate_basket"]) {
+            $categoriesMappingController = new Hipay_Mapping_Category_Controller();
+            $deliveryMappingController = new Hipay_Mapping_Delivery_Controller();
+
+            if (empty($categoriesMappingController->getAllMappingCategories())) {
+                $notifications[] = __('You need to map your product categories.', "hipayenterprise");
+            }
+
+            if (empty($deliveryMappingController->getAllDeliveryMapping())) {
+                $notifications[] = __('You need to map your carriers.', "hipayenterprise");
+            }
+        }
+
+    }
 }

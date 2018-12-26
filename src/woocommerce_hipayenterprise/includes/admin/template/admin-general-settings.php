@@ -6,16 +6,18 @@
     <table class="wc_emails widefat" cellspacing="0">
         <tbody>
         <tr>
-            <td class="wc-email-settings-table-status"><span class="dashicons dashicons-warning"></span></td>
+            <td class="wc-email-settings-table-status"><span class="dashicons dashicons-warning text-danger"></span></td>
             <td class="wc-email-settings-table-name"><?php _e('Notifications', "hipayenterprise"); ?></td>
             <td>
+                <ul class="alert-notifications">
                 <?php
                 if (!empty($notifications)) {
                     foreach ($notifications as $notification) {
-                        echo $notification;
+                        echo '<li class="text-danger">' . $notification . '</li>';
                     }
                 }
                 ?>
+                </ul>
             </td>
         </tr>
         </tbody>
@@ -27,45 +29,35 @@
     <tbody>
     <tr>
         <td class="wc-email-settings-table-status">
-            <?php
-            if ($curl_active) { ?>
+            <?php if ($curl_active): ?>
                 <span class="dashicons dashicons-yes"></span>
-                <?php
-            } else { ?>
+            <?php else: ?>
                 <span class="dashicons dashicons-no"></span>
-                <?php
-            } ?>
+            <?php endif; ?>
         </td>
 
         <td class="wc-email-settings-table-name"><?php _e('cURL Extension', "hipayenterprise"); ?></td>
-
         <td>
-            <?php
-            if (!$curl_active) {
+            <?php if (!$curl_active) {
                 _e('Please install and activate cURL extension.', "hipayenterprise");
             } else {
                 _e('cURL Extension is correcly installed.', "hipayenterprise");
             }
-
             ?>
         </td>
     </tr>
 
     <tr>
         <td class="wc-email-settings-table-status">
-            <?php
-            if ($simplexml_active) { ?>
+            <?php if ($simplexml_active) : ?>
                 <span class="dashicons dashicons-yes"></span>
-                <?php
-            } else { ?>
+            <?php else: ?>
                 <span class="dashicons dashicons-no"></span>
-                <?php
-            } ?>
+            <?php endif; ?>
         </td>
         <td class="wc-email-settings-table-name"><?php _e('SimpleXML Extension', "hipayenterprise"); ?></td>
         <td>
-            <?php
-            if (!$simplexml_active) {
+            <?php if (!$simplexml_active) {
                 _e('Please install and activate SimpleXML Extension.', "hipayenterprise");
             } else {
                 _e('SimpleXML Extension is correcly installed.', "hipayenterprise");

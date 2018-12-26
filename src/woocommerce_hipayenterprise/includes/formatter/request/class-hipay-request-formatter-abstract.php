@@ -81,6 +81,8 @@ abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abst
         $orderRequest->ipaddr = $_SERVER ['REMOTE_ADDR'];
         $orderRequest->language = $orderRequest->language = get_locale();
         $orderRequest->http_user_agent = $_SERVER ['HTTP_USER_AGENT'];
+        $orderRequest->basket = $this->params["basket"];
+        $orderRequest->delivery_information = $this->params["delivery_informations"];
     }
 
     /**

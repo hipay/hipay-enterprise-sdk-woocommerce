@@ -10,50 +10,30 @@
  * @copyright 2018 HiPay
  * @license   https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
  */
+if (!defined('ABSPATH')) {
+    exit; // Exit if accessed directly
+}
 
-defined('ABSPATH') || exit;
 
 /**
- * Post for Category mapping
+ * Meta box order for Hipay
  *
  * @author      HiPay <support.tpp@hipay.com>
  * @copyright   Copyright (c) 2018 - HiPay
  * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
  */
-class Hipay_Mapping_Category
+class WC_Meta_Box_Hipay
 {
-    /**
-     * @var WP_Post
-     */
-    public $post;
 
     /**
-     * @var string
-     */
-    public $id;
-
-    /**
-     * Hipay_Mapping_Category constructor
+     * Output the metabox.
      *
-     * @param $post
+     * @param WP_Post $post
      */
-    public function __construct($post)
+    public static function output()
     {
-        $this->id = $post->ID;
-        $this->post = $post;
     }
 
-    /**
-     *  Magic Getter for search in meta-data
-     *
-     * @param $key
-     * @return mixed
-     */
-    public function __get($key)
-    {
-        return get_post_meta($this->id, $key, true);
-    }
+
 }
-
-

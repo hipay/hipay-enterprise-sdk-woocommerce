@@ -8,8 +8,8 @@ services:
        context: .
        dockerfile: bin/docker/images/woocommerce/Dockerfile
      volumes:
-       - ./wordpress/core:/var/www/html
        - ./src/woocommerce_hipayenterprise:/var/www/html/wp-content/plugins/woocommerce_hipayenterprise
+       - ./wordpress/core:/var/www/html
      ports:
        - "8000:80"
      restart: always
@@ -26,8 +26,3 @@ services:
      - "3309:3306"
      env_file:
       - bin/docker/conf/development/wordpress.env.sample
-
-   smtp:
-     image: hipay/mailcatcher:1.0.0
-     ports:
-     - "1000:80"
