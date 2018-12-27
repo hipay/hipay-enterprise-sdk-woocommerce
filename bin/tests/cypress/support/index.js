@@ -21,6 +21,7 @@ import '@hipay/hipay-cypress-utils/commands/bo-merchant/login'
 import '@hipay/hipay-cypress-utils/commands/bo-merchant/transaction'
 import '@hipay/hipay-cypress-utils/commands/payment-means/bnppf/providerpage'
 import '@hipay/hipay-cypress-utils/commands/payment-means/card/hostedpage'
+import '@hipay/hipay-cypress-utils/commands/payment-means/card/hostedfields'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')

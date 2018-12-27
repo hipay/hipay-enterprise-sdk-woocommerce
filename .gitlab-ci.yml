@@ -115,6 +115,7 @@ deploy2recette:
   allow_failure: true
   tags:
   - pi-commerce-no-overlay
+  when: manual
   environment:
     name: review/${CI_COMMIT_REF_SLUG}
     url: https://${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}.hipay-pos-platform.com
