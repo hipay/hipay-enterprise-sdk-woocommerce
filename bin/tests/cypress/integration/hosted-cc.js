@@ -1,5 +1,3 @@
-import cards from '@hipay/hipay-cypress-utils/fixtures/payment-means/card';
-
 describe('Pay by credit card hosted', function () {
 
     before(function () {
@@ -35,12 +33,12 @@ describe('Pay by credit card hosted', function () {
     });
 
     it('Pay by visa', function () {
-        cy.payCcHosted(cards.visa.ok);
+        cy.payCcHosted("visa_ok");
         cy.checkOrderSuccess();
     });
 
     it('Pay by visa refused', function () {
-        cy.payCcHosted(cards.visa.refused);
+        cy.payCcHosted("visa_refused");
         cy.checkOrderCancelled();
     });
 });

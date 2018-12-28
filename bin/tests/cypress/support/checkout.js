@@ -63,11 +63,15 @@ Cypress.Commands.add("checkPaymentRefused", () => {
     );
 });
 
-Cypress.Commands.add("checkUnsupportedPayment", () => {
+Cypress.Commands.add("checkHostedFieldsError", (msg) => {
     cy.location('pathname', {timeout: 50000}).should('include', '/checkout/');
     cy.get('#error-js', {timeout: 50000}).contains(
-        "This credit card type or the order currency is not supported."
+        msg
     );
+});
+
+Cypress.Commands.add("checkUnsupportedPayment", () => {
+    cy.checkHostedFieldsError("This credit card type or the order currency is not supported.");
 });
 
 Cypress.Commands.add("saveLastOrderId", () => {

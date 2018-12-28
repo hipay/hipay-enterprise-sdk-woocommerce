@@ -73,4 +73,20 @@ describe('Pay by credit card', function () {
         cy.get('#place_order').click({force: true});
         cy.checkOrderSuccess();
     });
+
+    it('Pay by Wrong credit card number', function () {
+
+        let customCard = {
+            "cardHolder": "John Doe",
+            "cardNumber": "123465978",
+            "expiryMonth": "08",
+            "expiryYear": "2024",
+            "cvc": "666"
+        };
+
+        cy.fill_hostedfield_card('custom', customCard);
+        cy.get('#place_order').click({force: true});
+        cy.checkHostedFieldsError("Card number is invalid.");
+    });
+
 });
