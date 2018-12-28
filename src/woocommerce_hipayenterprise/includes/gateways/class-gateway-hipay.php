@@ -28,6 +28,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
     {
 
         const CREDIT_CARD_PAYMENT_PRODUCT = "credit_card";
+
         const GATEWAY_CREDIT_CARD_ID = 'hipayenterprise_credit_card';
 
         /**
