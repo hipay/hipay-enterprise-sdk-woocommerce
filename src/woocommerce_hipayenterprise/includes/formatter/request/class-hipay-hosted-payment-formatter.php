@@ -67,7 +67,7 @@ class Hipay_Hosted_Payment_Formatter extends Hipay_Request_Formatter_Abstract
      * @param type $orderRequest
      * @return mixed|void
      */
-    protected function mapRequest(&$orderRequest)
+    public function mapRequest(&$orderRequest)
     {
         parent::mapRequest($orderRequest);
 

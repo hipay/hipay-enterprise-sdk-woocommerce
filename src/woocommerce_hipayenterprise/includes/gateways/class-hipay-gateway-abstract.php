@@ -83,11 +83,11 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
 
         $this->settingsHandler = new Hipay_Settings_Handler($this);
 
-        if (version_compare(WOOCOMMERCE_VERSION, '3.0.0', '<=')) {
+        if (version_compare(WC()->version, '3.0.0', '<=')) {
             $this->notifications[] = __(
                 sprintf(
                     'Your Woocommerce version (%s) is not compatible with HiPay module.Please upgrade to minimum version 3.0.0',
-                    WOOCOMMERCE_VERSION
+                    WC()->version
                 )
             );
         }
@@ -115,8 +115,6 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
         );
         add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'save_settings'));
     }
-
-
 
     /**
      * @param $available_gateways

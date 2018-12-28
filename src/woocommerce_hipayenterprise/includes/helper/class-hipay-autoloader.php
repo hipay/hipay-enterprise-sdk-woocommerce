@@ -52,6 +52,7 @@ class Hipay_Autoloader
         WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/OperatingMode.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/CaptureMode.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/SettingsField.php',
+        WC_HIPAYENTERPRISE_PATH . 'includes/formatter/interface-hipay-api-formatter.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/formatter/class-hipay-api-formatter-abstract.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-request-formatter-abstract.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-hosted-payment-formatter.php',

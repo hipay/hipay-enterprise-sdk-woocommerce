@@ -24,9 +24,7 @@ if (!defined('ABSPATH')) {
  */
 abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abstact
 {
-    /**
-     * @var
-     */
+
     protected $params;
 
     /**
@@ -46,8 +44,11 @@ abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abst
      *
      * @param type $orderRequest
      */
-    protected function mapRequest(&$orderRequest)
+    public function mapRequest(&$orderRequest)
     {
+        parent::mapRequest($orderRequest);
+        $this->setCustomData($orderRequest, $this->order, $this->params);
+
         $orderRequest->orderid = $this->order->get_id() . '-' . time();
         if ($this->plugin->confHelper->getPaymentGlobal()["capture_mode"] === CaptureMode::AUTOMATIC) {
             $orderRequest->operation = "Sale";
@@ -70,8 +71,6 @@ abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abst
         }
 
         $orderRequest->cancel_url = $this->order->get_cancel_order_url_raw();
-        $orderRequest->source = $this->getRequestSource();
-
         $orderRequest->customerBillingInfo = $this->getCustomerBillingInfo();
         $orderRequest->customerShippingInfo = $this->getCustomerShippingInfo();
 
@@ -89,21 +88,6 @@ abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abst
     private function getCallbackUrl()
     {
         return site_url() . '/wc-api/WC_HipayEnterprise/';
-    }
-
-    /**
-     * @return false|mixed|string|void
-     */
-    private function getRequestSource()
-    {
-        $source = array(
-            "source" => "CMS",
-            "brand" => "Woocommerce",
-            //"brand_version" => _PS_VERSION_,
-            "integration_version" => $this->plugin->plugin_version
-        );
-
-        return json_encode($source);
     }
 
     /**
