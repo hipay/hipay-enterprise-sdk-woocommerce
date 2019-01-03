@@ -251,6 +251,8 @@ class Hipay_Helper
         $message .= __('Order total amount :', "hipayenterprise") . $transaction->getAuthorizedAmount() . "\n";
         $message .= "\n";
         $message .= __('Transaction ID: ',"hipayenterprise") . $transaction->getTransactionReference() . "\n";
+        $message .= __('HiPay status: ', "hipayenterprise") . $transaction->getStatus() . "\n";
+
 
         return $message;
     }

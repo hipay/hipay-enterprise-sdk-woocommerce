@@ -50,6 +50,9 @@ test-cypress:
       - bin/tests/cypress/videos
       - bin/tests/cypress/screenshots
     when: always
+  except:
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /skip-tests/
   tags:
     - pi-commerce-no-overlay
 
@@ -61,6 +64,9 @@ clean-stack-test:
     - /tools/clean-job.sh $PROJECT_NAME_TEST docker-compose.test.yml wordpress ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
   tags:
     - pi-commerce-no-overlay
+  except:
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /skip-tests/
   when: always
 
 package:

@@ -62,7 +62,7 @@ class Hipay_Delivery_Formatter extends Hipay_Api_Formatter_Abstact
      *
      * @param \HiPay\Fullservice\Gateway\Request\Info\DeliveryShippingInfoRequest $deliveryShippingInfo
      */
-    protected function mapRequest(&$deliveryShippingInfo)
+    public function mapRequest(&$deliveryShippingInfo)
     {
         $deliveryShippingInfo->delivery_date = $this->calculateEstimatedDate();
         $deliveryShippingInfo->delivery_method = $this->getMappingShippingMethod();

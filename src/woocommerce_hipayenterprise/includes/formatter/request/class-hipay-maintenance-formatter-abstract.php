@@ -90,7 +90,7 @@ class Hipay_Maintenance_Formatter extends Hipay_Api_Formatter_Abstact
      *
      * @param type $orderRequest
      */
-    protected function mapRequest(&$maintenanceRequest)
+    public function mapRequest(&$maintenanceRequest)
     {
         $maintenanceRequest->amount = (isset($this->params["amount"])) ? $this->params["amount"] : 0.01;
         $maintenanceRequest->operation = (isset($this->params["operation"])) ? $this->params["operation"] : false;

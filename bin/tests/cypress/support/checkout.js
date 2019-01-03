@@ -12,7 +12,7 @@ Cypress.Commands.add("addProductQuantity", (qty) => {
     cy.get('.qty').clear();
     cy.get('.qty').type(qty);
     cy.get('[name="update_cart"]').click();
-    cy.get('.woocommerce-message')
+    cy.get('.woocommerce-message',{timeout: 50000})
 });
 
 Cypress.Commands.add("goToCheckout", () => {

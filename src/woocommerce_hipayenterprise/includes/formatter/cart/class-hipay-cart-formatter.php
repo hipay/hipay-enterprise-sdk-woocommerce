@@ -98,7 +98,7 @@ class Hipay_Cart_Formatter extends Hipay_Api_Formatter_Abstact
      *
      * @param Hipay\Fullservice\Gateway\Model\Cart\Cart $cart
      */
-    protected function mapRequest(&$cart)
+    public function mapRequest(&$cart)
     {
         // Item Type good
         $cartItems = $this->items;
