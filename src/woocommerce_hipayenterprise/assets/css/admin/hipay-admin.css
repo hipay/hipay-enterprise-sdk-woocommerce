@@ -3,6 +3,16 @@
     color: #FFFFFF;
 }
 
+.panel-primary-hipay {
+    border-color: #28a1c5!important;
+}
+
+.panel-primary-hipay > .panel-heading {
+    color: #fff!important;
+    background-color: #28a1c5!important;
+    border-color: #28a1c5!important;
+}
+
 #version-plugin {
     padding: 15px;
 }
@@ -24,8 +34,8 @@
 }
 
 #hipay-container-admin .help-block {
- font-style: italic;
- padding: 10px;
+    font-style: italic;
+    padding: 10px;
 }
 
 .is_pointer {
@@ -37,17 +47,19 @@
     min-height: 120px;
 }
 
-.tab .nav-tabs a:hover,.tab .nav-tabs a:focus{
+.tab .nav-tabs a:hover, .tab .nav-tabs a:focus {
     text-decoration: none;
     outline: none;
     background-color: inherit;
 }
-.tab .nav-tabs{
+
+.tab .nav-tabs {
     border: none;
     border-bottom: 2px solid #079fc9;
     margin: 0;
 }
-.tab .nav-tabs li a{
+
+.tab .nav-tabs li a {
     padding: 10px 20px;
     margin: 0 10px -1px 0;
     font-size: 17px;
@@ -61,14 +73,16 @@
     position: relative;
     transition: all 0.3s ease 0s;
 }
+
 .tab .nav-tabs li a:hover,
-.tab .nav-tabs li.active a{
+.tab .nav-tabs li.active a {
     background: #fff;
     color: #079fc9;
     border: 2px solid #079fc9;
     border-bottom-color: transparent;
 }
-.tab .nav-tabs li a:before{
+
+.tab .nav-tabs li a:before {
     content: "";
     display: block;
     height: 2px;
@@ -80,9 +94,13 @@
     transform: scaleX(0);
     transition: all 0.3s ease-in-out 0s;
 }
+
 .tab .nav-tabs li.active a:before,
-.tab .nav-tabs li a:hover:before{ transform: scaleX(1); }
-.tab .tab-content{
+.tab .nav-tabs li a:hover:before {
+    transform: scaleX(1);
+}
+
+.tab .tab-content {
     padding: 10px;
     position: relative;
 }

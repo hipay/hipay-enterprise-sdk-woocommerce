@@ -15,11 +15,6 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-
-use \HiPay\Fullservice\Enum\Transaction\TransactionStatus;
-use \HiPay\Fullservice\Helper\Signature;
-use \HiPay\Fullservice\HTTP\Configuration\Configuration;
-
 /**
  *
  * @author      HiPay <support.tpp@hipay.com>
@@ -29,17 +24,17 @@ use \HiPay\Fullservice\HTTP\Configuration\Configuration;
  */
 class Hipay_Upgrade_Helper
 {
+    public $id;
+
     public $confHelper;
 
     private $logs;
 
     private $configHipay;
 
-    /*
-     *
-     */
     public function __construct()
     {
+        $this->id = 'Hipay_Upgrade_Helper';
         $this->confHelper = new Hipay_Config();
         $this->configHipay = $this->confHelper->getConfigHipay();
         $this->logs = new Hipay_Log($this);
@@ -55,7 +50,7 @@ class Hipay_Upgrade_Helper
             $this->logs->logInfos("Install configuration HiPay plugin upgrade for  : " . WC_HIPAYENTERPRISE_VERSION);
             $this->confHelper->insertConfigHiPay();
             $this->logs->logInfos("Hipay Plugin configuration is now in version : " . WC_HIPAYENTERPRISE_VERSION);
-        }  catch (\Exception $e) {
+        } catch (\Exception $e) {
             $this->logs->logException($e);
             $this->logs->logInfos("[ERROR] Hipay Plugin configuration is in version : " . WC_HIPAYENTERPRISE_VERSION);
         }
@@ -75,7 +70,7 @@ class Hipay_Upgrade_Helper
             $this->confHelper->update_option($this->configHipay);
 
             $this->logs->logInfos("Hipay Plugin configuration is now in version : " . WC_HIPAYENTERPRISE_VERSION);
-        }  catch (\Exception $e) {
+        } catch (\Exception $e) {
             $this->logs->logException($e);
             $this->logs->logInfos("[ERROR] Hipay Plugin configuration is in version : " . WC_HIPAYENTERPRISE_VERSION);
         }
@@ -85,28 +80,32 @@ class Hipay_Upgrade_Helper
      *  Process update for Credit Card configuration
      *
      */
-    private function processUpdateConfigForCreditCard() {
+    private function processUpdateConfigForCreditCard()
+    {
         $paymentConfigCreditCard = $this->confHelper->insertPaymentsConfig("creditCard/");
 
         $this->logs->logInfos($paymentConfigCreditCard);
-        $this->applyDiffFromDefaultConfig($this->configHipay,
+        $this->applyDiffFromDefaultConfig(
+            $this->configHipay,
             $paymentConfigCreditCard,
-            Hipay_Config::KEY_CREDIT_CARD);
-
-
+            Hipay_Config::KEY_CREDIT_CARD
+        );
     }
+
     /**
      * Process update for local payment
      *
      */
-    private function processUpdateConfigForLocalPayment() {
+    private function processUpdateConfigForLocalPayment()
+    {
         $paymentConfigLocal = $this->confHelper->insertPaymentsConfig("local/");
 
         $this->logs->logInfos($paymentConfigLocal);
-        $this->applyDiffFromDefaultConfig($this->configHipay,
+        $this->applyDiffFromDefaultConfig(
+            $this->configHipay,
             $paymentConfigLocal,
-            Hipay_Config::KEY_LOCAL_PAYMENT);
-
+            Hipay_Config::KEY_LOCAL_PAYMENT
+        );
     }
 
     /**
@@ -116,13 +115,17 @@ class Hipay_Upgrade_Helper
     {
         $this->logs->logInfos("# Begin Update config from Payment Config files for local");
         $this->processUpdateConfigForLocalPayment();
-        $this->logs->logInfos("# End Update config from Payment Config files for local" .
-            print_r($this->configHipay,true));
+        $this->logs->logInfos(
+            "# End Update config from Payment Config files for local" .
+            print_r($this->configHipay, true)
+        );
 
         $this->logs->logInfos("# Begin Update config from Payment Config files for Credit Card ");
         $this->processUpdateConfigForCreditCard();
-        $this->logs->logInfos("# End Update config from Payment Config files for Credit Card" .
-            print_r($this->configHipay,true));
+        $this->logs->logInfos(
+            "# End Update config from Payment Config files for Credit Card" .
+            print_r($this->configHipay, true)
+        );
     }
 
     /**
@@ -141,7 +144,10 @@ class Hipay_Upgrade_Helper
         );
 
         // remove deprecated payment method
-        foreach (array_diff_key($configHipay[Hipay_Config::KEY_PAYMENT][$paymentMethodType], $paymentMethod) as $removeKey => $item) {
+        foreach (array_diff_key(
+                     $configHipay[Hipay_Config::KEY_PAYMENT][$paymentMethodType],
+                     $paymentMethod
+                 ) as $removeKey => $item) {
             unset($configHipay[Hipay_Config::KEY_PAYMENT][$paymentMethodType][$removeKey]);
         }
 
@@ -176,7 +182,7 @@ class Hipay_Upgrade_Helper
      */
     private function getPropertiesNoOverride()
     {
-        return  array(
+        return array(
             "currencies" => "",
             "countries" => "",
             "minAmount" => "",

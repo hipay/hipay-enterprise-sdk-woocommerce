@@ -22,8 +22,23 @@ if (!defined('ABSPATH')) {
  * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
  */
-class Hipay_Customer_Shipping_Info_Formatter extends Hipay_Api_Formatter_Abstact
+class Hipay_Customer_Shipping_Info_Formatter implements Hipay_Api_Formatter
 {
+
+    protected $plugin;
+
+    protected $order;
+
+    /**
+     * Hipay_Customer_Shipping_Info_Formatter constructor.
+     * @param $plugin
+     * @param $order
+     */
+    public function __construct($plugin, $order)
+    {
+        $this->plugin = $plugin;
+        $this->order = $order;
+    }
 
     /**
      * return mapped customer shipping informations
@@ -43,7 +58,7 @@ class Hipay_Customer_Shipping_Info_Formatter extends Hipay_Api_Formatter_Abstact
      *
      * @param \HiPay\Fullservice\Gateway\Request\Info\CustomerShippingInfoRequest $customerShippingInfo
      */
-    protected function mapRequest(&$customerShippingInfo)
+    public function mapRequest(&$customerShippingInfo)
     {
         $shippingInfo = $this->getShippingInfo();
 

@@ -28,6 +28,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
     {
 
         const CREDIT_CARD_PAYMENT_PRODUCT = "credit_card";
+
         const GATEWAY_CREDIT_CARD_ID = 'hipayenterprise_credit_card';
 
         /**
@@ -38,6 +39,8 @@ if (!class_exists('WC_Gateway_Hipay')) {
             $this->id = self::GATEWAY_CREDIT_CARD_ID;
             $this->paymentProduct = self::CREDIT_CARD_PAYMENT_PRODUCT;
 
+            parent::__construct();
+
             $this->supports = array(
                 'products',
                 'refunds',
@@ -46,7 +49,6 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
             $this->has_fields = true;
             $this->icon = WC_HIPAYENTERPRISE_URL_ASSETS . '/images/credit_card.png';
-            $this->title = __('Pay by Credit Card', "hipayenterprise");
             $this->method_title = __('HiPay Enterprise Credit Card', "hipayenterprise");
 
             $this->method_description = __(
@@ -54,7 +56,8 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 "hipayenterprise"
             );
 
-            parent::__construct();
+            $this->title = $this->confHelper->getPaymentGlobal()["ccDisplayName"][Hipay_Helper::getLanguage()];
+
             $this->init_form_fields();
             $this->init_settings();
             $this->confHelper->initConfigHiPay();
@@ -277,6 +280,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 'admin-creditcard-settings.php',
                 'admin',
                 array(
+                    'paymentCommon' => $this->confHelper->getPaymentGlobal(),
                     'configurationPaymentMethod' => $this->confHelper->getPaymentCreditCard(),
                     'methods' => 'creditCard'
                 )

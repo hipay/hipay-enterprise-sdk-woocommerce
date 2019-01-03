@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 COLOR_SUCCESS='\033[0;32m'
 NC='\033[0m'
+ENV_DEVELOPMENT="development"
+ENV_STAGE="stage"
+ENV_PROD="production"
 
 sleep 10
 /bin/bash /tmp/docker-entrypoint.sh "apache2-foreground"
@@ -33,6 +36,23 @@ sleep 20
     printf "\n${COLOR_SUCCESS}    INSTALL HIPAY WOOCOMMERCE MODULE     ${NC}\n"
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     wp plugin activate woocommerce_hipayenterprise --allow-root
+
+    printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+    printf "\n${COLOR_SUCCESS}    SET HIPAY WOOCOMMERCE MODULE OPTION  ${NC}\n"
+    printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+    HIPAY_OPTION=`wp option get hipay_enterprise --format=json  --allow-root`
+    HIPAY_OPTION=${HIPAY_OPTION/'"api_username_sandbox":""'/'"api_username_sandbox":"'$HIPAY_API_USER_TEST'"'}
+    HIPAY_OPTION=${HIPAY_OPTION/'"api_password_sandbox":""'/'"api_password_sandbox":"'$HIPAY_API_PASSWORD_TEST'"'}
+    HIPAY_OPTION=${HIPAY_OPTION/'"api_tokenjs_username_sandbox":""'/'"api_tokenjs_username_sandbox":"'$HIPAY_TOKENJS_USERNAME_TEST'"'}
+    HIPAY_OPTION=${HIPAY_OPTION/'"api_tokenjs_password_publickey_sandbox":""'/'"api_tokenjs_password_publickey_sandbox":"'$HIPAY_TOKENJS_PUBLICKEY_TEST'"'}
+    HIPAY_OPTION=${HIPAY_OPTION/'"api_secret_passphrase_sandbox":""'/'"api_secret_passphrase_sandbox":"'$HIPAY_SECRET_PASSPHRASE_TEST'"'}
+
+    if [ "$ENVIRONMENT" != "$ENV_PROD" ];then
+        HIPAY_OPTION=${HIPAY_OPTION/'"send_url_notification":1'/'"send_url_notification":0'}
+    fi
+
+    wp option update hipay_enterprise "$HIPAY_OPTION"  --format=json --allow-root
+    echo $HIPAY_OPTION
 
     #==========================================
     # Import sample data

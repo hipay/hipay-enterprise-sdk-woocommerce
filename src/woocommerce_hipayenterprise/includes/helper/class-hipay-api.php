@@ -168,7 +168,7 @@ class Hipay_Api
         $gatewayClient = $this->createGatewayClient();
 
         $params = array();
-        $this->iniParamsWithConfiguration($params, $order);
+        $this->iniParamsWithConfiguration($params);
 
         $activatedPayment = Hipay_Helper::getActivatedPaymentByCountryAndCurrency(
             $this->plugin,

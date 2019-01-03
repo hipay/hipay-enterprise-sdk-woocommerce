@@ -61,7 +61,7 @@ class Hipay_Notification
     {
         $this->plugin = $plugin;
         $this->transaction = (new HiPay\Fullservice\Gateway\Mapper\TransactionMapper($data))->getModelObjectMapped();
-        $plugin->logs->logInfos(print_r($this->transaction, true));
+        $plugin->logs->logCallback(print_r($this->transaction, true));
 
         // if cart_id exist or not
         if ($this->transaction->getOrder() == null || $this->transaction->getOrder()->getId() == null) {
@@ -80,7 +80,7 @@ class Hipay_Notification
             die('Order is doesnt exist');
         }
 
-        $this->orderHandler = new Hipay_Order_Handler($this->order);
+        $this->orderHandler = new Hipay_Order_Handler($this->order, $this->plugin);
         $this->transactionsHelper = Hipay_Transactions_Helper::initHiPayTransactionsHelper($plugin);
     }
 

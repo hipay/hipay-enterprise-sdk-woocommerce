@@ -22,16 +22,11 @@ if (!defined('ABSPATH')) {
  * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
  */
-class Hipay_Card_Token_Formatter
+class Hipay_Card_Token_Formatter implements Hipay_Api_Formatter
 {
-    /**
-     * @var
-     */
+
     private $cardToken;
 
-    /**
-     * @var
-     */
     private $authenticationIndicator;
 
     /**
@@ -63,7 +58,7 @@ class Hipay_Card_Token_Formatter
      *
      * @param $orderRequest
      */
-    protected function mapRequest(&$cardTokenRequest)
+    public function mapRequest(&$cardTokenRequest)
     {
         $cardTokenRequest->cardtoken = $this->cardToken;
         $cardTokenRequest->authentication_indicator = $this->authenticationIndicator;

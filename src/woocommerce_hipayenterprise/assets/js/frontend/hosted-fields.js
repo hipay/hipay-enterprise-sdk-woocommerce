@@ -33,18 +33,18 @@ jQuery(function ($) {
                 multi_use: false,
                 fields: {
                     cardHolder: {
-                        selector: "hipay-card-holder",
+                        selector: "hipay-field-cardHolder",
                         defaultFirstname: firstName,
                         defaultLastname: lastName
                     },
                     cardNumber: {
-                        selector: "hipay-card-number"
+                        selector: "hipay-field-cardNumber"
                     },
                     expiryDate: {
-                        selector: "hipay-date-expiry"
+                        selector: "hipay-field-expiryDate"
                     },
                     cvc: {
-                        selector: "hipay-cvc",
+                        selector: "hipay-field-cvc",
                         helpButton: true,
                         helpSelector: "hipay-help-cvc"
                     }
