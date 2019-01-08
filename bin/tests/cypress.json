@@ -3,5 +3,6 @@
   "chromeWebSecurity": false,
   "viewportWidth": 1280,
   "viewportHeight": 720,
-  "watchForFileChanges": false
+  "watchForFileChanges": false,
+  "video": false
 }

@@ -7,7 +7,7 @@ describe('capture order', function () {
     });
 
     it('Check order notification messages', function () {
-        cy.goToOrder(this.order.lastCapturedOrderId);
+        cy.goToDetailOrder(this.order.lastCapturedOrderId);
         cy.checkAuthorizationStatusMessage();
         cy.checkCaptureStatusMessage();
     });

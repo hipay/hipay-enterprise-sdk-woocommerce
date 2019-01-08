@@ -8,8 +8,8 @@ services:
        context: .
        dockerfile: bin/docker/images/woocommerce/Dockerfile
      volumes:
-       - ./src/woocommerce_hipayenterprise:/var/www/html/wp-content/plugins/woocommerce_hipayenterprise
        - ./wordpress/core:/var/www/html
+       - ./src/woocommerce_hipayenterprise:/var/www/html/wp-content/plugins/woocommerce_hipayenterprise
      ports:
        - "8000:80"
      restart: always
