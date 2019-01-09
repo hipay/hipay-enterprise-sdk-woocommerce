@@ -11,7 +11,7 @@ Cypress.Commands.add("goToFront", () => {
 Cypress.Commands.add("selectItemAndGoToCart", () => {
     cy.goToFront();
     cy.get('.post-73 > .add_to_cart_button').click();
-    cy.get('.added_to_cart').click();
+    cy.get('.added_to_cart',{timeout: 50000}).click();
 });
 
 /**
