@@ -92,7 +92,6 @@ describe('Process transaction and do manual refund with basket', function () {
         cy.get('#refund_amount', { timeout: 10000 }).clear();
         cy.get('#refund_amount', { timeout: 10000 }).type('574,94');
         cy.get('.do-api-refund').click();
-        cy.get('#order_status').should("have.value", "wc-refunded");
     });
 
     /**
