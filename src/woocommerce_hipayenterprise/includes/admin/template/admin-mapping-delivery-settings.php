@@ -9,18 +9,18 @@
     <form method="POST" class="form-horizontal col-md-12"
           action="<?php echo add_query_arg(array('page' => $current_page), admin_url('admin.php')) ?>">
         <div class="alert alert-info col-md-12">
-            <p><?php echo __("You must define your delivery methods with those of HiPay.", "hipay_enterprise"); ?></p>
-            <p><?php echo __("Mapping of delivery methods is mandatory for Oney payment methods or if you enable the 'Send Customer Cart' option.", "hipay_enterprise"); ?></p>
+            <p><?php echo __("You must define your delivery methods with those of HiPay.", "hipayenterprise"); ?></p>
+            <p><?php echo __("Mapping of delivery methods is mandatory for Oney payment methods or if you enable the 'Send Customer Cart' option.", "hipayenterprise"); ?></p>
         </div>
         <div class="panel">
             <div class="form-wrapper">
                 <table class="table table-striped">
                     <thead>
-                    <th><?php echo __('Woocommerce delivery method', "hipay_enterprise"); ?></th>
-                    <th><?php echo __("Order preparation estimated time", "hipay_enterprise"); ?></th>
-                    <th><?php echo __('Delivery estimated time', "hipay_enterprise"); ?></th>
-                    <th><?php echo __('HiPay delivery mode', "hipay_enterprise"); ?></th>
-                    <th><?php echo __('HiPay delivery method', "hipay_enterprise"); ?></th>
+                    <th><?php echo __('Woocommerce delivery method', "hipayenterprise"); ?></th>
+                    <th><?php echo __("Order preparation estimated time", "hipayenterprise"); ?></th>
+                    <th><?php echo __('Delivery estimated time', "hipayenterprise"); ?></th>
+                    <th><?php echo __('HiPay delivery mode', "hipayenterprise"); ?></th>
+                    <th><?php echo __('HiPay delivery method', "hipayenterprise"); ?></th>
                     </thead>
                     <tbody>
                     <?php foreach ($wcDeliveryMethods as $wcDeliveryMethod): ?>
@@ -52,7 +52,7 @@
                             </td>
                             <td>
                                 <select name="mapping_mode_<?php echo $wcDeliveryMethod->id; ?>">
-                                    <option value=""><?php echo __(" - Select carrier mode - ", "hipay_enterprise") ?></option>
+                                    <option value=""><?php echo __(" - Select carrier mode - ", "hipayenterprise") ?></option>
                                     <?php foreach ($hipayCarriers["mode"] as $mode): ?>
                                         <option value="<?php echo $mode->getCode(); ?>"
                                             <?php if (isset($mappedDelivery[$wcDeliveryMethod->id]) &&
@@ -65,7 +65,7 @@
                             </td>
                             <td>
                                 <select name="mapping_shipping_<?php echo $wcDeliveryMethod->id; ?>">
-                                    <option value=""><?php echo __(" - Select carrier shipping - ", "hipay_enterprise") ?></option>
+                                    <option value=""><?php echo __(" - Select carrier shipping - ", "hipayenterprise") ?></option>
                                     <?php foreach ($hipayCarriers["shipping"] as $shipping): ?>
                                         <option
                                             <?php if (isset($mappedDelivery[$wcDeliveryMethod->id]) &&

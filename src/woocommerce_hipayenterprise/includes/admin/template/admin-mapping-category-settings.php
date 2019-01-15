@@ -9,8 +9,8 @@
     <form method="POST" class="form-horizontal col-md-12"
           action="<?php echo add_query_arg(array('page' => $current_page), admin_url('admin.php')) ?>">
         <div class="alert alert-info col-md-12">
-            <p><?php echo __("You must define your product categories with those of HiPay.", "hipay_enterprise"); ?></p>
-            <p><?php echo __("Mapping of categories is mandatory for Oney payment methods or if you enable the 'Send Customer Cart' option.", "hipay_enterprise"); ?></p>
+            <p><?php echo __("You must define your product categories with those of HiPay.", "hipayenterprise"); ?></p>
+            <p><?php echo __("Mapping of categories is mandatory for Oney payment methods or if you enable the 'Send Customer Cart' option.", "hipayenterprise"); ?></p>
         </div>
         <div class="panel">
             <div class="form-wrapper">
@@ -33,7 +33,7 @@
                             <td>
                                 <select class="form-control" name="hipay_map_<?php echo $wcCategory->term_id; ?>">
                                     <?php if (!isset($mappedCategories[$wcCategory->term_id])): ?>
-                                        <option value="">- Select Category -</option>
+                                        <option value="">-<?php echo __('Select Category', "hipayenterprise"); ?>-</option>
                                     <?php endif; ?>
                                     <?php foreach ($hipayCategories as $category): ?>
                                         <option value="<?php echo $category->getCode(); ?>"

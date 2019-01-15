@@ -22,7 +22,7 @@ Download the package ZIP available under the asset arera on the [latest release]
 
 ## Features
 
-- Compatibility Woocommerce 3.X.X
+- Compatibility with Woocommerce 3.X.X
 - Hosted integration (hosted page and Iframe), API integration
 - Hosted Fields
 - Manual and automatic capture
