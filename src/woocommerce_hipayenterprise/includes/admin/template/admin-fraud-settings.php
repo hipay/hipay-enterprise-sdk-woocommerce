@@ -5,7 +5,7 @@
 
 <div class="form-horizontal">
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Username', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2"><?php _e('E-mail', "hipayenterprise"); ?></label>
         <div class="col-lg-8">
             <input class="form-control" type="text"
                    name="woocommerce_hipayenterprise_fraud_copy_to"

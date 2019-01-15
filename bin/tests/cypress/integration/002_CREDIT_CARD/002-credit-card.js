@@ -32,11 +32,14 @@ describe('Pay by credit card', function () {
         cy.saveLastOrderId();
     });
 
-    it('Pay by Visa', function () {
-        cy.fill_hostedfield_card('visa_ok');
-        cy.get('#place_order').click({force: true});
-        cy.checkOrderSuccess();
+    ['visa_ok', 'mastercard_ok', 'cb_ok', 'maestro_ok','american-express_ok'].forEach((card) => {
+        it('Pay by : ' + card, function () {
+            cy.fill_hostedfield_card(card);
+            cy.get('#place_order').click({force: true});
+            cy.checkOrderSuccess();
+        });
     });
+
 
     it('Pay by Visa refused', function () {
         cy.fill_hostedfield_card('visa_refused');
@@ -44,34 +47,10 @@ describe('Pay by credit card', function () {
         cy.checkPaymentRefused();
     });
 
-    it('Pay by Mastercard', function () {
-        cy.fill_hostedfield_card('mastercard_ok');
-        cy.get('#place_order').click({force: true});
-        cy.checkOrderSuccess();
-    });
-
-    it('Pay by CB', function () {
-        cy.fill_hostedfield_card('cb_ok');
-        cy.get('#place_order').click({force: true});
-        cy.checkOrderSuccess();
-    });
-
-    it('Pay by Maestro', function () {
-        cy.fill_hostedfield_card('maestro_ok');
-        cy.get('#place_order').click({force: true});
-        cy.checkOrderSuccess();
-    });
-
     it('Pay by BCMC Unsupported', function () {
         cy.fill_hostedfield_card('bcmc_ok');
         cy.get('#place_order').click({force: true});
         cy.checkUnsupportedPayment();
-    });
-
-    it('Pay by American Express', function () {
-        cy.fill_hostedfield_card('american-express_ok');
-        cy.get('#place_order').click({force: true});
-        cy.checkOrderSuccess();
     });
 
     it('Pay by Wrong credit card number', function () {

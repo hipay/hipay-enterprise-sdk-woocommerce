@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce HiPay Enterprise\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-30 09:25+0000\n"
+"POT-Creation-Date: 2019-01-15 09:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -15,72 +15,198 @@ msgstr ""
 "X-Generator: Loco https://localise.biz/\n"
 "X-Loco-Version: 2.2.0; wp-4.9.8"
 
-#: includes/gateways/class-gateway-hipay.php:48
-msgid "Pay by Credit Card"
+#: includes/admin/class-hipay-mapping-delivery-controller.php:113
+#: includes/admin/class-hipay-mapping-category-controller.php:94
+msgid "An error occured during while saving the mapping. "
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:49
+#: includes/admin/class-hipay-admin-post-types.php:96
+#: includes/admin/class-hipay-admin-post-types.php:97
+#: includes/admin/class-hipay-admin-post-types.php:99
+msgid "HiPay Mapping Categories"
+msgstr ""
+
+#: includes/admin/class-hipay-admin-post-types.php:116
+#: includes/admin/class-hipay-admin-post-types.php:117
+#: includes/admin/class-hipay-admin-post-types.php:119
+msgid "HiPay Delivery Mapping"
+msgstr ""
+
+#: includes/admin/class-hipay-admin-post-types.php:137
+#: includes/admin/class-hipay-admin-post-types.php:138
+#: includes/admin/class-hipay-admin-post-types.php:140
+msgid "HiPay Transactions"
+msgstr ""
+
+#: includes/admin/class-hipay-admin-post-types.php:159
+#: includes/admin/class-hipay-admin-post-types.php:160
+#: includes/admin/class-hipay-admin-post-types.php:162
+msgid "HiPay Operations"
+msgstr ""
+
+#: includes/admin/class-hipay-admin-assets.php:65
+msgid "Are-you sure to capture these elements ?"
+msgstr ""
+
+#: includes/admin/class-hipay-mapping-abstract.php:104
+#, php-format
+msgid "Mapping  %s"
+msgstr ""
+
+#: includes/admin/class-hipay-admin-menus.php:43
+#: includes/admin/class-hipay-admin-menus.php:44
+msgid "HiPay Enterprise"
+msgstr ""
+
+#: includes/admin/class-hipay-admin-menus.php:54
+#: includes/admin/class-hipay-admin-menus.php:55
+msgid "Mapping category"
+msgstr ""
+
+#: includes/admin/class-hipay-admin-menus.php:64
+#: includes/admin/class-hipay-admin-menus.php:65
+msgid "Mapping delivery method"
+msgstr ""
+
+#: includes/gateways/class-gateway-hipay.php:52
 msgid "HiPay Enterprise Credit Card"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:51
+#: includes/gateways/class-gateway-hipay.php:54
 msgid "Local and international payments using Hipay Enterprise."
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:389
+#: includes/gateways/class-gateway-hipay.php:396
 msgid "Available countries"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:390
-#: includes/gateways/class-gateway-hipay.php:433
+#: includes/gateways/class-gateway-hipay.php:397
 msgid "Authorized countries"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:441
+#: includes/gateways/class-gateway-hipay.php:439
 msgid ""
 "This credit card type or the order currency is not supported. \n"
 "                    Please choose an other payment method."
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:514
+#: includes/gateways/class-gateway-hipay.php:568
 msgid "Sorry, we cannot process your payment.. Please try again."
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:525
+#: includes/gateways/class-gateway-hipay.php:579
 msgid ""
 "We have received your order payment. We will process the order as soon as we "
 "get the payment confirmation."
 msgstr ""
 
-#: includes/gateways/class-hipay-gateway-local-abstract.php:50
-msgid ""
-"You will be redirected to an external payment page. Please do not refresh "
-"the page during the process."
+#: includes/gateways/class-hipay-gateway-local-abstract.php:46
+msgid " Please do not refresh the page during the process."
 msgstr ""
 
-#: includes/helper/class-hipay-notification.php:120
+#: includes/helper/class-hipay-transactions.php:119
+#, php-format
+msgid "Transactions  %s"
+msgstr ""
+
+#: includes/helper/class-hipay-operations.php:83
+#, php-format
+msgid "Operations  %s"
+msgstr ""
+
+#: includes/helper/class-hipay-helper.php:183
+#, php-format
+msgid "A payment transaction is awaiting validation for the order %s"
+msgstr ""
+
+#: includes/helper/class-hipay-helper.php:199
+#, php-format
+msgid ""
+"You can accept or decline this transaction by visiting the administration of "
+"your store. <a href=\"%s\">here</a>"
+msgstr ""
+
+#: includes/helper/class-hipay-helper.php:235
+msgid "Registered notification from HiPay about captured amount of "
+msgstr ""
+
+#: includes/helper/class-hipay-helper.php:251
+msgid "Order total amount :"
+msgstr ""
+
+#: includes/helper/class-hipay-helper.php:253
+msgid "Transaction ID: "
+msgstr ""
+
+#: includes/helper/class-hipay-helper.php:254
+msgid "HiPay status: "
+msgstr ""
+
+#: includes/helper/class-hipay-config.php:358
+msgid "You need to map your product categories."
+msgstr ""
+
+#: includes/helper/class-hipay-config.php:362
+msgid "You need to map your carriers."
+msgstr ""
+
+#: includes/helper/class-hipay-settings-handler.php:61
+msgid "If sandbox api username is filled sandbox api password is mandatory"
+msgstr ""
+
+#: includes/helper/class-hipay-settings-handler.php:74
+msgid ""
+"If sandbox api TokenJS username is filled sandbox api TokenJS password is "
+"mandatory"
+msgstr ""
+
+#: includes/helper/class-hipay-settings-handler.php:86
+msgid ""
+"If production api username is filled production api password is mandatory"
+msgstr ""
+
+#: includes/helper/class-hipay-settings-handler.php:95
+msgid ""
+"If production api TokenJS username is filled production api TokenJS password "
+"is mandatory"
+msgstr ""
+
+#: includes/helper/class-hipay-settings-handler.php:231
+msgid "\"Copy to\" should be a valid email"
+msgstr ""
+
+#. Author of the plugin
+#: includes/helper/class-hipay-settings-handler.php:357
+msgid "HiPay"
+msgstr ""
+
+#: includes/helper/class-hipay-notification.php:126
 msgid "Transaction  refused. Order was cancelled with transaction:"
 msgstr ""
 
-#: includes/helper/class-hipay-notification.php:138
+#: includes/helper/class-hipay-notification.php:144
 msgid "Authorization cancelled. Order was cancelled with transaction:"
 msgstr ""
 
-#: includes/helper/class-hipay-notification.php:146
+#: includes/helper/class-hipay-notification.php:152
 msgid "Authorization successful for transaction."
 msgstr ""
 
-#: includes/helper/class-hipay-api-request-handler.php:123
+#: includes/helper/class-hipay-api-request-handler.php:126
+msgid "Maintenance operation is not allowed according to the order status."
+msgstr ""
+
+#: includes/helper/class-hipay-api-request-handler.php:173
 msgid "An error occured, process has been cancelled.."
 msgstr ""
 
-#: includes/helper/class-hipay-api-request-handler.php:157
-#: includes/helper/class-hipay-api-request-handler.php:189
-#: includes/helper/class-hipay-api-request-handler.php:195
+#: includes/helper/class-hipay-api-request-handler.php:207
+#: includes/helper/class-hipay-api-request-handler.php:239
+#: includes/helper/class-hipay-api-request-handler.php:245
 msgid "An error occured, process has been cancelled."
 msgstr ""
 
-#: includes/helper/class-hipay-api-request-handler.php:177
+#: includes/helper/class-hipay-api-request-handler.php:227
 msgid ""
 "Sorry, your payment has been declined. Please try again with an other means "
 "of payment."
@@ -103,7 +229,7 @@ msgid "CVC"
 msgstr ""
 
 #: includes/admin/template/admin-fraud-settings.php:3
-#: includes/admin/template/admin-general-settings.php:111
+#: includes/admin/template/admin-general-settings.php:119
 msgid "Fraud"
 msgstr ""
 
@@ -119,31 +245,36 @@ msgid ""
 "to this address."
 msgstr ""
 
-#: includes/admin/template/admin-creditcard-settings.php:3
+#: includes/admin/template/admin-creditcard-settings.php:4
 msgid "Credit card"
 msgstr ""
 
-#: includes/admin/template/admin-creditcard-settings.php:37
+#: includes/admin/template/admin-creditcard-settings.php:10
+#: includes/admin/template/admin-paymentlocal-settings.php:3
+msgid "Display name"
+msgstr ""
+
+#: includes/admin/template/admin-creditcard-settings.php:65
 msgid "Activated"
 msgstr ""
 
-#: includes/admin/template/admin-creditcard-settings.php:50
+#: includes/admin/template/admin-creditcard-settings.php:81
 #: includes/admin/template/admin-paymentlocal-settings.php:14
 msgid "Minimum order amount"
 msgstr ""
 
-#: includes/admin/template/admin-creditcard-settings.php:62
+#: includes/admin/template/admin-creditcard-settings.php:96
 #: includes/admin/template/admin-paymentlocal-settings.php:25
 msgid "Maximum order amount"
 msgstr ""
 
-#: includes/admin/template/admin-creditcard-settings.php:74
+#: includes/admin/template/admin-creditcard-settings.php:111
 #: includes/admin/template/admin-paymentlocal-settings.php:36
 msgid "Currencies"
 msgstr ""
 
-#: includes/admin/template/admin-creditcard-settings.php:97
-#: includes/admin/template/admin-paymentlocal-settings.php:50
+#: includes/admin/template/admin-creditcard-settings.php:137
+#: includes/admin/template/admin-paymentlocal-settings.php:63
 msgid "Countries"
 msgstr ""
 
@@ -176,168 +307,203 @@ msgid ""
 "HiPay."
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:39
+#: includes/admin/template/admin-global-settings.php:41
 msgid "Color"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:50
+#: includes/admin/template/admin-global-settings.php:52
 msgid "Font Family"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:61
+#: includes/admin/template/admin-global-settings.php:63
 msgid "Font Size"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:72
+#: includes/admin/template/admin-global-settings.php:74
 msgid "Font Weight"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:83
+#: includes/admin/template/admin-global-settings.php:85
 msgid "PlaceHodler color"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:93
+#: includes/admin/template/admin-global-settings.php:95
 msgid "Caret color"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:104
+#: includes/admin/template/admin-global-settings.php:106
 msgid "Icon color"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:117
+#: includes/admin/template/admin-global-settings.php:121
 msgid "Display Hosted Page"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:124
+#: includes/admin/template/admin-global-settings.php:128
 msgid "Redirect"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:128
+#: includes/admin/template/admin-global-settings.php:132
 msgid "IFrame"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:134
+#: includes/admin/template/admin-global-settings.php:138
 msgid "Display card selector"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:145
+#: includes/admin/template/admin-global-settings.php:149
 msgid "CSS url"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:152
+#: includes/admin/template/admin-global-settings.php:156
 msgid ""
 "URL to your CSS (style sheet) to customize your hosted page or iFrame "
 "(Important: the HTTPS protocol is required)."
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:162
+#: includes/admin/template/admin-global-settings.php:166
 #: includes/admin/template/admin-faq-settings.php:93
 msgid "Capture"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:169
+#: includes/admin/template/admin-global-settings.php:173
 msgid "Automatic"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:173
+#: includes/admin/template/admin-global-settings.php:177
 msgid "Manual"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:178
+#: includes/admin/template/admin-global-settings.php:182
 msgid ""
 "Manual: if all transactions will be captured manually either from the Hipay "
 "Back office or from your admin in Woocommerce."
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:184
+#: includes/admin/template/admin-global-settings.php:188
 msgid "Automatic: if all transactions will be captured automatically."
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:194
+#: includes/admin/template/admin-global-settings.php:198
 msgid "Use Oneclick"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:205
+#: includes/admin/template/admin-global-settings.php:209
 msgid "Customer's cart sending"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:216
+#: includes/admin/template/admin-global-settings.php:220
 msgid "Logs information"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:227
+#: includes/admin/template/admin-global-settings.php:231
 msgid "Send url Notification"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:238
+#: includes/admin/template/admin-global-settings.php:242
 msgid "Activate 3-D Secure"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:245
+#: includes/admin/template/admin-global-settings.php:249
 msgid "Deactivated"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:249
+#: includes/admin/template/admin-global-settings.php:253
 msgid "Try to enable for all transactions"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:254
+#: includes/admin/template/admin-global-settings.php:258
 msgid "Force for all transactions"
 msgstr ""
 
-#: includes/admin/template/admin-general-settings.php:6
+#: includes/admin/template/admin-mapping-category-settings.php:4
+msgid "Mapping Category"
+msgstr ""
+
+#: includes/admin/template/admin-mapping-category-settings.php:12
+msgid "You must define your product categories with those of HiPay."
+msgstr ""
+
+#: includes/admin/template/admin-mapping-category-settings.php:13
+msgid ""
+"Mapping of categories is mandatory for Oney payment methods or if you enable "
+"the 'Send Customer Cart' option."
+msgstr ""
+
+#: includes/admin/template/admin-mapping-category-settings.php:19
+msgid "Woocommerce Product Category"
+msgstr ""
+
+#: includes/admin/template/admin-mapping-category-settings.php:20
+msgid "HiPay Product Category"
+msgstr ""
+
+#: includes/admin/template/admin-mapping-category-settings.php:36
+msgid "Select Category"
+msgstr ""
+
+#: includes/admin/template/admin-mapping-category-settings.php:55
+#: includes/admin/template/admin-mapping-delivery-settings.php:87
+msgid "Save changes"
+msgstr ""
+
+#: includes/admin/template/admin-general-settings.php:2
+msgid "Plugin Version"
+msgstr ""
+
+#: includes/admin/template/admin-general-settings.php:10
 msgid "Notifications"
 msgstr ""
 
-#: includes/admin/template/admin-general-settings.php:29
+#: includes/admin/template/admin-general-settings.php:39
 msgid "cURL Extension"
 msgstr ""
 
-#: includes/admin/template/admin-general-settings.php:34
+#: includes/admin/template/admin-general-settings.php:42
 msgid "Please install and activate cURL extension."
 msgstr ""
 
-#: includes/admin/template/admin-general-settings.php:36
+#: includes/admin/template/admin-general-settings.php:44
 msgid "cURL Extension is correcly installed."
 msgstr ""
 
-#: includes/admin/template/admin-general-settings.php:54
+#: includes/admin/template/admin-general-settings.php:58
 msgid "SimpleXML Extension"
 msgstr ""
 
-#: includes/admin/template/admin-general-settings.php:58
+#: includes/admin/template/admin-general-settings.php:61
 msgid "Please install and activate SimpleXML Extension."
 msgstr ""
 
-#: includes/admin/template/admin-general-settings.php:60
+#: includes/admin/template/admin-general-settings.php:63
 msgid "SimpleXML Extension is correcly installed."
 msgstr ""
 
-#: includes/admin/template/admin-general-settings.php:71
+#: includes/admin/template/admin-general-settings.php:74
 msgid "SSL Certificate"
 msgstr ""
 
-#: includes/admin/template/admin-general-settings.php:75
+#: includes/admin/template/admin-general-settings.php:78
 msgid "You need a SSL Certificate to process credit card paymets using HiPay."
 msgstr ""
 
-#: includes/admin/template/admin-general-settings.php:85
+#: includes/admin/template/admin-general-settings.php:88
 msgid "Woocommerce REST API"
 msgstr ""
 
-#: includes/admin/template/admin-general-settings.php:88
+#: includes/admin/template/admin-general-settings.php:91
 msgid "Please ensure you have Woocommerce REST API activated."
 msgstr ""
 
-#: includes/admin/template/admin-general-settings.php:100
+#: includes/admin/template/admin-general-settings.php:108
 msgid "Plugin Settings"
 msgstr ""
 
-#: includes/admin/template/admin-general-settings.php:106
+#: includes/admin/template/admin-general-settings.php:114
 msgid "Payment Methods"
 msgstr ""
 
-#: includes/admin/template/admin-general-settings.php:116
+#: includes/admin/template/admin-general-settings.php:124
 msgid "FAQ"
 msgstr ""
 
@@ -631,18 +797,65 @@ msgstr ""
 msgid "Sandbox configuration"
 msgstr ""
 
-#: includes/admin/template/admin-link-paymentlocal-settings.php:4
+#: includes/admin/template/admin-mapping-delivery-settings.php:4
+msgid "Delivery method mapping"
+msgstr ""
+
+#: includes/admin/template/admin-mapping-delivery-settings.php:12
+msgid "You must define your delivery methods with those of HiPay."
+msgstr ""
+
+#: includes/admin/template/admin-mapping-delivery-settings.php:13
+msgid ""
+"Mapping of delivery methods is mandatory for Oney payment methods or if you "
+"enable the 'Send Customer Cart' option."
+msgstr ""
+
+#: includes/admin/template/admin-mapping-delivery-settings.php:19
+msgid "Woocommerce delivery method"
+msgstr ""
+
+#: includes/admin/template/admin-mapping-delivery-settings.php:20
+msgid "Order preparation estimated time"
+msgstr ""
+
+#: includes/admin/template/admin-mapping-delivery-settings.php:21
+msgid "Delivery estimated time"
+msgstr ""
+
+#: includes/admin/template/admin-mapping-delivery-settings.php:22
+msgid "HiPay delivery mode"
+msgstr ""
+
+#: includes/admin/template/admin-mapping-delivery-settings.php:23
+msgid "HiPay delivery method"
+msgstr ""
+
+#: includes/admin/template/admin-mapping-delivery-settings.php:55
+msgid " - Select carrier mode - "
+msgstr ""
+
+#: includes/admin/template/admin-mapping-delivery-settings.php:68
+msgid " - Select carrier shipping - "
+msgstr ""
+
+#: includes/admin/template/admin-link-paymentlocal-settings.php:5
 msgid "Local payment"
 msgstr ""
 
-#: includes/admin/template/admin-link-paymentlocal-settings.php:9
+#: includes/admin/template/admin-link-paymentlocal-settings.php:11
 msgid ""
 "Here are the different methods of local payments proposed by Hipay. To "
 "configure them click on:"
 msgstr ""
 
-#: includes/admin/template/admin-paymentlocal-settings.php:3
-msgid "Display name"
+#: includes/gateways/local/class-hipay-paypal.php:35
+msgid "HiPay Enterprise Paypal"
+msgstr ""
+
+#: includes/gateways/local/class-hipay-paypal.php:36
+#: includes/gateways/local/class-hipay-paypal.php:37
+msgid "Paypal"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-bnpp3x.php:35
@@ -672,10 +885,6 @@ msgstr ""
 
 #. URI of the plugin
 msgid "https://hipay.com/en/"
-msgstr ""
-
-#. Author of the plugin
-msgid "HiPay"
 msgstr ""
 
 #. Author URI of the plugin
