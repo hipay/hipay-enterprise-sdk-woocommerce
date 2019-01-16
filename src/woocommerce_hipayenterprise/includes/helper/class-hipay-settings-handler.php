@@ -57,7 +57,9 @@ class Hipay_Settings_Handler
                 !empty(Hipay_Helper::getPostData('woocommerce_hipayenterprise_account_sandbox_username'))
                 && empty(Hipay_Helper::getPostData('woocommerce_hipayenterprise_account_sandbox_password'))
             ) {
-                $this->addError(__("If sandbox api username is filled sandbox api password is mandatory"));
+                $this->addError(
+                    __("If sandbox api username is filled sandbox api password is mandatory", "hipayenterprise")
+                );
             }
 
             $settings["account"]["global"] = array(
@@ -69,7 +71,10 @@ class Hipay_Settings_Handler
                 && empty(Hipay_Helper::getPostData('woocommerce_hipayenterprise_account_sandbox_password_publickey'))
             ) {
                 $this->addError(
-                    __("If sandbox api TokenJS username is filled sandbox api TokenJS password is mandatory")
+                    __(
+                        "If sandbox api TokenJS username is filled sandbox api TokenJS password is mandatory",
+                        "hipayenterprise"
+                    )
                 );
             }
 
@@ -77,7 +82,9 @@ class Hipay_Settings_Handler
                 !empty(Hipay_Helper::getPostData('woocommerce_hipayenterprise_account_production_username'))
                 && empty(Hipay_Helper::getPostData('woocommerce_hipayenterprise_account_production_password'))
             ) {
-                $this->addError(__("If production api username is filled production api password is mandatory"));
+                $this->addError(
+                    __("If production api username is filled production api password is mandatory", "hipayenterprise")
+                );
             }
 
             if (
@@ -85,7 +92,10 @@ class Hipay_Settings_Handler
                 && empty(Hipay_Helper::getPostData('woocommerce_hipayenterprise_account_production_password_publickey'))
             ) {
                 $this->addError(
-                    __("If production api TokenJS username is filled production api TokenJS password is mandatory")
+                    __(
+                        "If production api TokenJS username is filled production api TokenJS password is mandatory",
+                        "hipayenterprise"
+                    )
                 );
             }
 
@@ -158,7 +168,9 @@ class Hipay_Settings_Handler
         try {
             $this->handleErrors();
 
-            $settings["payment"]["global"] = array(
+            $settings["payment"]["global"] = $this->plugin->confHelper->getPaymentGlobal();
+
+            $configFormData = array(
                 'operating_mode' => sanitize_title(Hipay_Helper::getPostData('operating_mode')),
                 'capture_mode' => sanitize_title(Hipay_Helper::getPostData('capture_mode')),
                 'activate_3d_secure' => sanitize_title(Hipay_Helper::getPostData('activate_3d_secure')),
@@ -180,6 +192,13 @@ class Hipay_Settings_Handler
                         "iconColor" => Hipay_Helper::getPostData('iconColor'),
                     )
                 )
+            );
+
+            $settings["payment"]["global"] = array_replace($settings["payment"]["global"], $configFormData);
+
+            $settings["payment"]["global"]['ccDisplayName'] = array_replace(
+                $settings["payment"]["global"]['ccDisplayName'],
+                Hipay_Helper::getPostData('ccDisplayName')
             );
 
             $this->plugin->logs->logInfos($settings);
@@ -209,7 +228,7 @@ class Hipay_Settings_Handler
                 !empty(Hipay_Helper::getPostData('woocommerce_hipayenterprise_fraud_copy_to'))
                 && empty(sanitize_email(Hipay_Helper::getPostData('woocommerce_hipayenterprise_fraud_copy_to')))
             ) {
-                $this->addError(__('"Copy to" should be a valid email'));
+                $this->addError(__('"Copy to" should be a valid email', "hipayenterprise"));
             }
             $this->handleErrors();
 
@@ -252,11 +271,11 @@ class Hipay_Settings_Handler
             foreach ($methodsCreditCard as $card => $conf) {
                 foreach ($conf as $key => $value) {
                     if (in_array($key, $keySaved)) {
-                        $settings["payment"]["credit_card"][$card][$key] = Hipay_Helper::getPostData(
+                        $settings["payment"][Hipay_Config::KEY_CREDIT_CARD][$card][$key] = Hipay_Helper::getPostData(
                             "woocommerce_hipayenterprise_methods_creditCard_" . $key . "_" . $card
                         );
                     } else {
-                        $settings["payment"]["credit_card"][$card][$key] = $methodsCreditCard[$card][$key];
+                        $settings["payment"][Hipay_Config::KEY_CREDIT_CARD][$card][$key] = $methodsCreditCard[$card][$key];
                     }
                 }
             }
@@ -266,7 +285,7 @@ class Hipay_Settings_Handler
             return true;
         } catch (Hipay_Settings_Exception $e) {
             $this->plugin->logs->logInfos($e);
-            $settings["payment"]["credit_card"] = $this->plugin->confHelper->getPaymentCreditCard();
+            $settings["payment"][Hipay_Config::KEY_CREDIT_CARD] = $this->plugin->confHelper->getPaymentCreditCard();
         } catch (Exception $e) {
             $this->plugin->logs->logException($e);
         }
@@ -314,7 +333,6 @@ class Hipay_Settings_Handler
                 }
             }
 
-
             $this->plugin->logs->logInfos($settings);
 
             return true;
@@ -336,7 +354,7 @@ class Hipay_Settings_Handler
     {
         if (!empty($this->errors)) {
             foreach ($this->errors as $error) {
-                add_settings_error(__("HiPay"), null, $error);
+                add_settings_error(__("HiPay", "hipayenterprise"), null, $error);
             }
             $this->errors = array();
 

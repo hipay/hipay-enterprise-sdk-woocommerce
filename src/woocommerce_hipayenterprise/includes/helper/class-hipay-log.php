@@ -16,7 +16,6 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * @TODO : Créer un custom handler
  *
  * @author      HiPay <support.tpp@hipay.com>
  * @copyright   Copyright (c) 2018 - HiPay
@@ -26,7 +25,17 @@ if (!defined('ABSPATH')) {
 class Hipay_Log
 {
 
+    const SOURCE_PLUGIN = "source";
+
     const DEBUG_KEYS_MASK = '****';
+
+    const INFO = 'info';
+
+    const ERROR = 'error';
+
+    const REQUEST = 'request';
+
+    const CALLBACK = 'callback';
 
     /**
      * @var Hipay_Gateway_Abstract
@@ -72,7 +81,7 @@ class Hipay_Log
     /**
      *  Log exception
      *
-     * @param GatewayException
+     * @param Exception
      */
     public function logException(Exception $exception)
     {
@@ -87,7 +96,10 @@ class Hipay_Log
      */
     public function logErrors($msg)
     {
-        $this->logger->error($this->getExecutionContext() . ':' . $msg, array('source' => $this->plugin->id));
+        $this->logger->error(
+            $this->getExecutionContext() . ':' . $msg,
+            array(self::SOURCE_PLUGIN => $this->plugin->id . '-' . self::ERROR)
+        );
     }
 
     /**
@@ -99,9 +111,12 @@ class Hipay_Log
     {
         if ((bool)$this->plugin->confHelper->getPaymentGlobal()[SettingsField::PAYMENT_GLOBAL_LOGS_INFOS]) {
             if (is_array($msg)) {
-                $this->logger->info(print_r($this->filterDebugData($msg), true), array('source' => $this->plugin->id));
+                $this->logger->info(
+                    print_r($this->filterDebugData($msg), true),
+                    array(self::SOURCE_PLUGIN => $this->plugin->id . '-' . self::INFO)
+                );
             } else {
-                $this->logger->info($msg, array('source' => $this->plugin->id));
+                $this->logger->info($msg, array(self::SOURCE_PLUGIN => $this->plugin->id . '-' . self::INFO));
             }
         }
     }
@@ -115,7 +130,7 @@ class Hipay_Log
     {
         $this->logger->debug(
             print_r($this->filterDebugData($this->toArray($transaction)), true),
-            array('source' => $this->plugin->id)
+            array('source' => $this->plugin->id. '-' . self::CALLBACK)
         );
     }
 
@@ -128,7 +143,7 @@ class Hipay_Log
     {
         $this->logger->debug(
             print_r($this->filterDebugData($this->toArray($request)), true),
-            array('source' => $this->plugin->id)
+            array('source' => $this->plugin->id. '-' . self::REQUEST)
         );
     }
 

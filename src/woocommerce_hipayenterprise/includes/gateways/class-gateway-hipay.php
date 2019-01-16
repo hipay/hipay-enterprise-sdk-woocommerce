@@ -28,6 +28,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
     {
 
         const CREDIT_CARD_PAYMENT_PRODUCT = "credit_card";
+
         const GATEWAY_CREDIT_CARD_ID = 'hipayenterprise_credit_card';
 
         /**
@@ -38,14 +39,16 @@ if (!class_exists('WC_Gateway_Hipay')) {
             $this->id = self::GATEWAY_CREDIT_CARD_ID;
             $this->paymentProduct = self::CREDIT_CARD_PAYMENT_PRODUCT;
 
+            parent::__construct();
+
             $this->supports = array(
                 'products',
-                'refunds'
+                'refunds',
+                'captures'
             );
 
             $this->has_fields = true;
             $this->icon = WC_HIPAYENTERPRISE_URL_ASSETS . '/images/credit_card.png';
-            $this->title = __('Pay by Credit Card', "hipayenterprise");
             $this->method_title = __('HiPay Enterprise Credit Card', "hipayenterprise");
 
             $this->method_description = __(
@@ -53,7 +56,8 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 "hipayenterprise"
             );
 
-            parent::__construct();
+            $this->title = $this->confHelper->getPaymentGlobal()["ccDisplayName"][Hipay_Helper::getLanguage()];
+
             $this->init_form_fields();
             $this->init_settings();
             $this->confHelper->initConfigHiPay();
@@ -276,6 +280,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 'admin-creditcard-settings.php',
                 'admin',
                 array(
+                    'paymentCommon' => $this->confHelper->getPaymentGlobal(),
                     'configurationPaymentMethod' => $this->confHelper->getPaymentCreditCard(),
                     'methods' => 'creditCard'
                 )
@@ -357,6 +362,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
         public function admin_options()
         {
             parent::admin_options();
+            $this->confHelper->checkBasketRequirements( $this->notifications);
             $this->process_template(
                 'admin-general-settings.php',
                 'admin',
@@ -365,6 +371,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
                     'simplexml_active' => extension_loaded('simplexml'),
                     'https_active' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off',
                     'notifications' => $this->notifications,
+                    'currentPluginVersion' => get_option("hipay_enterprise_version")
                 )
             );
         }
@@ -426,15 +433,6 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 );
 
                 wp_localize_script(
-                    'hipay-js-admin',
-                    'hipay_config_i18n',
-                    array(
-                        "available_countries" => _("Available countries", "hipayenterprise"),
-                        "authorized_countries" => __("Authorized countries", "hipayenterprise")
-                    )
-                );
-
-                wp_localize_script(
                     'hipay-js-front',
                     'hipay_config_i18n',
                     array(
@@ -445,6 +443,62 @@ if (!class_exists('WC_Gateway_Hipay')) {
                         ),
                     )
                 );
+            }
+        }
+
+        /**
+         * @param int $order_id
+         * @param float|null $amount
+         * @param string $reason
+         * @return array|bool
+         */
+        public function process_refund($order_id, $amount = null, $reason = "")
+        {
+            try {
+                $this->logs->logInfos(" # Process Refund for  " . $order_id);
+
+                $redirect = $this->apiRequestHandler->handleMaintenance(
+                    \HiPay\Fullservice\Enum\Transaction\Operation::REFUND, array(
+                        "order_id" => $order_id,
+                        "amount" => (float) $amount
+                ));
+
+                return array(
+                    'result' => 'success',
+                    'redirect' => $redirect,
+                );
+            } catch (Hipay_Payment_Exception $e) {
+                return $this->handlePaymentError($e);
+            }
+        }
+
+
+        /**
+         *  Manual Capture
+         *
+         * @param int $order_id
+         * @param float|null $amount
+         * @param string $reason
+         * @return array|bool
+         */
+        public function process_capture($order_id, $amount = null, $reason = "")
+        {
+            try {
+                $this->logs->logInfos(" # Process Manual Capture for  " . $order_id);
+
+                $redirect = $this->apiRequestHandler->handleMaintenance(
+                    \HiPay\Fullservice\Enum\Transaction\Operation::CAPTURE, array(
+                    "order_id" => $order_id,
+                    "amount" => (float) $amount
+                ));
+
+                $this->logs->logInfos(" # End Process Manual Capture for  " . $order_id);
+                return array(
+                    'result' => 'success',
+                    'redirect' => $redirect,
+                );
+            } catch (Hipay_Payment_Exception $e) {
+                return $this->handlePaymentError($e);
             }
         }
 

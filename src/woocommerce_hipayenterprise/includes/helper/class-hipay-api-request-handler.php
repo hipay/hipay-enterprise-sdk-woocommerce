@@ -16,6 +16,7 @@ if (!defined('ABSPATH')) {
 }
 
 use HiPay\Fullservice\Enum\Transaction\TransactionState;
+use HiPay\Fullservice\Enum\Transaction\Operation;
 
 /**
  *
@@ -70,16 +71,18 @@ class Hipay_Api_Request_Handler
     }
 
     /**
+     *  Handle process payment for an Operating mode
+     *
      * @param $params
      * @return string
      * @throws Hipay_Payment_Exception
+     * @throws Exception
      */
     public function handleCreditCard($params)
     {
-        switch ($this->plugin->confHelper->getPaymentGlobal()["operating_mode"]) {
-            case OperatingMode::HOSTED_FIELDS:
-                return $this->handleDirectOrder($params);
-            case OperatingMode::HOSTED_PAGE:
+        if  ($this->plugin->confHelper->getPaymentGlobal()["operating_mode"] == OperatingMode::HOSTED_FIELDS) {
+            return $this->handleDirectOrder($params);
+        } else if  ($this->plugin->confHelper->getPaymentGlobal()["operating_mode"] == OperatingMode::HOSTED_PAGE) {
                 return $this->handleHostedPayment($params);
         }
     }
@@ -104,6 +107,53 @@ class Hipay_Api_Request_Handler
     public function handleLocalPayment($params)
     {
         return $this->handleDirectOrder($params);
+    }
+
+    /**
+     * Handle maintenance request
+     *
+     * @param $mode
+     * @param array $params
+     * @return bool
+     * @throws Hipay_Payment_Exception
+     */
+    public function handleMaintenance($mode, $params = array())
+    {
+        try {
+            $order = wc_get_order($params["order_id"]);
+            if (in_array($order->get_status(), array( 'pending', 'failed', 'cancelled'), true)) {
+                throw new Exception(
+                    __(
+                    "Maintenance operation is not allowed according to the order status.",
+                    "hipayenterprise"
+                ));
+            }
+
+            switch ($mode) {
+                case Operation::CAPTURE:
+                    $params["operation"] = Operation::CAPTURE;
+                    $this->api->requestMaintenance($params);
+                    break;
+                case Operation::REFUND:
+                    $params["operation"] = Operation::REFUND;
+                    $this->api->requestMaintenance($params);
+                    break;
+                case Operation::ACCEPT_CHALLENGE:
+                    $params["operation"] = Operation::ACCEPT_CHALLENGE;
+                    $this->api->requestMaintenance($params);
+                    break;
+                case Operation::DENY_CHALLENGE:
+                    $params["operation"] = Operation::DENY_CHALLENGE;
+                    $this->api->requestMaintenance($params);
+                    break;
+                default:
+                    $this->plugin->logs->logInfos("# Unknown maintenance operation");
+            }
+            return true;
+        } catch (Exception $e) {
+            $this->plugin->logs->logException($e);
+            throw $e;
+        }
     }
 
     /**

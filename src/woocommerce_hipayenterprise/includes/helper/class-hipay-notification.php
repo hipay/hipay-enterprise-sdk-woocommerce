@@ -48,6 +48,11 @@ class Hipay_Notification
     protected $order;
 
     /**
+     * @var Hipay_Transactions
+     */
+    protected $transactionsHelper;
+
+    /**
      * Hipay_Notification constructor.
      * @param Hipay_Gateway_Abstract $plugin
      * @param $data
@@ -56,7 +61,7 @@ class Hipay_Notification
     {
         $this->plugin = $plugin;
         $this->transaction = (new HiPay\Fullservice\Gateway\Mapper\TransactionMapper($data))->getModelObjectMapped();
-        $plugin->logs->logInfos(print_r($this->transaction, true));
+        $plugin->logs->logCallback(print_r($this->transaction, true));
 
         // if cart_id exist or not
         if ($this->transaction->getOrder() == null || $this->transaction->getOrder()->getId() == null) {
@@ -75,7 +80,8 @@ class Hipay_Notification
             die('Order is doesnt exist');
         }
 
-        $this->orderHandler = new Hipay_Order_Handler($this->order);
+        $this->orderHandler = new Hipay_Order_Handler($this->order, $this->plugin);
+        $this->transactionsHelper = Hipay_Transactions_Helper::initHiPayTransactionsHelper($plugin);
     }
 
     /**
@@ -94,7 +100,7 @@ class Hipay_Notification
                 $this->transaction->getStatus()
             );
 
-            $this->orderHandler->addNote(Hipay_Helper::formatOrderData($this->transaction));
+
             switch ($this->transaction->getStatus()) {
                 case TransactionStatus::CREATED:
                 case TransactionStatus::CARD_HOLDER_ENROLLED:
@@ -145,11 +151,12 @@ class Hipay_Notification
                     $this->orderHandler->paymentOnHold(
                         __("Authorization successful for transaction.", "hipayenterprise")
                     );
+                    update_post_meta( $this->order ->get_id(), '_transaction_id', $this->transaction->getTransactionReference());
                     break;
                 case TransactionStatus::CAPTURED: //118
                 case TransactionStatus::CAPTURE_REQUESTED: //117
                     if ($this->transaction->getCapturedAmount() < $this->transaction->getAuthorizedAmount()) {
-                        $this->orderHandler->paymentOnHold(
+                        $this->orderHandler->paymentPartiallyCaptured( $this->transaction,
                             __(
                                 "Payment partially captured, amount:." . " " . $this->transaction->getCapturedAmount(),
                                 "hipayenterprise"
@@ -163,7 +170,7 @@ class Hipay_Notification
                     }
                     break;
                 case TransactionStatus::PARTIALLY_CAPTURED: //119
-                    $this->orderHandler->paymentOnHold(
+                    $this->orderHandler->paymentPartiallyCaptured( $this->transaction,
                         __(
                             "Payment partially captured, amount:." . " " . $this->transaction->getCapturedAmount(),
                             "hipayenterprise"
@@ -178,6 +185,7 @@ class Hipay_Notification
                     break;
                 case TransactionStatus::PARTIALLY_REFUNDED: //126
                     $this->orderHandler->paymentPartiallyRefunded(
+                        $this->transaction,
                         $this->transaction->getRefundedAmount() - $this->order->get_total_refunded(),
                         __(
                             "Payment partially refunded, amount:." . " " . $this->transaction->getRefundedAmount(),
@@ -188,6 +196,9 @@ class Hipay_Notification
                 default:
                     break;
             }
+
+            $this->orderHandler->addNote(Hipay_Helper::formatOrderData($this->transaction));
+            $this->transactionsHelper->saveTransaction($this->order->get_id(), $this->transaction);
 
             return true;
         } catch (Exception $e) {

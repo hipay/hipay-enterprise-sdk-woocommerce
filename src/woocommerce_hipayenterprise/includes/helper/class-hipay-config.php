@@ -29,6 +29,12 @@ class Hipay_Config
 
     const OPTION_KEY = "hipay_enterprise";
 
+    const KEY_LOCAL_PAYMENT = 'local_payment';
+
+    const KEY_CREDIT_CARD = "credit_card";
+
+    const KEY_PAYMENT = "payment";
+
     /**
      * @var array
      */
@@ -66,13 +72,7 @@ class Hipay_Config
      */
     public function initConfigHiPay()
     {
-
         $this->configHipay = get_option(self::OPTION_KEY, array());
-
-        // if config exist but empty, init new object for configHipay
-        if (!$this->configHipay || empty($this->configHipay)) {
-            $this->insertConfigHiPay();
-        }
     }
 
     /**
@@ -85,6 +85,17 @@ class Hipay_Config
         $configFields["payment"]["local_payment"] = $this->insertPaymentsConfig("local/");
 
         update_option(self::OPTION_KEY, $configFields);
+        update_option( 'hipay_enterprise_version', WC_HIPAYENTERPRISE_VERSION );
+    }
+
+    /**
+     * Override all Hipay configuration
+     *
+     * @param $newConfiguration
+     */
+    public function update_option($newConfiguration)
+    {
+        update_option(self::OPTION_KEY, $newConfiguration);
     }
 
     /**
@@ -155,7 +166,8 @@ class Hipay_Config
                     "activate_basket" => 0,
                     "card_token" => 0,
                     SettingsField::PAYMENT_GLOBAL_LOGS_INFOS => 1,
-                    "send_url_notification" => 1
+                    "send_url_notification" => 1,
+                    "ccDisplayName" => array("fr" => "Carte de crédit", "en" => "Credit card"),
                 ),
                 "credit_card" => array(),
                 "local_payment" => array()
@@ -251,7 +263,7 @@ class Hipay_Config
      */
     public function getLocalPayments()
     {
-        return $this->getConfigHipay()["payment"]["local_payment"];
+        return $this->getConfigHipay()["payment"][self::KEY_LOCAL_PAYMENT];
     }
 
     /**
@@ -260,7 +272,7 @@ class Hipay_Config
      */
     public function getLocalPayment($paymentId)
     {
-        return $this->getConfigHipay()["payment"]["local_payment"][$paymentId];
+        return $this->getConfigHipay()["payment"][self::KEY_LOCAL_PAYMENT][$paymentId];
     }
 
     /**
@@ -295,9 +307,10 @@ class Hipay_Config
     /**
      * init local config
      *
+     * @param $folderName
      * @return array
      */
-    private function insertPaymentsConfig($folderName)
+    public function insertPaymentsConfig($folderName)
     {
         $creditCard = array();
 
@@ -327,5 +340,28 @@ class Hipay_Config
         }
 
         return $creditCard;
+    }
+
+    /**
+     *
+     * Check basket requirements for HiPay Platform compliance
+     *
+     * @param $notifications
+     */
+    public function checkBasketRequirements(&$notifications)
+    {
+        if ($this->getPaymentGlobal()["activate_basket"]) {
+            $categoriesMappingController = new Hipay_Mapping_Category_Controller();
+            $deliveryMappingController = new Hipay_Mapping_Delivery_Controller();
+
+            if (empty($categoriesMappingController->getAllMappingCategories())) {
+                $notifications[] = __('You need to map your product categories.', "hipayenterprise");
+            }
+
+            if (empty($deliveryMappingController->getAllDeliveryMapping())) {
+                $notifications[] = __('You need to map your carriers.', "hipayenterprise");
+            }
+        }
+
     }
 }

@@ -33,12 +33,31 @@ class Hipay_Api
     protected $plugin;
 
     /**
+     * @var Hipay_Cart_Formatter|null|Wc_Hipay_Admin_Assets
+     */
+    protected $cartFormatter;
+
+    /**
+     * @var Hipay_Delivery_Formatter|null
+     */
+    protected $deliveryFormatter;
+
+    /**
+     * @var Hipay_Delivery_Formatter|null
+     */
+    protected $operationsHelper;
+
+
+    /**
      * Hipay_Api constructor.
      * @param $plugin
      */
     public function __construct($plugin)
     {
         $this->plugin = $plugin;
+        $this->cartFormatter = Hipay_Cart_Formatter::initHiPayCartFormatter($plugin);
+        $this->deliveryFormatter = Hipay_Delivery_Formatter::initHiPayDeliveryFormatter($plugin);
+        $this->operationsHelper = Hipay_Operations_Helper::initHiPayOperationsHelper($plugin);
     }
 
     /**
@@ -85,22 +104,57 @@ class Hipay_Api
      */
     public function requestDirectPost($order, $params)
     {
-        try {
-            $this->plugin->logs->logInfos("# requestDirectPost " . $order->id);
+        $this->plugin->logs->logInfos("# requestDirectPost " . $order->id);
 
-            $gatewayClient = $this->createGatewayClient();
-            $this->iniParamsWithConfiguration($params);
+        $gatewayClient = $this->createGatewayClient();
+        $this->iniParamsWithConfiguration($params);
 
-            $directPostFormatter = new Hipay_Direct_Post_Formatter($this->plugin, $params, $order);
-            $orderRequest = $directPostFormatter->generate();
+        $directPostFormatter = new Hipay_Direct_Post_Formatter($this->plugin, $params, $order);
+        $orderRequest = $directPostFormatter->generate();
 
-            $this->plugin->logs->logRequest($orderRequest);
+        $this->plugin->logs->logRequest($orderRequest);
 
-            return $gatewayClient->requestNewOrder($orderRequest);
-        } catch (Exception $e) {
-            $this->plugin->logs->logException($e);
-            throw new Exception($e->getMessage());
-        }
+        return $gatewayClient->requestNewOrder($orderRequest);
+    }
+
+    /**
+     * Request capture or refund to HiPay API
+     *
+     * @param $moduleInstance
+     * @param $params
+     * @return \HiPay\Fullservice\Gateway\Model\Operation|\HiPay\Fullservice\Model\AbstractModel
+     * @throws GatewayException
+     */
+    public function requestMaintenance($params)
+    {
+        $order = wc_get_order($params["order_id"]);
+        $this->plugin->logs->logInfos("# RequestMaintenance " . $order->get_id());
+
+        $gatewayClient = $this->createGatewayClient();
+        $params["transaction_reference"] = $order->get_transaction_id();
+
+        $maintenanceFormatter = new Hipay_Maintenance_Formatter($this->plugin, $params, $order);
+
+        $maintenanceRequest = $maintenanceFormatter->generate();
+        $this->plugin->logs->logRequest($maintenanceRequest);
+
+        $transaction = $gatewayClient->requestMaintenanceOperation(
+            $params["operation"],
+            $params["transaction_reference"],
+            $maintenanceRequest->amount,
+            null,
+            $maintenanceRequest
+        );
+
+        $this->plugin->logs->logInfos("# RequestMaintenance - SaveOperation" . $order->get_id());
+        $this->operationsHelper->saveOperation(
+            $params["order_id"],
+            $transaction,
+            $params["operation"],
+            $maintenanceRequest->operation_id
+        );
+
+        return $transaction;
     }
 
     /**
@@ -108,39 +162,33 @@ class Hipay_Api
      *
      * @param $order
      * @return string
-     * @throws Exception
      */
     public function requestHostedPaymentPage($order)
     {
-        try {
-            $gatewayClient = $this->createGatewayClient();
+        $gatewayClient = $this->createGatewayClient();
 
-            $params = array();
-            $this->iniParamsWithConfiguration($params);
+        $params = array();
+        $this->iniParamsWithConfiguration($params);
 
-            $activatedPayment = Hipay_Helper::getActivatedPaymentByCountryAndCurrency(
-                $this->plugin,
-                "credit_card",
-                $order->get_billing_country(),
-                $order->get_currency(),
-                $order->get_total()
-            );
+        $activatedPayment = Hipay_Helper::getActivatedPaymentByCountryAndCurrency(
+            $this->plugin,
+            "credit_card",
+            $order->get_billing_country(),
+            $order->get_currency(),
+            $order->get_total()
+        );
 
-            $params["productlist"] = join(",", array_keys($activatedPayment));
+        $params["productlist"] = join(",", array_keys($activatedPayment));
 
-            $hostedPaymentFormatter = new Hipay_Hosted_Payment_Formatter($this->plugin, $params, $order);
-            $orderRequest = $hostedPaymentFormatter->generate();
+        $hostedPaymentFormatter = new Hipay_Hosted_Payment_Formatter($this->plugin, $params, $order);
+        $orderRequest = $hostedPaymentFormatter->generate();
 
-            $this->plugin->logs->logRequest($orderRequest);
-            $transaction = $gatewayClient->requestHostedPaymentPage($orderRequest);
+        $this->plugin->logs->logRequest($orderRequest);
+        $transaction = $gatewayClient->requestHostedPaymentPage($orderRequest);
 
-            $this->plugin->logs->logInfos("# RequestHostedPaymentPage " . $order->get_id());
+        $this->plugin->logs->logInfos("# RequestHostedPaymentPage " . $order->get_id());
 
-            return $transaction->getForwardUrl();
-        } catch (Exception $e) {
-            $this->plugin->logs->logException($e);
-            throw new Exception($e->getMessage());
-        }
+        return $transaction->getForwardUrl();
     }
 
     /**
@@ -173,8 +221,13 @@ class Hipay_Api
      */
     private function iniParamsWithConfiguration(&$params)
     {
-        $params["basket"] = null;
-        $params["delivery_informations"] = null;
+        if ($this->plugin->confHelper->getPaymentGlobal()["activate_basket"]) {
+            $params["basket"] = $this->cartFormatter->generate();
+            if (count(WC()->cart->calculate_shipping()) > 0) {
+                $params["delivery_informations"] = $this->deliveryFormatter->generate();
+            }
+        }
+
         $params["iframe"] = $this->plugin->confHelper->getPaymentGlobal()["display_hosted_page"] === "iframe";
         $params["authentication_indicator"] = $this->plugin->confHelper->getPaymentGlobal()["activate_3d_secure"];
     }

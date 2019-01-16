@@ -26,8 +26,3 @@ services:
      - "3309:3306"
      env_file:
       - bin/docker/conf/development/wordpress.env.sample
-
-   smtp:
-     image: hipay/mailcatcher:1.0.0
-     ports:
-     - "1000:80"
