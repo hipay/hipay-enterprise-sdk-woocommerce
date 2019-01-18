@@ -119,7 +119,7 @@ class Hipay_Autoloader
         $iterator = new RecursiveIteratorIterator($dir);
         foreach ($iterator as $file) {
             $fileName = $file->getFilename();
-            if (preg_match('%\.php$%', $fileName)) {
+            if (preg_match('%^class-[a-z|1-9|-]*\.php%', $fileName)) {
                 $filePaths[] = $file->getPathname();
             }
         }
