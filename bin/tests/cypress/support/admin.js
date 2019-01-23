@@ -35,6 +35,15 @@ Cypress.Commands.add("goToPaymentsTab", () => {
 });
 
 /**
+ * Go to Tab for Payment
+ */
+Cypress.Commands.add("switchWooCurrency", (currency) => {
+    cy.get('#toplevel_page_woocommerce > .wp-submenu > :nth-child(5) > a').click({force: true});
+    cy.get('#woocommerce_currency').select(currency, {force: true});
+    cy.get('button[name="save"]').click();
+});
+
+/**
  *  Go to Hipay configuration
  */
 Cypress.Commands.add("goToAdminHipayConfig", () => {

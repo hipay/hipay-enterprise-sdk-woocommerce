@@ -55,8 +55,8 @@ class Hipay_Api
     public function __construct($plugin)
     {
         $this->plugin = $plugin;
-        $this->cartFormatter = Hipay_Cart_Formatter::initHiPayCartFormatter($plugin);
-        $this->deliveryFormatter = Hipay_Delivery_Formatter::initHiPayDeliveryFormatter($plugin);
+        $this->cartFormatter = Hipay_Cart_Formatter::initHiPayCartFormatter();
+        $this->deliveryFormatter = Hipay_Delivery_Formatter::initHiPayDeliveryFormatter();
         $this->operationsHelper = Hipay_Operations_Helper::initHiPayOperationsHelper($plugin);
     }
 

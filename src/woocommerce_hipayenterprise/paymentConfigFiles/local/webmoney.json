@@ -1,0 +1,37 @@
+{
+  "name": "webmoney-transfert",
+  "config": {
+    "displayNameBO": "WebMoney Transfer",
+    "displayName":  {
+      "fr": "WebMoney Transfer",
+      "en": "WebMoney Transfer"
+    },
+    "frontPosition": 29,
+    "activated": 0,
+    "canRefund": 1,
+    "canManualCapture": 1,
+    "currencies": [
+      "RUB"
+    ],
+    "countries": [
+      "RU"
+    ],
+    "displayConfigurationFields": [
+      "displayName",
+      "minAmount",
+      "maxAmount",
+      "countries"
+    ],
+    "countrySelectorReadOnly": 1,
+    "currencySelectorReadOnly": 1,
+    "forceBasket": 0,
+    "minAmount": {
+      "EUR": 0
+    },
+    "maxAmount": {
+      "EUR": false
+    },
+    "logo": "webmoney.png",
+    "additionalFields": {}
+  }
+}

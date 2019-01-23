@@ -22,7 +22,7 @@ if (!defined('ABSPATH')) {
  * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
  */
-abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abstact
+abstract class Hipay_Order_Request_Abstract extends Hipay_Api_Formatter_Abstact
 {
 
     protected $params;
@@ -124,7 +124,6 @@ abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abst
     {
 
         $billingInfo = new Hipay_Customer_Billing_Info_Formatter(
-            $this->plugin,
             $this->order,
             (isset($this->params["paymentProduct"])) ? $this->params["paymentProduct"] : 0
         );
@@ -139,7 +138,7 @@ abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abst
      */
     private function getCustomerShippingInfo()
     {
-        $customerShippingInfo = new Hipay_Customer_Shipping_Info_Formatter($this->plugin, $this->order);
+        $customerShippingInfo = new Hipay_Customer_Shipping_Info_Formatter($this->order);
 
         return $customerShippingInfo->generate();
     }
