@@ -34,6 +34,21 @@ Cypress.Commands.add("goToPaymentsTab", () => {
     cy.get('[href="' + Cypress.config('baseUrl') + '/wp-admin/admin.php?page=wc-settings&tab=checkout"]').click({force: true});
 });
 
+Cypress.Commands.add("activateBasket", () => {
+    cy.get('#methods-tab').click();
+    cy.get('#activate_basket').check();
+    cy.get('.submit > .button-primary').click();
+});
+
+/**
+ * Go to Tab for Payment
+ */
+Cypress.Commands.add("switchWooCurrency", (currency) => {
+    cy.get('#toplevel_page_woocommerce > .wp-submenu > :nth-child(5) > a').click({force: true});
+    cy.get('#woocommerce_currency').select(currency, {force: true});
+    cy.get('button[name="save"]').click();
+});
+
 /**
  *  Go to Hipay configuration
  */
@@ -149,5 +164,32 @@ Cypress.Commands.add("saveConfigurationAndLogOut", () => {
     cy.resetCCConfigForm();
     cy.get('.submit > .button-primary').click();
     cy.adminLogOut();
+});
+
+Cypress.Commands.add("mapCategories", () => {
+    cy.get('#toplevel_page_hipay-settings.wp-has-submenu a.wp-first-item').contains("Mapping category");
+    cy.get('#toplevel_page_hipay-settings.wp-has-submenu a.wp-first-item').click({force:true});
+    cy.get('table.table-striped tbody tr:nth-child(1) select.form-control').select("Home & Gardening");
+    cy.get('table.table-striped tbody tr:nth-child(2) select.form-control').select("Home appliances");
+    cy.get('table.table-striped tbody tr:nth-child(3) select.form-control').select("Home appliances");
+    cy.get('table.table-striped tbody tr:nth-child(4) select.form-control').select("Home appliances");
+    cy.get('table.table-striped tbody tr:nth-child(5) select.form-control').select("Home appliances");
+    cy.get('table.table-striped tbody tr:nth-child(6) select.form-control').select("Home & Gardening");
+    cy.get('.button-primary').click();
+    cy.get('#message').contains("Your settings have been saved.");
+});
+
+Cypress.Commands.add("mapCarriers", () => {
+    cy.get('#toplevel_page_hipay-settings.wp-has-submenu a ').contains("Mapping delivery method").click({force:true});
+    cy.get('table.table-striped tbody tr:nth-child(1) input[name="mapping_order_preparation_flat_rate"]').clear();
+    cy.get('table.table-striped tbody tr:nth-child(1) input[name="mapping_delivery_estimated_flat_rate"]').clear();
+    cy.get('.button-primary').click();
+    cy.get('#message').contains("Your settings have been saved.");
+    cy.get('table.table-striped tbody tr:nth-child(1) input[name="mapping_order_preparation_flat_rate"]').type("1");
+    cy.get('table.table-striped tbody tr:nth-child(1) input[name="mapping_delivery_estimated_flat_rate"]').type("2");
+    cy.get('table.table-striped tbody tr:nth-child(1) select[name="mapping_mode_flat_rate"]').select("store");
+    cy.get('table.table-striped tbody tr:nth-child(1) select[name="mapping_shipping_flat_rate"]').select("standard");
+    cy.get('.button-primary').click();
+    cy.get('#message').contains("Your settings have been saved.");
 });
 

@@ -22,7 +22,7 @@ if (!defined('ABSPATH')) {
  * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
  */
-class Hipay_Direct_Post_Formatter extends Hipay_Request_Formatter_Abstract
+class Hipay_Direct_Post_Formatter extends Hipay_Order_Request_Abstract
 {
     /**
      * @var

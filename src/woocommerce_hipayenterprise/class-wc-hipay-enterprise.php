@@ -46,6 +46,7 @@ class WC_HipayEnterprise
         }
 
         $currentPluginVersion = get_option('hipay_enterprise_version');
+
         if (!empty($currentPluginVersion)
             && WC_HIPAYENTERPRISE_VERSION !== $currentPluginVersion) {
             $this->updatePlugin($currentPluginVersion);

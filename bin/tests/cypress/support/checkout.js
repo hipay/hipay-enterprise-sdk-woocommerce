@@ -11,7 +11,7 @@ Cypress.Commands.add("goToFront", () => {
 Cypress.Commands.add("selectItemAndGoToCart", () => {
     cy.goToFront();
     cy.get('.post-73 > .add_to_cart_button').click();
-    cy.get('.added_to_cart',{timeout: 50000}).click();
+    cy.get('.added_to_cart', {timeout: 50000}).click();
 });
 
 /**
@@ -20,11 +20,11 @@ Cypress.Commands.add("selectItemAndGoToCart", () => {
 Cypress.Commands.add("selectSeveralItemsAndGoToCart", () => {
     cy.goToFront();
     cy.get('.post-73 .add_to_cart_button').click();
-    cy.get('.post-73 .added_to_cart',{timeout: 50000});
+    cy.get('.post-73 .added_to_cart', {timeout: 50000});
     cy.get('.post-48 .add_to_cart_button').click();
-    cy.get('.post-48 .added_to_cart',{timeout: 50000});
+    cy.get('.post-48 .added_to_cart', {timeout: 50000});
     cy.get('.post-85 .add_to_cart_button').click();
-    cy.get('.post-85 .added_to_cart',{timeout: 50000});
+    cy.get('.post-85 .added_to_cart', {timeout: 50000});
     cy.get('.post-85 .added_to_cart').click();
 });
 
@@ -57,21 +57,21 @@ Cypress.Commands.add("addProductQuantityForSeveralItems", (qty) => {
     cy.get('table.shop_table tr:nth-child(1) .qty').clear();
     cy.get('table.shop_table tr:nth-child(1) .qty').type(qty);
     cy.get('table.shop_table tr:nth-child(2) .qty').clear();
-    cy.get('table.shop_table tr:nth-child(2) .qty').type(qty +3);
+    cy.get('table.shop_table tr:nth-child(2) .qty').type(qty + 3);
     cy.get('table.shop_table tr:nth-child(3) .qty').clear();
     cy.get('table.shop_table tr:nth-child(3) .qty').type(qty + 5);
     cy.get('[name="update_cart"]').click();
-    cy.get('.woocommerce-message',{timeout: 50000})
+    cy.get('.woocommerce-message', {timeout: 50000})
 });
 
 /**
  * Adjust QTY for an product
  */
 Cypress.Commands.add("addProductQuantity", (qty) => {
-    cy.get('.qty').clear();
-    cy.get('.qty').type(qty);
+    cy.get('.qty').first().clear();
+    cy.get('.qty').first().type(qty);
     cy.get('[name="update_cart"]').click();
-    cy.get('.woocommerce-message',{timeout: 50000})
+    cy.get('.woocommerce-message', {timeout: 50000})
 });
 
 /**
@@ -103,10 +103,20 @@ Cypress.Commands.add("fillBillingForm", (country) => {
         cy.get('#billing_first_name').type(customer.firstName);
         cy.get('#billing_last_name').type(customer.lastName);
         cy.get('#billing_country').select(customer.country, {force: true});
+        if (customer.state !== undefined) {
+            if (!["BR", "MX"].includes(country)) {
+                cy.get('#billing_state').clear({force: true});
+                cy.get('#billing_state').type(customer.state);
+            } else {
+                cy.get('#billing_state').select(customer.state, {force: true});
+            }
+        }
         cy.get('#billing_address_1').type(customer.streetAddress);
         cy.get('#billing_postcode').type(customer.zipCode);
         cy.get('#billing_city').type(customer.city);
+        cy.waitOrderUpdate();
         cy.get('#billing_phone').type(customer.phone);
+
         cy.get('#billing_email').type(customer.email);
     });
 });
@@ -194,4 +204,24 @@ Cypress.Commands.add("processTransactionWithBasket", () => {
     cy.proceedToCheckout('visa_ok');
     cy.checkOrderSuccess();
     cy.saveLastOrderId();
+});
+
+Cypress.Commands.add("payAndCheck", (paymentFunction, urlConst, paymentProduct) => {
+
+    let skipProviderPage = Cypress.env('skipProviderPage');
+
+    if (Cypress.env('completeProviderPayment') && !skipProviderPage.includes(paymentProduct)) {
+        cy[paymentFunction]();
+        cy.checkOrderSuccess();
+    } else {
+        cy.location({timeout: 100000}).should((loc) => {
+            expect(loc.href.toLowerCase()).to.include(urlConst.toLowerCase());
+        });
+    }
+});
+
+Cypress.Commands.add("waitOrderUpdate", () => {
+    cy.server();
+    cy.route('POST', "/?wc-ajax=update_order_review").as("updateOrder");
+    cy.wait("@updateOrder");
 });

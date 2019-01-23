@@ -24,7 +24,7 @@ describe('Pay by credit card iframe', function () {
         cy.goToCheckout();
         cy.fillBillingForm();
 
-        cy.get('.payment_method_hipayenterprise_credit_card > label').click({force: true});
+        cy.get('[for="payment_method_hipayenterprise_credit_card"]').click({force: true});
         cy.get('#place_order').click({force: true});
     });
 
@@ -33,14 +33,14 @@ describe('Pay by credit card iframe', function () {
     });
 
     it('pay by visa', function () {
-        cy.get('#wc_hipay_iframe').then(function ($iframe) {
+        cy.get('#wc_hipay_iframe', {timeout: 10000}).then(function ($iframe) {
             cy.payCcIframe($iframe, "visa_ok");
         });
         cy.checkOrderSuccess();
     });
 
     it('pay by visa refused', function () {
-        cy.get('#wc_hipay_iframe').then(function ($iframe) {
+        cy.get('#wc_hipay_iframe', {timeout: 10000}).then(function ($iframe) {
             cy.payCcIframe($iframe, "visa_refused");
         });
         cy.checkOrderCancelled();

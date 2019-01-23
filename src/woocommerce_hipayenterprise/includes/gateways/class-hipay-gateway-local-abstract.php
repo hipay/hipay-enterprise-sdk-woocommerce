@@ -26,19 +26,38 @@ if (!defined('ABSPATH')) {
 class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
 {
 
-    /**
-     * Hipay_Bnpp3x constructor.
-     */
     public function __construct()
     {
         $this->supports = array('products');
         $this->has_fields = true;
         parent::__construct();
-        $this->title = $this->confHelper->getLocalPayment($this->paymentProduct)["displayName"][Hipay_Helper::getLanguage()];
+
+        if(!empty($this->confHelper->getLocalPayment($this->paymentProduct)["displayName"][Hipay_Helper::getLanguage()])){
+            $this->title = $this->confHelper->getLocalPayment($this->paymentProduct)["displayName"][Hipay_Helper::getLanguage()];
+        }else{
+            $this->title = $this->confHelper->getLocalPayment($this->paymentProduct)["displayName"]['en'];
+        }
+
         $this->init_form_fields();
         $this->init_settings();
+
+        if ($this->isAvailable() && is_page() && is_checkout() && !is_order_received_page()) {
+
+            wp_enqueue_script(
+                'hipay-js-form-input-control',
+                plugins_url('/assets/js/frontend/form-input-control.js', WC_HIPAYENTERPRISE_BASE_FILE),
+                array(),
+                'all',
+                false
+            );
+        }
+
     }
 
+    public function isAvailable()
+    {
+        return ('yes' === $this->enabled);
+    }
 
     public function payment_fields()
     {
@@ -48,13 +67,18 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
                 ' Please do not refresh the page during the process.',
                 "hipayenterprise"
             );
+        } else {
+            $this->process_template(
+                'local-payment.php',
+                'frontend',
+                array(
+                    'localPaymentName' => $this->paymentProduct,
+                    'additionalFields' => $this->confHelper->getLocalPayment($this->paymentProduct)["additionalFields"]
+                )
+            );
         }
     }
 
-
-    /**
-     *
-     */
     public function admin_options()
     {
         parent::admin_options();
@@ -110,12 +134,18 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
         try {
             $this->logs->logInfos(" # Process Payment for  " . $order_id);
 
-            $redirectUrl = $this->apiRequestHandler->handleLocalPayment(
-                array(
-                    "order_id" => $order_id,
-                    "paymentProduct" => $this->paymentProduct
-                )
+            $method = $this->confHelper->getLocalPayment($this->paymentProduct);
+
+            $params = array(
+                "order_id" => $order_id,
+                "paymentProduct" => $this->paymentProduct
             );
+
+            foreach ($method["additionalFields"]["formFields"] as $name => $field) {
+                $params[$name] = Hipay_Helper::getPostData($this->paymentProduct . '-' . $name);
+            }
+
+            $redirectUrl = $this->apiRequestHandler->handleLocalPayment($params);
 
             return array(
                 'result' => 'success',

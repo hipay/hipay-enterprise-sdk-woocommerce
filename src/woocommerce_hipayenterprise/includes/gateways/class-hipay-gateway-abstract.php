@@ -93,6 +93,34 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
         }
 
         $this->addActions();
+
+        wp_enqueue_script(
+            'hipay-js-hosted-fields-sdk',
+            'https://libs.hipay.com/js/sdkjs.js',
+            array(),
+            'all',
+            true
+        );
+
+        wp_enqueue_script(
+            'hipay-js-front',
+            plugins_url('/assets/js/frontend/hosted-fields.js', WC_HIPAYENTERPRISE_BASE_FILE),
+            array(),
+            'all',
+            true
+        );
+
+        wp_localize_script(
+            'hipay-js-front',
+            'hipay_i18n',
+            array(
+                "i18nFieldIsMandatory" => __('This field is mandatory'),
+                "i18nBadIban" => __('This is not a correct IBAN'),
+                "i18nBadBic" => __('This is not a correct BIC'),
+                "i18nBadCPF" => __('This is not a correct CPF'),
+                "i18nBadCPNCURP" => __('This is not a correct CPN/CURP'),
+            )
+        );
     }
 
     /**

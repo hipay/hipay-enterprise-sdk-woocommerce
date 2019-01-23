@@ -27,19 +27,15 @@ class Hipay_Customer_Billing_Info_Formatter implements Hipay_Api_Formatter
 
     private $payment_product;
 
-    protected $plugin;
-
     protected $order;
 
     /**
      * Hipay_Customer_Billing_Info_Formatter constructor.
-     * @param $plugin
      * @param $order
      * @param $payment_product
      */
-    public function __construct($plugin, $order, $payment_product)
+    public function __construct($order, $payment_product)
     {
-        $this->plugin = $plugin;
         $this->order = $order;
         $this->payment_product = $payment_product;
     }
@@ -74,6 +70,14 @@ class Hipay_Customer_Billing_Info_Formatter implements Hipay_Api_Formatter
         $customerBillingInfo->city = $this->order->get_billing_city();
         $customerBillingInfo->state = $this->order->get_billing_state();
         $customerBillingInfo->zipcode = $this->order->get_billing_postcode();
+        $customerBillingInfo->phone = $this->order->get_billing_phone();
+        $customerBillingInfo->gender = 'U';
+
+        if ($this->payment_product == 'klarnainvoice') {
+            $customerBillingInfo->gender = 'F';
+            $customerBillingInfo->house_number = 1;
+            $customerBillingInfo->birthdate = '19700101';
+        }
 
         if ($this->payment_product == 'bnpp-3xcb' || $this->payment_product == 'bnpp-4xcb') {
             $customerBillingInfo->phone = preg_replace('/^(\+33)|(33)/', '0', $customerBillingInfo->phone);
