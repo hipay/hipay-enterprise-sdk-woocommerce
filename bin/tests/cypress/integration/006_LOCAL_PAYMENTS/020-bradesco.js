@@ -1,4 +1,5 @@
 import bradescoJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/bradesco.json';
+import boletoBancarioJson from "@hipay/hipay-cypress-utils/fixtures/payment-means/boleto-bancario";
 
 describe('Pay by Bradesco', function () {
 
@@ -33,6 +34,7 @@ describe('Pay by Bradesco', function () {
 
         cy.get('[for="payment_method_hipayenterprise_bradesco"]').click({force: true});
         cy.get('#bradesco-national_identification_number').type(bradescoJson.data.national_identification_number, {force: true});
+        cy.get('#bradesco-national_identification_number').should('have.value', bradescoJson.data.national_identification_number);
         cy.get('#place_order').click({force: true});
         cy.payAndCheck('payBradesco', bradescoJson.url, "bradesco");
     });

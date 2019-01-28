@@ -1,4 +1,5 @@
 import bbvaBancomerJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/bbva-bancomer.json';
+import banamexJson from "@hipay/hipay-cypress-utils/fixtures/payment-means/banamex";
 
 describe('Pay by BBVA Bancomer', function () {
 
@@ -33,6 +34,7 @@ describe('Pay by BBVA Bancomer', function () {
 
         cy.get('[for="payment_method_hipayenterprise_bbva_bancomer"]').click({force: true});
         cy.get('#bbva-bancomer-national_identification_number').type(bbvaBancomerJson.data.national_identification_number, {force: true});
+        cy.get('#bbva-bancomer-national_identification_number').should('have.value', bbvaBancomerJson.data.national_identification_number);
         cy.get('#place_order').click({force: true});
         cy.payAndCheck('payBbvaBancomer', bbvaBancomerJson.url, "bbva-bancomer");
     });

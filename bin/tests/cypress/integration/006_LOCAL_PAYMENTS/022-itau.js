@@ -1,4 +1,5 @@
 import itauJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/itau.json';
+import caixaJson from "@hipay/hipay-cypress-utils/fixtures/payment-means/caixa";
 
 describe('Pay by Itau', function () {
 
@@ -33,6 +34,7 @@ describe('Pay by Itau', function () {
 
         cy.get('[for="payment_method_hipayenterprise_itau"]').click({force: true});
         cy.get('#itau-national_identification_number').type(itauJson.data.national_identification_number, {force: true});
+        cy.get('#itau-national_identification_number').should('have.value', itauJson.data.national_identification_number);
         cy.get('#place_order').click({force: true});
         cy.payAndCheck('payitau', itauJson.url, "itau");
     });
