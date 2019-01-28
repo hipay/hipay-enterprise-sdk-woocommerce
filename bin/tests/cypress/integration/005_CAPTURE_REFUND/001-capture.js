@@ -6,7 +6,7 @@
  *  - Process transaction and check status order, order note
  *
  */
-var utils= require('../../support/utils');
+var utils = require('../../support/utils');
 describe('Process transaction and do manual capture with basket', function () {
 
     beforeEach(function () {
@@ -28,11 +28,10 @@ describe('Process transaction and do manual capture with basket', function () {
      * Send transaction for authorization
      */
     it('Check Basket in transaction', function () {
-        cy.HiPayBOConnect();
-        cy.HiPayBOSelectAccount();
+        cy.connectAndSelectAccountOnHipayBO();
 
-        cy.HiPayBOGoToTransaction(this.order.lastOrderId + "-");
-        cy.HiPayBOOpenNotifications(116).then(() => {
+        cy.openTransactionOnHipayBO(this.order.lastOrderId + "-");
+        cy.openNotificationOnHipayBO(116).then(() => {
             cy.sendNotification(this.notification.url, {data: this.data, hash: this.hash});
         });
     });
@@ -49,13 +48,13 @@ describe('Process transaction and do manual capture with basket', function () {
         cy.get("#order_line_items > tr:nth-child(3) > td.quantity > div.refund > input").type("7");
         cy.get("#order_line_items > tr:nth-child(5) > td.quantity > div.refund > input").type("9");
         cy.get("#order_line_items > tr:nth-child(1) > td.quantity > div.refund > input").focus();
-        cy.get('#order_line_items > tr:nth-child(5) > td.line_cost > div.refund > input').should('have.value','142,155');
-        cy.get('#capture_amount', { timeout: 10000 }).should('have.value', '382,24');
+        cy.get('#order_line_items > tr:nth-child(5) > td.line_cost > div.refund > input').should('have.value', '142,155');
+        cy.get('#capture_amount', {timeout: 10000}).should('have.value', '382,24');
         cy.on('window:confirm', stub);
         cy.get('#hipay-capture-items > div.refund-actions > button.button.button-primary.do-api-capture').click();
-        cy.get('#order_line_items > tr:nth-child(2) > .line_cost > .view > .captured > .woocommerce-Price-amount',{ timeout: 10000 }).contains('65,81');
-        cy.get('#order_line_items > tr:nth-child(4) > .line_cost > .view > .captured > .woocommerce-Price-amount',{ timeout: 10000 }).contains('110,57');
-        cy.get('#order_line_items > tr:nth-child(6) > .line_cost > .view > .captured > .woocommerce-Price-amount',{ timeout: 10000 }).contains('142,16');
+        cy.get('#order_line_items > tr:nth-child(2) > .line_cost > .view > .captured > .woocommerce-Price-amount', {timeout: 10000}).contains('65,81');
+        cy.get('#order_line_items > tr:nth-child(4) > .line_cost > .view > .captured > .woocommerce-Price-amount', {timeout: 10000}).contains('110,57');
+        cy.get('#order_line_items > tr:nth-child(6) > .line_cost > .view > .captured > .woocommerce-Price-amount', {timeout: 10000}).contains('142,16');
         cy.get("#order_captures").contains("Capture");
     });
 
@@ -64,11 +63,10 @@ describe('Process transaction and do manual capture with basket', function () {
      */
     it('Send capture notification', function () {
         cy.log("sendNotification");
-        cy.HiPayBOConnect();
-        cy.HiPayBOSelectAccount();
+        cy.connectAndSelectAccountOnHipayBO();
 
-        cy.HiPayBOGoToTransaction(this.order.lastOrderId + "-");
-        cy.HiPayBOOpenNotifications(118).then(() => {
+        cy.openTransactionOnHipayBO(this.order.lastOrderId + "-");
+        cy.openNotificationOnHipayBO(118).then(() => {
             cy.sendNotification(this.notification.url, {data: this.data, hash: this.hash});
         });
     });
@@ -86,14 +84,14 @@ describe('Process transaction and do manual capture with basket', function () {
         cy.get("#order_line_items > tr:nth-child(3) > td.quantity > div.refund > input").type("11");
         cy.get("#order_line_items > tr:nth-child(5) > td.quantity > div.refund > input").type("11");
         cy.get("#order_line_items > tr:nth-child(1) > td.quantity > div.refund > input").focus();
-        cy.get('#capture_amount', { timeout: 10000 }).should('have.value', '574,94');
+        cy.get('#capture_amount', {timeout: 10000}).should('have.value', '574,94');
 
         cy.on('window:confirm', stub);
         cy.get('#hipay-capture-items > div.refund-actions > button.button.button-primary.do-api-capture').click();
-        cy.get("#woocommerce-order-items  p.add-items > button.button.capture-items",{ timeout: 10000 }).should('not.exist');
-        cy.get('#order_line_items > tr:nth-child(2) > .line_cost > .view > .captured > .woocommerce-Price-amount',{ timeout: 10000 }).contains('197,44');
-        cy.get('#order_line_items > tr:nth-child(4) > .line_cost > .view > .captured > .woocommerce-Price-amount',{ timeout: 10000 }).contains('284,31');
-        cy.get('#order_line_items > tr:nth-child(6) > .line_cost > .view > .captured > .woocommerce-Price-amount',{ timeout: 10000 }).contains('315,90');
+        cy.get("#woocommerce-order-items  p.add-items > button.button.capture-items", {timeout: 10000}).should('not.exist');
+        cy.get('#order_line_items > tr:nth-child(2) > .line_cost > .view > .captured > .woocommerce-Price-amount', {timeout: 10000}).contains('197,44');
+        cy.get('#order_line_items > tr:nth-child(4) > .line_cost > .view > .captured > .woocommerce-Price-amount', {timeout: 10000}).contains('284,31');
+        cy.get('#order_line_items > tr:nth-child(6) > .line_cost > .view > .captured > .woocommerce-Price-amount', {timeout: 10000}).contains('315,90');
     });
 
     /**
@@ -101,13 +99,12 @@ describe('Process transaction and do manual capture with basket', function () {
      */
     it('Send capture notification (2)', function () {
         cy.log("Capture 2");
-        cy.HiPayBOConnect();
-        cy.HiPayBOSelectAccount();
+        cy.connectAndSelectAccountOnHipayBO();
 
-        cy.HiPayBOGoToTransaction(this.order.lastOrderId + "-");
-        cy.HiPayBOOpenNotifications(118).then(() => {
-            var basketTransaction = utils.fetchInput("basket",decodeURI(this.data));
-            assert.equal(basketTransaction,JSON.stringify(this.basket.capture001));
+        cy.openTransactionOnHipayBO(this.order.lastOrderId + "-");
+        cy.openNotificationOnHipayBO(118).then(() => {
+            var basketTransaction = utils.fetchInput("basket", decodeURI(this.data));
+            assert.equal(basketTransaction, JSON.stringify(this.basket.capture001));
             cy.sendNotification(this.notification.url, {data: this.data, hash: this.hash});
         });
     });
