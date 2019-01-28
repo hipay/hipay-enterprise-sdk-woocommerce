@@ -4,7 +4,6 @@
   "viewportWidth": 1280,
   "viewportHeight": 720,
   "watchForFileChanges": false,
-  "video": false,
   "env": {
     "completeProviderPayment": true,
     "skipProviderPage": [

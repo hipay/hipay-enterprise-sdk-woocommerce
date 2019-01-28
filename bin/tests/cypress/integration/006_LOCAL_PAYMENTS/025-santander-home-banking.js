@@ -33,8 +33,9 @@ describe('Pay by Santander HomeBanking', function () {
     it('Pay by Santander HomeBanking', function () {
 
         cy.get('[for="payment_method_hipayenterprise_santander_home_banking"]').click({force: true});
-        cy.get('#santander-home-banking-national_identification_number').type(santanderHomeBankingJson.data.national_identification_number, {force: true});
-        cy.get('#santander-home-banking-national_identification_number').should('have.value', santanderHomeBankingJson.data.national_identification_number);
+        cy.get('#santander-home-banking-national_identification_number')
+            .type(santanderHomeBankingJson.data.national_identification_number, {force: true})
+            .should('have.value', santanderHomeBankingJson.data.national_identification_number);
         cy.get('#place_order').click({force: true});
         cy.payAndCheck('paySantanderCash', santanderHomeBankingJson.url, "santander-home-banking");
     });

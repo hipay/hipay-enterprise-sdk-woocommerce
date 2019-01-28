@@ -32,8 +32,9 @@ describe('Pay by Boleto Bancario', function () {
     it('Pay by Boleto Bancario', function () {
 
         cy.get('[for="payment_method_hipayenterprise_boleto_bancario"]').click({force: true});
-        cy.get('#boleto-bancario-national_identification_number').type(boletoBancarioJson.data.national_identification_number, {force: true});
-        cy.get('#boleto-bancario-national_identification_number').should('have.value', boletoBancarioJson.data.national_identification_number);
+        cy.get('#boleto-bancario-national_identification_number')
+            .type(boletoBancarioJson.data.national_identification_number, {force: true})
+            .should('have.value', boletoBancarioJson.data.national_identification_number);
         cy.get('#place_order').click({force: true});
         cy.payAndCheck('payBoletoBancario', boletoBancarioJson.url, "boleto-bancario");
     });

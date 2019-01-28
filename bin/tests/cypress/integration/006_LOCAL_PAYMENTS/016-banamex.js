@@ -33,8 +33,9 @@ describe('Pay by Banamex', function () {
     it('Pay by Banamex', function () {
 
         cy.get('[for="payment_method_hipayenterprise_banamex"]').click({force: true});
-        cy.get('#banamex-national_identification_number').type(banamexJson.data.national_identification_number, {force: true});
-        cy.get('#banamex-national_identification_number').should('have.value', banamexJson.data.national_identification_number);
+        cy.get('#banamex-national_identification_number')
+            .type(banamexJson.data.national_identification_number, {force: true})
+            .should('have.value', banamexJson.data.national_identification_number);
         cy.get('#place_order').click({force: true});
         cy.payAndCheck('payBanamex', banamexJson.url, "banamex");
     });

@@ -33,8 +33,9 @@ describe('Pay by Itau', function () {
     it('Pay by Itau', function () {
 
         cy.get('[for="payment_method_hipayenterprise_itau"]').click({force: true});
-        cy.get('#itau-national_identification_number').type(itauJson.data.national_identification_number, {force: true});
-        cy.get('#itau-national_identification_number').should('have.value', itauJson.data.national_identification_number);
+        cy.get('#itau-national_identification_number')
+            .type(itauJson.data.national_identification_number, {force: true})
+            .should('have.value', itauJson.data.national_identification_number);
         cy.get('#place_order').click({force: true});
         cy.payAndCheck('payitau', itauJson.url, "itau");
     });

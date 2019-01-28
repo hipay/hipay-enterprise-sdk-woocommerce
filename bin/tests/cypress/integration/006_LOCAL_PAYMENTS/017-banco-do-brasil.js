@@ -33,8 +33,9 @@ describe('Pay by Banco Do Brasil', function () {
     it('Pay by Banco Do Brasil', function () {
 
         cy.get('[for="payment_method_hipayenterprise_banco_do_brasil"]').click({force: true});
-        cy.get('#banco-do-brasil-national_identification_number').type(bancoDoBrasilJson.data.national_identification_number, {force: true});
-        cy.get('#banco-do-brasil-national_identification_number').should('have.value', bancoDoBrasilJson.data.national_identification_number);
+        cy.get('#banco-do-brasil-national_identification_number')
+            .type(bancoDoBrasilJson.data.national_identification_number, {force: true})
+            .should('have.value', bancoDoBrasilJson.data.national_identification_number);
         cy.get('#place_order').click({force: true});
         cy.payAndCheck('payBancoDoBrasil', bancoDoBrasilJson.url, "banco-do-brasil");
     });

@@ -33,8 +33,9 @@ describe('Pay by Caïxa', function () {
     it('Pay by Caïxa', function () {
 
         cy.get('[for="payment_method_hipayenterprise_caixa"]').click({force: true});
-        cy.get('#caixa-national_identification_number').type(caixaJson.data.national_identification_number, {force: true});
-        cy.get('#caixa-national_identification_number').should('have.value', caixaJson.data.national_identification_number);
+        cy.get('#caixa-national_identification_number')
+            .type(caixaJson.data.national_identification_number, {force: true})
+            .should('have.value', caixaJson.data.national_identification_number);
         cy.get('#place_order').click({force: true});
         cy.payAndCheck('payCaixa', caixaJson.url, "caixa");
     });
