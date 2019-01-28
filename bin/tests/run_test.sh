@@ -3,7 +3,7 @@
 # --------
 # Parse command line options
 # ----------
-function parse_args()
+function parse_args ()
 {
 	while [[ $# -gt 0 ]]; do
 		opt="$1"
@@ -19,11 +19,14 @@ function parse_args()
 			-c|--config)
 				config="$1"
 				;;
+			--env)
+				env="$1"
+				;;
 		esac
 	done
 }
 
-function join_by {
+function join_by () {
   local d=$1; shift;
   echo -n "$1";
   shift;
@@ -61,7 +64,7 @@ if [ "$part" = "0" ];then
     TESTS=$(join_by , "${ARRAY[@]}")
 
     echo $TESTS
-    $(npm bin)/cypress run --spec "${TESTS}" --config config
+    $(npm bin)/cypress run --spec "${TESTS}" --config $config --env $env
 fi
 
 if [ "$part" = "1" ];then
@@ -79,5 +82,5 @@ if [ "$part" = "1" ];then
     TESTS=$(join_by , "${ARRAY[@]}")
 
     echo $TESTS
-    $(npm bin)/cypress run --spec "${TESTS}" --config config
+    $(npm bin)/cypress run --spec "${TESTS}" --config $config --env $env
 fi
