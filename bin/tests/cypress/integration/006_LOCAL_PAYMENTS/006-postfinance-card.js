@@ -1,11 +1,12 @@
-import sisalJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/sisal.json';
+import postfinanceCardJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/postfinance-card.json';
 
-describe('Pay by Sisal', function () {
+describe('Pay by PostFinance Card', function () {
 
     before(function () {
+
         cy.logToAdmin();
         cy.goToPaymentsTab();
-        cy.activatePaymentMethods("sisal");
+        cy.activatePaymentMethods("postfinance_card");
         cy.switchWooCurrency("EUR");
         cy.adminLogOut();
     });
@@ -21,10 +22,10 @@ describe('Pay by Sisal', function () {
         cy.saveLastOrderId();
     });
 
-    it('pay Belfius', function () {
+    it('pay PostFinance Card', function () {
 
-        cy.get('.payment_method_hipayenterprise_sisal > label').click({force: true});
+        cy.get('[for="payment_method_hipayenterprise_postfinance_card"]').click({force: true});
         cy.get('#place_order').click({force: true});
-        cy.payAndCheck('paySisal', sisalJson.url, "sisal");
+        cy.payAndCheck('payPostfinanceCard', postfinanceCardJson.url, "postfinance-card");
     });
 });

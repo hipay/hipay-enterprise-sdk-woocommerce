@@ -68,8 +68,8 @@ Cypress.Commands.add("addProductQuantityForSeveralItems", (qty) => {
  * Adjust QTY for an product
  */
 Cypress.Commands.add("addProductQuantity", (qty) => {
-    cy.get('.qty').clear();
-    cy.get('.qty').type(qty);
+    cy.get('.qty').first().clear();
+    cy.get('.qty').first().type(qty);
     cy.get('[name="update_cart"]').click();
     cy.get('.woocommerce-message', {timeout: 50000})
 });
@@ -109,9 +109,13 @@ Cypress.Commands.add("fillBillingForm", (country) => {
         cy.get('#billing_phone').type(customer.phone);
         cy.get('#billing_email').type(customer.email);
 
-        if(customer.state !== undefined){
-            cy.get('#billing_state').clear({force: true});
-            cy.get('#billing_state').type(customer.state);
+        if (customer.state !== undefined) {
+            if (!["BR", "MX"].includes(country)) {
+                cy.get('#billing_state').clear({force: true});
+                cy.get('#billing_state').type(customer.state);
+            } else {
+                cy.get('#billing_state').select(customer.state, {force: true});
+            }
         }
     });
 });
@@ -209,6 +213,6 @@ Cypress.Commands.add("payAndCheck", (paymentFunction, urlConst, paymentProduct) 
         cy[paymentFunction]();
         cy.checkOrderSuccess();
     } else {
-        cy.location('pathname', {timeout: 100000}).should('include', urlConst);
+        cy.location('href', {timeout: 100000}).should('include', urlConst);
     }
 });

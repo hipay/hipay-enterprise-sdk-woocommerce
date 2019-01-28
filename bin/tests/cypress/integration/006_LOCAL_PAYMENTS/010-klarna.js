@@ -1,13 +1,13 @@
-//import yandexJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/yandex.json';
+import klarnaJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/klarna.json';
 
-describe('Pay by WebMoney Transfer', function () {
+describe('Pay by Klarna', function () {
 
     before(function () {
 
         cy.logToAdmin();
         cy.goToPaymentsTab();
-        cy.activatePaymentMethods("webmoney_transfert");
-        cy.switchWooCurrency("RUB");
+        cy.activatePaymentMethods("klarna");
+        cy.switchWooCurrency("EUR");
         cy.adminLogOut();
     });
 
@@ -22,17 +22,17 @@ describe('Pay by WebMoney Transfer', function () {
         cy.selectItemAndGoToCart();
         cy.addProductQuantity(2);
         cy.goToCheckout();
-        cy.fillBillingForm("RU");
+        cy.fillBillingForm("DE");
     });
 
     afterEach(() => {
         cy.saveLastOrderId();
     });
 
-    it('Pay by WebMoney Transfer', function () {
+    it('Pay by Klarna', function () {
 
-        cy.get('.payment_method_hipayenterprise_webmoney_transfert > label').click({force: true});
+        cy.get('[for="payment_method_hipayenterprise_klarna"]').click({force: true});
         cy.get('#place_order').click({force: true});
-   //     cy.payAndCheck('payYandex', yandexJson.url, "yandex");
+        cy.payAndCheck('payKlarna', klarnaJson.url, "klarna");
     });
 });

@@ -1,0 +1,55 @@
+{
+  "name": "banamex",
+  "config": {
+    "group": {
+      "code": "astropay",
+      "label": "Astropay"
+    },
+    "displayNameBO": "Banamex",
+    "displayName":  {
+      "fr": "Banamex",
+      "en": "Banamex"
+    },
+    "frontPosition": 7,
+    "activated": 0,
+    "canRefund": 0,
+    "canManualCapture": 0,
+    "currencies": [
+      "MXN"
+    ],
+    "countries": [
+      "MX"
+    ],
+    "displayConfigurationFields": [
+      "displayName",
+      "minAmount",
+      "maxAmount",
+      "countries"
+    ],
+    "countrySelectorReadOnly": 1,
+    "currencySelectorReadOnly": 1,
+    "forceBasket": 0,
+    "minAmount": {
+      "EUR": 0
+    },
+    "maxAmount": {
+      "EUR": false
+    },
+    "logo": "banamex.png",
+    "additionalFields": {
+      "sdkClass": "HiPay\\Fullservice\\Gateway\\Request\\PaymentMethod\\AstropayPaymentMethod",
+      "defaultFieldsValue": {},
+      "formFields": {
+        "national_identification_number": {
+          "label":  {
+            "en": "CURP/CPN",
+            "fr": "CURP/CPN"
+          },
+          "type": "text",
+          "required": true,
+          "controlType": "curp-cpn"
+        }
+      }
+    }
+  }
+}

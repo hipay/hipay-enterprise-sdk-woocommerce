@@ -1,13 +1,13 @@
-import przelewy24Json from '@hipay/hipay-cypress-utils/fixtures/payment-means/przelewy24.json';
+import webmoneyJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/webmoney.json';
 
-describe('Pay by Przelewy24', function () {
+describe('Pay by WebMoney Transfer', function () {
 
     before(function () {
 
         cy.logToAdmin();
         cy.goToPaymentsTab();
-        cy.activatePaymentMethods("przelewy24");
-        cy.switchWooCurrency("PLN");
+        cy.activatePaymentMethods("webmoney_transfert");
+        cy.switchWooCurrency("RUB");
         cy.adminLogOut();
     });
 
@@ -22,17 +22,17 @@ describe('Pay by Przelewy24', function () {
         cy.selectItemAndGoToCart();
         cy.addProductQuantity(2);
         cy.goToCheckout();
-        cy.fillBillingForm("PL");
+        cy.fillBillingForm("RU");
     });
 
     afterEach(() => {
         cy.saveLastOrderId();
     });
 
-    it('Pay by Przelewy24', function () {
+    it('Pay by WebMoney Transfer', function () {
 
-        cy.get('.payment_method_hipayenterprise_przelewy24 > label').click({force: true});
+        cy.get('[for="payment_method_hipayenterprise_webmoney_transfert"]').click({force: true});
         cy.get('#place_order').click({force: true});
-        cy.payAndCheck('payPrzelewy24', przelewy24Json.url, "przelewy24");
+        cy.payAndCheck('payWebmoney', webmoneyJson.url, "webmoney");
     });
 });

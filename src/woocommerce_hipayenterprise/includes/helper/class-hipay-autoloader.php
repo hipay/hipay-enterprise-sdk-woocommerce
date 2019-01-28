@@ -70,6 +70,7 @@ class Hipay_Autoloader
         WC_HIPAYENTERPRISE_PATH . 'includes/formatter/info/class-hipay-customer-billing-info-formatter.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/formatter/info/class-hipay-customer-shipping-info-formatter.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/formatter/payment-method/class-hipay-card-token-formatter.php',
+        WC_HIPAYENTERPRISE_PATH . 'includes/formatter/payment-method/class-hipay-generic-payment-method-formatter.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-api-request-handler.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/helper/exceptions/class-hipay-payment-exception.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/helper/exceptions/class-hipay-settings-exception.php'

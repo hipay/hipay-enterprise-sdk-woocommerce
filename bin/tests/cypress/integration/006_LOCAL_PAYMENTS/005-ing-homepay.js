@@ -1,12 +1,12 @@
-import sisalJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/sisal.json';
+import ingHomepayJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/ing-homepay.json';
 
-describe('Pay by Sofort', function () {
+describe('Pay by Ing Homepay', function () {
 
     before(function () {
 
         cy.logToAdmin();
         cy.goToPaymentsTab();
-        cy.activatePaymentMethods("sofort_uberweisung");
+        cy.activatePaymentMethods("ing_homepay");
         cy.switchWooCurrency("EUR");
         cy.adminLogOut();
     });
@@ -22,10 +22,10 @@ describe('Pay by Sofort', function () {
         cy.saveLastOrderId();
     });
 
-    it('pay Sofort', function () {
+    it('pay Ing Homepay', function () {
 
-        cy.get('.payment_method_hipayenterprise_sofort_uberweisung > label').click({force: true});
+        cy.get('[for="payment_method_hipayenterprise_ing_homepay"]').click({force: true});
         cy.get('#place_order').click({force: true});
-      //  cy.payAndCheck('paySisal', sisalJson.url, "sisal");
+        cy.payAndCheck('payIngHomepay', ingHomepayJson.url, "ing-homepay");
     });
 });

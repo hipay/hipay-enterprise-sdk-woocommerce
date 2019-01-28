@@ -26,19 +26,17 @@ if (!defined('ABSPATH')) {
 class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
 {
 
-    /**
-     * Hipay_Bnpp3x constructor.
-     */
     public function __construct()
     {
         $this->supports = array('products');
         $this->has_fields = true;
         parent::__construct();
-        $this->title = $this->confHelper->getLocalPayment($this->paymentProduct)["displayName"][Hipay_Helper::getLanguage()];
+        $this->title = $this->confHelper->getLocalPayment(
+            $this->paymentProduct
+        )["displayName"][Hipay_Helper::getLanguage()];
         $this->init_form_fields();
         $this->init_settings();
     }
-
 
     public function payment_fields()
     {
@@ -48,13 +46,18 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
                 ' Please do not refresh the page during the process.',
                 "hipayenterprise"
             );
+        } else {
+            $this->process_template(
+                'local-payment.php',
+                'frontend',
+                array(
+                    'localPaymentName' => $this->paymentProduct,
+                    'additionalFields' => $this->confHelper->getLocalPayment($this->paymentProduct)["additionalFields"]
+                )
+            );
         }
     }
 
-
-    /**
-     *
-     */
     public function admin_options()
     {
         parent::admin_options();
@@ -110,12 +113,18 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
         try {
             $this->logs->logInfos(" # Process Payment for  " . $order_id);
 
-            $redirectUrl = $this->apiRequestHandler->handleLocalPayment(
-                array(
-                    "order_id" => $order_id,
-                    "paymentProduct" => $this->paymentProduct
-                )
+            $method = $this->confHelper->getLocalPayment($this->paymentProduct);
+
+            $params = array(
+                "order_id" => $order_id,
+                "paymentProduct" => $this->paymentProduct
             );
+
+            foreach ($method["additionalFields"]["formFields"] as $name => $field) {
+                $params[$name] = Hipay_Helper::getPostData($this->paymentProduct . '-' . $name);
+            }
+
+            $redirectUrl = $this->apiRequestHandler->handleLocalPayment($params);
 
             return array(
                 'result' => 'success',

@@ -1,12 +1,12 @@
-import postfinanceCardJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/postfinance-card.json';
+import sofortJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/sofort.json';
 
-describe('Pay by PostFinance Card', function () {
+describe('Pay by Sofort', function () {
 
     before(function () {
 
         cy.logToAdmin();
         cy.goToPaymentsTab();
-        cy.activatePaymentMethods("postfinance_card");
+        cy.activatePaymentMethods("sofort_uberweisung");
         cy.switchWooCurrency("EUR");
         cy.adminLogOut();
     });
@@ -22,10 +22,10 @@ describe('Pay by PostFinance Card', function () {
         cy.saveLastOrderId();
     });
 
-    it('pay PostFinance Card', function () {
+    it('pay Sofort', function () {
 
-        cy.get('.payment_method_hipayenterprise_postfinance_card > label').click({force: true});
+        cy.get('[for="payment_method_hipayenterprise_sofort_uberweisung"]').click({force: true});
         cy.get('#place_order').click({force: true});
-        cy.payAndCheck('payPostfinanceCard', postfinanceCardJson.url, "postfinance-card");
+        cy.payAndCheck('paySofort', sofortJson.url, "sofort");
     });
 });

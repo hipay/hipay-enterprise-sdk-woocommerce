@@ -1,4 +1,5 @@
 import bnppfJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/bnppf.json';
+import oneyJson from "@hipay/hipay-cypress-utils/fixtures/payment-means/oney";
 
 describe('Pay by bnppf', function () {
 
@@ -22,17 +23,12 @@ describe('Pay by bnppf', function () {
         cy.saveLastOrderId();
     });
 
-    it('pay 3xcb', function () {
 
-        cy.get('.payment_method_hipayenterprise_bnpp-3xcb > label').click({force: true});
-        cy.get('#place_order').click({force: true});
-        cy.payAndCheck('payBnppf', bnppfJson.url, "bnppf");
-    });
-
-    it('pay 4xcb', function () {
-
-        cy.get('.payment_method_hipayenterprise_bnpp-4xcb > label').click();
-        cy.get('#place_order').click({force: true});
-        cy.payAndCheck('payBnppf', bnppfJson.url, "bnppf");
+    ['3xcb', '4xcb'].forEach((bnpMethod) => {
+        it('Pay by : ' + bnpMethod, function () {
+            cy.get('[for="payment_method_hipayenterprise_bnpp-' + bnpMethod + '"]').click({force: true});
+            cy.get('#place_order').click({force: true});
+            cy.payAndCheck('payBnppf', bnppfJson.url, "bnppf");
+        });
     });
 });

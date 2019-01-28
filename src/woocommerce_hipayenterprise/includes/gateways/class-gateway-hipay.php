@@ -105,18 +105,12 @@ if (!class_exists('WC_Gateway_Hipay')) {
             }
         }
 
-        /**
-         * @return bool
-         */
         public function isAvailable()
         {
             return ('yes' === $this->enabled);
         }
 
 
-        /**
-         * @return bool
-         */
         private function isDirectPostActivated()
         {
             return $this->confHelper->getPaymentGlobal()["operating_mode"] ==
@@ -220,9 +214,6 @@ if (!class_exists('WC_Gateway_Hipay')) {
             $this->faqs = include(plugin_dir_path(__FILE__) . '../admin/settings/settings-faq.php');
         }
 
-        /**
-         *
-         */
         public function generate_account_details_html()
         {
             ob_start();
@@ -254,9 +245,6 @@ if (!class_exists('WC_Gateway_Hipay')) {
             return $hipayGateways;
         }
 
-        /**
-         *
-         */
         public function generate_methods_global_local_payment_settings_html()
         {
             ob_start();
@@ -270,9 +258,6 @@ if (!class_exists('WC_Gateway_Hipay')) {
             return ob_get_clean();
         }
 
-        /**
-         *
-         */
         public function generate_methods_credit_card_settings_html()
         {
             ob_start();
@@ -289,9 +274,6 @@ if (!class_exists('WC_Gateway_Hipay')) {
             return ob_get_clean();
         }
 
-        /**
-         *
-         */
         public function generate_methods_local_payments_settings_html()
         {
             ob_start();
@@ -307,9 +289,6 @@ if (!class_exists('WC_Gateway_Hipay')) {
             return ob_get_clean();
         }
 
-        /**
-         * @return string
-         */
         public function generate_methods_global_settings_html()
         {
             ob_start();
@@ -324,9 +303,6 @@ if (!class_exists('WC_Gateway_Hipay')) {
             return ob_get_clean();
         }
 
-        /**
-         * @return string
-         */
         public function generate_faqs_details_html()
         {
             ob_start();
@@ -338,10 +314,6 @@ if (!class_exists('WC_Gateway_Hipay')) {
             return ob_get_clean();
         }
 
-
-        /**
-         * @return string
-         */
         public function generate_fraud_details_html()
         {
             ob_start();
@@ -356,13 +328,10 @@ if (!class_exists('WC_Gateway_Hipay')) {
             return ob_get_clean();
         }
 
-        /**
-         *
-         */
         public function admin_options()
         {
             parent::admin_options();
-            $this->confHelper->checkBasketRequirements( $this->notifications);
+            $this->confHelper->checkBasketRequirements($this->notifications);
             $this->process_template(
                 'admin-general-settings.php',
                 'admin',
@@ -384,9 +353,6 @@ if (!class_exists('WC_Gateway_Hipay')) {
             WC();
         }
 
-        /**
-         *
-         */
         public function localize_scripts_admin()
         {
             wp_localize_script(
@@ -399,9 +365,6 @@ if (!class_exists('WC_Gateway_Hipay')) {
             );
         }
 
-        /**
-         *
-         */
         public function localize_scripts()
         {
             if ($this->confHelper->getPaymentGlobal()["operating_mode"] == OperatingMode::HOSTED_FIELDS) {
@@ -448,9 +411,10 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
         /**
          * @param int $order_id
-         * @param float|null $amount
+         * @param null $amount
          * @param string $reason
          * @return array|bool
+         * @throws Exception
          */
         public function process_refund($order_id, $amount = null, $reason = "")
         {
@@ -458,10 +422,12 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 $this->logs->logInfos(" # Process Refund for  " . $order_id);
 
                 $redirect = $this->apiRequestHandler->handleMaintenance(
-                    \HiPay\Fullservice\Enum\Transaction\Operation::REFUND, array(
+                    \HiPay\Fullservice\Enum\Transaction\Operation::REFUND,
+                    array(
                         "order_id" => $order_id,
-                        "amount" => (float) $amount
-                ));
+                        "amount" => (float)$amount
+                    )
+                );
 
                 return array(
                     'result' => 'success',
@@ -474,12 +440,13 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
 
         /**
-         *  Manual Capture
+         * Manual Capture
          *
-         * @param int $order_id
-         * @param float|null $amount
+         * @param $order_id
+         * @param null $amount
          * @param string $reason
-         * @return array|bool
+         * @return array
+         * @throws Exception
          */
         public function process_capture($order_id, $amount = null, $reason = "")
         {
@@ -487,10 +454,12 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 $this->logs->logInfos(" # Process Manual Capture for  " . $order_id);
 
                 $redirect = $this->apiRequestHandler->handleMaintenance(
-                    \HiPay\Fullservice\Enum\Transaction\Operation::CAPTURE, array(
-                    "order_id" => $order_id,
-                    "amount" => (float) $amount
-                ));
+                    \HiPay\Fullservice\Enum\Transaction\Operation::CAPTURE,
+                    array(
+                        "order_id" => $order_id,
+                        "amount" => (float)$amount
+                    )
+                );
 
                 $this->logs->logInfos(" # End Process Manual Capture for  " . $order_id);
                 return array(
@@ -515,7 +484,14 @@ if (!class_exists('WC_Gateway_Hipay')) {
             try {
                 $this->logs->logInfos(" # Process Payment for  " . $order_id);
 
-                $redirect = $this->apiRequestHandler->handleCreditCard(array("order_id" => $order_id));
+                $params = array(
+                    "order_id" => $order_id,
+                    "paymentProduct" => Hipay_Helper::getPostData('payment-product'),
+                    "cardtoken" => Hipay_Helper::getPostData('card-token'),
+                    "card_holder" => Hipay_Helper::getPostData('card-holder')
+                );
+
+                $redirect = $this->apiRequestHandler->handleCreditCard($params);
 
                 return array(
                     'result' => 'success',

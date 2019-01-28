@@ -82,6 +82,7 @@ abstract class Hipay_Order_Request_Abstract extends Hipay_Api_Formatter_Abstact
         $orderRequest->http_user_agent = $_SERVER ['HTTP_USER_AGENT'];
         $orderRequest->basket = $this->params["basket"];
         $orderRequest->delivery_information = $this->params["delivery_informations"];
+        $orderRequest->authentication_indicator = $this->params["authentication_indicator"];
     }
 
     /**

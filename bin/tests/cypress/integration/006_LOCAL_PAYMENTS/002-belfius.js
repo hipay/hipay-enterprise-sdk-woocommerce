@@ -1,12 +1,11 @@
-import ingHomepayJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/ing-homepay.json';
+import belfiusJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/belfius.json';
 
-describe('Pay by Ing Homepay', function () {
+describe('Pay by Belfius', function () {
 
     before(function () {
-
         cy.logToAdmin();
         cy.goToPaymentsTab();
-        cy.activatePaymentMethods("ing_homepay");
+        cy.activatePaymentMethods("belfius");
         cy.switchWooCurrency("EUR");
         cy.adminLogOut();
     });
@@ -22,10 +21,10 @@ describe('Pay by Ing Homepay', function () {
         cy.saveLastOrderId();
     });
 
-    it('pay Ing Homepay', function () {
+    it('pay Belfius', function () {
 
-        cy.get('.payment_method_hipayenterprise_ing_homepay > label').click({force: true});
+        cy.get('[for="payment_method_hipayenterprise_belfius"]').click({force: true});
         cy.get('#place_order').click({force: true});
-        cy.payAndCheck('payIngHomepay', ingHomepayJson.url, "ing-homepay");
+        cy.payAndCheck('payBelfius', belfiusJson.url, "belfius");
     });
 });

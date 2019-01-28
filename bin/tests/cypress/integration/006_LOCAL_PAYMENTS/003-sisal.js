@@ -1,11 +1,11 @@
-import belfiusJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/belfius.json';
+import sisalJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/sisal.json';
 
-describe('Pay by Belfius', function () {
+describe('Pay by Sisal', function () {
 
     before(function () {
         cy.logToAdmin();
         cy.goToPaymentsTab();
-        cy.activatePaymentMethods("belfius");
+        cy.activatePaymentMethods("sisal");
         cy.switchWooCurrency("EUR");
         cy.adminLogOut();
     });
@@ -23,8 +23,8 @@ describe('Pay by Belfius', function () {
 
     it('pay Belfius', function () {
 
-        cy.get('.payment_method_hipayenterprise_belfius > label').click({force: true});
+        cy.get('[for="payment_method_hipayenterprise_sisal"]').click({force: true});
         cy.get('#place_order').click({force: true});
-        cy.payAndCheck('payBelfius', belfiusJson.url, "belfius");
+        cy.payAndCheck('paySisal', sisalJson.url, "sisal");
     });
 });
