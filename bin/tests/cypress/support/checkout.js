@@ -213,7 +213,9 @@ Cypress.Commands.add("payAndCheck", (paymentFunction, urlConst, paymentProduct) 
         cy[paymentFunction]();
         cy.checkOrderSuccess();
     } else {
-        cy.location('href', {timeout: 100000}).should('include', urlConst);
+        cy.location({timeout: 100000}).should((loc) => {
+            expect(loc.href.toLowerCase()).to.include(urlConst.toLowerCase());
+        });
     }
 });
 
