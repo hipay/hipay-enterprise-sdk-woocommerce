@@ -24,6 +24,7 @@ describe('Pay by SEPA Direct Debit', function () {
 
     it('Pay by SEPA Direct Debit', function () {
 
+        cy.waitOrderUpdate();
         cy.get('[for="payment_method_hipayenterprise_sdd"]').click({force: true});
         cy.get('#sdd-gender').type("M", {force: true});
         cy.get('#sdd-firstname').type("John", {force: true});

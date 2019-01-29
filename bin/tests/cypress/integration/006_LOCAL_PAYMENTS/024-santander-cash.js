@@ -32,6 +32,7 @@ describe('Pay by Santander Cash', function () {
 
     it('Pay by Santander Cash', function () {
 
+        cy.waitOrderUpdate();
         cy.get('[for="payment_method_hipayenterprise_santander_cash"]').click({force: true});
         cy.get('#santander-cash-national_identification_number')
             .type(santanderCashJson.data.national_identification_number, {force: true})

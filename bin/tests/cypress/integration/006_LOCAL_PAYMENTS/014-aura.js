@@ -4,7 +4,6 @@ import bradescoJson from "@hipay/hipay-cypress-utils/fixtures/payment-means/brad
 describe('Pay by Aura', function () {
 
     before(function () {
-
         cy.logToAdmin();
         cy.goToPaymentsTab();
         cy.activatePaymentMethods("aura");
@@ -32,6 +31,7 @@ describe('Pay by Aura', function () {
 
     it('Pay by Aura', function () {
 
+        cy.waitOrderUpdate();
         cy.get('[for="payment_method_hipayenterprise_aura"]').click({force: true});
         cy.get('#aura-national_identification_number')
             .type(auraJson.data.national_identification_number, {force: true})

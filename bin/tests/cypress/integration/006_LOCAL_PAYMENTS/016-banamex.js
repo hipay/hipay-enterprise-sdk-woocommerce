@@ -32,6 +32,7 @@ describe('Pay by Banamex', function () {
 
     it('Pay by Banamex', function () {
 
+        cy.waitOrderUpdate();
         cy.get('[for="payment_method_hipayenterprise_banamex"]').click({force: true});
         cy.get('#banamex-national_identification_number')
             .type(banamexJson.data.national_identification_number, {force: true})

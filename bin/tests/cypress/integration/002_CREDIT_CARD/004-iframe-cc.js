@@ -33,14 +33,14 @@ describe('Pay by credit card iframe', function () {
     });
 
     it('pay by visa', function () {
-        cy.get('#wc_hipay_iframe').then(function ($iframe) {
+        cy.get('#wc_hipay_iframe', {timeout: 10000}).then(function ($iframe) {
             cy.payCcIframe($iframe, "visa_ok");
         });
         cy.checkOrderSuccess();
     });
 
     it('pay by visa refused', function () {
-        cy.get('#wc_hipay_iframe').then(function ($iframe) {
+        cy.get('#wc_hipay_iframe', {timeout: 10000}).then(function ($iframe) {
             cy.payCcIframe($iframe, "visa_refused");
         });
         cy.checkOrderCancelled();

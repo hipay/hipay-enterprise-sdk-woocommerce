@@ -32,6 +32,7 @@ describe('Pay by BBVA Bancomer', function () {
 
     it('Pay by BBVA Bancomer', function () {
 
+        cy.waitOrderUpdate();
         cy.get('[for="payment_method_hipayenterprise_bbva_bancomer"]').click({force: true});
         cy.get('#bbva-bancomer-national_identification_number')
             .type(bbvaBancomerJson.data.national_identification_number, {force: true})

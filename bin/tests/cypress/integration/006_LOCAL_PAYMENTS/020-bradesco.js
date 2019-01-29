@@ -32,6 +32,7 @@ describe('Pay by Bradesco', function () {
 
     it('Pay by Bradesco', function () {
 
+        cy.waitOrderUpdate();
         cy.get('[for="payment_method_hipayenterprise_bradesco"]').click({force: true});
         cy.get('#bradesco-national_identification_number')
             .type(bradescoJson.data.national_identification_number, {force: true})

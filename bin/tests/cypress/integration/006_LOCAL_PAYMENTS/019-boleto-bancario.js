@@ -31,6 +31,7 @@ describe('Pay by Boleto Bancario', function () {
 
     it('Pay by Boleto Bancario', function () {
 
+        cy.waitOrderUpdate();
         cy.get('[for="payment_method_hipayenterprise_boleto_bancario"]').click({force: true});
         cy.get('#boleto-bancario-national_identification_number')
             .type(boletoBancarioJson.data.national_identification_number, {force: true})

@@ -216,3 +216,9 @@ Cypress.Commands.add("payAndCheck", (paymentFunction, urlConst, paymentProduct) 
         cy.location('href', {timeout: 100000}).should('include', urlConst);
     }
 });
+
+Cypress.Commands.add("waitOrderUpdate", () => {
+    cy.server();
+    cy.route('POST', "/?wc-ajax=update_order_review").as("updateOrder");
+    cy.wait("@updateOrder");
+});

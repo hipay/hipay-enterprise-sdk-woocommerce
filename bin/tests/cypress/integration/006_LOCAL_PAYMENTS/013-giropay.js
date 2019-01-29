@@ -24,6 +24,7 @@ describe('Pay by Giropay', function () {
 
     it('Pay by Giropay', function () {
 
+        cy.waitOrderUpdate();
         cy.get('[for="payment_method_hipayenterprise_giropay"]').click({force: true});
         cy.get('#giropay-issuer_bank_id').type(giropayJson.data.bic);
         cy.get('#place_order').click({force: true});

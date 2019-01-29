@@ -32,6 +32,7 @@ describe('Pay by Oxxo', function () {
 
     it('Pay by Oxxo', function () {
 
+        cy.waitOrderUpdate();
         cy.get('[for="payment_method_hipayenterprise_oxxo"]').click({force: true});
         cy.get('#oxxo-national_identification_number')
             .type(oxxoJson.data.national_identification_number, {force: true})
