@@ -1,5 +1,4 @@
 import oxxoJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/oxxo.json';
-import itauJson from "@hipay/hipay-cypress-utils/fixtures/payment-means/itau";
 
 describe('Pay by Oxxo', function () {
 

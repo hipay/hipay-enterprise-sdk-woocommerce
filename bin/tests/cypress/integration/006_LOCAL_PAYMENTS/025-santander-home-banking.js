@@ -1,5 +1,4 @@
 import santanderHomeBankingJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/santander-home-banking.json';
-import santanderCashJson from "@hipay/hipay-cypress-utils/fixtures/payment-means/santander-cash";
 
 describe('Pay by Santander HomeBanking', function () {
 

@@ -1,5 +1,4 @@
 import santanderCashJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/santander-cash.json';
-import oxxoJson from "@hipay/hipay-cypress-utils/fixtures/payment-means/oxxo";
 
 describe('Pay by Santander Cash', function () {
 

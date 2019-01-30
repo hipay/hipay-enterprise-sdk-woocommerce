@@ -1,5 +1,4 @@
 import caixaJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/caixa.json';
-import banamexJson from "@hipay/hipay-cypress-utils/fixtures/payment-means/banamex";
 
 describe('Pay by Caïxa', function () {
 

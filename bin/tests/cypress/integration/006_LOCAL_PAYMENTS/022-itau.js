@@ -1,5 +1,4 @@
 import itauJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/itau.json';
-import caixaJson from "@hipay/hipay-cypress-utils/fixtures/payment-means/caixa";
 
 describe('Pay by Itau', function () {
 

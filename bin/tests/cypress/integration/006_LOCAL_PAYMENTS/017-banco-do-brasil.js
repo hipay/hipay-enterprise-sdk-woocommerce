@@ -1,5 +1,4 @@
 import bancoDoBrasilJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/banco-do-brasil.json';
-import banamexJson from "@hipay/hipay-cypress-utils/fixtures/payment-means/banamex";
 
 describe('Pay by Banco Do Brasil', function () {
 

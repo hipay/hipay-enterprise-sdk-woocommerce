@@ -1,5 +1,4 @@
 import bnppfJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/bnppf.json';
-import oneyJson from "@hipay/hipay-cypress-utils/fixtures/payment-means/oney";
 
 describe('Pay by bnppf', function () {
 

@@ -1,5 +1,4 @@
 import bradescoJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/bradesco.json';
-import boletoBancarioJson from "@hipay/hipay-cypress-utils/fixtures/payment-means/boleto-bancario";
 
 describe('Pay by Bradesco', function () {
 

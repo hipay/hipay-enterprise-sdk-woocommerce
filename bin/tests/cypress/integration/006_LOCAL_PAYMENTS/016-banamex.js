@@ -1,5 +1,4 @@
 import banamexJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/banamex.json';
-import auraJson from "@hipay/hipay-cypress-utils/fixtures/payment-means/aura";
 
 describe('Pay by Banamex', function () {
 

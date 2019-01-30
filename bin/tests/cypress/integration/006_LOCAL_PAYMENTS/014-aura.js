@@ -1,6 +1,4 @@
 import auraJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/aura.json';
-import bradescoJson from "@hipay/hipay-cypress-utils/fixtures/payment-means/bradesco";
-import sddJson from "@hipay/hipay-cypress-utils/fixtures/payment-means/sdd";
 
 describe('Pay by Aura', function () {
 
