@@ -68,7 +68,7 @@ class Hipay_Customer_Shipping_Info_Formatter implements Hipay_Api_Formatter
         $customerShippingInfo->shipto_zipcode = $shippingInfo["shipto_zipcode"];
         $customerShippingInfo->shipto_phone = $shippingInfo["shipto_phone"];
         $customerShippingInfo->shipto_gender = 'U';
-        $customerShippingInfo->shipto_msisdn = '0563696639';
+        $customerShippingInfo->shipto_msisdn = '0000000000';
     }
 
     /**
