@@ -1,9 +1,24 @@
 <?php foreach ($additionalFields['formFields'] as $fieldName => $field): ?>
-    <label class="hipay-row" > <?php echo $field["label"]["fr"]; ?></label>
-    <div class="hipay-row">
+    <label> <?php echo $field["label"]["fr"]; ?></label>
+    <div>
+        <?php if($field["type"] === "gender"): ?>
+            <div >
+                <select id="<?php echo $localPaymentName . '-' . $fieldName ?>"
+                        name="<?php echo $localPaymentName . '-' . $fieldName ?>"
+                    <?php if(isset($field["required"]) && $field["required"]){ echo 'required';} ?>
+                >
+                    <option value="M"><?php echo _e('Mr', "hipayenterprise") ?></option>
+                    <option value="F"><?php echo _e('Mrs', "hipayenterprise") ?></option>
+                </select>
+            </div>
+        <?php else: ?>
         <input
                 id="<?php echo $localPaymentName . '-' . $fieldName ?>" name="<?php echo $localPaymentName . '-' . $fieldName ?>" type="text" value=""
-                <?php if(isset($field["required"]) && $field["required"]){ echo 'required';} ?> class="hipay-row"
+                <?php if(isset($field["required"]) && $field["required"]){ echo 'required';} ?>
         />
+        <?php endif; ?>
     </div>
+    <script>
+        hiPayInputControl.addInput('<?php echo $localPaymentName ?>', '<?php echo $localPaymentName."-".$fieldName ?>', '<?php echo $field["controlType"] ?>', <?php if(isset($field['required'])){ echo $field['required']; }else{ echo "false";} ?>);
+</script>
 <?php endforeach; ?>

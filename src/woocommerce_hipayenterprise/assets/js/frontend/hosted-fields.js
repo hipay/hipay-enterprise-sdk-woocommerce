@@ -4,19 +4,38 @@ jQuery(function ($) {
 
     var hostedFields = {
 
-        checkout_form: $( 'form.checkout' ),
+        checkout_form: $('form.checkout'),
 
         init: function () {
             var self = this;
 
-            this.checkout_form.on( 'change', '#billing_first_name, #billing_last_name', function(){
-                $( document.body ).trigger( 'update_checkout' );
+            this.checkout_form.on('change', '#billing_first_name, #billing_last_name', function () {
+                $(document.body).trigger('update_checkout');
             });
 
             // Evenement plutot sur le onSubmit
             $(document.body).on('click', '#place_order', function (e) {
                 self.submitOrder(e, self);
             });
+
+            if (hostedFields.containerExist()) {
+
+                $('.woocommerce-checkout-payment, .woocommerce-checkout-review-order-table').block({
+                    message: null,
+                    overlayCSS: {
+                        background: '#fff',
+                        opacity: 0.6
+                    }
+                });
+
+                this.initializeHostedFields();
+            }
+        },
+
+        /**
+         * Initialize Hipay Hosted Field
+         */
+        initializeHostedFields: function () {
 
             this.hipaySDK = HiPay({
                 username: hipay_config.apiUsernameTokenJs,
@@ -62,13 +81,6 @@ jQuery(function ($) {
                 }
             };
 
-            this.initializeHostedFields();
-        },
-
-        /**
-         * Initialize Hipay Hosted Field
-         */
-        initializeHostedFields: function () {
             hostedFieldsInstance = this.hipaySDK.create("card", this.configHostedFields);
             var self = this;
 
@@ -99,7 +111,7 @@ jQuery(function ($) {
          *
          * @param response
          */
-        processPayment: function (response) {
+        processPayment: function () {
             $('form[name="checkout"]').submit();
         },
 
@@ -135,14 +147,14 @@ jQuery(function ($) {
          * @param hostedFields
          */
         submitOrder: function (e, hostedFields) {
-            if (hostedFields.isHipayHostedFieldsSelected()) {
+            if (hostedFields.containerExist() && hostedFields.isHipayHostedFieldsSelected()) {
                 e.preventDefault();
                 e.stopPropagation();
                 hostedFieldsInstance.createToken()
                     .then(function (response) {
                             if (isCardTypeActivated(response)) {
                                 hostedFields.applyTokenization(response);
-                                hostedFields.processPayment(response);
+                                hostedFields.processPayment();
                             } else {
                                 hostedFields.handleError(true, hipay_config_i18n.activated_card_error);
                             }
@@ -151,6 +163,22 @@ jQuery(function ($) {
                             hostedFields.handleError(true, error);
                         }
                     );
+            } else {
+                e.preventDefault();
+                e.stopPropagation();
+
+                var hipayMethod = $('input[name="payment_method"]:checked')
+                    .val()
+                    .replace('hipayenterprise_','')
+                    .replace('_', '-');
+
+                if (hiPayInputControl.checkControl(hipayMethod)) {
+                    hostedFields.processPayment();
+                }else{
+                    $([document.documentElement, document.body]).animate({
+                        scrollTop: $('input[name="payment_method"]:checked').offset().top
+                    }, 1000);
+                }
             }
         }
     };
@@ -165,16 +193,7 @@ jQuery(function ($) {
     }
 
     $(document.body).on('updated_checkout', function () {
-        if (hostedFields.containerExist()) {
-            $('.woocommerce-checkout-payment, .woocommerce-checkout-review-order-table').block({
-                message: null,
-                overlayCSS: {
-                    background: '#fff',
-                    opacity: 0.6
-                }
-            });
-            hostedFields.init();
-        }
+        hostedFields.init();
     });
 
 });

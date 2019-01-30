@@ -1,5 +1,6 @@
 import auraJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/aura.json';
 import bradescoJson from "@hipay/hipay-cypress-utils/fixtures/payment-means/bradesco";
+import sddJson from "@hipay/hipay-cypress-utils/fixtures/payment-means/sdd";
 
 describe('Pay by Aura', function () {
 
@@ -31,12 +32,22 @@ describe('Pay by Aura', function () {
 
     it('Pay by Aura', function () {
 
-        cy.waitOrderUpdate();
         cy.get('[for="payment_method_hipayenterprise_aura"]').click({force: true});
         cy.get('#aura-national_identification_number')
             .type(auraJson.data.national_identification_number, {force: true})
             .should('have.value', auraJson.data.national_identification_number);
         cy.get('#place_order').click({force: true});
         cy.payAndCheck('payAura', auraJson.url, "aura");
+    });
+
+    it('Wrong form fields Aura', function () {
+
+        cy.get('[for="payment_method_hipayenterprise_aura"]').click({force: true});
+        cy.get('#aura-national_identification_number')
+            .type("1111", {force: true})
+            .should('have.value', "1111");
+        cy.get('#place_order').click({force: true});
+
+        cy.get('#aura-national_identification_number + .error-text-hp').contains("This is not a correct CPF");
     });
 });

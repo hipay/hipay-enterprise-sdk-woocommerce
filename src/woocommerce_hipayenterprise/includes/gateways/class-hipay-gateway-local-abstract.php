@@ -36,6 +36,23 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
         )["displayName"][Hipay_Helper::getLanguage()];
         $this->init_form_fields();
         $this->init_settings();
+
+        if ($this->isAvailable() && is_page() && is_checkout() && !is_order_received_page()) {
+
+            wp_enqueue_script(
+                'hipay-js-form-input-control',
+                plugins_url('/assets/js/frontend/form-input-control.js', WC_HIPAYENTERPRISE_BASE_FILE),
+                array(),
+                'all',
+                false
+            );
+        }
+
+    }
+
+    public function isAvailable()
+    {
+        return ('yes' === $this->enabled);
     }
 
     public function payment_fields()

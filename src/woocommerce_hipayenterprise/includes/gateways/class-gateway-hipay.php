@@ -85,22 +85,6 @@ if (!class_exists('WC_Gateway_Hipay')) {
                         array(),
                         'all'
                     );
-
-                    wp_enqueue_script(
-                        'hipay-js-hosted-fields-sdk',
-                        'https://libs.hipay.com/js/sdkjs.js',
-                        array(),
-                        'all',
-                        true
-                    );
-
-                    wp_enqueue_script(
-                        'hipay-js-front',
-                        plugins_url('/assets/js/frontend/hosted-fields.js', WC_HIPAYENTERPRISE_BASE_FILE),
-                        array(),
-                        'all',
-                        true
-                    );
                 }
             }
         }

@@ -32,7 +32,6 @@ describe('Pay by Caïxa', function () {
 
     it('Pay by Caïxa', function () {
 
-        cy.waitOrderUpdate();
         cy.get('[for="payment_method_hipayenterprise_caixa"]').click({force: true});
         cy.get('#caixa-national_identification_number')
             .type(caixaJson.data.national_identification_number, {force: true})

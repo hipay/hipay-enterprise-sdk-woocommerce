@@ -103,12 +103,6 @@ Cypress.Commands.add("fillBillingForm", (country) => {
         cy.get('#billing_first_name').type(customer.firstName);
         cy.get('#billing_last_name').type(customer.lastName);
         cy.get('#billing_country').select(customer.country, {force: true});
-        cy.get('#billing_address_1').type(customer.streetAddress);
-        cy.get('#billing_postcode').type(customer.zipCode);
-        cy.get('#billing_city').type(customer.city);
-        cy.get('#billing_phone').type(customer.phone);
-        cy.get('#billing_email').type(customer.email);
-
         if (customer.state !== undefined) {
             if (!["BR", "MX"].includes(country)) {
                 cy.get('#billing_state').clear({force: true});
@@ -117,6 +111,13 @@ Cypress.Commands.add("fillBillingForm", (country) => {
                 cy.get('#billing_state').select(customer.state, {force: true});
             }
         }
+        cy.get('#billing_address_1').type(customer.streetAddress);
+        cy.get('#billing_postcode').type(customer.zipCode);
+        cy.get('#billing_city').type(customer.city);
+        cy.waitOrderUpdate();
+        cy.get('#billing_phone').type(customer.phone);
+
+        cy.get('#billing_email').type(customer.email);
     });
 });
 

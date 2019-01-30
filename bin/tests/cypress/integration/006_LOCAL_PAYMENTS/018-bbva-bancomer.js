@@ -1,5 +1,4 @@
 import bbvaBancomerJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/bbva-bancomer.json';
-import banamexJson from "@hipay/hipay-cypress-utils/fixtures/payment-means/banamex";
 
 describe('Pay by BBVA Bancomer', function () {
 

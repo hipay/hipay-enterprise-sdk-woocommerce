@@ -32,7 +32,6 @@ describe('Pay by Santander HomeBanking', function () {
 
     it('Pay by Santander HomeBanking', function () {
 
-        cy.waitOrderUpdate();
         cy.get('[for="payment_method_hipayenterprise_santander_home_banking"]').click({force: true});
         cy.get('#santander-home-banking-national_identification_number')
             .type(santanderHomeBankingJson.data.national_identification_number, {force: true})

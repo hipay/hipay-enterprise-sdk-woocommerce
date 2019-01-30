@@ -32,7 +32,6 @@ describe('Pay by Itau', function () {
 
     it('Pay by Itau', function () {
 
-        cy.waitOrderUpdate();
         cy.get('[for="payment_method_hipayenterprise_itau"]').click({force: true});
         cy.get('#itau-national_identification_number')
             .type(itauJson.data.national_identification_number, {force: true})
