@@ -97,8 +97,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
         private function isDirectPostActivated()
         {
-            return $this->confHelper->getPaymentGlobal()["operating_mode"] ==
-            OperatingMode::HOSTED_FIELDS ? true : false;
+            return $this->confHelper->getPaymentGlobal()["operating_mode"] === OperatingMode::HOSTED_FIELDS;
         }
 
         /**

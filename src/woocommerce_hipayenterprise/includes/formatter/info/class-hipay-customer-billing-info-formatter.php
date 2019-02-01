@@ -73,6 +73,12 @@ class Hipay_Customer_Billing_Info_Formatter implements Hipay_Api_Formatter
         $customerBillingInfo->phone = $this->order->get_billing_phone();
         $customerBillingInfo->gender = 'U';
 
+        if ($this->payment_product == 'klarnainvoice') {
+            $customerBillingInfo->gender = 'F';
+            $customerBillingInfo->house_number = 1;
+            $customerBillingInfo->birthdate = '19700101';
+        }
+
         if ($this->payment_product == 'bnpp-3xcb' || $this->payment_product == 'bnpp-4xcb') {
             $customerBillingInfo->phone = preg_replace('/^(\+33)|(33)/', '0', $customerBillingInfo->phone);
         }
