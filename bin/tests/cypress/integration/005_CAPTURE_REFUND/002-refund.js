@@ -27,15 +27,14 @@ describe('Process transaction and do manual refund with basket', function () {
      */
     it('Check 116 and 118 Transactions', function () {
         cy.clearCookies();
-        cy.HiPayBOConnect();
-        cy.HiPayBOSelectAccount();
+        cy.connectAndSelectAccountOnHipayBO();
 
-        cy.HiPayBOGoToTransaction(this.order.lastOrderId + "-");
-        cy.HiPayBOOpenNotifications(116).then(() => {
+        cy.openTransactionOnHipayBO(this.order.lastOrderId + "-");
+        cy.openNotificationOnHipayBO(116).then(() => {
             cy.sendNotification(this.notification.url, {data: this.data, hash: this.hash});
 
             cy.reload();
-            cy.HiPayBOOpenNotifications(118).then(() => {
+            cy.openNotificationOnHipayBO(118).then(() => {
                 cy.sendNotification(this.notification.url, {data: this.data, hash: this.hash});
             });
         });
@@ -67,11 +66,10 @@ describe('Process transaction and do manual refund with basket', function () {
      */
     it('Check 124 Transaction', function () {
         cy.clearCookies();
-        cy.HiPayBOConnect();
-        cy.HiPayBOSelectAccount();
+        cy.connectAndSelectAccountOnHipayBO();
 
-        cy.HiPayBOGoToTransaction(this.order.lastOrderId + "-");
-        cy.HiPayBOOpenNotifications(124).then(() => {
+        cy.openTransactionOnHipayBO(this.order.lastOrderId + "-");
+        cy.openNotificationOnHipayBO(124).then(() => {
             cy.sendNotification(this.notification.url, {data: this.data, hash: this.hash});
         });
     });
@@ -98,11 +96,10 @@ describe('Process transaction and do manual refund with basket', function () {
      * Check basket is not sent
      */
     it('Check basket transaction', function () {
-        cy.HiPayBOConnect();
-        cy.HiPayBOSelectAccount();
+        cy.connectAndSelectAccountOnHipayBO();
 
-        cy.HiPayBOGoToTransaction(this.order.lastOrderId + "-");
-        cy.HiPayBOOpenNotifications(124).then(() => {
+        cy.openTransactionOnHipayBO(this.order.lastOrderId + "-");
+        cy.openNotificationOnHipayBO(124).then(() => {
             var basketTransaction = utils.fetchInput("basket",decodeURI(this.data));
             assert.equal(basketTransaction,"");
         });

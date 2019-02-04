@@ -1,0 +1,11 @@
+{
+  "firstName": "Didier",
+  "lastName": "Denis",
+  "email": "d.denis@hipay.com",
+  "streetAddress": "10 rue Cornulier",
+  "city": "Nantes",
+  "zipCode": "44000",
+  "state": "state test",
+  "country": "RU",
+  "phone": "021023659687"
+}

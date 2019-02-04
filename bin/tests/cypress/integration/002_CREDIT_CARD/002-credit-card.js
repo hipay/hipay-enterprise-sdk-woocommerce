@@ -23,7 +23,7 @@ describe('Pay by credit card', function () {
         cy.goToCheckout();
         cy.fillBillingForm();
 
-        cy.get('.payment_method_hipayenterprise_credit_card > label').click({force: true});
+        cy.get('[for="payment_method_hipayenterprise_credit_card"]').click({force: true});
         cy.get('#hipay-field-cardHolder > iframe');
         cy.wait(3000);
     });
@@ -32,14 +32,13 @@ describe('Pay by credit card', function () {
         cy.saveLastOrderId();
     });
 
-    ['visa_ok', 'mastercard_ok', 'cb_ok', 'maestro_ok','american-express_ok'].forEach((card) => {
+    ['visa_ok', 'mastercard_ok', 'cb_ok', 'maestro_ok', 'american-express_ok'].forEach((card) => {
         it('Pay by : ' + card, function () {
             cy.fill_hostedfield_card(card);
             cy.get('#place_order').click({force: true});
             cy.checkOrderSuccess();
         });
     });
-
 
     it('Pay by Visa refused', function () {
         cy.fill_hostedfield_card('visa_refused');

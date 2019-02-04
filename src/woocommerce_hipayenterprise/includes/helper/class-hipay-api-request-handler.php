@@ -39,6 +39,16 @@ class Hipay_Api_Request_Handler
     private $plugin;
 
     /**
+     * @var Hipay_Cart_Formatter|null|Wc_Hipay_Admin_Assets
+     */
+    protected $cartFormatter;
+
+    /**
+     * @var Hipay_Delivery_Formatter|null
+     */
+    protected $deliveryFormatter;
+
+    /**
      * Hipay_Api_Request_Handler constructor.
      * @param $plugin
      */
@@ -46,6 +56,8 @@ class Hipay_Api_Request_Handler
     {
         $this->plugin = $plugin;
         $this->api = new Hipay_Api($plugin);
+        $this->cartFormatter = Hipay_Cart_Formatter::initHiPayCartFormatter();
+        $this->deliveryFormatter = Hipay_Delivery_Formatter::initHiPayDeliveryFormatter();
     }
 
     /**
@@ -54,20 +66,6 @@ class Hipay_Api_Request_Handler
     public function getApi()
     {
         return $this->api;
-    }
-
-    /**
-     * @param $params
-     */
-    public function initParamsDirectPost(&$params)
-    {
-        $params["deviceFingerprint"] = Hipay_Helper::getPostData('ioBB');
-        $params["paymentProduct"] = !isset($params["paymentProduct"]) ? Hipay_Helper::getPostData('payment-product')
-            : $params["paymentProduct"];
-        $params["cardtoken"] = Hipay_Helper::getPostData('card-token');
-        $params["card_holder"] = Hipay_Helper::getPostData('card-holder');
-        $params["method"] = Hipay_Helper::getPostData('payment-product');
-        $params["authentication_indicator"] = $this->plugin->confHelper->getPaymentGlobal()["activate_3d_secure"];
     }
 
     /**
@@ -80,23 +78,11 @@ class Hipay_Api_Request_Handler
      */
     public function handleCreditCard($params)
     {
-        if  ($this->plugin->confHelper->getPaymentGlobal()["operating_mode"] == OperatingMode::HOSTED_FIELDS) {
-            return $this->handleDirectOrder($params);
-        } else if  ($this->plugin->confHelper->getPaymentGlobal()["operating_mode"] == OperatingMode::HOSTED_PAGE) {
-                return $this->handleHostedPayment($params);
+        if ($this->plugin->confHelper->getPaymentGlobal()["operating_mode"] == OperatingMode::HOSTED_FIELDS) {
+            return $this->handleDirectOrder($params, true);
+        } else if ($this->plugin->confHelper->getPaymentGlobal()["operating_mode"] == OperatingMode::HOSTED_PAGE) {
+            return $this->handleHostedPayment($params);
         }
-    }
-
-    /**
-     * Return mapped payment method
-     *
-     * @param $params
-     * @return \HiPay\Fullservice\Gateway\Request\Order\OrderRequest
-     */
-    private function getPaymentMethod($params)
-    {
-        $paymentMethod = new Hipay_Card_Token_Formatter($params);
-        return $paymentMethod->generate();
     }
 
     /**
@@ -115,18 +101,19 @@ class Hipay_Api_Request_Handler
      * @param $mode
      * @param array $params
      * @return bool
-     * @throws Hipay_Payment_Exception
+     * @throws Exception
      */
     public function handleMaintenance($mode, $params = array())
     {
         try {
             $order = wc_get_order($params["order_id"]);
-            if (in_array($order->get_status(), array( 'pending', 'failed', 'cancelled'), true)) {
+            if (in_array($order->get_status(), array('pending', 'failed', 'cancelled'), true)) {
                 throw new Exception(
                     __(
-                    "Maintenance operation is not allowed according to the order status.",
-                    "hipayenterprise"
-                ));
+                        "Maintenance operation is not allowed according to the order status.",
+                        "hipayenterprise"
+                    )
+                );
             }
 
             switch ($mode) {
@@ -165,8 +152,10 @@ class Hipay_Api_Request_Handler
     {
         $order = wc_get_order($params["order_id"]);
 
+        $this->initParamsHostedPayment($params);
+
         try {
-            $response = $this->api->requestHostedPaymentPage($order);
+            $response = $this->api->requestHostedPaymentPage($order, $params);
         } catch (Exception $e) {
             $this->plugin->logs->logException($e);
             throw new Hipay_Payment_Exception(
@@ -189,15 +178,15 @@ class Hipay_Api_Request_Handler
 
     /**
      * @param $params
+     * @param bool $cc
      * @return string
      * @throws Hipay_Payment_Exception
      */
-    private function handleDirectOrder($params)
+    private function handleDirectOrder($params, $cc = false)
     {
         $order = wc_get_order($params["order_id"]);
-
         $this->initParamsDirectPost($params);
-        $params["paymentMethod"] = $this->getPaymentMethod($params);
+        $params["paymentMethod"] = $this->getPaymentMethod($params, $cc);
 
         try {
             $response = $this->api->requestDirectPost($order, $params);
@@ -247,5 +236,47 @@ class Hipay_Api_Request_Handler
         }
 
         return $redirectUrl;
+    }
+
+    /**
+     * Return mapped payment method
+     *
+     * @param $params
+     * @param $cc
+     * @return \HiPay\Fullservice\Gateway\Request\PaymentMethod\CardTokenPaymentMethod|mixed|null
+     */
+    private function getPaymentMethod($params, $cc)
+    {
+        if ($cc) {
+            $paymentMethod = new Hipay_Card_Token_Formatter($params);
+        } else {
+            $paymentMethod = new Hipay_Generic_Payment_Method_Formatter($params, $this->plugin);
+        }
+
+        return $paymentMethod->generate();
+    }
+
+    private function iniParamsWithConfiguration(&$params)
+    {
+        if ($this->plugin->confHelper->getPaymentGlobal()["activate_basket"]) {
+            $params["basket"] = $this->cartFormatter->generate();
+            if (count(WC()->cart->calculate_shipping()) > 0) {
+                $params["delivery_informations"] = $this->deliveryFormatter->generate();
+            }
+        }
+
+        $params["authentication_indicator"] = $this->plugin->confHelper->getPaymentGlobal()["activate_3d_secure"];
+    }
+
+    private function initParamsDirectPost(&$params)
+    {
+        $this->iniParamsWithConfiguration($params);
+        $params["deviceFingerprint"] = Hipay_Helper::getPostData('ioBB');
+    }
+
+    private function initParamsHostedPayment(&$params)
+    {
+        $this->iniParamsWithConfiguration($params);
+        $params["iframe"] = $this->plugin->confHelper->getPaymentGlobal()["display_hosted_page"] === "iframe";
     }
 }

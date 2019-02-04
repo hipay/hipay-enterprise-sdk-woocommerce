@@ -44,3 +44,9 @@
     font-weight: bold;
 }
 
+
+.error-text-hp{
+    font-weight: bold;
+    color: #ff4c4c;
+    font-size: 12px;
+}

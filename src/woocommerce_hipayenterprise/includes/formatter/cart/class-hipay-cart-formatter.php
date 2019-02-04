@@ -22,7 +22,7 @@ if (!defined('ABSPATH')) {
  * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
  */
-class Hipay_Cart_Formatter extends Hipay_Api_Formatter_Abstact
+class Hipay_Cart_Formatter implements Hipay_Api_Formatter
 {
     /**
      * The single instance of the class.
@@ -60,17 +60,6 @@ class Hipay_Cart_Formatter extends Hipay_Api_Formatter_Abstact
      * @var array
      */
     private $originalBasket;
-
-    /**
-     * Hipay_Cart_Formatter constructor.
-     *
-     * @param $plugin
-     * @param bool $order
-     */
-    public function __construct($plugin, $order = false)
-    {
-        parent::__construct($plugin, $order);
-    }
 
     /**
      *  Generate cart and return json representation for cart or specific items
@@ -331,22 +320,6 @@ class Hipay_Cart_Formatter extends Hipay_Api_Formatter_Abstact
         return "";
     }
 
-    public static function initHiPayCartFormatter($plugin, $order = false)
-    {
-        if (null === self::$instance) {
-            self::$instance = new self($plugin, $order);
-        }
-        return self::$instance;
-    }
-
-    /**
-     * @param $order
-     */
-    public function setOrder($order)
-    {
-        $this->order = $order;
-    }
-
     /**
      * @param $cartItem
      * @return \HiPay\Fullservice\Gateway\Model\Cart\Item
@@ -388,5 +361,13 @@ class Hipay_Cart_Formatter extends Hipay_Api_Formatter_Abstact
 
         return $item;
 
+    }
+
+    public static function initHiPayCartFormatter()
+    {
+        if (null === self::$instance) {
+            self::$instance = new self();
+        }
+        return self::$instance;
     }
 }

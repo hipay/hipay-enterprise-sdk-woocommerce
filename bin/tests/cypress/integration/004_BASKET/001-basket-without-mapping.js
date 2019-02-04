@@ -24,11 +24,10 @@ describe('Pay by credit card with basket activated', function () {
      * Process an payment without mapping ( Transaction should be OK )
      */
     it('Check Basket in transaction', function () {
-        cy.HiPayBOConnect();
-        cy.HiPayBOSelectAccount();
+        cy.connectAndSelectAccountOnHipayBO();
 
-        cy.HiPayBOGoToTransaction(this.order.lastOrderId + "-");
-        cy.HiPayBOOpenNotifications(116).then(() => {
+        cy.openTransactionOnHipayBO(this.order.lastOrderId + "-");
+        cy.openNotificationOnHipayBO(116).then(() => {
             var basketTransaction = utils.fetchInput("basket",decodeURI(this.data));
             assert.equal(basketTransaction,JSON.stringify(this.basket.basketWithoutMapping));
         });

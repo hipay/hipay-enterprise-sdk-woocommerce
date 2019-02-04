@@ -24,20 +24,14 @@ if (!defined('ABSPATH')) {
  */
 class Hipay_Maintenance_Formatter extends Hipay_Api_Formatter_Abstact
 {
-    /**
-     * @var
-     */
+
     protected $params;
 
-    /**
-     * @var Hipay_Transactions
-     */
     protected $operationsHelper;
 
-    /**
-     * @var Hipay_Cart_Formatter|null|Wc_Hipay_Admin_Assets
-     */
     protected $cartMaintenanceFormatter;
+
+    protected $transactionsHelper;
 
     /**
      * Hipay_Request_Formatter_Abstract constructor.
@@ -50,14 +44,14 @@ class Hipay_Maintenance_Formatter extends Hipay_Api_Formatter_Abstact
         parent::__construct($plugin, $order);
         $this->params = $params;
         $this->operationsHelper = Hipay_Operations_Helper::initHiPayOperationsHelper($plugin);
-        $this->cartMaintenanceFormatter = Hipay_Cart_Formatter::initHiPayCartFormatter($plugin, $order);
+        $this->cartMaintenanceFormatter = Hipay_Cart_Formatter::initHiPayCartFormatter();
         $this->transactionsHelper = Hipay_Transactions_Helper::initHiPayTransactionsHelper($plugin, $order);
     }
 
     /**
      * Generate request data before API call
      *
-     * @return \HiPay\Fullservice\Gateway\Request\Order\OrderRequest
+     * @return \HiPay\Fullservice\Gateway\Request\Maintenance\MaintenanceRequest|mixed
      */
     public function generate()
     {
@@ -88,7 +82,8 @@ class Hipay_Maintenance_Formatter extends Hipay_Api_Formatter_Abstact
     /**
      * Map maintenance Request
      *
-     * @param type $orderRequest
+     * @param $maintenanceRequest
+     * @return mixed|void
      */
     public function mapRequest(&$maintenanceRequest)
     {
@@ -100,7 +95,8 @@ class Hipay_Maintenance_Formatter extends Hipay_Api_Formatter_Abstact
 
         $transactionAttempt = $this->operationsHelper->getNbOperationAttempt(
             $maintenanceRequest->operation,
-            $this->order->get_id());
+            $this->order->get_id()
+        );
 
         $maintenanceRequest->operation_id = $this->generateOperationId(
             $this->order,
@@ -141,9 +137,9 @@ class Hipay_Maintenance_Formatter extends Hipay_Api_Formatter_Abstact
     /**
      * Generate an operation id for HiPay compliance
      *
-     * @param type $order
-     * @param type $operation
-     * @param type $maintenanceData
+     * @param $order
+     * @param $operation
+     * @param $transactionAttempt
      * @return string
      */
     public function generateOperationId($order, $operation, $transactionAttempt)
