@@ -56,7 +56,13 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 "hipayenterprise"
             );
 
-            $this->title = $this->confHelper->getPaymentGlobal()["ccDisplayName"][Hipay_Helper::getLanguage()];
+            if(!empty($this->confHelper->getPaymentGlobal()["ccDisplayName"][Hipay_Helper::getLanguage()])){
+                $this->title = $this->confHelper->getPaymentGlobal()["ccDisplayName"][Hipay_Helper::getLanguage()];
+            }else{
+                $this->title = $this->confHelper->getPaymentGlobal()["ccDisplayName"]['en'];
+            }
+
+
 
             $this->init_form_fields();
             $this->init_settings();
