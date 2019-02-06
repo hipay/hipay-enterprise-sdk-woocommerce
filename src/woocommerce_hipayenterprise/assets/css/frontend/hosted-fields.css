@@ -5,35 +5,9 @@
     text-align: center;
 }
 
-#hipay-container-hosted-fields {
-    width: 500px;
-    padding: 20px;
-    display: inline-block;
-    border: 1px solid #ddd;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
-    margin: 10px;
-}
-
-#hipay-container-hosted-fields span.icon {
-    position: relative;
-    top: 0.2em;
-    margin-right: 0.2em;
-}
-
-@media screen and (max-width: 768px) {
-    #hipay-container-hosted-fields {
-        max-width: 500px;
-        width: auto;
-        display: block;
-    }
-}
-
-@media (min-width: 768px) {
-    #hipay-container-hosted-fields .actions-toolbar .primary {
-        width: 100% !important;
-        margin-top: 10px !important;
-        float: none !important;
-    }
+.hipay-container-hosted-fields {
+    margin-top: 10px;
+    width: 100%;
 }
 
 .hipay-row {

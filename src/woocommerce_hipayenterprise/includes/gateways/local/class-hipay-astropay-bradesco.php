@@ -22,16 +22,16 @@ if (!defined('ABSPATH')) {
  * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
  */
-class Hipay_Santander_Cash extends Hipay_Gateway_Local_Abstract
+class Hipay_Astropay_Bradesco extends Hipay_Gateway_Local_Abstract
 {
 
     public function __construct()
     {
-        $this->id = 'hipayenterprise_santander_cash';
-        $this->paymentProduct = 'santander-cash';
-        $this->method_title = __('HiPay Enterprise Santander Cash', "hipayenterprise");
-        $this->title = __('Santander Cash', "hipayenterprise");
-        $this->method_description = __('Santander Cash', "hipayenterprise");
+        $this->id = 'hipayenterprise_bradesco';
+        $this->paymentProduct = 'bradesco';
+        $this->method_title = __('HiPay Enterprise Bradesco', "hipayenterprise");
+        $this->title = __('Bradesco', "hipayenterprise");
+        $this->method_description = __('Bradesco - Astropay', "hipayenterprise");
 
         parent::__construct();
     }

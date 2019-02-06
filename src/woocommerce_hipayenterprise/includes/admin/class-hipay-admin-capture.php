@@ -34,7 +34,12 @@ class Hipay_Admin_Capture
         add_action('woocommerce_admin_order_totals_after_total', array($this, 'totals_after_total'));
         add_action('wp_ajax_woocommerce_capture_line_items', array($this, 'capture_line_items'));
         add_action('woocommerce_order_item_line_item_html', array($this, 'admin_order_item_line_items_html'), 10, 3);
-        add_action('woocommerce_admin_order_items_after_shipping', array($this, 'admin_order_items_after_shipping'), 10, 1);
+        add_action(
+            'woocommerce_admin_order_items_after_shipping',
+            array($this, 'admin_order_items_after_shipping'),
+            10,
+            1
+        );
         add_filter('woocommerce_data_stores', array($this, 'filter_woocommerce_data_stores'));
     }
 
@@ -57,7 +62,8 @@ class Hipay_Admin_Capture
                             'item_id' => $item_id,
                             'item' => $item,
                             'order' => $order
-                        ));
+                        )
+                    );
                 }
             }
         }
@@ -111,8 +117,14 @@ class Hipay_Admin_Capture
         }
 
         $order_id = absint($_POST['order_id']);
-        $capture_amount = wc_format_decimal(sanitize_text_field(wp_unslash($_POST['capture_amount'])), wc_get_price_decimals());
-        $captured_amount = wc_format_decimal(sanitize_text_field(wp_unslash($_POST['captured_amount'])), wc_get_price_decimals());
+        $capture_amount = wc_format_decimal(
+            sanitize_text_field(wp_unslash($_POST['capture_amount'])),
+            wc_get_price_decimals()
+        );
+        $captured_amount = wc_format_decimal(
+            sanitize_text_field(wp_unslash($_POST['captured_amount'])),
+            wc_get_price_decimals()
+        );
         $line_item_qtys = json_decode(sanitize_text_field(wp_unslash($_POST['line_item_qtys'])), true);
         $line_item_totals = json_decode(sanitize_text_field(wp_unslash($_POST['line_item_totals'])), true);
         $line_item_tax_totals = json_decode(sanitize_text_field(wp_unslash($_POST['line_item_tax_totals'])), true);
@@ -120,13 +132,17 @@ class Hipay_Admin_Capture
 
         try {
             $order = wc_get_order($order_id);
-            $max_capture = wc_format_decimal($order->get_total() - Hipay_Order_Helper::get_total_captured($order), wc_get_price_decimals());
+            $max_capture = wc_format_decimal(
+                $order->get_total() - Hipay_Order_Helper::get_total_captured($order),
+                wc_get_price_decimals()
+            );
 
             if (!$capture_amount || $max_capture < $capture_amount || 0 > $capture_amount) {
                 throw new exception(__('Invalid capture amount', 'woocommerce'));
             }
 
-            if ($captured_amount !== wc_format_decimal(Hipay_Order_Helper::get_total_captured($order), wc_get_price_decimals())) {
+            if ($captured_amount !==
+                wc_format_decimal(Hipay_Order_Helper::get_total_captured($order), wc_get_price_decimals())) {
                 throw new exception(__('Error processing capture. Please try again.', 'woocommerce'));
             }
 
@@ -202,8 +218,13 @@ class Hipay_Admin_Capture
                 throw new Exception(__('Invalid order ID.', 'woocommerce'));
             }
 
-            $remaining_capture_amount = wc_format_decimal($order->get_total() - Hipay_Order_Helper::get_total_captured($order), wc_get_price_decimals());
-            $remaining_capture_items = absint($order->get_item_count() - Hipay_Order_Helper::get_item_count_captured('', $order));
+            $remaining_capture_amount = wc_format_decimal(
+                $order->get_total() - Hipay_Order_Helper::get_total_captured($order),
+                wc_get_price_decimals()
+            );
+            $remaining_capture_items = absint(
+                $order->get_item_count() - Hipay_Order_Helper::get_item_count_captured('', $order)
+            );
 
             $capture_item_count = 0;
             $capture = new Hipay_Order_Capture($args['capture_id']);
@@ -228,7 +249,9 @@ class Hipay_Admin_Capture
 
                     $qty = isset($args['line_items'][$item_id]['qty']) ? $args['line_items'][$item_id]['qty'] : 0;
                     $capture_total = $args['line_items'][$item_id]['capture_total'];
-                    $capture_tax = isset($args['line_items'][$item_id]['capture_tax']) ? array_filter((array)$args['line_items'][$item_id]['capture_tax']) : array();
+                    $capture_tax = isset($args['line_items'][$item_id]['capture_tax']) ? array_filter(
+                        (array)$args['line_items'][$item_id]['capture_tax']
+                    ) : array();
 
                     if (empty($qty) && empty($capture_total) && empty($args['line_items'][$item_id]['capture_tax'])) {
                         continue;
@@ -291,7 +314,8 @@ class Hipay_Admin_Capture
 
 
                 // Trigger notification emails.
-                if (($remaining_capture_amount - $args['amount']) > 0 || ($order->has_free_item() && ($remaining_capture_items - $capture_item_count) > 0)) {
+                if (($remaining_capture_amount - $args['amount']) > 0 ||
+                    ($order->has_free_item() && ($remaining_capture_items - $capture_item_count) > 0)) {
                     do_action('woocommerce_order_partially_captured', $order->get_id(), $capture->get_id());
                 } else {
                     do_action('woocommerce_order_fully_captured', $order->get_id(), $capture->get_id());
@@ -341,13 +365,20 @@ class Hipay_Admin_Capture
             }
 
             if (!$gateway->supports('captures')) {
-                throw new Exception(__('The payment gateway for this order does not support automatic captures.', 'woocommerce'));
+                throw new Exception(
+                    __('The payment gateway for this order does not support automatic captures.', 'woocommerce')
+                );
             }
 
             $result = $gateway->process_capture($order->get_id(), $amount);
 
             if (!$result) {
-                throw new Exception(__('An error occurred while attempting to create the refund using the payment gateway API.', 'woocommerce'));
+                throw new Exception(
+                    __(
+                        'An error occurred while attempting to create the refund using the payment gateway API.',
+                        'woocommerce'
+                    )
+                );
             }
 
             if (is_wp_error($result)) {
@@ -372,22 +403,25 @@ class Hipay_Admin_Capture
             $payment_gateways = WC()->payment_gateways->payment_gateways();
         }
 
-        if (isset($payment_gateways[$order->get_payment_method()]) && $payment_gateways[$order->get_payment_method()]->supports('refunds')) {
+        if (
+            isset($payment_gateways[$order->get_payment_method()]) &&
+            $payment_gateways[$order->get_payment_method()]->supports('captures')
+        ) {
             $payment_gateway = $payment_gateways[$order->get_payment_method()];
-        }
 
-        if (!in_array($order->get_status(), array('completed', 'canceled'), true)
-            && 0 < $order->get_total() - Hipay_Order_Helper::get_total_captured($order)) {
-            Hipay_Helper::process_template(
-                'html-order-additional.php',
-                'admin',
-                array(
-                    'payment_gateway' => $payment_gateway,
-                    'order' => $order
-                )
-            );
-        }
 
+            if (!in_array($order->get_status(), array('completed', 'canceled'), true)
+                && 0 < $order->get_total() - Hipay_Order_Helper::get_total_captured($order)) {
+                Hipay_Helper::process_template(
+                    'html-order-additional.php',
+                    'admin',
+                    array(
+                        'payment_gateway' => $payment_gateway,
+                        'order' => $order
+                    )
+                );
+            }
+        }
     }
 
     /**
@@ -396,14 +430,17 @@ class Hipay_Admin_Capture
     public function totals_after_total($order_id)
     {
         $order = wc_get_order($order_id);
-        if (Hipay_Order_Helper::get_total_captured($order) > 0 ) {
-        ?>
+        if (Hipay_Order_Helper::get_total_captured($order) > 0) {
+            ?>
             <tr>
                 <td class="label refunded-total"><?php esc_html_e('Captured', 'woocommerce'); ?>:</td>
                 <td width="1%"></td>
-                <td class="total refunded-total"><?php echo wc_price(Hipay_Order_Helper::get_total_captured($order), array('currency' => $order->get_currency())); ?></td
+                <td class="total refunded-total"><?php echo wc_price(
+                        Hipay_Order_Helper::get_total_captured($order),
+                        array('currency' => $order->get_currency())
+                    ); ?></td
             </tr>
-        <?php
+            <?php
         }
     }
 

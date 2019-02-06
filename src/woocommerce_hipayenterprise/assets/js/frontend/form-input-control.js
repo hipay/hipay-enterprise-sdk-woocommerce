@@ -238,7 +238,7 @@ function normalizePrice(price) {
  */
 function checkNotEmptyField(element) {
 
-    if (element.value === null || element.value === "") {
+    if (inputEmpty(element)) {
         errorMessage(element, hipay_i18n.i18nFieldIsMandatory);
         return false;
     }
@@ -248,16 +248,21 @@ function checkNotEmptyField(element) {
 
 /**
  *
+ * @param element
+ * @returns {boolean}
+ */
+function inputEmpty(element) {
+    return element.value === null || element.value === "";
+}
+
+/**
+ *
  * @param {type} element
  * @returns {Boolean}
  */
 function checkIban(element) {
 
-    if (!checkNotEmptyField(element)) {
-        return false;
-    }
-
-    if (!validIBAN(element.value)) {
+    if (!inputEmpty(element) && !validIBAN(element.value)) {
         errorMessage(element, hipay_i18n.i18nBadIban);
         return false;
     }
@@ -271,11 +276,7 @@ function checkIban(element) {
  */
 function checkBic(element) {
 
-    if (!checkNotEmptyField(element)) {
-        return false;
-    }
-
-    if (!validBic(element.value)) {
+    if (!inputEmpty(element) && !validBic(element.value)) {
         errorMessage(element, hipay_i18n.i18nBadBic);
         return false;
     }
@@ -289,11 +290,7 @@ function checkBic(element) {
  */
 function checkCPF(element) {
 
-    if (!checkNotEmptyField(element)) {
-        return false;
-    }
-
-    if (!isCPFValid(element.value)) {
+    if (!inputEmpty(element) && !isCPFValid(element.value)) {
         errorMessage(element, hipay_i18n.i18nBadCPF);
         return false;
     }
@@ -307,11 +304,7 @@ function checkCPF(element) {
  */
 function checkCPNCURP(element) {
 
-    if (!checkNotEmptyField(element)) {
-        return false;
-    }
-
-    if (!isCPNCURPValid(element.value)) {
+    if (!inputEmpty(element) && !isCPNCURPValid(element.value)) {
         errorMessage(element, hipay_i18n.i18nBadCPNCURP);
         return false;
     }
@@ -327,6 +320,10 @@ function typeControlCheck(input) {
     var element = document.getElementById(input.field);
     removeClass(element, "error-input-hp");
 
+    if (input.required && !checkNotEmptyField(element)) {
+        return false;
+    }
+
     switch (input.type) {
         case "iban":
             return checkIban(element);
@@ -336,8 +333,6 @@ function typeControlCheck(input) {
             return checkCPF(element);
         case "curp-cpn":
             return checkCPNCURP(element);
-        default :
-            return checkNotEmptyField(element);
     }
 }
 

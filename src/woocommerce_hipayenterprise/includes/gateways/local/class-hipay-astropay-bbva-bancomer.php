@@ -22,16 +22,16 @@ if (!defined('ABSPATH')) {
  * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
  */
-class Hipay_Aura extends Hipay_Gateway_Local_Abstract
+class Hipay_Astropay_Bbva_Bancomer extends Hipay_Gateway_Local_Abstract
 {
 
     public function __construct()
     {
-        $this->id = 'hipayenterprise_aura';
-        $this->paymentProduct = 'aura';
-        $this->method_title = __('HiPay Enterprise Aura', "hipayenterprise");
-        $this->title = __('Aura', "hipayenterprise");
-        $this->method_description = __('Aura', "hipayenterprise");
+        $this->id = 'hipayenterprise_bbva_bancomer';
+        $this->paymentProduct = 'bbva-bancomer';
+        $this->method_title = __('HiPay Enterprise BBVA Bancomer', "hipayenterprise");
+        $this->title = __('BBVA Bancomer', "hipayenterprise");
+        $this->method_description = __('BBVA Bancomer - Astropay', "hipayenterprise");
 
         parent::__construct();
     }

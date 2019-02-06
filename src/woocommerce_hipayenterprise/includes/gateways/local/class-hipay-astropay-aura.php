@@ -22,16 +22,16 @@ if (!defined('ABSPATH')) {
  * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
  */
-class Hipay_Caixa extends Hipay_Gateway_Local_Abstract
+class Hipay_Astropay_Aura extends Hipay_Gateway_Local_Abstract
 {
 
     public function __construct()
     {
-        $this->id = 'hipayenterprise_caixa';
-        $this->paymentProduct = 'caixa';
-        $this->method_title = __('HiPay Enterprise Caïxa', "hipayenterprise");
-        $this->title = __('Caïxa', "hipayenterprise");
-        $this->method_description = __('Caïxa', "hipayenterprise");
+        $this->id = 'hipayenterprise_aura';
+        $this->paymentProduct = 'aura';
+        $this->method_title = __('HiPay Enterprise Aura', "hipayenterprise");
+        $this->title = __('Aura', "hipayenterprise");
+        $this->method_description = __('Aura  - Astropay', "hipayenterprise");
 
         parent::__construct();
     }

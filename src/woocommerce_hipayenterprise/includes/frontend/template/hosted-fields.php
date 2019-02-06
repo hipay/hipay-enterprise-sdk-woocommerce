@@ -1,4 +1,4 @@
-<div class="hipay-container-hosted-fields" id="hipayHF-container">
+<div class="hipay-container-hosted-fields woocommerce-SavedPaymentMethods-saveNew" id="hipayHF-container">
     <div class="hipay-row">
         <div class="hipay-field-container">
             <div class="hipay-field" id="hipay-field-cardHolder"></div>
@@ -6,6 +6,7 @@
                 <?php _e('Fullname', "hipayenterprise"); ?>
             </label>
             <div class="hipay-baseline"></div>
+            <div class="hipay-field-error" data-hipay-id='hipay-field-error-cardHolder'></div>
         </div>
     </div>
     <div class="hipay-row">
@@ -15,6 +16,7 @@
                 <?php _e('Card Number', "hipayenterprise"); ?>
             </label>
             <div class="hipay-baseline"></div>
+            <div class="hipay-field-error" data-hipay-id='hipay-field-error-cardNumber'></div>
         </div>
     </div>
     <div class="hipay-row">
@@ -24,6 +26,7 @@
                 <?php _e('Expiry Date', "hipayenterprise"); ?>
             </label>
             <div class="hipay-baseline"></div>
+            <div class="hipay-field-error" data-hipay-id='hipay-field-error-expiryDate'></div>
         </div>
         <div class="hipay-field-container hipay-field-container-half">
             <div class="hipay-field" id="hipay-field-cvc"></div>
@@ -31,6 +34,7 @@
                 <?php _e('CVC', "hipayenterprise"); ?>
             </label>
             <div class="hipay-baseline"></div>
+            <div class="hipay-field-error" data-hipay-id='hipay-field-error-cvc'></div>
         </div>
     </div>
     <div class="hipay-row">
@@ -46,6 +50,9 @@
     <input type="hidden" class="payment-method-hidden-fields" id="payment-product" name="payment-product" value=""/>
     <input type="hidden" class="payment-method-hidden-fields" id="card-token" name="card-token" value=""/>
     <input type="hidden" class="payment-method-hidden-fields" id="card-holder" name="card-holder" value=""/>
+    <input type="hidden" class="payment-method-hidden-fields" id="card-pan" name="card-pan" value=""/>
+    <input type="hidden" class="payment-method-hidden-fields" id="card-expiry-month" name="card-expiry-month" value=""/>
+    <input type="hidden" class="payment-method-hidden-fields" id="card-expiry-year" name="card-expiry-year" value=""/>
 </div>
 <script type="text/javascript">
     /* <![CDATA[ */

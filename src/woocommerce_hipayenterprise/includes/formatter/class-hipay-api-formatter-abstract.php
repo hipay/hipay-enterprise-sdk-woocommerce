@@ -74,6 +74,10 @@ abstract class Hipay_Api_Formatter_Abstact implements Hipay_Api_Formatter
             "display_iframe" => $iframe,
         );
 
+        if (isset($this->params["createOneClick"]) && $this->params["createOneClick"]) {
+            $customDataHipay["createOneClick"] = true;
+        }
+
         $customDataHipay = apply_filters('hipay_wc_request_custom_data', $customDataHipay, $order, $params);
 
         $request->custom_data = json_encode($customDataHipay);

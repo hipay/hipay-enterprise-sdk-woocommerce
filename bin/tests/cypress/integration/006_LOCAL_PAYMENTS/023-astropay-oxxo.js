@@ -6,6 +6,9 @@ describe('Pay by Oxxo', function () {
 
         cy.logToAdmin();
         cy.goToPaymentsTab();
+        cy.goToAdminHipayConfig();
+        cy.activateAstropayMethods();
+        cy.goToPaymentsTab();
         cy.activatePaymentMethods("oxxo");
         cy.switchWooCurrency("MXN");
         cy.adminLogOut();

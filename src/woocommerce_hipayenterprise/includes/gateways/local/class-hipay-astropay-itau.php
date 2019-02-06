@@ -22,16 +22,16 @@ if (!defined('ABSPATH')) {
  * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
  */
-class Hipay_Oxxo extends Hipay_Gateway_Local_Abstract
+class Hipay_Astropay_Itau extends Hipay_Gateway_Local_Abstract
 {
 
     public function __construct()
     {
-        $this->id = 'hipayenterprise_oxxo';
-        $this->paymentProduct = 'oxxo';
-        $this->method_title = __('HiPay Enterprise Oxxo', "hipayenterprise");
-        $this->title = __('Oxxo', "hipayenterprise");
-        $this->method_description = __('Oxxo', "hipayenterprise");
+        $this->id = 'hipayenterprise_itau';
+        $this->paymentProduct = 'itau';
+        $this->method_title = __('HiPay Enterprise Itau', "hipayenterprise");
+        $this->title = __('Itau', "hipayenterprise");
+        $this->method_description = __('Itau - Astropay', "hipayenterprise");
 
         parent::__construct();
     }

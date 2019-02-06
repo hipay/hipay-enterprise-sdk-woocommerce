@@ -52,6 +52,11 @@ Cypress.Commands.add("switchWooCurrency", (currency) => {
 /**
  *  Go to Hipay configuration
  */
+Cypress.Commands.add("activateAstropayMethods", () => {
+    cy.get('#enableAstropay').check({force: true});
+    cy.get('button[name="save"]').click();
+});
+
 Cypress.Commands.add("goToAdminHipayConfig", () => {
     cy.get('[data-gateway_id="hipayenterprise_credit_card"] > .name > .wc-payment-gateway-method-title').click({force: true});
 });

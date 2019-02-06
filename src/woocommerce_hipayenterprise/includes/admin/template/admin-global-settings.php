@@ -194,7 +194,7 @@
             </div>
         </div>
     </div>
-    <div class="form-group hidden">
+    <div class="form-group">
         <label class="control-label col-lg-2"><?php _e('Use Oneclick', "hipayenterprise"); ?></label>
         <div class="col-lg-8">
             <input class="form-control" type="checkbox" name="card_token"

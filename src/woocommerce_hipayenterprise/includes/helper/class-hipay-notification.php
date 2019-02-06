@@ -151,12 +151,27 @@ class Hipay_Notification
                     $this->orderHandler->paymentOnHold(
                         __("Authorization successful for transaction.", "hipayenterprise")
                     );
-                    update_post_meta( $this->order ->get_id(), '_transaction_id', $this->transaction->getTransactionReference());
+
+                    $customData = $this->transaction->getCustomData();
+                    if (
+                        isset($customData["createOneClick"])
+                        && $customData["createOneClick"]
+                        && $this->CardTypeAllowRecurring($this->transaction->getPaymentProduct())
+                    ) {
+                        Hipay_Token_Helper::createTokenFromTransaction($this->transaction, $this->order);
+                    }
+
+                    update_post_meta(
+                        $this->order->get_id(),
+                        '_transaction_id',
+                        $this->transaction->getTransactionReference()
+                    );
                     break;
                 case TransactionStatus::CAPTURED: //118
                 case TransactionStatus::CAPTURE_REQUESTED: //117
                     if ($this->transaction->getCapturedAmount() < $this->transaction->getAuthorizedAmount()) {
-                        $this->orderHandler->paymentPartiallyCaptured( $this->transaction,
+                        $this->orderHandler->paymentPartiallyCaptured(
+                            $this->transaction,
                             __(
                                 "Payment partially captured, amount:." . " " . $this->transaction->getCapturedAmount(),
                                 "hipayenterprise"
@@ -170,7 +185,8 @@ class Hipay_Notification
                     }
                     break;
                 case TransactionStatus::PARTIALLY_CAPTURED: //119
-                    $this->orderHandler->paymentPartiallyCaptured( $this->transaction,
+                    $this->orderHandler->paymentPartiallyCaptured(
+                        $this->transaction,
                         __(
                             "Payment partially captured, amount:." . " " . $this->transaction->getCapturedAmount(),
                             "hipayenterprise"
@@ -178,7 +194,7 @@ class Hipay_Notification
                     );
                     break;
                 case TransactionStatus::REFUND_REQUESTED: //124
-                    $this->orderHandler->addNote(__("Refund requested"));
+                    $this->orderHandler->addNote(__("Refund requested", 'hipayenterprise'));
                     break;
                 case TransactionStatus::REFUNDED: //125
                     $this->orderHandler->paymentRefunded("Payment refunded");
@@ -206,5 +222,11 @@ class Hipay_Notification
             $this->plugin->logs->logException($e);
             throw new Exception($e->getMessage());
         }
+    }
+
+    private function CardTypeAllowRecurring($brand)
+    {
+        $configCC = $this->plugin->confHelper->getPaymentCreditCard()[strtolower($brand)];
+        return isset($configCC["recurring"]) && $configCC["recurring"];
     }
 }

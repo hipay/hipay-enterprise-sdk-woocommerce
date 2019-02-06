@@ -225,3 +225,12 @@ Cypress.Commands.add("waitOrderUpdate", () => {
     cy.route('POST', "/?wc-ajax=update_order_review").as("updateOrder");
     cy.wait("@updateOrder");
 });
+
+Cypress.Commands.add("customerLogIn", () => {
+    cy.fixture('customerFR').then((customer) => {
+        cy.visit('/my-account/');
+        cy.get('#username').type(customer.email);
+        cy.get('#password').type(customer.password);
+        cy.get('[name="login"]').click();
+    });
+});

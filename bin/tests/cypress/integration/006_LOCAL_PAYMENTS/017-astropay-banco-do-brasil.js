@@ -6,6 +6,9 @@ describe('Pay by Banco Do Brasil', function () {
 
         cy.logToAdmin();
         cy.goToPaymentsTab();
+        cy.goToAdminHipayConfig();
+        cy.activateAstropayMethods();
+        cy.goToPaymentsTab();
         cy.activatePaymentMethods("banco_do_brasil");
         cy.switchWooCurrency("BRL");
         cy.adminLogOut();

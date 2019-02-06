@@ -6,6 +6,9 @@ describe('Pay by Itau', function () {
 
         cy.logToAdmin();
         cy.goToPaymentsTab();
+        cy.goToAdminHipayConfig();
+        cy.activateAstropayMethods();
+        cy.goToPaymentsTab();
         cy.activatePaymentMethods("itau");
         cy.switchWooCurrency("BRL");
         cy.adminLogOut();

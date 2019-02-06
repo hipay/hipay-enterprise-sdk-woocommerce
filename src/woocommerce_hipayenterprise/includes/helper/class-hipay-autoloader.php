@@ -45,11 +45,12 @@ class Hipay_Autoloader
         WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-log.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-notification.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-order-handler.php',
+        WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-payment-token-cc-hipay.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-order-helper.php',
+        WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-token-helper.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-admin-assets.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-config.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-settings-handler.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-helper.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-helper.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-transactions.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-operations.php',
@@ -124,6 +125,7 @@ class Hipay_Autoloader
             }
         }
 
+        sort($filePaths);
         return $filePaths;
     }
 

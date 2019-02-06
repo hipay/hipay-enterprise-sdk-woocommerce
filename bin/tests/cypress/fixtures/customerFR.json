@@ -6,5 +6,6 @@
   "city": "Nantes",
   "zipCode": "44000",
   "country": "FR",
-  "phone": "0210236596"
+  "phone": "0210236596",
+  "password": "password123"
 }

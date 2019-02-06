@@ -6,6 +6,9 @@ describe('Pay by Banamex', function () {
 
         cy.logToAdmin();
         cy.goToPaymentsTab();
+        cy.goToAdminHipayConfig();
+        cy.activateAstropayMethods();
+        cy.goToPaymentsTab();
         cy.activatePaymentMethods("banamex");
         cy.switchWooCurrency("MXN");
         cy.adminLogOut();

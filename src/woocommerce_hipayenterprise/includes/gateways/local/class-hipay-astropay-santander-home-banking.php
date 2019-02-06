@@ -22,16 +22,16 @@ if (!defined('ABSPATH')) {
  * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
  */
-class Hipay_Boleto_Bancario extends Hipay_Gateway_Local_Abstract
+class Hipay_Astropay_Santander_Home_Banking extends Hipay_Gateway_Local_Abstract
 {
 
     public function __construct()
     {
-        $this->id = 'hipayenterprise_boleto_bancario';
-        $this->paymentProduct = 'boleto-bancario';
-        $this->method_title = __('HiPay Enterprise Boleto bancario', "hipayenterprise");
-        $this->title = __('Boleto bancario', "hipayenterprise");
-        $this->method_description = __('Boleto bancario', "hipayenterprise");
+        $this->id = 'hipayenterprise_santander_home_banking';
+        $this->paymentProduct = 'santander-home-banking';
+        $this->method_title = __('HiPay Enterprise Santander HomeBanking', "hipayenterprise");
+        $this->title = __('Santander HomeBanking', "hipayenterprise");
+        $this->method_description = __('Santander HomeBanking - Astropay', "hipayenterprise");
 
         parent::__construct();
     }

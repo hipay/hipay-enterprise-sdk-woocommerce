@@ -6,6 +6,9 @@ describe('Pay by Boleto Bancario', function () {
 
         cy.logToAdmin();
         cy.goToPaymentsTab();
+        cy.goToAdminHipayConfig();
+        cy.activateAstropayMethods();
+        cy.goToPaymentsTab();
         cy.activatePaymentMethods("boleto_bancario");
         cy.switchWooCurrency("BRL");
         cy.adminLogOut();

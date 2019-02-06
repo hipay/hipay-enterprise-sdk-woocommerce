@@ -6,6 +6,9 @@ describe('Pay by Santander Cash', function () {
 
         cy.logToAdmin();
         cy.goToPaymentsTab();
+        cy.goToAdminHipayConfig();
+        cy.activateAstropayMethods();
+        cy.goToPaymentsTab();
         cy.activatePaymentMethods("santander_cash");
         cy.switchWooCurrency("MXN");
         cy.adminLogOut();
