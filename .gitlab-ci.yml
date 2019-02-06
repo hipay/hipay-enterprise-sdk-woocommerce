@@ -65,7 +65,7 @@ test-cypress-1:
     - curl --retry 10 --retry-delay 20 -v http:\/\/${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}-web/
     - cd bin/tests
     - yarn install
-    - bash ./run_test.sh -p 0 -e $EXCLUDED_TEST_FILES --config baseUrl=http://${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}-web/ --env $CYPRESS_ENV
+    - bash /tools/run-cypress-test.sh -f $TESTS_FOLDERS_1 -e $EXCLUDED_TEST_FILES --config baseUrl=http://${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}-web/ --env $CYPRESS_ENV
   after_script:
     - /tools/clean-job.sh $PROJECT_NAME_TEST_1 docker-compose.test.yml wordpress ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
 
@@ -82,7 +82,7 @@ test-cypress-2:
     - curl --retry 10 --retry-delay 20 -v http:\/\/${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}-web/
     - cd bin/tests
     - yarn install
-    - bash ./run_test.sh -p 1 -e $EXCLUDED_TEST_FILES --config baseUrl=http://${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}-web/ --env $CYPRESS_ENV
+    - bash /tools/run-cypress-test.sh -f $TESTS_FOLDERS_2 -e $EXCLUDED_TEST_FILES --config baseUrl=http://${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}-web/ --env $CYPRESS_ENV
   after_script:
     - /tools/clean-job.sh $PROJECT_NAME_TEST_2 docker-compose.test.yml wordpress ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
 

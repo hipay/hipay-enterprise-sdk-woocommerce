@@ -78,9 +78,16 @@ class Hipay_Api_Request_Handler
      */
     public function handleCreditCard($params)
     {
-        if ($this->plugin->confHelper->getPaymentGlobal()["operating_mode"] == OperatingMode::HOSTED_FIELDS) {
+
+        $mode = $this->plugin->confHelper->getPaymentGlobal()["operating_mode"];
+
+        if (isset($params["oneClick"]) && $params["oneClick"]) {
+            $mode = OperatingMode::HOSTED_FIELDS;
+        }
+
+        if ($mode == OperatingMode::HOSTED_FIELDS) {
             return $this->handleDirectOrder($params, true);
-        } else if ($this->plugin->confHelper->getPaymentGlobal()["operating_mode"] == OperatingMode::HOSTED_PAGE) {
+        } else if ($mode == OperatingMode::HOSTED_PAGE) {
             return $this->handleHostedPayment($params);
         }
     }
