@@ -94,6 +94,17 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
 
         $this->addActions();
 
+        if ($this->isAvailable() && is_page() && is_checkout() && !is_order_received_page()) {
+
+            wp_enqueue_script(
+                'hipay-js-form-input-control',
+                plugins_url('/assets/js/frontend/form-input-control.js', WC_HIPAYENTERPRISE_BASE_FILE),
+                array(),
+                'all',
+                false
+            );
+        }
+
         wp_enqueue_script(
             'hipay-js-hosted-fields-sdk',
             'https://libs.hipay.com/js/sdkjs.js',
