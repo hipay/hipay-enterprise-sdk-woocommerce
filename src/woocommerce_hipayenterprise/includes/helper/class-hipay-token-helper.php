@@ -53,7 +53,7 @@ class Hipay_Token_Helper
         $values["user_id"] = $order->get_user_id();
         $values["gateway_id"] = $order->get_payment_method();
 
-        self::createToken();
+        self::createToken($values);
     }
 
     /**

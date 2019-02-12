@@ -172,7 +172,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
          */
         public function payment_fields()
         {
-            if ($this->supports('tokenization') && is_checkout()) {
+            if ($this->supports('tokenization') && is_checkout() && is_user_logged_in()) {
                 $this->tokenization_script();
                 $this->saved_payment_methods();
                 $this->form();
@@ -524,7 +524,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
         public function add_payment_method()
         {
 
-            if ($this->confHelper->getPaymentGlobal()["card_token"]) {
+            if (!$this->confHelper->getPaymentGlobal()["card_token"]) {
                 return false;
             }
 
