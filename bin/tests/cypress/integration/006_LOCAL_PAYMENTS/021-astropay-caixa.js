@@ -6,6 +6,9 @@ describe('Pay by Caïxa', function () {
 
         cy.logToAdmin();
         cy.goToPaymentsTab();
+        cy.goToAdminHipayConfig();
+        cy.activateAstropayMethods();
+        cy.goToPaymentsTab();
         cy.activatePaymentMethods("caixa");
         cy.switchWooCurrency("BRL");
         cy.adminLogOut();

@@ -5,6 +5,9 @@ describe('Pay by Aura', function () {
     before(function () {
         cy.logToAdmin();
         cy.goToPaymentsTab();
+        cy.goToAdminHipayConfig();
+        cy.activateAstropayMethods();
+        cy.goToPaymentsTab();
         cy.activatePaymentMethods("aura");
         cy.switchWooCurrency("BRL");
         cy.adminLogOut();

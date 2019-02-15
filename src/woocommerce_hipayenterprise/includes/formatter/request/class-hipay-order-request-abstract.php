@@ -50,7 +50,10 @@ abstract class Hipay_Order_Request_Abstract extends Hipay_Api_Formatter_Abstact
         $this->setCustomData($orderRequest, $this->order, $this->params);
 
         $orderRequest->orderid = $this->order->get_id() . '-' . time();
-        if ($this->plugin->confHelper->getPaymentGlobal()["capture_mode"] === CaptureMode::AUTOMATIC) {
+        if (
+            $this->plugin->confHelper->getPaymentGlobal()["capture_mode"] === CaptureMode::AUTOMATIC
+            || $this->params["forceSalesMode"]
+        ) {
             $orderRequest->operation = "Sale";
         } else {
             $orderRequest->operation = "Authorization";

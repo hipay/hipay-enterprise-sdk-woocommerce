@@ -125,6 +125,7 @@ class Hipay_Autoloader
             }
         }
 
+        sort($filePaths);
         return $filePaths;
     }
 

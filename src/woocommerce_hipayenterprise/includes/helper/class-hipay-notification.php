@@ -153,7 +153,11 @@ class Hipay_Notification
                     );
 
                     $customData = $this->transaction->getCustomData();
-                    if (isset($customData["createOneClick"]) && $customData["createOneClick"]) {
+                    if (
+                        isset($customData["createOneClick"])
+                        && $customData["createOneClick"]
+                        && $this->CardTypeAllowRecurring($this->transaction->getPaymentProduct())
+                    ) {
                         Hipay_Token_Helper::createTokenFromTransaction($this->transaction, $this->order);
                     }
 
@@ -190,7 +194,7 @@ class Hipay_Notification
                     );
                     break;
                 case TransactionStatus::REFUND_REQUESTED: //124
-                    $this->orderHandler->addNote(__("Refund requested"));
+                    $this->orderHandler->addNote(__("Refund requested", 'hipayenterprise'));
                     break;
                 case TransactionStatus::REFUNDED: //125
                     $this->orderHandler->paymentRefunded("Payment refunded");
@@ -218,5 +222,11 @@ class Hipay_Notification
             $this->plugin->logs->logException($e);
             throw new Exception($e->getMessage());
         }
+    }
+
+    private function CardTypeAllowRecurring($brand)
+    {
+        $configCC = $this->plugin->confHelper->getPaymentCreditCard()[strtolower($brand)];
+        return isset($configCC["recurring"]) && $configCC["recurring"];
     }
 }

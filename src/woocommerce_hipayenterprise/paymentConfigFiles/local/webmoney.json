@@ -8,8 +8,8 @@
     },
     "frontPosition": 29,
     "activated": 0,
-    "canRefund": 1,
-    "canManualCapture": 1,
+    "canRefund": 0,
+    "canManualCapture": 0,
     "currencies": [
       "RUB"
     ],

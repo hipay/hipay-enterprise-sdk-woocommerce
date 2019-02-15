@@ -32,6 +32,7 @@ class WC_Payment_Token_CC_HiPay extends WC_Payment_Token
         'expiry_month' => '',
         'card_type' => '',
         'card_holder' => '',
+        'payment_product' => '',
     );
 
     public function get_display_name($deprecated = '')
@@ -136,6 +137,16 @@ class WC_Payment_Token_CC_HiPay extends WC_Payment_Token
     public function set_pan($pan)
     {
         $this->set_prop('pan', $pan);
+    }
+
+    public function get_payment_product($context = 'view')
+    {
+        return $this->get_prop('payment_product', $context);
+    }
+
+    public function set_payment_product($pan)
+    {
+        $this->set_prop('payment_product', $pan);
     }
 
     public static function wc_get_account_saved_payment_methods_list_item_cc_hipay($item, $payment_token)

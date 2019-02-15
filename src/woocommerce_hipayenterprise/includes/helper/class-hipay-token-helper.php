@@ -50,6 +50,7 @@ class Hipay_Token_Helper
         $values["expiry_month"] = $transaction->getPaymentMethod()->getCardExpiryMonth();
         $values["brand"] = $transaction->getPaymentMethod()->getBrand();
         $values["card_holder"] = $transaction->getPaymentMethod()->getCardHolder();
+        $values["payment_product"] = $transaction->getPaymentProduct();
         $values["user_id"] = $order->get_user_id();
         $values["gateway_id"] = $order->get_payment_method();
 
@@ -76,6 +77,7 @@ class Hipay_Token_Helper
             $token->set_card_holder($values["card_holder"]);
             $token->set_user_id($values["user_id"]);
             $token->set_gateway_id($values["gateway_id"]);
+            $token->set_payment_product($values["payment_product"]);
 
             $token->save();
         }
@@ -93,7 +95,7 @@ class Hipay_Token_Helper
 
             if ($token !== null && $token->get_user_id() === get_current_user_id()) {
                 $params["cardtoken"] = $token->get_token();
-                $params["paymentProduct"] = $token->get_card_type();
+                $params["paymentProduct"] = $token->get_payment_product();
                 $params["card_holder"] = $token->get_card_holder();
                 $params["oneClick"] = true;
             } else {

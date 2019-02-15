@@ -6,6 +6,9 @@ describe('Pay by BBVA Bancomer', function () {
 
         cy.logToAdmin();
         cy.goToPaymentsTab();
+        cy.goToAdminHipayConfig();
+        cy.activateAstropayMethods();
+        cy.goToPaymentsTab();
         cy.activatePaymentMethods("bbva_bancomer");
         cy.switchWooCurrency("MXN");
         cy.adminLogOut();

@@ -6,6 +6,9 @@ describe('Pay by Santander HomeBanking', function () {
 
         cy.logToAdmin();
         cy.goToPaymentsTab();
+        cy.goToAdminHipayConfig();
+        cy.activateAstropayMethods();
+        cy.goToPaymentsTab();
         cy.activatePaymentMethods("santander_home_banking");
         cy.switchWooCurrency("BRL");
         cy.adminLogOut();

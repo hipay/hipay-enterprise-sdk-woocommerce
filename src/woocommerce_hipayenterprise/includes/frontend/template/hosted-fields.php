@@ -6,6 +6,7 @@
                 <?php _e('Fullname', "hipayenterprise"); ?>
             </label>
             <div class="hipay-baseline"></div>
+            <div class="hipay-field-error" data-hipay-id='hipay-field-error-cardHolder'></div>
         </div>
     </div>
     <div class="hipay-row">
@@ -15,6 +16,7 @@
                 <?php _e('Card Number', "hipayenterprise"); ?>
             </label>
             <div class="hipay-baseline"></div>
+            <div class="hipay-field-error" data-hipay-id='hipay-field-error-cardNumber'></div>
         </div>
     </div>
     <div class="hipay-row">
@@ -24,6 +26,7 @@
                 <?php _e('Expiry Date', "hipayenterprise"); ?>
             </label>
             <div class="hipay-baseline"></div>
+            <div class="hipay-field-error" data-hipay-id='hipay-field-error-expiryDate'></div>
         </div>
         <div class="hipay-field-container hipay-field-container-half">
             <div class="hipay-field" id="hipay-field-cvc"></div>
@@ -31,6 +34,7 @@
                 <?php _e('CVC', "hipayenterprise"); ?>
             </label>
             <div class="hipay-baseline"></div>
+            <div class="hipay-field-error" data-hipay-id='hipay-field-error-cvc'></div>
         </div>
     </div>
     <div class="hipay-row">

@@ -84,8 +84,42 @@ jQuery(function ($) {
             hostedFieldsInstance = this.hipaySDK.create("card", this.configHostedFields);
             var self = this;
 
-            hostedFieldsInstance.on("change", function (data) {
-                self.handleError(data.valid, data.error);
+            hostedFieldsInstance.on("blur", function (data) {
+                // Get error container
+                let domElement = document.querySelector(
+                    `[data-hipay-id='hipay-field-error-${data.element}']`
+                );
+
+                // Finish function if no error DOM element
+                if (!domElement) {
+                    return;
+                }
+
+                // If not valid & not empty add error
+                if (!data.validity.valid || data.validity.empty) {
+                    domElement.innerText = data.validity.error;
+                } else {
+                    domElement.innerText = '';
+                }
+            });
+
+            hostedFieldsInstance.on("inputChange", function (data) {
+                // Get error container
+                let domElement = document.querySelector(
+                    `[data-hipay-id='hipay-field-error-${data.element}']`
+                );
+
+                // Finish function if no error DOM element
+                if (!domElement) {
+                    return;
+                }
+
+                // If not valid & not potentiallyValid add error (input is focused)
+                if (!data.validity.valid && !data.validity.potentiallyValid) {
+                    domElement.innerText = data.validity.error;
+                } else {
+                    domElement.innerText = '';
+                }
             });
 
             hostedFieldsInstance.on("ready", function () {
@@ -133,8 +167,8 @@ jQuery(function ($) {
          *
          * @returns {boolean}
          */
-        isHipayHostedFieldsSelected: function () {
-            return $('input[name="payment_method"]:checked').val() === hipay_config.hipay_gateway_id;
+        isCreditCardSelected: function () {
+            return $('input[name="payment_method"]:checked').val() === 'hipayenterprise_credit_card';
         },
 
         /**
@@ -181,7 +215,8 @@ jQuery(function ($) {
 
         isOneClick: function () {
             return $('input[name="wc-hipayenterprise_credit_card-payment-token"]:checked').val() !== undefined
-                && $('input[name="wc-hipayenterprise_credit_card-payment-token"]:checked').val() !== 'new';
+                && $('input[name="wc-hipayenterprise_credit_card-payment-token"]:checked').val() !== 'new'
+                && this.isCreditCardSelected();
         },
 
         submitOrder: function (e, hostedFields) {
@@ -192,7 +227,7 @@ jQuery(function ($) {
 
                 if (hostedFields.isOneClick()) {
                     hostedFields.processPayment();
-                } else if (hostedFields.containerExist() && hostedFields.isHipayHostedFieldsSelected()) {
+                } else if (hostedFields.containerExist() && hostedFields.isCreditCardSelected()) {
                     hostedFields.handleTokenization();
                 } else {
                     hostedFields.handleLocalPayments();

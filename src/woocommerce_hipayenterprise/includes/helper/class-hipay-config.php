@@ -168,6 +168,7 @@ class Hipay_Config
                     SettingsField::PAYMENT_GLOBAL_LOGS_INFOS => 1,
                     "send_url_notification" => 1,
                     "ccDisplayName" => array("fr" => "Carte de crédit", "en" => "Credit card"),
+                    "enableAstropay" => 0
                 ),
                 "credit_card" => array(),
                 "local_payment" => array()

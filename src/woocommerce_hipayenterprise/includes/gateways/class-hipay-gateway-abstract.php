@@ -125,11 +125,11 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
             'hipay-js-front',
             'hipay_i18n',
             array(
-                "i18nFieldIsMandatory" => __('This field is mandatory'),
-                "i18nBadIban" => __('This is not a correct IBAN'),
-                "i18nBadBic" => __('This is not a correct BIC'),
-                "i18nBadCPF" => __('This is not a correct CPF'),
-                "i18nBadCPNCURP" => __('This is not a correct CPN/CURP'),
+                "i18nFieldIsMandatory" => __('This field is mandatory', 'hipayenterprise'),
+                "i18nBadIban" => __('This is not a correct IBAN', 'hipayenterprise'),
+                "i18nBadBic" => __('This is not a correct BIC', 'hipayenterprise'),
+                "i18nBadCPF" => __('This is not a correct CPF', 'hipayenterprise'),
+                "i18nBadCPNCURP" => __('This is not a correct CPN/CURP', 'hipayenterprise'),
             )
         );
     }
@@ -220,5 +220,66 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
         extract($args);
         $file = WC_HIPAYENTERPRISE_PATH . 'includes/' . $type . '/template/' . $template;
         include $file;
+    }
+
+    /**
+     * @param int $order_id
+     * @param null $amount
+     * @param string $reason
+     * @return array|bool
+     * @throws Exception
+     */
+    public function process_refund($order_id, $amount = null, $reason = "")
+    {
+        try {
+            $this->logs->logInfos(" # Process Refund for  " . $order_id);
+
+            $redirect = $this->apiRequestHandler->handleMaintenance(
+                \HiPay\Fullservice\Enum\Transaction\Operation::REFUND,
+                array(
+                    "order_id" => $order_id,
+                    "amount" => (float)$amount
+                )
+            );
+
+            return array(
+                'result' => 'success',
+                'redirect' => $redirect,
+            );
+        } catch (Hipay_Payment_Exception $e) {
+            return $this->handlePaymentError($e);
+        }
+    }
+
+    /**
+     * Manual Capture
+     *
+     * @param $order_id
+     * @param null $amount
+     * @param string $reason
+     * @return array
+     * @throws Exception
+     */
+    public function process_capture($order_id, $amount = null, $reason = "")
+    {
+        try {
+            $this->logs->logInfos(" # Process Manual Capture for  " . $order_id);
+
+            $redirect = $this->apiRequestHandler->handleMaintenance(
+                \HiPay\Fullservice\Enum\Transaction\Operation::CAPTURE,
+                array(
+                    "order_id" => $order_id,
+                    "amount" => (float)$amount
+                )
+            );
+
+            $this->logs->logInfos(" # End Process Manual Capture for  " . $order_id);
+            return array(
+                'result' => 'success',
+                'redirect' => $redirect,
+            );
+        } catch (Hipay_Payment_Exception $e) {
+            return $this->handlePaymentError($e);
+        }
     }
 }
