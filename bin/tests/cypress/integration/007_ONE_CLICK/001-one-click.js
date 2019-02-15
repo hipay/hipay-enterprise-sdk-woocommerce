@@ -88,17 +88,17 @@ describe('Pay by credit card One click', function () {
         cy.saveLastOrderId();
     });
 
-    it('Add card in My account', function () {
-        cy.customerLogIn();
-        cy.get('.woocommerce-MyAccount-navigation-link--payment-methods').click();
-        cy.get('.woocommerce-MyAccount-content > a').click();
-
-        cy.get('[for="payment_method_hipayenterprise_credit_card"]').click({force: true});
-        cy.get('#hipay-field-cardHolder > iframe');
-        cy.wait(3000);
-        cy.fill_hostedfield_card('mastercard_ok');
-        cy.get('#place_order').click();
-        cy.get(".woocommerce-MyAccount-paymentMethods > tbody > tr:last-child > td:nth-child(1)")
-            .contains("MasterCard ending in 539999******9999");
-    });
+    // it('Add card in My account', function () {
+    //     cy.customerLogIn();
+    //     cy.get('.woocommerce-MyAccount-navigation-link--payment-methods').click();
+    //     cy.get('.woocommerce-MyAccount-content > a').click();
+    //
+    //     cy.get('[for="payment_method_hipayenterprise_credit_card"]').click({force: true});
+    //     cy.get('#hipay-field-cardHolder > iframe');
+    //     cy.wait(3000);
+    //     cy.fill_hostedfield_card('mastercard_ok');
+    //     cy.get('#place_order').click();
+    //     cy.get(".woocommerce-MyAccount-paymentMethods > tbody > tr:last-child > td:nth-child(1)")
+    //         .contains("MasterCard ending in 539999******9999");
+    // });
 });

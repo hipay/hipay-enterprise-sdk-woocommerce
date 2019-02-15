@@ -125,11 +125,11 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
             'hipay-js-front',
             'hipay_i18n',
             array(
-                "i18nFieldIsMandatory" => __('This field is mandatory', 'hipayenterprise'),
-                "i18nBadIban" => __('This is not a correct IBAN', 'hipayenterprise'),
-                "i18nBadBic" => __('This is not a correct BIC', 'hipayenterprise'),
-                "i18nBadCPF" => __('This is not a correct CPF', 'hipayenterprise'),
-                "i18nBadCPNCURP" => __('This is not a correct CPN/CURP', 'hipayenterprise'),
+                "i18nFieldIsMandatory" => __('This field is mandatory.', 'hipayenterprise'),
+                "i18nBadIban" => __('This is not a correct IBAN.', 'hipayenterprise'),
+                "i18nBadBic" => __('This is not a correct BIC.', 'hipayenterprise'),
+                "i18nBadCPF" => __('This is not a correct CPF.', 'hipayenterprise'),
+                "i18nBadCPNCURP" => __('This is not a correct CPN/CURP.', 'hipayenterprise'),
             )
         );
     }

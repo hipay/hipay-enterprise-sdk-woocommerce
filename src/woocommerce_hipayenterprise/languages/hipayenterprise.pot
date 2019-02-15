@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce HiPay Enterprise\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-14 14:56+0000\n"
+"POT-Creation-Date: 2019-02-15 15:03+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -132,23 +132,23 @@ msgid " Please do not refresh the page during the process."
 msgstr ""
 
 #: includes/gateways/class-hipay-gateway-abstract.php:128
-msgid "This field is mandatory"
+msgid "This field is mandatory."
 msgstr ""
 
 #: includes/gateways/class-hipay-gateway-abstract.php:129
-msgid "This is not a correct IBAN"
+msgid "This is not a correct IBAN."
 msgstr ""
 
 #: includes/gateways/class-hipay-gateway-abstract.php:130
-msgid "This is not a correct BIC"
+msgid "This is not a correct BIC."
 msgstr ""
 
 #: includes/gateways/class-hipay-gateway-abstract.php:131
-msgid "This is not a correct CPF"
+msgid "This is not a correct CPF."
 msgstr ""
 
 #: includes/gateways/class-hipay-gateway-abstract.php:132
-msgid "This is not a correct CPN/CURP"
+msgid "This is not a correct CPN/CURP."
 msgstr ""
 
 #: includes/gateways/class-gateway-hipay.php:52
@@ -243,6 +243,31 @@ msgstr ""
 #: includes/gateways/local/class-hipay-sdd.php:33
 #: includes/gateways/local/class-hipay-sdd.php:34
 msgid "SEPA Direct Debit"
+msgstr ""
+
+#: includes/gateways/local/class-hipay-sdd.php:42
+msgid "Gender"
+msgstr ""
+
+#: includes/gateways/local/class-hipay-sdd.php:43
+msgid "Firstname"
+msgstr ""
+
+#: includes/gateways/local/class-hipay-sdd.php:44
+msgid "Lastname"
+msgstr ""
+
+#: includes/gateways/local/class-hipay-sdd.php:45
+#: includes/gateways/local/class-hipay-sdd.php:46
+msgid "Bank name"
+msgstr ""
+
+#: includes/gateways/local/class-hipay-sdd.php:47
+msgid "IBAN"
+msgstr ""
+
+#: includes/gateways/local/class-hipay-sdd.php:48
+msgid "BIC"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-astropay-itau.php:32
@@ -1176,15 +1201,15 @@ msgstr ""
 msgid "Fullname"
 msgstr ""
 
-#: includes/frontend/template/hosted-fields.php:15
+#: includes/frontend/template/hosted-fields.php:16
 msgid "Card Number"
 msgstr ""
 
-#: includes/frontend/template/hosted-fields.php:24
+#: includes/frontend/template/hosted-fields.php:26
 msgid "Expiry Date"
 msgstr ""
 
-#: includes/frontend/template/hosted-fields.php:31
+#: includes/frontend/template/hosted-fields.php:34
 msgid "CVC"
 msgstr ""
 
@@ -1194,6 +1219,13 @@ msgstr ""
 
 #: includes/frontend/template/local-payment.php:12
 msgid "Mrs"
+msgstr ""
+
+#: includes/frontend/template/local-payment.php:30
+#: includes/frontend/template/hosted-page.php:3
+msgid ""
+"You will be redirected to an external payment page. Please do not refresh "
+"the page during the process."
 msgstr ""
 
 #. Name of the plugin

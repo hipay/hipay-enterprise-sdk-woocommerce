@@ -1,5 +1,5 @@
 <?php foreach ($additionalFields['formFields'] as $fieldName => $field): ?>
-    <label> <?php echo $field["label"]["fr"]; ?></label>
+    <label> <?php echo _e($field["label"]["en"], "hipayenterprise"); ?></label>
     <div>
         <?php if($field["type"] === "gender"): ?>
             <div >
@@ -29,7 +29,7 @@
         if($localPaymentName !== "sdd"){
             _e(
                 'You will be redirected to an external payment page. Please do not refresh the page during the process.',
-                $this->id
+                 "hipayenterprise"
             );
         }
     ?>

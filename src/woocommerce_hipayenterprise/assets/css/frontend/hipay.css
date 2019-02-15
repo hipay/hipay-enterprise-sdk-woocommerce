@@ -10,6 +10,12 @@
     margin-left: 10px;
 }
 
+.hosted-page{
+    padding-left: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
 .woocommerce-hipay-error {
     background-color: #e2401c;
     list-style: none;
