@@ -43,7 +43,7 @@ Cypress.Commands.add("proceedToCheckout", (card) => {
     cy.goToCheckout();
     cy.fillBillingForm();
     cy.get('.payment_method_hipayenterprise_credit_card > label').click({force: true});
-    cy.get('#hipay-field-cardHolder > iframe');
+    cy.get('#hipay-card-field-cardHolder > iframe');
     cy.wait(3000);
     cy.fill_hostedfield_card(card);
     cy.get('#place_order').click({force: true});
@@ -149,9 +149,9 @@ Cypress.Commands.add("checkPaymentRefused", () => {
 /**
  *
  */
-Cypress.Commands.add("checkHostedFieldsError", (msg) => {
+Cypress.Commands.add("checkHostedFieldsError", (msg, method) => {
     cy.location('pathname', {timeout: 50000}).should('include', '/checkout/');
-    cy.get('#error-js', {timeout: 50000}).contains(
+    cy.get('#error-js-' + method, {timeout: 50000}).contains(
         msg
     );
 });
@@ -160,7 +160,7 @@ Cypress.Commands.add("checkHostedFieldsError", (msg) => {
  *
  */
 Cypress.Commands.add("checkUnsupportedPayment", () => {
-    cy.checkHostedFieldsError("This credit card type or the order currency is not supported.");
+    cy.checkHostedFieldsError("This credit card type or the order currency is not supported.", "card");
 });
 
 /**

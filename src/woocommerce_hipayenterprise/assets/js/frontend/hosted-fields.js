@@ -88,30 +88,45 @@ jQuery(function ($) {
     }
 
     function getPaymentData(method) {
-        methodsInstance[method].createToken()
+        hideErrorDiv(method);
+        methodsInstance[method].getPaymentData()
             .then(function (response) {
                     if (isCreditCardSelected() && !isCardTypeActivated(response)) {
-                        handleError(hipay_config_i18n.activated_card_error);
+                        fillErrorDiv(hipay_config_i18n.activated_card_error, method);
                     } else {
-                        console.log(response);
                         applyPaymentData(response, method);
                         processPayment();
                     }
                 },
                 function (error) {
-                    console.log(error);
-                    handleError(error);
+                    handleError(error, method);
                 }
             );
     }
 
-    function handleError(error) {
-        if (error) {
-            $("#error-js").show();
-            document.getElementById("error-js").innerHTML = error;
-        } else {
-            $("#error-js").hide();
+    function handleError(errors, method) {
+        fillErrorDiv(errors[0].error, method);
+
+        for (var error in errors) {
+            var domElement = document.querySelector(
+                "[data-hipay-id='hipay-" + method + "-field-error-" + errors[error].field + "']"
+            );
+
+            // If DOM element add error inside
+            if (domElement) {
+                domElement.innerText = errors[error].error;
+            }
         }
+    }
+
+    function fillErrorDiv(error, method) {
+        $("#error-js-" + method).show();
+        $("#error-js-" + method).html(error);
+    }
+
+    function hideErrorDiv(method) {
+        $("#error-js-" + method).hide();
+        $("#error-js-" + method).html("");
     }
 
     function isHiPayMethod() {
@@ -153,6 +168,44 @@ jQuery(function ($) {
 
         methodsInstance[method] = hipaySDK.create(method, configHostedFields);
 
+        methodsInstance[method].on("blur", function (data) {
+            // Get error container
+            var domElement = document.querySelector(
+                "[data-hipay-id='hipay-" + method + "-field-error-" + data.element + "']"
+            );
+
+            // Finish function if no error DOM element
+            if (!domElement) {
+                return;
+            }
+
+            // If not valid & not empty add error
+            if (!data.validity.valid && !data.validity.empty) {
+                domElement.innerText = data.validity.error;
+            } else {
+                domElement.innerText = '';
+            }
+        });
+
+        methodsInstance[method].on("inputChange", function (data) {
+            // Get error container
+            var domElement = document.querySelector(
+                "[data-hipay-id='hipay-" + method + "-field-error-" + data.element + "']"
+            );
+
+            // Finish function if no error DOM element
+            if (!domElement) {
+                return;
+            }
+
+            // If not valid & not potentiallyValid add error (input is focused)
+            if (!data.validity.valid && !data.validity.potentiallyValid) {
+                domElement.innerText = data.validity.error;
+            } else {
+                domElement.innerText = '';
+            }
+        });
+
         methodsInstance[method].on("ready", function () {
             unBlockUI();
         });
@@ -167,18 +220,18 @@ jQuery(function ($) {
             multi_use: hipay_config_card.oneClick === "1",
             fields: {
                 cardHolder: {
-                    selector: "hipay-field-cardHolder",
+                    selector: "hipay-card-field-cardHolder",
                     defaultFirstname: firstName,
                     defaultLastname: lastName
                 },
                 cardNumber: {
-                    selector: "hipay-field-cardNumber"
+                    selector: "hipay-card-field-cardNumber"
                 },
                 expiryDate: {
-                    selector: "hipay-field-expiryDate"
+                    selector: "hipay-card-field-expiryDate"
                 },
                 cvc: {
-                    selector: "hipay-field-cvc",
+                    selector: "hipay-card-field-cvc",
                     helpButton: true,
                     helpSelector: "hipay-help-cvc"
                 }
@@ -223,4 +276,7 @@ jQuery(function ($) {
         checkout_form.on('click', 'input[name="payment_method"]', addPaymentMethod);
     });
 
+    checkout_form.on('change', '#billing_first_name, #billing_last_name', function () {
+        $(document.body).trigger('update_checkout');
+    });
 });
