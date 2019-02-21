@@ -27,11 +27,11 @@ class Hipay_Oney_3xcb extends Hipay_Gateway_Local_Abstract
 
     public function __construct()
     {
-        $this->id = 'hipayenterprise_oney_3xcb';
+        $this->id = 'hipayenterprise_3xcb';
         $this->paymentProduct = '3xcb';
-        $this->method_title = __('HiPay Enterprise 3x Carte Bancaire avec frais - Facily Pay', "hipayenterprise");
-        $this->title = __('3x Carte Bancaire - Facily Pay', "hipayenterprise");
-        $this->method_description = __('3x Carte Bancaire - Facily Pay', "hipayenterprise");
+        $this->method_title = __('HiPay Enterprise 3x Carte Bancaire avec frais - Oney', "hipayenterprise");
+        $this->title = __('3x Carte Bancaire - Oney', "hipayenterprise");
+        $this->method_description = __('3x Carte Bancaire - Oney', "hipayenterprise");
 
         parent::__construct();
     }

@@ -59,22 +59,14 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
 
     public function payment_fields()
     {
-        if (empty($this->confHelper->getLocalPayment($this->paymentProduct)["additionalFields"])) {
-            _e(
-                'You will be redirected to an external payment page.' .
-                ' Please do not refresh the page during the process.',
-                "hipayenterprise"
-            );
-        } else {
-            $this->process_template(
-                'local-payment.php',
-                'frontend',
-                array(
-                    'localPaymentName' => $this->paymentProduct,
-                    'additionalFields' => $this->confHelper->getLocalPayment($this->paymentProduct)["additionalFields"]
-                )
-            );
-        }
+        $this->process_template(
+            'local-payment.php',
+            'frontend',
+            array(
+                'localPaymentName' => $this->paymentProduct,
+                'additionalFields' => $this->confHelper->getLocalPayment($this->paymentProduct)["additionalFields"]
+            )
+        );
     }
 
     public function admin_options()
@@ -137,7 +129,8 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
             $params = array(
                 "order_id" => $order_id,
                 "paymentProduct" => $this->paymentProduct,
-                "forceSalesMode" => $this->forceSalesMode()
+                "forceSalesMode" => $this->forceSalesMode(),
+                "deviceFingerprint" => Hipay_Helper::getPostData($this->paymentProduct.'-device_fingerprint')
             );
 
             foreach ($method["additionalFields"]["formFields"] as $name => $field) {

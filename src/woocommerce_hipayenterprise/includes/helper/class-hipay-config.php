@@ -162,6 +162,7 @@ class Hipay_Config
                     ),
                     "css_url" => "",
                     "activate_3d_secure" => ThreeDS::THREE_D_S_DISABLED,
+                    "sdk_js_url" => 'https://libs.hipay.com/js/sdkjs.js',
                     "capture_mode" => "automatic",
                     "activate_basket" => 0,
                     "card_token" => 0,

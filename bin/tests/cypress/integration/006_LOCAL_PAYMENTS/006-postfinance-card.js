@@ -25,6 +25,7 @@ describe('Pay by PostFinance Card', function () {
     it('pay PostFinance Card', function () {
 
         cy.get('[for="payment_method_hipayenterprise_postfinance_card"]').click({force: true});
+        cy.wait(500);
         cy.get('#place_order').click({force: true});
         cy.payAndCheck('payPostfinanceCard', postfinanceCardJson.url, "postfinance-card");
     });

@@ -94,20 +94,9 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
 
         $this->addActions();
 
-        if ($this->isAvailable() && is_page() && is_checkout() && !is_order_received_page()) {
-
-            wp_enqueue_script(
-                'hipay-js-form-input-control',
-                plugins_url('/assets/js/frontend/form-input-control.js', WC_HIPAYENTERPRISE_BASE_FILE),
-                array(),
-                'all',
-                false
-            );
-        }
-
         wp_enqueue_script(
             'hipay-js-hosted-fields-sdk',
-            'https://libs.hipay.com/js/sdkjs.js',
+            $this->confHelper->getPaymentGlobal()["sdk_js_url"],
             array(),
             'all',
             true
@@ -130,6 +119,30 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
                 "i18nBadBic" => __('This is not a correct BIC.', 'hipayenterprise'),
                 "i18nBadCPF" => __('This is not a correct CPF.', 'hipayenterprise'),
                 "i18nBadCPNCURP" => __('This is not a correct CPN/CURP.', 'hipayenterprise'),
+            )
+        );
+
+        $sandbox = $this->confHelper->getAccount()["global"]["sandbox_mode"];
+        $username = ($sandbox) ? $this->confHelper->getAccount()["sandbox"]["api_tokenjs_username_sandbox"]
+            : $this->confHelper->getAccount()["production"]["api_tokenjs_username_production"];
+        $password = ($sandbox) ? $this->confHelper->getAccount()["sandbox"]["api_tokenjs_password_publickey_sandbox"]
+            : $this->confHelper->getAccount()["production"]["api_tokenjs_password_publickey_production"];
+
+        wp_localize_script(
+            'hipay-js-front',
+            'hipay_config',
+            array(
+                "apiUsernameTokenJs" => $username,
+                "apiPasswordTokenJs" => $password,
+                "lang" => substr(get_locale(), 0, 2),
+                "environment" => $sandbox ? "stage" : "production",
+                "fontFamily" => $this->confHelper->getHostedFieldsStyle()["fontFamily"],
+                "color" => $this->confHelper->getHostedFieldsStyle()["color"],
+                "fontSize" => $this->confHelper->getHostedFieldsStyle()["fontSize"],
+                "fontWeight" => $this->confHelper->getHostedFieldsStyle()["fontWeight"],
+                "placeholderColor" => $this->confHelper->getHostedFieldsStyle()["placeholderColor"],
+                "caretColor" => $this->confHelper->getHostedFieldsStyle()["caretColor"],
+                "iconColor" => $this->confHelper->getHostedFieldsStyle()["iconColor"],
             )
         );
     }

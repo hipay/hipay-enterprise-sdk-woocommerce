@@ -27,11 +27,11 @@ class Hipay_Oney_4xcb_No_Fees extends Hipay_Gateway_Local_Abstract
 
     public function __construct()
     {
-        $this->id = 'hipayenterprise_oney_4xcb_no_fees';
+        $this->id = 'hipayenterprise_4xcb_no_fees';
         $this->paymentProduct = '4xcb-no-fees';
-        $this->method_title = __('HiPay Enterprise 4x Carte Bancaire sans frais - Facily Pay', "hipayenterprise");
-        $this->title = __('4x Carte Bancaire sans frais - Facily Pay', "hipayenterprise");
-        $this->method_description = __('4x Carte Bancaire sans frais - Facily Pay', "hipayenterprise");
+        $this->method_title = __('HiPay Enterprise 4x Carte Bancaire sans frais - Oney', "hipayenterprise");
+        $this->title = __('4x Carte Bancaire sans frais - Oney', "hipayenterprise");
+        $this->method_description = __('4x Carte Bancaire sans frais - Oney', "hipayenterprise");
 
         parent::__construct();
     }

@@ -174,10 +174,11 @@ class Hipay_Settings_Handler
                 'operating_mode' => sanitize_title(Hipay_Helper::getPostData('operating_mode')),
                 'capture_mode' => sanitize_title(Hipay_Helper::getPostData('capture_mode')),
                 'activate_3d_secure' => sanitize_title(Hipay_Helper::getPostData('activate_3d_secure')),
+                'sdk_js_url' => sanitize_url(Hipay_Helper::getPostData('sdk_js_url')),
                 'log_infos' => sanitize_title(Hipay_Helper::getPostData('log_infos')),
                 'card_token' => sanitize_title(Hipay_Helper::getPostData('card_token')),
                 'activate_basket' => sanitize_title(Hipay_Helper::getPostData('activate_basket')),
-                'css_url' => sanitize_title(Hipay_Helper::getPostData('css_url')),
+                'css_url' => sanitize_url(Hipay_Helper::getPostData('css_url')),
                 'display_hosted_page' => sanitize_title(Hipay_Helper::getPostData('display_hosted_page')),
                 'display_card_selector' => sanitize_title(Hipay_Helper::getPostData('display_card_selector')),
                 'send_url_notification' => sanitize_title(Hipay_Helper::getPostData('send_url_notification')),
@@ -229,7 +230,7 @@ class Hipay_Settings_Handler
                 !empty(Hipay_Helper::getPostData('woocommerce_hipayenterprise_fraud_copy_to'))
                 && empty(sanitize_email(Hipay_Helper::getPostData('woocommerce_hipayenterprise_fraud_copy_to')))
             ) {
-                $this->addError(__('"Copy to" should be a valid email', "hipayenterprise"));
+                $this->addError(__('Email should be valid', "hipayenterprise"));
             }
             $this->handleErrors();
 
@@ -255,7 +256,7 @@ class Hipay_Settings_Handler
      */
     public function saveCreditCardSettings(&$settings)
     {
-        $this->plugin->logs->logInfos("# SaveCreditCardInformations");
+        $this->plugin->logs->logInfos("# SaveCreditCardInformation");
 
         try {
             $this->handleErrors();

@@ -173,9 +173,13 @@ class Hipay_Notification
                         $this->orderHandler->paymentPartiallyCaptured(
                             $this->transaction,
                             __(
-                                "Payment partially captured, amount:." . " " . $this->transaction->getCapturedAmount(),
+                                "Payment partially captured, amount:",
                                 "hipayenterprise"
-                            ) . " " . $this->transaction->getTransactionReference()
+                            ) .
+                            " " .
+                            $this->transaction->getCapturedAmount() .
+                            " " .
+                            $this->transaction->getTransactionReference()
                         );
                     } else {
                         $this->orderHandler->paymentComplete(
@@ -188,9 +192,13 @@ class Hipay_Notification
                     $this->orderHandler->paymentPartiallyCaptured(
                         $this->transaction,
                         __(
-                            "Payment partially captured, amount:." . " " . $this->transaction->getCapturedAmount(),
+                            "Payment partially captured, amount:",
                             "hipayenterprise"
-                        ) . " " . $this->transaction->getTransactionReference()
+                        ) .
+                        " " .
+                        $this->transaction->getCapturedAmount() .
+                        " " .
+                        $this->transaction->getTransactionReference()
                     );
                     break;
                 case TransactionStatus::REFUND_REQUESTED: //124
@@ -204,9 +212,13 @@ class Hipay_Notification
                         $this->transaction,
                         $this->transaction->getRefundedAmount() - $this->order->get_total_refunded(),
                         __(
-                            "Payment partially refunded, amount:." . " " . $this->transaction->getRefundedAmount(),
+                            "Payment partially refunded, amount:",
                             "hipayenterprise"
-                        ) . " " . $this->transaction->getTransactionReference()
+                        ) .
+                        " " .
+                        $this->transaction->getRefundedAmount() .
+                        " " .
+                        $this->transaction->getTransactionReference()
                     );
                     break;
                 default:

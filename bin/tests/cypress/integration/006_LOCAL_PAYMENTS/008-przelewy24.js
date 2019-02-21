@@ -32,6 +32,7 @@ describe('Pay by Przelewy24', function () {
     it('Pay by Przelewy24', function () {
 
         cy.get('[for="payment_method_hipayenterprise_przelewy24"]').click({force: true});
+        cy.wait(500);
         cy.get('#place_order').click({force: true});
         cy.payAndCheck('payPrzelewy24', przelewy24Json.url, "przelewy24");
     });

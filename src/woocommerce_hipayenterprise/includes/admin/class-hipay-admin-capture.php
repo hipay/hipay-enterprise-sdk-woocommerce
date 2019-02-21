@@ -138,12 +138,12 @@ class Hipay_Admin_Capture
             );
 
             if (!$capture_amount || $max_capture < $capture_amount || 0 > $capture_amount) {
-                throw new exception(__('Invalid capture amount', 'woocommerce'));
+                throw new exception(__('Invalid capture amount', 'hipayenterprise'));
             }
 
             if ($captured_amount !==
                 wc_format_decimal(Hipay_Order_Helper::get_total_captured($order), wc_get_price_decimals())) {
-                throw new exception(__('Error processing capture. Please try again.', 'woocommerce'));
+                throw new exception(__('Error processing capture. Please try again.', 'hipayenterprise'));
             }
 
             // Prepare line items which we are capturing.
@@ -215,7 +215,7 @@ class Hipay_Admin_Capture
             $order = wc_get_order($args['order_id']);
 
             if (!$order) {
-                throw new Exception(__('Invalid order ID.', 'woocommerce'));
+                throw new Exception(__('Invalid order ID.', 'hipayenterprise'));
             }
 
             $remaining_capture_amount = wc_format_decimal(
@@ -230,7 +230,7 @@ class Hipay_Admin_Capture
             $capture = new Hipay_Order_Capture($args['capture_id']);
 
             if (0 > $args['amount'] || $args['amount'] > $remaining_capture_amount) {
-                throw new Exception(__('Invalid capture amount.', 'woocommerce'));
+                throw new Exception(__('Invalid capture amount.', 'hipayenterprise'));
             }
 
             $capture->set_currency($order->get_currency());
@@ -352,7 +352,7 @@ class Hipay_Admin_Capture
     {
         try {
             if (!is_a($order, 'WC_Order')) {
-                throw new Exception(__('Invalid order.', 'woocommerce'));
+                throw new Exception(__('Invalid order.', 'hipayenterprise'));
             }
 
             $gateway_controller = WC_Payment_Gateways::instance();
@@ -361,12 +361,12 @@ class Hipay_Admin_Capture
             $gateway = isset($all_gateways[$payment_method]) ? $all_gateways[$payment_method] : 0;
 
             if (!$gateway) {
-                throw new Exception(__('The payment gateway for this order does not exist.', 'woocommerce'));
+                throw new Exception(__('The payment gateway for this order does not exist.', 'hipayenterprise'));
             }
 
             if (!$gateway->supports('captures')) {
                 throw new Exception(
-                    __('The payment gateway for this order does not support automatic captures.', 'woocommerce')
+                    __('The payment gateway for this order does not support automatic captures.', 'hipayenterprise')
                 );
             }
 
@@ -433,7 +433,7 @@ class Hipay_Admin_Capture
         if (Hipay_Order_Helper::get_total_captured($order) > 0) {
             ?>
             <tr>
-                <td class="label refunded-total"><?php esc_html_e('Captured', 'woocommerce'); ?>:</td>
+                <td class="label refunded-total"><?php esc_html_e('Captured', 'hipayenterprise'); ?>:</td>
                 <td width="1%"></td>
                 <td class="total refunded-total"><?php echo wc_price(
                         Hipay_Order_Helper::get_total_captured($order),

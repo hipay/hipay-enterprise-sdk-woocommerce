@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce HiPay Enterprise\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-15 15:03+0000\n"
+"POT-Creation-Date: 2019-03-22 14:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -15,11 +15,11 @@ msgstr ""
 "X-Generator: Loco https://localise.biz/\n"
 "X-Loco-Version: 2.2.0; wp-4.9.8"
 
-#: includes/helper/class-hipay-config.php:359
+#: includes/helper/class-hipay-config.php:360
 msgid "You need to map your product categories."
 msgstr ""
 
-#: includes/helper/class-hipay-config.php:363
+#: includes/helper/class-hipay-config.php:364
 msgid "You need to map your carriers."
 msgstr ""
 
@@ -35,8 +35,17 @@ msgstr ""
 msgid "Authorization successful for transaction."
 msgstr ""
 
-#: includes/helper/class-hipay-notification.php:197
+#: includes/helper/class-hipay-notification.php:175
+#: includes/helper/class-hipay-notification.php:194
+msgid "Payment partially captured, amount:"
+msgstr ""
+
+#: includes/helper/class-hipay-notification.php:205
 msgid "Refund requested"
+msgstr ""
+
+#: includes/helper/class-hipay-notification.php:214
+msgid "Payment partially refunded, amount:"
 msgstr ""
 
 #: includes/helper/class-hipay-settings-handler.php:61
@@ -60,12 +69,12 @@ msgid ""
 "is mandatory"
 msgstr ""
 
-#: includes/helper/class-hipay-settings-handler.php:232
-msgid "\"Copy to\" should be a valid email"
+#: includes/helper/class-hipay-settings-handler.php:233
+msgid "Email should be valid"
 msgstr ""
 
 #. Author of the plugin
-#: includes/helper/class-hipay-settings-handler.php:358
+#: includes/helper/class-hipay-settings-handler.php:359
 msgid "HiPay"
 msgstr ""
 
@@ -77,13 +86,13 @@ msgstr ""
 msgid "An error occured, process has been cancelled.."
 msgstr ""
 
-#: includes/helper/class-hipay-api-request-handler.php:203
-#: includes/helper/class-hipay-api-request-handler.php:235
-#: includes/helper/class-hipay-api-request-handler.php:241
+#: includes/helper/class-hipay-api-request-handler.php:205
+#: includes/helper/class-hipay-api-request-handler.php:237
+#: includes/helper/class-hipay-api-request-handler.php:243
 msgid "An error occured, process has been cancelled."
 msgstr ""
 
-#: includes/helper/class-hipay-api-request-handler.php:223
+#: includes/helper/class-hipay-api-request-handler.php:225
 msgid ""
 "Sorry, your payment has been declined. Please try again with an other means "
 "of payment."
@@ -92,6 +101,11 @@ msgstr ""
 #: includes/helper/class-hipay-transactions.php:119
 #, php-format
 msgid "Transactions  %s"
+msgstr ""
+
+#: includes/helper/class-hipay-payment-token-cc-hipay.php:41
+#, php-format
+msgid "%1$s %2$s (expires %3$s/%4$s)"
 msgstr ""
 
 #: includes/helper/class-hipay-operations.php:83
@@ -115,6 +129,10 @@ msgstr ""
 msgid "Registered notification from HiPay about captured amount of "
 msgstr ""
 
+#: includes/helper/class-hipay-helper.php:246
+msgid "Registered notification "
+msgstr ""
+
 #: includes/helper/class-hipay-helper.php:251
 msgid "Order total amount :"
 msgstr ""
@@ -127,27 +145,23 @@ msgstr ""
 msgid "HiPay status: "
 msgstr ""
 
-#: includes/gateways/class-hipay-gateway-local-abstract.php:63
-msgid " Please do not refresh the page during the process."
-msgstr ""
-
-#: includes/gateways/class-hipay-gateway-abstract.php:128
+#: includes/gateways/class-hipay-gateway-abstract.php:117
 msgid "This field is mandatory."
 msgstr ""
 
-#: includes/gateways/class-hipay-gateway-abstract.php:129
+#: includes/gateways/class-hipay-gateway-abstract.php:118
 msgid "This is not a correct IBAN."
 msgstr ""
 
-#: includes/gateways/class-hipay-gateway-abstract.php:130
+#: includes/gateways/class-hipay-gateway-abstract.php:119
 msgid "This is not a correct BIC."
 msgstr ""
 
-#: includes/gateways/class-hipay-gateway-abstract.php:131
+#: includes/gateways/class-hipay-gateway-abstract.php:120
 msgid "This is not a correct CPF."
 msgstr ""
 
-#: includes/gateways/class-hipay-gateway-abstract.php:132
+#: includes/gateways/class-hipay-gateway-abstract.php:121
 msgid "This is not a correct CPN/CURP."
 msgstr ""
 
@@ -159,25 +173,25 @@ msgstr ""
 msgid "Local and international payments using Hipay Enterprise."
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:384
+#: includes/gateways/class-gateway-hipay.php:376
 msgid "Available countries"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:385
+#: includes/gateways/class-gateway-hipay.php:377
 msgid "Authorized countries"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:425
+#: includes/gateways/class-gateway-hipay.php:398
 msgid ""
 "This credit card type or the order currency is not supported. \n"
 "                    Please choose an other payment method."
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:548
+#: includes/gateways/class-gateway-hipay.php:522
 msgid "Sorry, we cannot process your payment.. Please try again."
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:559
+#: includes/gateways/class-gateway-hipay.php:533
 msgid ""
 "We have received your order payment. We will process the order as soon as we "
 "get the payment confirmation."
@@ -212,6 +226,16 @@ msgstr ""
 msgid "Are-you sure to capture these elements ?"
 msgstr ""
 
+#: includes/admin/class-hipay-admin-post-types.php:82
+msgctxt "Order status"
+msgid "Partially captured (HiPay)"
+msgstr ""
+
+#: includes/admin/class-hipay-admin-post-types.php:83
+msgctxt "Order status"
+msgid "Partially refunded (HiPay)"
+msgstr ""
+
 #: includes/admin/class-hipay-admin-post-types.php:96
 #: includes/admin/class-hipay-admin-post-types.php:97
 #: includes/admin/class-hipay-admin-post-types.php:99
@@ -234,6 +258,47 @@ msgstr ""
 #: includes/admin/class-hipay-admin-post-types.php:160
 #: includes/admin/class-hipay-admin-post-types.php:162
 msgid "HiPay Operations"
+msgstr ""
+
+#: includes/admin/class-hipay-admin-post-types.php:182
+msgid "Captures"
+msgstr ""
+
+#: includes/admin/class-hipay-admin-capture.php:141
+msgid "Invalid capture amount"
+msgstr ""
+
+#: includes/admin/class-hipay-admin-capture.php:146
+msgid "Error processing capture. Please try again."
+msgstr ""
+
+#: includes/admin/class-hipay-admin-capture.php:218
+msgid "Invalid order ID."
+msgstr ""
+
+#: includes/admin/class-hipay-admin-capture.php:233
+msgid "Invalid capture amount."
+msgstr ""
+
+#: includes/admin/class-hipay-admin-capture.php:355
+msgid "Invalid order."
+msgstr ""
+
+#: includes/admin/class-hipay-admin-capture.php:364
+msgid "The payment gateway for this order does not exist."
+msgstr ""
+
+#: includes/admin/class-hipay-admin-capture.php:369
+msgid "The payment gateway for this order does not support automatic captures."
+msgstr ""
+
+#: includes/admin/class-hipay-admin-capture.php:436
+msgid "Captured"
+msgstr ""
+
+#: includes/admin/class-hipay-admin-meta-boxes.php:35
+#, php-format
+msgid "%s data"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-sdd.php:32
@@ -401,6 +466,15 @@ msgstr ""
 msgid "3x Carte Bancaire - BNP Personal Finance"
 msgstr ""
 
+#: includes/gateways/local/class-hipay-webmoney-transfer.php:32
+msgid "HiPay Enterprise WebMoney Transfer"
+msgstr ""
+
+#: includes/gateways/local/class-hipay-webmoney-transfer.php:33
+#: includes/gateways/local/class-hipay-webmoney-transfer.php:34
+msgid "WebMoney Transfer"
+msgstr ""
+
 #: includes/gateways/local/class-hipay-astropay-bbva-bancomer.php:32
 msgid "HiPay Enterprise BBVA Bancomer"
 msgstr ""
@@ -414,12 +488,12 @@ msgid "BBVA Bancomer - Astropay"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-oney-3xcb.php:32
-msgid "HiPay Enterprise 3x Carte Bancaire avec frais - Facily Pay"
+msgid "HiPay Enterprise 3x Carte Bancaire avec frais - Oney"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-oney-3xcb.php:33
 #: includes/gateways/local/class-hipay-oney-3xcb.php:34
-msgid "3x Carte Bancaire - Facily Pay"
+msgid "3x Carte Bancaire - Oney"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-astropay-santander-cash.php:32
@@ -435,12 +509,12 @@ msgid "Santander Cash - Astropay"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-oney-4xcb.php:32
-msgid "HiPay Enterprise 4x Carte Bancaire  avec frais - Facily Pay"
+msgid "HiPay Enterprise 4x Carte Bancaire  avec frais - Oney"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-oney-4xcb.php:33
 #: includes/gateways/local/class-hipay-oney-4xcb.php:34
-msgid "4x Carte Bancaire - Facily Pay"
+msgid "4x Carte Bancaire - Oney"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-giropay.php:32
@@ -483,12 +557,12 @@ msgid "Klarna"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-oney-3xcb-no-fees.php:32
-msgid "HiPay Enterprise 3x Carte Bancaire sans frais - Facily Pay"
+msgid "HiPay Enterprise 3x Carte Bancaire sans frais - Oney"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-oney-3xcb-no-fees.php:33
 #: includes/gateways/local/class-hipay-oney-3xcb-no-fees.php:34
-msgid "3x Carte Bancaire sans frais - Facily Pay"
+msgid "3x Carte Bancaire sans frais - Oney"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-ing-homepay.php:32
@@ -540,21 +614,12 @@ msgid "Caïxa - Astropay"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-oney-4xcb-no-fees.php:32
-msgid "HiPay Enterprise 4x Carte Bancaire sans frais - Facily Pay"
+msgid "HiPay Enterprise 4x Carte Bancaire sans frais - Oney"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-oney-4xcb-no-fees.php:33
 #: includes/gateways/local/class-hipay-oney-4xcb-no-fees.php:34
-msgid "4x Carte Bancaire sans frais - Facily Pay"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-webmoney-transfert.php:32
-msgid "HiPay Enterprise WebMoney Transfer"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-webmoney-transfert.php:33
-#: includes/gateways/local/class-hipay-webmoney-transfert.php:34
-msgid "WebMoney Transfer"
+msgid "4x Carte Bancaire sans frais - Oney"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-astropay-banco-do-brasil.php:32
@@ -569,141 +634,162 @@ msgstr ""
 msgid "Banco do brazil - Astropay"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:5
+#: includes/admin/post/class-hipay-order-capture.php:79
+#, php-format
+msgid "Invoice &ndash; %s"
+msgstr ""
+
+#: includes/admin/post/class-hipay-order-capture.php:79
+#: includes/admin/data-stores/class-hipay-order-capture-data-store-cpt.php:129
+msgctxt "Order date parsed by strftime"
+msgid "%b %d, %Y @ %I:%M %p"
+msgstr ""
+
+#: includes/admin/template/html-order-item.php:27
+#: includes/admin/template/html-order-shipping.php:26
+msgid "Captured with HiPay"
+msgstr ""
+
+#: includes/admin/template/admin-global-settings.php:6
 msgid "Global settings"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:10
+#: includes/admin/template/admin-global-settings.php:11
 msgid "Operating mode"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:17
+#: includes/admin/template/admin-global-settings.php:18
 msgid "Hosted page"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:21
+#: includes/admin/template/admin-global-settings.php:23
 msgid "Hosted Fields"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:25
+#: includes/admin/template/admin-global-settings.php:27
 msgid ""
 "Hosted Fields: The customer completes his banking information directly on "
 "the merchant's site but the form fields are hosted by HiPay. \n"
 "                            This mode is only valid for credit cards."
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:27
+#: includes/admin/template/admin-global-settings.php:32
 msgid ""
 "Hosted Page: The customer is redirected to a secured payment page hosted by "
 "HiPay."
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:41
+#: includes/admin/template/admin-global-settings.php:47
 msgid "Color"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:52
+#: includes/admin/template/admin-global-settings.php:58
 msgid "Font Family"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:63
+#: includes/admin/template/admin-global-settings.php:71
 msgid "Font Size"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:74
+#: includes/admin/template/admin-global-settings.php:84
 msgid "Font Weight"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:85
+#: includes/admin/template/admin-global-settings.php:97
 msgid "PlaceHodler color"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:95
+#: includes/admin/template/admin-global-settings.php:109
 msgid "Caret color"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:106
+#: includes/admin/template/admin-global-settings.php:122
 msgid "Icon color"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:121
+#: includes/admin/template/admin-global-settings.php:139
 msgid "Display Hosted Page"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:128
+#: includes/admin/template/admin-global-settings.php:146
 msgid "Redirect"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:132
+#: includes/admin/template/admin-global-settings.php:150
 msgid "IFrame"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:138
+#: includes/admin/template/admin-global-settings.php:156
 msgid "Display card selector"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:149
+#: includes/admin/template/admin-global-settings.php:167
 msgid "CSS url"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:156
+#: includes/admin/template/admin-global-settings.php:174
 msgid ""
 "URL to your CSS (style sheet) to customize your hosted page or iFrame "
 "(Important: the HTTPS protocol is required)."
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:166
+#: includes/admin/template/admin-global-settings.php:184
 #: includes/admin/template/admin-faq-settings.php:93
+#: includes/admin/template/html-order-additional.php:18
 msgid "Capture"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:173
+#: includes/admin/template/admin-global-settings.php:191
 msgid "Automatic"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:177
+#: includes/admin/template/admin-global-settings.php:195
 msgid "Manual"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:182
+#: includes/admin/template/admin-global-settings.php:200
 msgid ""
 "Manual: if all transactions will be captured manually either from the Hipay "
 "Back office or from your admin in Woocommerce."
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:188
+#: includes/admin/template/admin-global-settings.php:206
 msgid "Automatic: if all transactions will be captured automatically."
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:198
+#: includes/admin/template/admin-global-settings.php:216
 msgid "Use Oneclick"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:209
+#: includes/admin/template/admin-global-settings.php:227
 msgid "Customer's cart sending"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:220
+#: includes/admin/template/admin-global-settings.php:238
 msgid "Logs information"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:231
+#: includes/admin/template/admin-global-settings.php:248
 msgid "Send url Notification"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:242
+#: includes/admin/template/admin-global-settings.php:258
+msgid "SDK js url"
+msgstr ""
+
+#: includes/admin/template/admin-global-settings.php:265
 msgid "Activate 3-D Secure"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:249
+#: includes/admin/template/admin-global-settings.php:272
 msgid "Deactivated"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:253
+#: includes/admin/template/admin-global-settings.php:276
 msgid "Try to enable for all transactions"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:258
+#: includes/admin/template/admin-global-settings.php:281
 msgid "Force for all transactions"
 msgstr ""
 
@@ -956,6 +1042,7 @@ msgid "Accept/Deny"
 msgstr ""
 
 #: includes/admin/template/admin-faq-settings.php:111
+#: includes/admin/template/html-order-additional.php:72
 msgid "Cancel"
 msgstr ""
 
@@ -1189,12 +1276,57 @@ msgstr ""
 msgid "Sandbox configuration"
 msgstr ""
 
+#. 1: refund id 2: refund date 3: username
+#: includes/admin/template/html-order-capture.php:31
+#, php-format
+msgid "Capture #%1$s - %2$s by %3$s"
+msgstr ""
+
+#. 1: ID who refunded
+#: includes/admin/template/html-order-capture.php:37
+#, php-format
+msgid "ID: %d"
+msgstr ""
+
+#. 1: refund id 2: refund date
+#: includes/admin/template/html-order-capture.php:44
+#, php-format
+msgid "Capture #%1$s - %2$s"
+msgstr ""
+
+#: includes/admin/template/html-order-additional.php:42
+msgid "Amount already captured"
+msgstr ""
+
+#: includes/admin/template/html-order-additional.php:47
+msgid "Total available to capture"
+msgstr ""
+
+#: includes/admin/template/html-order-additional.php:52
+msgid "Capture amount"
+msgstr ""
+
+#: includes/admin/template/html-order-additional.php:64
+msgid "Payment gateway"
+msgstr ""
+
+#: includes/admin/template/html-order-additional.php:67
+#, php-format
+msgid "Capture %1$s via %2$s"
+msgstr ""
+
 #: includes/admin/template/admin-creditcard-settings.php:4
 msgid "Credit card"
 msgstr ""
 
 #: includes/admin/template/admin-creditcard-settings.php:65
 msgid "Activated"
+msgstr ""
+
+#. %s: Order date
+#: includes/admin/data-stores/class-hipay-order-capture-data-store-cpt.php:128
+#, php-format
+msgid "Capture &ndash; %s"
 msgstr ""
 
 #: includes/frontend/template/hosted-fields.php:6
@@ -1213,19 +1345,16 @@ msgstr ""
 msgid "CVC"
 msgstr ""
 
-#: includes/frontend/template/local-payment.php:11
-msgid "Mr"
-msgstr ""
-
-#: includes/frontend/template/local-payment.php:12
-msgid "Mrs"
-msgstr ""
-
-#: includes/frontend/template/local-payment.php:30
 #: includes/frontend/template/hosted-page.php:3
 msgid ""
 "You will be redirected to an external payment page. Please do not refresh "
 "the page during the process."
+msgstr ""
+
+#: includes/formatter/info/class-hipay-customer-billing-info-formatter.php:95
+msgid ""
+"Wrong phone number format, Oney payment method require a valid french phone "
+"number (0123465789|+33123465789)."
 msgstr ""
 
 #. Name of the plugin

@@ -88,20 +88,12 @@ if (!class_exists('WC_Gateway_Hipay')) {
                     'all'
                 );
 
-                if ($this->isDirectPostActivated()) {
-                    wp_enqueue_style(
-                        'hipayenterprise-style-hosted',
-                        plugins_url('/assets/css/frontend/hosted-fields.css', WC_HIPAYENTERPRISE_BASE_FILE),
-                        array(),
-                        'all'
-                    );
-                }
             }
         }
 
         public function removeFromMyAccount($availableGateways)
         {
-            if(is_add_payment_method_page()){
+            if (is_add_payment_method_page()) {
                 unset($availableGateways[self::GATEWAY_CREDIT_CARD_ID]);
             }
 
@@ -389,35 +381,16 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
         public function localize_scripts()
         {
+            wp_localize_script(
+                'hipay-js-front',
+                'hipay_config_card',
+                array(
+                    "operating_mode" => $this->confHelper->getPaymentGlobal()["operating_mode"],
+                    "oneClick" => $this->confHelper->getPaymentGlobal()["card_token"],
+                )
+            );
+
             if ($this->confHelper->getPaymentGlobal()["operating_mode"] == OperatingMode::HOSTED_FIELDS) {
-                $sandbox = $this->confHelper->getAccount()["global"]["sandbox_mode"];
-                $username = ($sandbox) ? $this->confHelper->getAccount()["sandbox"]["api_tokenjs_username_sandbox"]
-                    : $this->confHelper->getAccount()["production"]["api_tokenjs_username_production"];
-                $password = ($sandbox) ? $this->confHelper->getAccount(
-                )["sandbox"]["api_tokenjs_password_publickey_sandbox"]
-                    : $this->confHelper->getAccount()["production"]["api_tokenjs_password_publickey_production"];
-
-                wp_localize_script(
-                    'hipay-js-front',
-                    'hipay_config',
-                    array(
-                        "hipay_gateway_id" => $this->id,
-                        "operating_mode" => $this->confHelper->getPaymentGlobal()["operating_mode"],
-                        "apiUsernameTokenJs" => $username,
-                        "apiPasswordTokenJs" => $password,
-                        "lang" => substr(get_locale(), 0, 2),
-                        "environment" => $sandbox ? "stage" : "production",
-                        "fontFamily" => $this->confHelper->getHostedFieldsStyle()["fontFamily"],
-                        "color" => $this->confHelper->getHostedFieldsStyle()["color"],
-                        "fontSize" => $this->confHelper->getHostedFieldsStyle()["fontSize"],
-                        "fontWeight" => $this->confHelper->getHostedFieldsStyle()["fontWeight"],
-                        "placeholderColor" => $this->confHelper->getHostedFieldsStyle()["placeholderColor"],
-                        "caretColor" => $this->confHelper->getHostedFieldsStyle()["caretColor"],
-                        "iconColor" => $this->confHelper->getHostedFieldsStyle()["iconColor"],
-                        "oneClick" => $this->confHelper->getPaymentGlobal()["card_token"],
-                    )
-                );
-
                 wp_localize_script(
                     'hipay-js-front',
                     'hipay_config_i18n',
@@ -446,9 +419,10 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
                 $params = array(
                     "order_id" => $order_id,
-                    "paymentProduct" => Hipay_Helper::getPostData('payment-product'),
+                    "paymentProduct" => Hipay_Helper::getPostData('card-payment_product'),
                     "cardtoken" => Hipay_Helper::getPostData('card-token'),
                     "card_holder" => Hipay_Helper::getPostData('card-holder'),
+                    "deviceFingerprint" => Hipay_Helper::getPostData('card-device_fingerprint'),
                     "forceSalesMode" => false
                 );
 

@@ -25,7 +25,7 @@ describe('Pay by credit card One click', function () {
         cy.fillBillingForm();
 
         cy.get('[for="payment_method_hipayenterprise_credit_card"]').click({force: true});
-        cy.get('#hipay-field-cardHolder > iframe');
+        cy.get('#hipay-card-field-cardHolder > iframe');
         cy.wait(3000);
 
         cy.fill_hostedfield_card('visa_ok');
@@ -55,7 +55,7 @@ describe('Pay by credit card One click', function () {
 
     });
 
-    it('Pay by : one click', function () {
+    it('Pay by : one click hosted fields', function () {
 
         cy.logToAdmin();
         cy.goToPaymentsTab();
@@ -80,8 +80,39 @@ describe('Pay by credit card One click', function () {
         cy.fillBillingForm();
 
         cy.get('[for="payment_method_hipayenterprise_credit_card"]').click({force: true});
-        cy.get('#hipay-field-cardHolder > iframe');
+        cy.get('#hipay-card-field-cardHolder > iframe');
         cy.wait(3000);
+
+        cy.get('#place_order').click({force: true});
+        cy.checkOrderSuccess();
+        cy.saveLastOrderId();
+    });
+
+    it('Pay by : one click hosted page', function () {
+
+        cy.logToAdmin();
+        cy.goToPaymentsTab();
+        cy.activatePaymentMethods("credit_card");
+        cy.goToAdminHipayConfig();
+
+        cy.get('#methods-tab').click();
+        cy.get('#operating_mode').select("hosted_page");
+        cy.get('#card_token').check();
+
+        cy.resetCCConfigForm();
+
+        cy.get('.submit > .button-primary').click();
+
+        cy.adminLogOut();
+
+        cy.customerLogIn();
+        cy.goToFront();
+        cy.selectItemAndGoToCart();
+        cy.addProductQuantity(15);
+        cy.goToCheckout();
+        cy.fillBillingForm();
+
+        cy.get('[for="payment_method_hipayenterprise_credit_card"]').click({force: true});
 
         cy.get('#place_order').click({force: true});
         cy.checkOrderSuccess();
@@ -94,7 +125,7 @@ describe('Pay by credit card One click', function () {
     //     cy.get('.woocommerce-MyAccount-content > a').click();
     //
     //     cy.get('[for="payment_method_hipayenterprise_credit_card"]').click({force: true});
-    //     cy.get('#hipay-field-cardHolder > iframe');
+    //     cy.get('#hipay-card-field-cardHolder > iframe');
     //     cy.wait(3000);
     //     cy.fill_hostedfield_card('mastercard_ok');
     //     cy.get('#place_order').click();
