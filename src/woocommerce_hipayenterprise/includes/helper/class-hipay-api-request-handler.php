@@ -278,7 +278,6 @@ class Hipay_Api_Request_Handler
     private function initParamsDirectPost(&$params)
     {
         $this->iniParamsWithConfiguration($params);
-        $params["deviceFingerprint"] = Hipay_Helper::getPostData('ioBB');
     }
 
     private function initParamsHostedPayment(&$params)

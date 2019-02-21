@@ -78,6 +78,7 @@ class Hipay_Direct_Post_Formatter extends Hipay_Order_Request_Abstract
 
         $orderRequest->payment_product = $this->paymentProduct;
         $orderRequest->paymentMethod = $this->paymentMethod;
+        $orderRequest->device_fingerprint = $this->params["deviceFingerprint"];
         $this->getCustomerNames($orderRequest);
     }
 

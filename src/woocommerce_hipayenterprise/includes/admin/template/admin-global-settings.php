@@ -1,4 +1,5 @@
-<?php $classHostedSettings = $paymentCommon["operating_mode"] == "hosted_page" ? $classHostedSettings = "hidden " : ""; ?>
+<?php $classHostedSettings = $paymentCommon["operating_mode"] ==
+"hosted_page" ? $classHostedSettings = "hidden " : ""; ?>
 
 <h3 class="wc-settings-sub-title " id="woocommerce_hipayenterprise_api_tab_methods_2">
     <i class='dashicons dashicons-admin-generic'></i>
@@ -16,15 +17,20 @@
                     echo " SELECTED";
                 } ?>><?php _e('Hosted page', "hipayenterprise"); ?></option>
                 <option
-                        value="hosted_fields" <?php if ($paymentCommon["operating_mode"] == OperatingMode::HOSTED_FIELDS) {
+                        value="hosted_fields" <?php if ($paymentCommon["operating_mode"] ==
+                    OperatingMode::HOSTED_FIELDS) {
                     echo " SELECTED";
                 } ?>><?php _e('Hosted Fields', "hipayenterprise"); ?></option>
             </select>
             <div class="help-block">
                 <ul>
-                    <li><?php _e("Hosted Fields: The customer completes his banking information directly on the merchant's site but the form fields are hosted by HiPay. 
-                            This mode is only valid for credit cards.", "hipayenterprise"); ?></li>
-                    <li><?php _e("Hosted Page: The customer is redirected to a secured payment page hosted by HiPay.",
+                    <li><?php _e(
+                            "Hosted Fields: The customer completes his banking information directly on the merchant's site but the form fields are hosted by HiPay. 
+                            This mode is only valid for credit cards.",
+                            "hipayenterprise"
+                        ); ?></li>
+                    <li><?php _e(
+                            "Hosted Page: The customer is redirected to a secured payment page hosted by HiPay.",
                             "hipayenterprise"
                         ); ?></li>
                 </ul>
@@ -54,7 +60,9 @@
                     <input class="form-control" type="text"
                            name="fontFamily"
                            id="fontFamily" style=""
-                           value="<?php echo esc_textarea($paymentCommon["hosted_fields_style"]["base"]["fontFamily"]); ?>"
+                           value="<?php echo esc_textarea(
+                               $paymentCommon["hosted_fields_style"]["base"]["fontFamily"]
+                           ); ?>"
                            placeholder="">
                 </div>
             </div>
@@ -65,7 +73,9 @@
                     <input class="form-control" type="text"
                            name="fontSize"
                            id="fontSize" style=""
-                           value="<?php echo esc_textarea($paymentCommon["hosted_fields_style"]["base"]["fontSize"]); ?>"
+                           value="<?php echo esc_textarea(
+                               $paymentCommon["hosted_fields_style"]["base"]["fontSize"]
+                           ); ?>"
                            placeholder="">
                 </div>
             </div>
@@ -76,7 +86,9 @@
                     <input class="form-control" type="text"
                            name="fontWeight"
                            id="fontWeight" style=""
-                           value="<?php echo esc_textarea($paymentCommon["hosted_fields_style"]["base"]["fontWeight"]); ?>"
+                           value="<?php echo esc_textarea(
+                               $paymentCommon["hosted_fields_style"]["base"]["fontWeight"]
+                           ); ?>"
                            placeholder="">
                 </div>
             </div>
@@ -87,7 +99,9 @@
                     <input class="form-control" type="text"
                            name="placeholderColor"
                            id="placeholderColor" style=""
-                           value="<?php echo esc_textarea($paymentCommon["hosted_fields_style"]["base"]["placeholderColor"]); ?>"
+                           value="<?php echo esc_textarea(
+                               $paymentCommon["hosted_fields_style"]["base"]["placeholderColor"]
+                           ); ?>"
                            placeholder="">
                 </div>
             </div>
@@ -97,7 +111,9 @@
                     <input class="form-control" type="text"
                            name="caretColor"
                            id="caretColor" style=""
-                           value="<?php echo esc_textarea($paymentCommon["hosted_fields_style"]["base"]["caretColor"]); ?>"
+                           value="<?php echo esc_textarea(
+                               $paymentCommon["hosted_fields_style"]["base"]["caretColor"]
+                           ); ?>"
                            placeholder="">
                 </div>
             </div>
@@ -108,7 +124,9 @@
                     <input class="form-control" type="text"
                            name="iconColor"
                            id="iconColor" style=""
-                           value="<?php echo esc_textarea($paymentCommon["hosted_fields_style"]["base"]["iconColor"]); ?>"
+                           value="<?php echo esc_textarea(
+                               $paymentCommon["hosted_fields_style"]["base"]["iconColor"]
+                           ); ?>"
                            placeholder="">
                 </div>
             </div>
@@ -226,18 +244,23 @@
             } ?>>
         </div>
     </div>
-
     <div class="form-group">
         <label class="control-label col-lg-2"><?php _e('Send url Notification', "hipayenterprise"); ?></label>
         <div class="col-lg-8">
             <input class="form-control" type="checkbox" name="send_url_notification"
-                   id="log_infos" style=""
+                   id="send_url_notification" style=""
                    value="1" <?php if ($paymentCommon["send_url_notification"]) {
                 echo 'checked="checked"';
-            } ?>>
+        } ?>>
         </div>
     </div>
-
+    <div class="form-group">
+        <label class="control-label col-lg-2"><?php _e('SDK js url', "hipayenterprise"); ?></label>
+        <div class="col-lg-8">
+            <input class="form-control" type="text" name="sdk_js_url"
+                   id="sdk_js_url" style=""
+                   value="<?php echo $paymentCommon["sdk_js_url"] ?>"/></div>
+    </div>
     <div class="form-group">
         <label class="control-label col-lg-2"><?php _e('Activate 3-D Secure', "hipayenterprise"); ?></label>
         <div class="col-lg-8">

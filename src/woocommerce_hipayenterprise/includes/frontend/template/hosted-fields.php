@@ -1,4 +1,4 @@
-<div class="hipay-container-hosted-fields woocommerce-SavedPaymentMethods-saveNew" id="hipayHF-container">
+<div class="hipay-container-hosted-fields woocommerce-SavedPaymentMethods-saveNew" id="hipayHF-container-card">
     <div class="hipay-row">
         <div class="hipay-field-container">
             <div class="hipay-field" id="hipay-field-cardHolder"></div>
@@ -47,12 +47,6 @@
             <li class="error"></li>
         </ul>
     </div>
-    <input type="hidden" class="payment-method-hidden-fields" id="payment-product" name="payment-product" value=""/>
-    <input type="hidden" class="payment-method-hidden-fields" id="card-token" name="card-token" value=""/>
-    <input type="hidden" class="payment-method-hidden-fields" id="card-holder" name="card-holder" value=""/>
-    <input type="hidden" class="payment-method-hidden-fields" id="card-pan" name="card-pan" value=""/>
-    <input type="hidden" class="payment-method-hidden-fields" id="card-expiry-month" name="card-expiry-month" value=""/>
-    <input type="hidden" class="payment-method-hidden-fields" id="card-expiry-year" name="card-expiry-year" value=""/>
 </div>
 <script type="text/javascript">
     /* <![CDATA[ */
