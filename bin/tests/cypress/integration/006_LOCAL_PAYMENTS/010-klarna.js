@@ -6,7 +6,7 @@ describe('Pay by Klarna', function () {
 
         cy.logToAdmin();
         cy.goToPaymentsTab();
-        cy.activatePaymentMethods("klarna");
+        cy.activatePaymentMethods("klarnainvoice");
         cy.switchWooCurrency("EUR");
         cy.adminLogOut();
     });
@@ -24,7 +24,8 @@ describe('Pay by Klarna', function () {
 
     it('Pay by Klarna', function () {
 
-        cy.get('[for="payment_method_hipayenterprise_klarna"]').click({force: true});
+        cy.get('[for="payment_method_hipayenterprise_klarnainvoice"]').click({force: true});
+        cy.wait(500);
         cy.get('#place_order').click({force: true});
         // cy.payAndCheck('payKlarna', klarnaJson.url, "klarna");
     });

@@ -19,10 +19,6 @@ jQuery(function ($) {
     function init() {
         methodsInstance = {};
 
-        if (!containerExist()) {
-            return true;
-        }
-
         var defaultMethod = getSelectedMethod();
 
         hipaySDK = HiPay({
@@ -31,6 +27,8 @@ jQuery(function ($) {
             environment: hipay_config.environment,
             lang: hipay_config.lang
         });
+
+        hipaySDK.injectBaseStylesheet();
 
         createHostedFieldsInstance(defaultMethod);
 
@@ -244,7 +242,7 @@ jQuery(function ($) {
     }
 
     function getSelectedMethod() {
-        return $('input[name="payment_method"]:checked').val().replace('hipayenterprise_', '').replace('_', '-');
+        return $('input[name="payment_method"]:checked').val().replace('hipayenterprise_', '').replace(/_/g, '-');
     }
 
     function blockUI() {
@@ -271,12 +269,16 @@ jQuery(function ($) {
 
     $(document.body).on('updated_checkout', function () {
         destroy();
-        init();
-        $(document.body).on('click', '#place_order', submitOrder);
-        checkout_form.on('click', 'input[name="payment_method"]', addPaymentMethod);
+        if (containerExist()) {
+            init();
+            $(document.body).on('click', '#place_order', submitOrder);
+            checkout_form.on('click', 'input[name="payment_method"]', addPaymentMethod);
+        }
     });
 
     checkout_form.on('change', '#billing_first_name, #billing_last_name', function () {
-        $(document.body).trigger('update_checkout');
+        if (containerExist()) {
+            $(document.body).trigger('update_checkout');
+        }
     });
 });

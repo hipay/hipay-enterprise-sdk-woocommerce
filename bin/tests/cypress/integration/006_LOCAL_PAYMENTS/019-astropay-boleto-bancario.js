@@ -1,4 +1,5 @@
 import boletoBancarioJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/boleto-bancario.json';
+import bbvaBancomerJson from "@hipay/hipay-cypress-utils/fixtures/payment-means/bbva-bancomer";
 
 describe('Pay by Boleto Bancario', function () {
 
@@ -35,9 +36,10 @@ describe('Pay by Boleto Bancario', function () {
     it('Pay by Boleto Bancario', function () {
 
         cy.get('[for="payment_method_hipayenterprise_boleto_bancario"]').click({force: true});
-        cy.get('#boleto-bancario-national_identification_number')
-            .type(boletoBancarioJson.data.national_identification_number, {force: true})
-            .should('have.value', boletoBancarioJson.data.national_identification_number);
+        cy.wait(3000);
+
+        cy.fill_hostedfields_input("#hipay-boleto-bancario-field-national_identification_number", boletoBancarioJson.data.national_identification_number);
+
         cy.get('#place_order').click({force: true});
         cy.payAndCheck('payBoletoBancario', boletoBancarioJson.url, "boleto-bancario");
     });

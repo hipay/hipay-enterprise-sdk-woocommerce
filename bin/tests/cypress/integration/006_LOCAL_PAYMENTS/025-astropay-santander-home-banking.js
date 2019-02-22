@@ -1,4 +1,5 @@
 import santanderHomeBankingJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/santander-home-banking.json';
+import santanderCashJson from "@hipay/hipay-cypress-utils/fixtures/payment-means/santander-cash";
 
 describe('Pay by Santander HomeBanking', function () {
 
@@ -35,9 +36,10 @@ describe('Pay by Santander HomeBanking', function () {
     it('Pay by Santander HomeBanking', function () {
 
         cy.get('[for="payment_method_hipayenterprise_santander_home_banking"]').click({force: true});
-        cy.get('#santander-home-banking-national_identification_number')
-            .type(santanderHomeBankingJson.data.national_identification_number, {force: true})
-            .should('have.value', santanderHomeBankingJson.data.national_identification_number);
+        cy.wait(3000);
+
+        cy.fill_hostedfields_input("#hipay-santander-home-banking-field-national_identification_number", santanderHomeBankingJson.data.national_identification_number);
+
         cy.get('#place_order').click({force: true});
         cy.payAndCheck('paySantanderCash', santanderHomeBankingJson.url, "santander-home-banking");
     });

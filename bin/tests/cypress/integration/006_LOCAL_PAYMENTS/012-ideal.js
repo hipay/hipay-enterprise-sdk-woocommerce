@@ -27,7 +27,7 @@ describe('Pay by IDEAL', function () {
         cy.get('[for="payment_method_hipayenterprise_ideal"]').click({force: true});
         cy.wait(3000);
 
-        cy.fill_hostedfields_input("hipay-ideal-field-issuer_bank_id", idealJson.data.bic);
+        cy.fill_hostedfields_input("#hipay-ideal-field-issuer_bank_id", idealJson.data.issuer_bank_id);
 
         cy.get('#place_order').click({force: true});
         cy.payAndCheck('payIdeal', idealJson.url, "ideal");

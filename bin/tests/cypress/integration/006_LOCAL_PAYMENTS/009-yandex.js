@@ -32,6 +32,7 @@ describe('Pay by Yandex Money', function () {
     it('Pay by Yandex Money', function () {
 
         cy.get('[for="payment_method_hipayenterprise_yandex"]').click({force: true});
+        cy.wait(500);
         cy.get('#place_order').click({force: true});
         cy.payAndCheck('payYandex', yandexJson.url, "yandex");
     });

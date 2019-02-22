@@ -1,4 +1,5 @@
 import caixaJson from '@hipay/hipay-cypress-utils/fixtures/payment-means/caixa.json';
+import bradescoJson from "@hipay/hipay-cypress-utils/fixtures/payment-means/bradesco";
 
 describe('Pay by Caïxa', function () {
 
@@ -35,9 +36,10 @@ describe('Pay by Caïxa', function () {
     it('Pay by Caïxa', function () {
 
         cy.get('[for="payment_method_hipayenterprise_caixa"]').click({force: true});
-        cy.get('#caixa-national_identification_number')
-            .type(caixaJson.data.national_identification_number, {force: true})
-            .should('have.value', caixaJson.data.national_identification_number);
+        cy.wait(3000);
+
+        cy.fill_hostedfields_input("#hipay-caixa-field-national_identification_number", caixaJson.data.national_identification_number);
+
         cy.get('#place_order').click({force: true});
         cy.payAndCheck('payCaixa', caixaJson.url, "caixa");
     });

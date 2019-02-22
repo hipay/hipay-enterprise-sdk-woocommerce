@@ -94,13 +94,6 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
 
         $this->addActions();
 
-        wp_enqueue_style(
-            'hipayenterprise-style-hosted',
-            plugins_url('/assets/css/frontend/hosted-fields.css', WC_HIPAYENTERPRISE_BASE_FILE),
-            array(),
-            'all'
-        );
-
         wp_enqueue_script(
             'hipay-js-hosted-fields-sdk',
             $this->confHelper->getPaymentGlobal()["sdk_js_url"],

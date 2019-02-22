@@ -26,6 +26,7 @@ describe('Pay by bnppf', function () {
     ['3xcb', '4xcb'].forEach((bnpMethod) => {
         it('Pay by : ' + bnpMethod, function () {
             cy.get('[for="payment_method_hipayenterprise_bnpp-' + bnpMethod + '"]').click({force: true});
+            cy.wait(500);
             cy.get('#place_order').click({force: true});
             cy.payAndCheck('payBnppf', bnppfJson.url, "bnppf");
         });

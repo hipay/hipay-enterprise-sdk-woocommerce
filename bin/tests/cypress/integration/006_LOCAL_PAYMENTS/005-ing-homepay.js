@@ -25,6 +25,7 @@ describe('Pay by Ing Homepay', function () {
     it('pay Ing Homepay', function () {
 
         cy.get('[for="payment_method_hipayenterprise_ing_homepay"]').click({force: true});
+        cy.wait(500);
         cy.get('#place_order').click({force: true});
         cy.payAndCheck('payIngHomepay', ingHomepayJson.url, "ing-homepay");
     });
