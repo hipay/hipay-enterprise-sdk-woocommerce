@@ -133,7 +133,7 @@ jQuery(function ($) {
 
     function createHostedFieldsInstance(method) {
 
-        if (isCreditCardSelected() && !isHostedFields()) {
+        if (!isHiPayMethod() || (isCreditCardSelected() && !isHostedFields())) {
             return true;
         }
 
