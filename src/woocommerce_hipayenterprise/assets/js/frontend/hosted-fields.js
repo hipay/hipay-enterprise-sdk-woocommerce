@@ -103,8 +103,6 @@ jQuery(function ($) {
     }
 
     function handleError(errors, method) {
-        fillErrorDiv(errors[0].error, method);
-
         for (var error in errors) {
             var domElement = document.querySelector(
                 "[data-hipay-id='hipay-" + method + "-field-error-" + errors[error].field + "']"
@@ -142,10 +140,11 @@ jQuery(function ($) {
         if (isCreditCardSelected()) {
             method = "card";
             configHostedFields = getCardConfig();
+        } else {
+            configHostedFields["template"] = "auto";
         }
 
         if (methodsInstance[method] !== undefined) {
-
             return methodsInstance[method];
         }
 
