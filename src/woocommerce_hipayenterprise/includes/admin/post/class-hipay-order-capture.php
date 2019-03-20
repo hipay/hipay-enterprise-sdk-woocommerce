@@ -76,7 +76,7 @@ class Hipay_Order_Capture extends WC_Abstract_Order
     public function get_post_title()
     {
         // @codingStandardsIgnoreStart
-        return sprintf(__('Invoice &ndash; %s', 'woocommerce'), strftime(_x('%b %d, %Y @ %I:%M %p', 'Order date parsed by strftime', 'woocommerce')));
+        return sprintf(__('Invoice &ndash; %s', 'hipayenterprise'), strftime(_x('%b %d, %Y @ %I:%M %p', 'Order date parsed by strftime', 'hipayenterprise')));
         // @codingStandardsIgnoreEnd
     }
 

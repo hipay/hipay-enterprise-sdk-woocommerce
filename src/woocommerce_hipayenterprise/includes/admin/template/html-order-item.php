@@ -24,7 +24,7 @@ $row_class = apply_filters('woocommerce_admin_html_order_item_class', !empty($cl
         <div class="view">
             <?php
             if ($captured_qty = Hipay_Order_Helper::get_qty_captured_for_item($item_id, 'line_item', $order)) {
-                echo '<small class="captured">' . esc_html__("Captured with HiPay", "woocommerce") . '</small>';
+                echo '<small class="captured">' . esc_html__("Captured with HiPay", "hipayenterprise") . '</small>';
             }
             ?>
         </div>

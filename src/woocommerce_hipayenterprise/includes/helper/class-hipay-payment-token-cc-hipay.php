@@ -38,7 +38,7 @@ class WC_Payment_Token_CC_HiPay extends WC_Payment_Token
     public function get_display_name($deprecated = '')
     {
         $display = sprintf(
-            __('%1$s %2$s (expires %3$s/%4$s)', 'woocommerce'),
+            __('%1$s %2$s (expires %3$s/%4$s)', 'hipayenterprise'),
             wc_get_credit_card_type_label($this->get_card_type()),
             $this->get_pan(),
             $this->get_expiry_month(),

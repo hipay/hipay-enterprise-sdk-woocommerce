@@ -49,7 +49,7 @@ class Hipay_Delivery_Formatter implements Hipay_Api_Formatter
     }
 
     /**
-     * Map  delivery shipping informations to request fields (Hpayment Post)
+     * Map  delivery shipping information to request fields (Hpayment Post)
      *
      * @param \HiPay\Fullservice\Gateway\Request\Info\DeliveryShippingInfoRequest $deliveryShippingInfo
      * @return mixed|void

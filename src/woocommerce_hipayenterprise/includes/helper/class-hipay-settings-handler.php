@@ -230,7 +230,7 @@ class Hipay_Settings_Handler
                 !empty(Hipay_Helper::getPostData('woocommerce_hipayenterprise_fraud_copy_to'))
                 && empty(sanitize_email(Hipay_Helper::getPostData('woocommerce_hipayenterprise_fraud_copy_to')))
             ) {
-                $this->addError(__('"Copy to" should be a valid email', "hipayenterprise"));
+                $this->addError(__('Email should be valid', "hipayenterprise"));
             }
             $this->handleErrors();
 
@@ -256,7 +256,7 @@ class Hipay_Settings_Handler
      */
     public function saveCreditCardSettings(&$settings)
     {
-        $this->plugin->logs->logInfos("# SaveCreditCardInformations");
+        $this->plugin->logs->logInfos("# SaveCreditCardInformation");
 
         try {
             $this->handleErrors();

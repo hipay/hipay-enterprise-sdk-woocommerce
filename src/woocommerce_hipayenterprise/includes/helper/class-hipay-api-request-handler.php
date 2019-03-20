@@ -197,6 +197,8 @@ class Hipay_Api_Request_Handler
 
         try {
             $response = $this->api->requestDirectPost($order, $params);
+        } catch (Hipay_Payment_Exception $hpe) {
+            throw $hpe;
         } catch (Exception $e) {
             $this->plugin->logs->logException($e);
             throw new Hipay_Payment_Exception(
@@ -268,7 +270,7 @@ class Hipay_Api_Request_Handler
         if ($this->plugin->confHelper->getPaymentGlobal()["activate_basket"]) {
             $params["basket"] = $this->cartFormatter->generate();
             if (count(WC()->cart->calculate_shipping()) > 0) {
-                $params["delivery_informations"] = $this->deliveryFormatter->generate();
+                $params["delivery_information"] = $this->deliveryFormatter->generate();
             }
         }
 

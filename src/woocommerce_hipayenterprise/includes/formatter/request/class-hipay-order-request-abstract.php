@@ -42,7 +42,9 @@ abstract class Hipay_Order_Request_Abstract extends Hipay_Api_Formatter_Abstact
     /**
      * Map Request (Hosted or direct Post)
      *
-     * @param type $orderRequest
+     * @param $orderRequest
+     * @return mixed|void
+     * @throws Hipay_Payment_Exception
      */
     public function mapRequest(&$orderRequest)
     {
@@ -84,7 +86,7 @@ abstract class Hipay_Order_Request_Abstract extends Hipay_Api_Formatter_Abstact
         $orderRequest->language = get_locale();
         $orderRequest->http_user_agent = $_SERVER ['HTTP_USER_AGENT'];
         $orderRequest->basket = $this->params["basket"];
-        $orderRequest->delivery_information = $this->params["delivery_informations"];
+        $orderRequest->delivery_information = $this->params["delivery_information"];
         $orderRequest->authentication_indicator = $this->params["authentication_indicator"];
     }
 
@@ -120,9 +122,10 @@ abstract class Hipay_Order_Request_Abstract extends Hipay_Api_Formatter_Abstact
     }
 
     /**
-     * Return mapped customer billing informations
+     * Return mapped customer billing information
      *
-     * @return \HiPay\Fullservice\Gateway\Request\Info\CustomerBillingInfoRequest
+     * @return \HiPay\Fullservice\Gateway\Request\Info\CustomerBillingInfoRequest|mixed
+     * @throws Hipay_Payment_Exception
      */
     private function getCustomerBillingInfo()
     {
@@ -136,7 +139,7 @@ abstract class Hipay_Order_Request_Abstract extends Hipay_Api_Formatter_Abstact
     }
 
     /**
-     * return mapped customer shipping informations
+     * return mapped customer shipping information
      *
      * @return \HiPay\Fullservice\Gateway\Request\Info\CustomerShippingInfoRequest
      */

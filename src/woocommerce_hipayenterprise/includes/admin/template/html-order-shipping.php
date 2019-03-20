@@ -23,7 +23,7 @@ if (!defined('ABSPATH')) {
     <td class="name"></td>
     <td class="item_cost" width="1%">
         <div class="view"><?php if ($captured = Hipay_Order_Helper::get_total_captured_for_item($item_id, 'shipping', $order)) {
-                echo '<small class="captured">' . esc_html__("Captured with HiPay", "woocommerce") . '</small>';
+                echo '<small class="captured">' . esc_html__("Captured with HiPay", "hipayenterprise") . '</small>';
             }
             ?>
         </div>

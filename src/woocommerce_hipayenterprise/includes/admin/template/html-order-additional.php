@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 ?>
-<button type="button" class="button capture-items"><?php esc_html_e('Capture', 'woocommerce'); ?></button>
+<button type="button" class="button capture-items"><?php esc_html_e('Capture', 'hipayenterprise'); ?></button>
 
 <!-- MOVED INTO ITEMS AFTER DOM READY       -->
 <div id="order_captures">
@@ -39,17 +39,17 @@ if (!defined('ABSPATH')) {
      style="display: none;">
     <table class="wc-order-totals">
         <tr>
-            <td class="label"><?php esc_html_e('Amount already captured', 'woocommerce'); ?>:</td>
+            <td class="label"><?php esc_html_e('Amount already captured', 'hipayenterprise'); ?>:</td>
             <td class="total">
                 <?php echo wc_price(Hipay_Order_Helper::get_total_captured($order), array('currency' => $order->get_currency())); // WPCS: XSS ok. ?></td>
         </tr>
         <tr>
-            <td class="label"><?php esc_html_e('Total available to capture', 'woocommerce'); ?>:</td>
+            <td class="label"><?php esc_html_e('Total available to capture', 'hipayenterprise'); ?>:</td>
             <td class="total"><?php echo wc_price($order->get_total() - Hipay_Order_Helper::get_total_captured($order), array('currency' => $order->get_currency())); // WPCS: XSS ok. ?></td>
         </tr>
         <tr>
             <td class="label"><label
-                        for="capture_amount"><?php esc_html_e('Capture amount', 'woocommerce'); ?>
+                        for="capture_amount"><?php esc_html_e('Capture amount', 'hipayenterprise'); ?>
                     :</label></td>
             <td class="total">
                 <input type="text" id="capture_amount" name="capture_amount" class="wc_input_price"/>
@@ -61,15 +61,15 @@ if (!defined('ABSPATH')) {
     <div class="refund-actions">
         <?php
         $refund_amount = '<span class="wc-order-refund-amount">' . wc_price(0, array('currency' => $order->get_currency())) . '</span>';
-        $gateway_name = false !== $payment_gateway ? (!empty($payment_gateway->method_title) ? $payment_gateway->method_title : $payment_gateway->get_title()) : __('Payment gateway', 'woocommerce');
+        $gateway_name = false !== $payment_gateway ? (!empty($payment_gateway->method_title) ? $payment_gateway->method_title : $payment_gateway->get_title()) : __('Payment gateway', 'hipayenterprise');
 
         if (false !== $payment_gateway) {
-            echo '<button type="button" class="button button-primary do-api-capture">' . sprintf(esc_html__('Capture %1$s via %2$s', 'woocommerce'), wp_kses_post($refund_amount), esc_html($gateway_name)) . '</button>';
+            echo '<button type="button" class="button button-primary do-api-capture">' . sprintf(esc_html__('Capture %1$s via %2$s', 'hipayenterprise'), wp_kses_post($refund_amount), esc_html($gateway_name)) . '</button>';
         }
         ?>
         <?php /* translators: refund amount  */ ?>
         <button type="button"
-                class="button cancel-action"><?php esc_html_e('Cancel', 'woocommerce'); ?></button>
+                class="button cancel-action"><?php esc_html_e('Cancel', 'hipayenterprise'); ?></button>
         <input type="hidden" id="captured_amount" name="captured_amount"
                value="<?php echo esc_attr(Hipay_Order_Helper::get_total_captured($order)); ?>"/>
         <input type="hidden" id="captured_amount_remaining" name="captured_amount_remaining"

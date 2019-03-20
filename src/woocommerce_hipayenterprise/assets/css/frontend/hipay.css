@@ -1,3 +1,11 @@
+.hipay-form-no-field{
+    font-size: 16px !important;
+    padding-left: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: 0;
+}
+
 .msg-local-payment {
     margin-top: 15px;
 }

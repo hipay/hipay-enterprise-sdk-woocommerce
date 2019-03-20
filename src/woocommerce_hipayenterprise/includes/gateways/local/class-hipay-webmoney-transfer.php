@@ -22,13 +22,13 @@ if (!defined('ABSPATH')) {
  * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
  */
-class Hipay_Webmoney_Transfert extends Hipay_Gateway_Local_Abstract
+class Hipay_Webmoney_Transfer extends Hipay_Gateway_Local_Abstract
 {
 
     public function __construct()
     {
-        $this->id = 'hipayenterprise_webmoney_transfert';
-        $this->paymentProduct = 'webmoney-transfert';
+        $this->id = 'hipayenterprise_webmoney_transfer';
+        $this->paymentProduct = 'webmoney-transfer';
         $this->method_title = __('HiPay Enterprise WebMoney Transfer', "hipayenterprise");
         $this->title = __('WebMoney Transfer', "hipayenterprise");
         $this->method_description = __('WebMoney Transfer', "hipayenterprise");

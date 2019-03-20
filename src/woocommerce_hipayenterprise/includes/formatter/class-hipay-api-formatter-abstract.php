@@ -45,7 +45,7 @@ abstract class Hipay_Api_Formatter_Abstact implements Hipay_Api_Formatter
     abstract public function generate();
 
     /**
-     * map prestashop order informations to request fields
+     * map prestashop order information to request fields
      * (shared information between Hpayment, Iframe, Direct Post and Maintenance )
      * @param type $request
      */
