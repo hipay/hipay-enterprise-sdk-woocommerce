@@ -3,12 +3,12 @@
   "config": {
     "group": {
       "code": "oney",
-      "label": "Oney Facily Pay"
+      "label": "Oney"
     },
-    "displayNameBO": "3x Carte Bancaire - Facily Pay",
+    "displayNameBO": "3x Carte Bancaire - Oney",
     "displayName": {
-      "fr": "3x Carte Bancaire - Facily Pay",
-      "en": "3x Credit Card - Facily Pay"
+      "fr": "3x Carte Bancaire - Oney",
+      "en": "3x Credit Card - Oney"
     },
     "frontPosition": 3,
     "activated": 0,

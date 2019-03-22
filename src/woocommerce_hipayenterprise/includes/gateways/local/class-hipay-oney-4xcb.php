@@ -29,9 +29,9 @@ class Hipay_Oney_4xcb extends Hipay_Gateway_Local_Abstract
     {
         $this->id = 'hipayenterprise_4xcb';
         $this->paymentProduct = '4xcb';
-        $this->method_title = __('HiPay Enterprise 4x Carte Bancaire  avec frais - Facily Pay', "hipayenterprise");
-        $this->title = __('4x Carte Bancaire - Facily Pay', "hipayenterprise");
-        $this->method_description = __('4x Carte Bancaire - Facily Pay', "hipayenterprise");
+        $this->method_title = __('HiPay Enterprise 4x Carte Bancaire  avec frais - Oney', "hipayenterprise");
+        $this->title = __('4x Carte Bancaire - Oney', "hipayenterprise");
+        $this->method_description = __('4x Carte Bancaire - Oney', "hipayenterprise");
 
         parent::__construct();
     }

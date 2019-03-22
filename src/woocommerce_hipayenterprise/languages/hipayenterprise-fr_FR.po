@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce HiPay Enterprise\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-20 14:50+0000\n"
-"PO-Revision-Date: 2019-03-20 14:53+0000\n"
+"POT-Creation-Date: 2019-03-22 14:51+0000\n"
+"PO-Revision-Date: 2019-03-22 14:54+0000\n"
 "Last-Translator: admin <admin-wordpress@hipay.com>\n"
 "Language-Team: French (France)\n"
 "Language: fr_FR\n"
@@ -505,12 +505,12 @@ msgid "BBVA Bancomer - Astropay"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-oney-3xcb.php:32
-msgid "HiPay Enterprise 3x Carte Bancaire avec frais - Facily Pay"
+msgid "HiPay Enterprise 3x Carte Bancaire avec frais - Oney"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-oney-3xcb.php:33
 #: includes/gateways/local/class-hipay-oney-3xcb.php:34
-msgid "3x Carte Bancaire - Facily Pay"
+msgid "3x Carte Bancaire - Oney"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-astropay-santander-cash.php:32
@@ -526,12 +526,12 @@ msgid "Santander Cash - Astropay"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-oney-4xcb.php:32
-msgid "HiPay Enterprise 4x Carte Bancaire  avec frais - Facily Pay"
+msgid "HiPay Enterprise 4x Carte Bancaire  avec frais - Oney"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-oney-4xcb.php:33
 #: includes/gateways/local/class-hipay-oney-4xcb.php:34
-msgid "4x Carte Bancaire - Facily Pay"
+msgid "4x Carte Bancaire - Oney"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-giropay.php:32
@@ -574,12 +574,12 @@ msgid "Klarna"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-oney-3xcb-no-fees.php:32
-msgid "HiPay Enterprise 3x Carte Bancaire sans frais - Facily Pay"
+msgid "HiPay Enterprise 3x Carte Bancaire sans frais - Oney"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-oney-3xcb-no-fees.php:33
 #: includes/gateways/local/class-hipay-oney-3xcb-no-fees.php:34
-msgid "3x Carte Bancaire sans frais - Facily Pay"
+msgid "3x Carte Bancaire sans frais - Oney"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-ing-homepay.php:32
@@ -631,12 +631,12 @@ msgid "Caïxa - Astropay"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-oney-4xcb-no-fees.php:32
-msgid "HiPay Enterprise 4x Carte Bancaire sans frais - Facily Pay"
+msgid "HiPay Enterprise 4x Carte Bancaire sans frais - Oney"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-oney-4xcb-no-fees.php:33
 #: includes/gateways/local/class-hipay-oney-4xcb-no-fees.php:34
-msgid "4x Carte Bancaire sans frais - Facily Pay"
+msgid "4x Carte Bancaire sans frais - Oney"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-astropay-banco-do-brasil.php:32
@@ -1448,11 +1448,11 @@ msgstr ""
 
 #: includes/formatter/info/class-hipay-customer-billing-info-formatter.php:95
 msgid ""
-"Wrong phone number format, Facily Pay require a valid french phone number "
-"(0123465789|+33123465789)."
+"Wrong phone number format, Oney payment method require a valid french phone "
+"number (0123465789|+33123465789)."
 msgstr ""
-"Mauvais format de numéro de téléphone, Facily Pay nécessite un numéro de "
-"téléphone français valide (0123465789|+33123465789)."
+"Mauvais format de numéro de téléphone, Oney nécessite un numéro de téléphone "
+"français valide (0123465789|+33123465789)"
 
 #. Name of the plugin
 msgid "WooCommerce HiPay Enterprise"

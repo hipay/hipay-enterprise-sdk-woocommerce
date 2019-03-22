@@ -93,7 +93,7 @@ class Hipay_Customer_Billing_Info_Formatter implements Hipay_Api_Formatter
         ) {
             throw new Hipay_Payment_Exception(
                 __(
-                    "Wrong phone number format, Facily Pay require a valid french phone number (0123465789|+33123465789).",
+                    "Wrong phone number format, Oney payment method require a valid french phone number (0123465789|+33123465789).",
                     "hipayenterprise"
                 ),
                 '',
