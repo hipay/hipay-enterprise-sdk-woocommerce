@@ -6,14 +6,16 @@
       "label": "Oney"
     },
     "displayNameBO": "4x Carte Bancaire sans frais - Oney",
-    "displayName":  {
+    "displayName": {
       "fr": "4x Carte Bancaire sans frais - Oney",
       "en": "4x Credit card without fees - Oney"
     },
     "frontPosition": 4,
     "activated": 0,
-    "canRefund": 0,
-    "canManualCapture": 0,
+    "canRefund": 1,
+    "canRefundPartially": 1,
+    "canManualCapture": 1,
+    "canManualCapturePartially": 1,
     "currencies": [
       "EUR"
     ],
