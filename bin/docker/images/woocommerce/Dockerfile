@@ -11,6 +11,9 @@ ENV APACHE_RUN_USER=www-data \
 
 RUN apt-get update \
     && curl -sS https://getcomposer.org/installer | php -- --filename=composer -- --install-dir=/usr/local/bin \
+    && apt-get install -y ssmtp vim \
+    && echo "sendmail_path = /usr/sbin/ssmtp -t" > /usr/local/etc/php/conf.d/sendmail.ini \
+    && echo "mailhub=common-smtp:1025\n UseTLS=NO\n FromLineOverride=YES" > /etc/ssmtp/ssmtp.conf \
     &&  rm -rf /var/lib/apt/lists/*
 
 ##########################################
