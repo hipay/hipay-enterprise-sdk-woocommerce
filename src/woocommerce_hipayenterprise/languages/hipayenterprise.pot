@@ -880,7 +880,7 @@ msgid "WooCommerce HiPay Enterprise"
 msgstr ""
 
 #. Description of the plugin
-msgid "WooCommerce Plugin for Hipay Enterprise."
+msgid "WooCommerce plugin for HiPay Enterprise"
 msgstr ""
 
 #. URI of the plugin
