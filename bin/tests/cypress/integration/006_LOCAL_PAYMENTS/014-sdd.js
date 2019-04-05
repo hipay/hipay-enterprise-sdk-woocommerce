@@ -44,5 +44,13 @@ describe('Pay by SEPA Direct Debit', function () {
 
         cy.get('#place_order').click({force: true});
 
+        cy.checkHostedFieldsInlineError("Firstname is missing.", "sdd", "firstname");
+
+        cy.checkHostedFieldsInlineError("Text field contains invalid characters.", "sdd", "lastname");
+
+        cy.checkHostedFieldsInlineError("IBAN is invalid", "sdd", "iban")
+        ;
+        cy.checkHostedFieldsInlineError("BIC is invalid.", "sdd", "issuer_bank_id");
+
     });
 });

@@ -2,7 +2,7 @@
   "name": "hipay-enterprise-sdk-woocommerce",
   "version": "1.0.0",
   "dependencies": {
-    "@hipay/hipay-cypress-utils": "^1.0.26",
+    "@hipay/hipay-cypress-utils": "1.0.26",
     "cypress": "^3.1.5"
   },
   "scripts": {

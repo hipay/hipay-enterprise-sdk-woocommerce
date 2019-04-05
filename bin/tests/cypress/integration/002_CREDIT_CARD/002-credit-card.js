@@ -64,7 +64,7 @@ describe('Pay by credit card', function () {
 
         cy.fill_hostedfield_card('custom', customCard);
         cy.get('#place_order').click({force: true});
-        cy.checkHostedFieldsError("Card number is invalid.", "card");
+        cy.checkHostedFieldsInlineError("Card number is invalid.", "card", "cardNumber");
     });
 
 });

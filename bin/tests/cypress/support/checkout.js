@@ -156,6 +156,13 @@ Cypress.Commands.add("checkHostedFieldsError", (msg, method) => {
     );
 });
 
+Cypress.Commands.add("checkHostedFieldsInlineError", (msg, method, field) => {
+    cy.location('pathname', {timeout: 50000}).should('include', '/checkout/');
+    cy.get(`[data-hipay-id=hipay-${method}-field-error-${field}]`, {timeout: 50000}).contains(
+        msg
+    );
+});
+
 /**
  *
  */
