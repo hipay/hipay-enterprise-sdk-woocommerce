@@ -30,8 +30,9 @@ Cypress.Commands.add("adminLogOut", () => {
  * Go to Tab for Payment
  */
 Cypress.Commands.add("goToPaymentsTab", () => {
-    cy.get('#toplevel_page_woocommerce > .wp-submenu > :nth-child(5) > a').click({force: true});
-    cy.get('[href="' + Cypress.config('baseUrl') + '/wp-admin/admin.php?page=wc-settings&tab=checkout"]').click({force: true});
+    // cy.get('#toplevel_page_woocommerce > .wp-submenu > :nth-child(5) > a').click({force: true});
+    // cy.get('[href="' + Cypress.config('baseUrl') + '/wp-admin/admin.php?page=wc-settings&tab=checkout"]').click({force: true});
+    cy.visit('wp-admin/admin.php?page=wc-settings&tab=checkout"');
 });
 
 Cypress.Commands.add("activateBasket", () => {
