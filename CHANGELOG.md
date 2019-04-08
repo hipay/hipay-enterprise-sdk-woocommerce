@@ -1,4 +1,12 @@
+# Version 1.2.0
+
+- Fix: loader for local payment
+- Add local payment methods
+- Add OneClick
+- hosted fields for all methods
+
 # Version 1.1.0
+
 - Adding support for custom data
 - Adding category and delivery method mapping
 - Adding support for "basket"
@@ -12,4 +20,5 @@
 - Adding functionals tests with cypress
 
 # Version 1.0.0
+
 - Official version of HiPay woocommerce plugin
