@@ -1,0 +1,39 @@
+{
+  "name": "yandex",
+  "config": {
+    "displayNameBO": "Yandex Money",
+    "displayName": {
+      "fr": "Yandex Money",
+      "en": "Yandex Money"
+    },
+    "frontPosition": 30,
+    "activated": 0,
+    "canManualCapture": 0,
+    "canManualCapturePartially": 0,
+    "canRefund": 0,
+    "canRefundPartially": 0,
+    "currencies": [
+      "RUB"
+    ],
+    "countries": [
+      "RU"
+    ],
+    "displayConfigurationFields": [
+      "displayName",
+      "minAmount",
+      "maxAmount",
+      "countries"
+    ],
+    "countrySelectorReadOnly": 1,
+    "currencySelectorReadOnly": 1,
+    "forceBasket": 0,
+    "minAmount": {
+      "EUR": 0
+    },
+    "maxAmount": {
+      "EUR": false
+    },
+    "logo": "yandex.png",
+    "additionalFields": {}
+  }
+}

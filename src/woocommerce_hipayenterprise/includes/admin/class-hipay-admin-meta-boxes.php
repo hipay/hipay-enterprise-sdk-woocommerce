@@ -32,7 +32,7 @@ class Hipay_Admin_Meta_Boxes
 
         foreach ( wc_get_order_types( 'order-meta-boxes' ) as $type ) {
             $order_type_object = get_post_type_object($type);
-            add_meta_box( 'woocommerce-hipay-data', sprintf( __( '%s data', 'woocommerce' ), "HiPay Capture" ), 'WC_Meta_Box_Hipay::output', $type, 'normal', 'high' );
+            add_meta_box( 'woocommerce-hipay-data', sprintf( __( '%s data', 'hipayenterprise' ), "HiPay Capture" ), 'WC_Meta_Box_Hipay::output', $type, 'normal', 'high' );
         }
     }
 

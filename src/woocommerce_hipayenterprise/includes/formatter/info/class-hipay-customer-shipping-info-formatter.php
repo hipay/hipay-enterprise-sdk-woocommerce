@@ -25,23 +25,19 @@ if (!defined('ABSPATH')) {
 class Hipay_Customer_Shipping_Info_Formatter implements Hipay_Api_Formatter
 {
 
-    protected $plugin;
-
     protected $order;
 
     /**
      * Hipay_Customer_Shipping_Info_Formatter constructor.
-     * @param $plugin
      * @param $order
      */
-    public function __construct($plugin, $order)
+    public function __construct($order)
     {
-        $this->plugin = $plugin;
         $this->order = $order;
     }
 
     /**
-     * return mapped customer shipping informations
+     * return mapped customer shipping information
      * @return \HiPay\Fullservice\Gateway\Request\Info\CustomerShippingInfoRequest
      */
     public function generate()
@@ -54,7 +50,7 @@ class Hipay_Customer_Shipping_Info_Formatter implements Hipay_Api_Formatter
     }
 
     /**
-     * Map shipping informations to request fields (Hpayment Post)
+     * Map shipping information to request fields (Hpayment Post)
      *
      * @param \HiPay\Fullservice\Gateway\Request\Info\CustomerShippingInfoRequest $customerShippingInfo
      */
@@ -71,6 +67,8 @@ class Hipay_Customer_Shipping_Info_Formatter implements Hipay_Api_Formatter
         $customerShippingInfo->shipto_state = $shippingInfo["shipto_state"];
         $customerShippingInfo->shipto_zipcode = $shippingInfo["shipto_zipcode"];
         $customerShippingInfo->shipto_phone = $shippingInfo["shipto_phone"];
+        $customerShippingInfo->shipto_gender = 'U';
+        $customerShippingInfo->shipto_msisdn = '0000000000';
     }
 
     /**

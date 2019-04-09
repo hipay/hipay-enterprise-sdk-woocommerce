@@ -243,14 +243,14 @@ class Hipay_Helper
                     "\n";
                 break;
             default:
-                $message .= __('Registered notification ' . $transaction->getStatus()) .
+                $message .= __('Registered notification ', "hipayenterprise") . $transaction->getStatus() .
                     "\n";
                 break;
         }
 
         $message .= __('Order total amount :', "hipayenterprise") . $transaction->getAuthorizedAmount() . "\n";
         $message .= "\n";
-        $message .= __('Transaction ID: ',"hipayenterprise") . $transaction->getTransactionReference() . "\n";
+        $message .= __('Transaction ID: ', "hipayenterprise") . $transaction->getTransactionReference() . "\n";
         $message .= __('HiPay status: ', "hipayenterprise") . $transaction->getStatus() . "\n";
 
 
@@ -267,7 +267,7 @@ class Hipay_Helper
     public static function getPostData($index, $default = false)
     {
         if (isset($_POST[$index])) {
-            return  wc_clean( wp_unslash( $_POST[$index]));
+            return wc_clean(wp_unslash($_POST[$index]));
         }
 
         return $default;

@@ -79,8 +79,8 @@ class Hipay_Admin_Post_Types
      */
     public function custom_order_status($order_statuses)
     {
-        $order_statuses['wc-partial-captured'] = _x('Partially captured (HiPay)', 'Order status', 'woocommerce');
-        $order_statuses['wc-partial-refunded'] = _x('Partially refunded (HiPay)', 'Order status', 'woocommerce');
+        $order_statuses['wc-partial-captured'] = _x('Partially captured (HiPay)', 'Order status', 'hipayenterprise');
+        $order_statuses['wc-partial-refunded'] = _x('Partially refunded (HiPay)', 'Order status', 'hipayenterprise');
         return $order_statuses;
     }
 
@@ -179,7 +179,7 @@ class Hipay_Admin_Post_Types
             apply_filters(
                 'woocommerce_register_post_type_shop_order_capture',
                 array(
-                    'label' => __('Captures', 'woocommerce'),
+                    'label' => __('Captures', 'hipayenterprise'),
                     'capability_type' => 'shop_order',
                     'public' => false,
                     'hierarchical' => false,

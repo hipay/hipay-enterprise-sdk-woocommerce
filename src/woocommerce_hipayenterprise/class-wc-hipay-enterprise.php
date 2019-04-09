@@ -46,8 +46,8 @@ class WC_HipayEnterprise
         }
 
         $currentPluginVersion = get_option('hipay_enterprise_version');
-        if (!empty($currentPluginVersion)
-            && WC_HIPAYENTERPRISE_VERSION !== $currentPluginVersion) {
+
+        if (!empty($currentPluginVersion) && WC_HIPAYENTERPRISE_VERSION !== $currentPluginVersion) {
             $this->updatePlugin($currentPluginVersion);
         } else if (empty($currentPluginVersion)) {
             $this->installPlugin();
@@ -93,7 +93,17 @@ class WC_HipayEnterprise
      */
     public function addGateway($methods)
     {
+        $config = new Hipay_Config();
+
         $localMethod = Hipay_Autoloader::getLocalMethodsNames();
+        if (!$config->getPaymentGlobal()["enableAstropay"]) {
+            $localMethod = array_filter(
+                $localMethod,
+                function ($value) {
+                    return !strpos($value, 'Astropay');
+                }
+            );
+        }
         $methods[] = 'Gateway_Hipay';
         return array_merge($methods, $localMethod);
     }

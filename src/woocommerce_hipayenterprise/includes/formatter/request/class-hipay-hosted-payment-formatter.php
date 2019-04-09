@@ -22,7 +22,7 @@ if (!defined('ABSPATH')) {
  * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
  */
-class Hipay_Hosted_Payment_Formatter extends Hipay_Request_Formatter_Abstract
+class Hipay_Hosted_Payment_Formatter extends Hipay_Order_Request_Abstract
 {
     /**
      * @var string
@@ -76,5 +76,6 @@ class Hipay_Hosted_Payment_Formatter extends Hipay_Request_Formatter_Abstract
         $orderRequest->display_selector = $this->plugin->confHelper->getPaymentGlobal()["display_card_selector"];
         $orderRequest->payment_product_list = $this->productList;
         $orderRequest->payment_product_category_list = '';
+        $orderRequest->multi_use = isset($this->params["createOneClick"]) && $this->params["createOneClick"];
     }
 }

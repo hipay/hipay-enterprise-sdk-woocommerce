@@ -1,0 +1,102 @@
+{
+  "name": "sdd",
+  "config": {
+    "displayNameBO": "SEPA Direct Debit",
+    "displayName":  {
+      "fr": "SEPA Direct Debit",
+      "en": "SEPA Direct Debit"
+    },
+    "frontPosition": 26,
+    "activated": 0,
+    "canManualCapture": 0,
+    "canManualCapturePartially": 0,
+    "canRefund": 0,
+    "canRefundPartially": 0,
+    "currencies": [
+      "EUR"
+    ],
+    "countries": [
+      "GB",
+      "FR"
+    ],
+    "displayConfigurationFields": [
+      "displayName",
+      "minAmount",
+      "maxAmount",
+      "countries"
+    ],
+    "countrySelectorReadOnly": 0,
+    "currencySelectorReadOnly": 0,
+    "forceBasket": 0,
+    "electronicSignature": 1,
+    "minAmount": {
+      "EUR": 0
+    },
+    "maxAmount": {
+      "EUR": false
+    },
+    "logo": "sdd.png",
+    "additionalFields": {
+      "sdkClass": "HiPay\\Fullservice\\Gateway\\Request\\PaymentMethod\\SEPADirectDebitPaymentMethod",
+      "defaultFieldsValue": {
+        "recurring_payment": 0
+      },
+      "formFields": {
+        "gender": {
+          "label": {
+            "en": "Gender",
+            "fr": "Civilité"
+          },
+          "type": "gender",
+          "required": true,
+          "controlType": false
+        },
+        "firstname": {
+          "label": {
+            "en": "Firstname",
+            "fr": "Prénom"
+          },
+          "type": "text",
+          "required": true,
+          "controlType": false
+        },
+        "lastname": {
+          "label": {
+            "en": "Lastname",
+            "fr": "Nom"
+          },
+          "type": "text",
+          "required": true,
+          "controlType": false
+        },
+        "bank_name": {
+          "label": {
+            "en": "Bank name",
+            "fr": "Nom de la banque"
+          },
+          "type": "text",
+          "required": true,
+          "controlType": false
+        },
+        "iban": {
+          "label":{
+            "en": "IBAN",
+            "fr": "IBAN"
+          },
+          "type": "text",
+          "required": true,
+          "controlType": "iban"
+        },
+        "issuer_bank_id": {
+          "label": {
+            "en": "BIC",
+            "fr": "BIC"
+          },
+          "type": "text",
+          "required": false,
+          "controlType": "bic"
+        }
+      }
+    }
+  }
+}

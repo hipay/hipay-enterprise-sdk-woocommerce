@@ -1,0 +1,43 @@
+{
+  "name": "3xcb",
+  "config": {
+    "group": {
+      "code": "oney",
+      "label": "Oney"
+    },
+    "displayNameBO": "3x Carte Bancaire - Oney",
+    "displayName": {
+      "fr": "3x Carte Bancaire - Oney",
+      "en": "3x Credit Card - Oney"
+    },
+    "frontPosition": 3,
+    "activated": 0,
+    "canRefund": 1,
+    "canRefundPartially": 1,
+    "canManualCapture": 1,
+    "canManualCapturePartially": 1,
+    "currencies": [
+      "EUR"
+    ],
+    "countries": [
+      "FR"
+    ],
+    "displayConfigurationFields": [
+      "displayName",
+      "minAmount",
+      "maxAmount",
+      "countries"
+    ],
+    "countrySelectorReadOnly": 1,
+    "currencySelectorReadOnly": 1,
+    "forceBasket": 1,
+    "minAmount": {
+      "EUR": 0
+    },
+    "maxAmount": {
+      "EUR": false
+    },
+    "logo": "oney.png",
+    "additionalFields": {}
+  }
+}

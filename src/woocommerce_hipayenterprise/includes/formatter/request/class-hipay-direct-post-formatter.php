@@ -22,7 +22,7 @@ if (!defined('ABSPATH')) {
  * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
  */
-class Hipay_Direct_Post_Formatter extends Hipay_Request_Formatter_Abstract
+class Hipay_Direct_Post_Formatter extends Hipay_Order_Request_Abstract
 {
     /**
      * @var
@@ -56,7 +56,8 @@ class Hipay_Direct_Post_Formatter extends Hipay_Request_Formatter_Abstract
     /**
      * Generate request data before API call
      *
-     * @return \HiPay\Fullservice\Gateway\Request\Order\OrderRequest
+     * @return \HiPay\Fullservice\Gateway\Request\Order\OrderRequest|mixed
+     * @throws Hipay_Payment_Exception
      */
     public function generate()
     {
@@ -71,6 +72,8 @@ class Hipay_Direct_Post_Formatter extends Hipay_Request_Formatter_Abstract
      * Map order
      *
      * @param $orderRequest
+     * @return mixed|void
+     * @throws Hipay_Payment_Exception
      */
     public function mapRequest(&$orderRequest)
     {
@@ -78,6 +81,7 @@ class Hipay_Direct_Post_Formatter extends Hipay_Request_Formatter_Abstract
 
         $orderRequest->payment_product = $this->paymentProduct;
         $orderRequest->paymentMethod = $this->paymentMethod;
+        $orderRequest->device_fingerprint = $this->params["deviceFingerprint"];
         $this->getCustomerNames($orderRequest);
     }
 

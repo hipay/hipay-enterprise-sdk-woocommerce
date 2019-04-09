@@ -1,0 +1,40 @@
+{
+  "name": "dexia-directnet",
+  "config": {
+    "displayNameBO": "Belfius Direct Net",
+    "displayName":  {
+      "fr": "Belfius Direct Net",
+      "en": "Belfius Direct Net"
+    },
+    "frontPosition": 10,
+    "activated": 0,
+    "canManualCapture": 0,
+    "canManualCapturePartially": 0,
+    "canRefund": 0,
+    "canRefundPartially": 0,
+    "currencies": [
+      "EUR"
+    ],
+    "countries": [
+      "GB",
+      "FR"
+    ],
+    "displayConfigurationFields": [
+      "displayName",
+      "minAmount",
+      "maxAmount",
+      "countries"
+    ],
+    "countrySelectorReadOnly": 0,
+    "currencySelectorReadOnly": 0,
+    "forceBasket": 0,
+    "minAmount": {
+      "EUR": 0
+    },
+    "maxAmount": {
+      "EUR": false
+    },
+    "logo": "dexia-directnet.png",
+    "additionalFields": {}
+  }
+}

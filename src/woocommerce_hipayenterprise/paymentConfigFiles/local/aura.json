@@ -1,0 +1,57 @@
+{
+  "name": "aura",
+  "config": {
+    "group": {
+      "code": "astropay",
+      "label": "Astropay"
+    },
+    "displayNameBO": "Aura",
+    "displayName":  {
+      "fr": "Aura",
+      "en": "Aura"
+    },
+    "frontPosition": 6,
+    "activated": 0,
+    "canRefund": 0,
+    "canRefundPartially": 0,
+    "canManualCapture": 0,
+    "canManualCapturePartially": 0,
+    "currencies": [
+      "BRL"
+    ],
+    "countries": [
+      "BR"
+    ],
+    "displayConfigurationFields": [
+      "displayName",
+      "minAmount",
+      "maxAmount",
+      "countries"
+    ],
+    "countrySelectorReadOnly": 1,
+    "currencySelectorReadOnly": 1,
+    "forceBasket": 0,
+    "minAmount": {
+      "EUR": 0
+    },
+    "maxAmount": {
+      "EUR": false
+    },
+    "logo": "aura.png",
+    "additionalFields": {
+      "sdkClass": "HiPay\\Fullservice\\Gateway\\Request\\PaymentMethod\\AstropayPaymentMethod",
+      "defaultFieldsValue": {},
+      "formFields": {
+        "national_identification_number": {
+          "label":  {
+            "en": "CPF",
+            "fr": "CPF"
+          },
+          "type": "text",
+          "required": true,
+          "controlType": "cpf"
+        }
+      }
+    }
+  }
+}

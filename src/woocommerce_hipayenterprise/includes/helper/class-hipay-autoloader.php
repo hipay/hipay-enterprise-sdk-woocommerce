@@ -45,11 +45,12 @@ class Hipay_Autoloader
         WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-log.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-notification.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-order-handler.php',
+        WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-payment-token-cc-hipay.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-order-helper.php',
+        WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-token-helper.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-admin-assets.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-config.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-settings-handler.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-helper.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-helper.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-transactions.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-operations.php',
@@ -63,14 +64,14 @@ class Hipay_Autoloader
         WC_HIPAYENTERPRISE_PATH . 'includes/formatter/class-hipay-api-formatter-abstract.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/formatter/cart/class-hipay-cart-formatter.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/formatter/cart/class-hipay-delivery-formatter.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-request-formatter-abstract.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-request-formatter-abstract.php',
+        WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-order-request-abstract.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-maintenance-formatter-abstract.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-hosted-payment-formatter.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-direct-post-formatter.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/formatter/info/class-hipay-customer-billing-info-formatter.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/formatter/info/class-hipay-customer-shipping-info-formatter.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/formatter/payment-method/class-hipay-card-token-formatter.php',
+        WC_HIPAYENTERPRISE_PATH . 'includes/formatter/payment-method/class-hipay-generic-payment-method-formatter.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-api-request-handler.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/helper/exceptions/class-hipay-payment-exception.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/helper/exceptions/class-hipay-settings-exception.php'
@@ -119,11 +120,12 @@ class Hipay_Autoloader
         $iterator = new RecursiveIteratorIterator($dir);
         foreach ($iterator as $file) {
             $fileName = $file->getFilename();
-            if (preg_match('%\.php$%', $fileName)) {
+            if (preg_match('%^class-[a-z|1-9|-]*\.php%', $fileName)) {
                 $filePaths[] = $file->getPathname();
             }
         }
 
+        sort($filePaths);
         return $filePaths;
     }
 

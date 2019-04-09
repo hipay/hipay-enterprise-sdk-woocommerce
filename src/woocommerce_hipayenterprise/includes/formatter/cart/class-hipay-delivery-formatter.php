@@ -20,33 +20,26 @@
  * @license     https://github.com/hipay/hipay-enterprise-sdk-prestashop/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-enterprise-sdk-prestashop
  */
-class Hipay_Delivery_Formatter extends Hipay_Api_Formatter_Abstact
+class Hipay_Delivery_Formatter implements Hipay_Api_Formatter
 {
     /**
      * The single instance of the class.
-     *
      */
     protected static $instance = null;
 
-    /**
-     * @var
-     */
     protected $mappedShipping;
 
-
-    public function __construct($plugin)
-    {
-        parent::__construct($plugin, false);
-    }
-
     /**
-     * Return  mapped delivery shipping informations
+     * Return  mapped delivery shipping information
      *
-     * @return \HiPay\Fullservice\Gateway\Request\Info\DeliveryShippingInfoRequest
+     * @return \HiPay\Fullservice\Gateway\Request\Info\DeliveryShippingInfoRequest|mixed
+     * @throws Exception
      */
     public function generate()
     {
-        $this->mappedShipping = Hipay_Helper_Mapping::getHipayMappingFromDeliveryMethod(WC()->cart->calculate_shipping()[0]->method_id);
+        $this->mappedShipping = Hipay_Helper_Mapping::getHipayMappingFromDeliveryMethod(
+            WC()->cart->calculate_shipping()[0]->method_id
+        );
 
         $deliveryShippingInfo = new \HiPay\Fullservice\Gateway\Request\Info\DeliveryShippingInfoRequest();
 
@@ -55,12 +48,12 @@ class Hipay_Delivery_Formatter extends Hipay_Api_Formatter_Abstact
         return $deliveryShippingInfo;
     }
 
-
-
     /**
-     * Map  delivery shipping informations to request fields (Hpayment Post)
+     * Map  delivery shipping information to request fields (Hpayment Post)
      *
      * @param \HiPay\Fullservice\Gateway\Request\Info\DeliveryShippingInfoRequest $deliveryShippingInfo
+     * @return mixed|void
+     * @throws Exception
      */
     public function mapRequest(&$deliveryShippingInfo)
     {
@@ -71,7 +64,8 @@ class Hipay_Delivery_Formatter extends Hipay_Api_Formatter_Abstact
     /**
      * According to the mapping, provide a approximated date delivery
      *
-     * @return string format YYYY-MM-DD
+     * @return null|string format YYYY-MM-DD
+     * @throws Exception
      */
     private function calculateEstimatedDate()
     {
@@ -104,14 +98,10 @@ class Hipay_Delivery_Formatter extends Hipay_Api_Formatter_Abstact
         return null;
     }
 
-    /**
-     * @param $plugin
-     * @return Hipay_Delivery_Formatter|null
-     */
-    public static function initHiPayDeliveryFormatter($plugin)
+    public static function initHiPayDeliveryFormatter()
     {
         if (null === self::$instance) {
-            self::$instance = new self($plugin);
+            self::$instance = new self();
         }
         return self::$instance;
     }

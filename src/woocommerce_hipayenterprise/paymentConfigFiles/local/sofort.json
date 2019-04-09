@@ -1,0 +1,40 @@
+{
+  "name": "sofort-uberweisung",
+  "config": {
+    "displayNameBO": "Sofort Überweisung",
+    "displayName":  {
+      "fr": "Sofort Überweisung",
+      "en": "Sofort Überweisung"
+    },
+    "frontPosition": 28,
+    "activated": 0,
+    "canManualCapture": 0,
+    "canManualCapturePartially": 0,
+    "canRefund": 1,
+    "canRefundPartially": 1,
+    "currencies": [
+      "EUR"
+    ],
+    "countries": [
+      "GB",
+      "FR"
+    ],
+    "displayConfigurationFields": [
+      "displayName",
+      "minAmount",
+      "maxAmount",
+      "countries"
+    ],
+    "countrySelectorReadOnly": 0,
+    "currencySelectorReadOnly": 0,
+    "forceBasket": 0,
+    "minAmount": {
+      "EUR": 0
+    },
+    "maxAmount": {
+      "EUR": false
+    },
+    "logo": "sofort.png",
+    "additionalFields": {}
+  }
+}

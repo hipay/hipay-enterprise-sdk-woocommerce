@@ -3,8 +3,12 @@
   "config": {
     "displayName": "American Express",
     "activated": 1,
-    "canRefund": 1,
+    "can3ds": 1,
+    "canRecurring": 1,
     "canManualCapture": 1,
+    "canManualCapturePartially": 1,
+    "canRefund": 1,
+    "canRefundPartially": 1,
     "currencies": [
       "EUR"
     ],

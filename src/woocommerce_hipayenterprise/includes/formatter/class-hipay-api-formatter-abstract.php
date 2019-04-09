@@ -45,7 +45,7 @@ abstract class Hipay_Api_Formatter_Abstact implements Hipay_Api_Formatter
     abstract public function generate();
 
     /**
-     * map prestashop order informations to request fields
+     * map prestashop order information to request fields
      * (shared information between Hpayment, Iframe, Direct Post and Maintenance )
      * @param type $request
      */
@@ -73,6 +73,10 @@ abstract class Hipay_Api_Formatter_Abstact implements Hipay_Api_Formatter
             "payment_code" => $paymentCode,
             "display_iframe" => $iframe,
         );
+
+        if (isset($this->params["createOneClick"]) && $this->params["createOneClick"]) {
+            $customDataHipay["createOneClick"] = true;
+        }
 
         $customDataHipay = apply_filters('hipay_wc_request_custom_data', $customDataHipay, $order, $params);
 

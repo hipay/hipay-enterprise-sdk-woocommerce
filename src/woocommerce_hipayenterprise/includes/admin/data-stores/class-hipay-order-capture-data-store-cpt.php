@@ -125,8 +125,8 @@ class WC_Order_Capture_Data_Store_CPT extends Abstract_WC_Order_Data_Store_CPT i
     {
         return sprintf(
         /* translators: %s: Order date */
-            __('Capture &ndash; %s', 'woocommerce'),
-            strftime(_x('%b %d, %Y @ %I:%M %p', 'Order date parsed by strftime', 'woocommerce')) // phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment, WordPress.WP.I18n.UnorderedPlaceholdersText
+            __('Capture &ndash; %s', 'hipayenterprise'),
+            strftime(_x('%b %d, %Y @ %I:%M %p', 'Order date parsed by strftime', 'hipayenterprise')) // phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment, WordPress.WP.I18n.UnorderedPlaceholdersText
         );
     }
 }

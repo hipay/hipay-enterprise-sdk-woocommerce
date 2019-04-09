@@ -1,0 +1,40 @@
+{
+  "name": "ing-homepay",
+  "config": {
+    "displayNameBO": "ING Home'Pay",
+    "displayName":  {
+      "fr": "ING Home'Pay",
+      "en": "ING Home'Pay"
+    },
+    "frontPosition": 16,
+    "activated": 0,
+    "canManualCapture": 0,
+    "canManualCapturePartially": 0,
+    "canRefund": 0,
+    "canRefundPartially": 0,
+    "currencies": [
+      "EUR"
+    ],
+    "countries": [
+      "GB",
+      "FR"
+    ],
+    "displayConfigurationFields": [
+      "displayName",
+      "minAmount",
+      "maxAmount",
+      "countries"
+    ],
+    "countrySelectorReadOnly": 0,
+    "currencySelectorReadOnly": 0,
+    "forceBasket": 0,
+    "minAmount": {
+      "EUR": 0
+    },
+    "maxAmount": {
+      "EUR": false
+    },
+    "logo": "ing-homepay.png",
+    "additionalFields": {}
+  }
+}

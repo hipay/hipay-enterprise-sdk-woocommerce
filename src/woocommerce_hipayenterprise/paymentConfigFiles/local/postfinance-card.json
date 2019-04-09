@@ -1,0 +1,44 @@
+{
+  "name": "postfinance-card",
+  "config": {
+    "group": {
+      "code": "postfinance",
+      "label": "PostFinance"
+    },
+    "displayNameBO": "PostFinance Card",
+    "displayName":  {
+      "fr": "PostFinance Card",
+      "en": "PostFinance Card"
+    },
+    "frontPosition": 21,
+    "activated": 0,
+    "canManualCapture": 0,
+    "canManualCapturePartially": 0,
+    "canRefund": 1,
+    "canRefundPartially": 1,
+    "currencies": [
+      "EUR"
+    ],
+    "countries": [
+      "GB",
+      "FR"
+    ],
+    "displayConfigurationFields": [
+      "displayName",
+      "minAmount",
+      "maxAmount",
+      "countries"
+    ],
+    "countrySelectorReadOnly": 0,
+    "currencySelectorReadOnly": 0,
+    "forceBasket": 0,
+    "minAmount": {
+      "EUR": 0
+    },
+    "maxAmount": {
+      "EUR": false
+    },
+    "logo": "postfinance-card.png",
+    "additionalFields": {}
+  }
+}

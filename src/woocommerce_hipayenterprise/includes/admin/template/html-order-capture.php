@@ -28,20 +28,20 @@ $who_captured = new WP_User($capture->get_captured_by());
         if ($who_captured->exists()) {
             printf(
             /* translators: 1: refund id 2: refund date 3: username */
-                esc_html__('Capture #%1$s - %2$s by %3$s', 'woocommerce'),
+                esc_html__('Capture #%1$s - %2$s by %3$s', 'hipayenterprise'),
                 esc_html($capture->get_id()),
                 esc_html(wc_format_datetime($capture->get_date_created(), get_option('date_format') . ', ' . get_option('time_format'))),
                 sprintf(
                     '<abbr class="refund_by" title="%1$s">%2$s</abbr>',
                     /* translators: 1: ID who refunded */
-                    sprintf(esc_attr__('ID: %d', 'woocommerce'), absint($who_captured->ID)),
+                    sprintf(esc_attr__('ID: %d', 'hipayenterprise'), absint($who_captured->ID)),
                     esc_html($who_captured->display_name)
                 )
             );
         } else {
             printf(
             /* translators: 1: refund id 2: refund date */
-                esc_html__('Capture #%1$s - %2$s', 'woocommerce'),
+                esc_html__('Capture #%1$s - %2$s', 'hipayenterprise'),
                 esc_html($capture->get_id()),
                 esc_html(wc_format_datetime($capture->get_date_created(), get_option('date_format') . ', ' . get_option('time_format')))
             );

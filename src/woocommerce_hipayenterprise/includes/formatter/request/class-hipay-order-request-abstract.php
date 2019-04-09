@@ -22,7 +22,7 @@ if (!defined('ABSPATH')) {
  * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
  */
-abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abstact
+abstract class Hipay_Order_Request_Abstract extends Hipay_Api_Formatter_Abstact
 {
 
     protected $params;
@@ -42,7 +42,9 @@ abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abst
     /**
      * Map Request (Hosted or direct Post)
      *
-     * @param type $orderRequest
+     * @param $orderRequest
+     * @return mixed|void
+     * @throws Hipay_Payment_Exception
      */
     public function mapRequest(&$orderRequest)
     {
@@ -50,7 +52,10 @@ abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abst
         $this->setCustomData($orderRequest, $this->order, $this->params);
 
         $orderRequest->orderid = $this->order->get_id() . '-' . time();
-        if ($this->plugin->confHelper->getPaymentGlobal()["capture_mode"] === CaptureMode::AUTOMATIC) {
+        if (
+            $this->plugin->confHelper->getPaymentGlobal()["capture_mode"] === CaptureMode::AUTOMATIC
+            || $this->params["forceSalesMode"]
+        ) {
             $orderRequest->operation = "Sale";
         } else {
             $orderRequest->operation = "Authorization";
@@ -78,10 +83,11 @@ abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abst
         $orderRequest->lastname = $this->order->get_billing_last_name();
         $orderRequest->email = $this->order->get_billing_email();
         $orderRequest->ipaddr = $_SERVER ['REMOTE_ADDR'];
-        $orderRequest->language = $orderRequest->language = get_locale();
+        $orderRequest->language = get_locale();
         $orderRequest->http_user_agent = $_SERVER ['HTTP_USER_AGENT'];
         $orderRequest->basket = $this->params["basket"];
-        $orderRequest->delivery_information = $this->params["delivery_informations"];
+        $orderRequest->delivery_information = $this->params["delivery_information"];
+        $orderRequest->authentication_indicator = $this->params["authentication_indicator"];
     }
 
     /**
@@ -116,15 +122,15 @@ abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abst
     }
 
     /**
-     * Return mapped customer billing informations
+     * Return mapped customer billing information
      *
-     * @return \HiPay\Fullservice\Gateway\Request\Info\CustomerBillingInfoRequest
+     * @return \HiPay\Fullservice\Gateway\Request\Info\CustomerBillingInfoRequest|mixed
+     * @throws Hipay_Payment_Exception
      */
     private function getCustomerBillingInfo()
     {
 
         $billingInfo = new Hipay_Customer_Billing_Info_Formatter(
-            $this->plugin,
             $this->order,
             (isset($this->params["paymentProduct"])) ? $this->params["paymentProduct"] : 0
         );
@@ -133,13 +139,13 @@ abstract class Hipay_Request_Formatter_Abstract extends Hipay_Api_Formatter_Abst
     }
 
     /**
-     * return mapped customer shipping informations
+     * return mapped customer shipping information
      *
      * @return \HiPay\Fullservice\Gateway\Request\Info\CustomerShippingInfoRequest
      */
     private function getCustomerShippingInfo()
     {
-        $customerShippingInfo = new Hipay_Customer_Shipping_Info_Formatter($this->plugin, $this->order);
+        $customerShippingInfo = new Hipay_Customer_Shipping_Info_Formatter($this->order);
 
         return $customerShippingInfo->generate();
     }

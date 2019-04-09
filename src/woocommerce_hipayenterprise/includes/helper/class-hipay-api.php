@@ -33,16 +33,6 @@ class Hipay_Api
     protected $plugin;
 
     /**
-     * @var Hipay_Cart_Formatter|null|Wc_Hipay_Admin_Assets
-     */
-    protected $cartFormatter;
-
-    /**
-     * @var Hipay_Delivery_Formatter|null
-     */
-    protected $deliveryFormatter;
-
-    /**
      * @var Hipay_Delivery_Formatter|null
      */
     protected $operationsHelper;
@@ -55,43 +45,7 @@ class Hipay_Api
     public function __construct($plugin)
     {
         $this->plugin = $plugin;
-        $this->cartFormatter = Hipay_Cart_Formatter::initHiPayCartFormatter($plugin);
-        $this->deliveryFormatter = Hipay_Delivery_Formatter::initHiPayDeliveryFormatter($plugin);
         $this->operationsHelper = Hipay_Operations_Helper::initHiPayOperationsHelper($plugin);
-    }
-
-    /**
-     * create gateway client from config and client provider
-     *
-     * @param bool $forceConfig : Configuration::API_ENV_STAGE | Configuration::API_ENV_PRODUCTION | false
-     * @return \HiPay\Fullservice\Gateway\Client\GatewayClient
-     */
-    private function createGatewayClient($forceConfig = false)
-    {
-        //@TODO implements proxy configuration
-        $proxy = array();
-
-        if (!$forceConfig) {
-            $sandbox = $this->plugin->confHelper->isSandbox();
-        } else {
-            $sandbox = ($forceConfig === Configuration::API_ENV_STAGE);
-        }
-
-        $username = ($sandbox) ? $this->plugin->confHelper->getAccount()["sandbox"]["api_username_sandbox"]
-            : $this->plugin->confHelper->getAccount()["production"]["api_username_production"];
-        $password = ($sandbox) ? $this->plugin->confHelper->getAccount()["sandbox"]["api_password_sandbox"]
-            : $this->plugin->confHelper->getAccount()["production"]["api_password_production"];
-
-        $env = ($sandbox) ? HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENV_STAGE
-            : HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENV_PRODUCTION;
-
-        $config = new \HiPay\Fullservice\HTTP\Configuration\Configuration($username, $password, $env, null, $proxy);
-
-        //Instantiate client provider with configuration object
-        $clientProvider = new \HiPay\Fullservice\HTTP\SimpleHTTPClient($config);
-
-        //Create your gateway client
-        return new \HiPay\Fullservice\Gateway\Client\GatewayClient($clientProvider);
     }
 
     /**
@@ -100,14 +54,13 @@ class Hipay_Api
      * @param $order
      * @param $params
      * @return \HiPay\Fullservice\Gateway\Model\Transaction|\HiPay\Fullservice\Model\AbstractModel
-     * @throws Exception
+     * @throws Hipay_Payment_Exception
      */
     public function requestDirectPost($order, $params)
     {
         $this->plugin->logs->logInfos("# requestDirectPost " . $order->id);
 
         $gatewayClient = $this->createGatewayClient();
-        $this->iniParamsWithConfiguration($params);
 
         $directPostFormatter = new Hipay_Direct_Post_Formatter($this->plugin, $params, $order);
         $orderRequest = $directPostFormatter->generate();
@@ -120,10 +73,9 @@ class Hipay_Api
     /**
      * Request capture or refund to HiPay API
      *
-     * @param $moduleInstance
      * @param $params
      * @return \HiPay\Fullservice\Gateway\Model\Operation|\HiPay\Fullservice\Model\AbstractModel
-     * @throws GatewayException
+     * @throws Exception
      */
     public function requestMaintenance($params)
     {
@@ -161,14 +113,13 @@ class Hipay_Api
      * Create Hosted Page request and send it
      *
      * @param $order
+     * @param $params
      * @return string
+     * @throws Exception
      */
-    public function requestHostedPaymentPage($order)
+    public function requestHostedPaymentPage($order, $params)
     {
         $gatewayClient = $this->createGatewayClient();
-
-        $params = array();
-        $this->iniParamsWithConfiguration($params);
 
         $activatedPayment = Hipay_Helper::getActivatedPaymentByCountryAndCurrency(
             $this->plugin,
@@ -215,20 +166,37 @@ class Hipay_Api
     }
 
     /**
-     * Init params send to the api caller
+     * create gateway client from config and client provider
      *
-     * @param $params
+     * @param bool $forceConfig : Configuration::API_ENV_STAGE | Configuration::API_ENV_PRODUCTION | false
+     * @return \HiPay\Fullservice\Gateway\Client\GatewayClient
+     * @throws Exception
      */
-    private function iniParamsWithConfiguration(&$params)
+    private function createGatewayClient($forceConfig = false)
     {
-        if ($this->plugin->confHelper->getPaymentGlobal()["activate_basket"]) {
-            $params["basket"] = $this->cartFormatter->generate();
-            if (count(WC()->cart->calculate_shipping()) > 0) {
-                $params["delivery_informations"] = $this->deliveryFormatter->generate();
-            }
+        //@TODO implements proxy configuration
+        $proxy = array();
+
+        if (!$forceConfig) {
+            $sandbox = $this->plugin->confHelper->isSandbox();
+        } else {
+            $sandbox = ($forceConfig === Configuration::API_ENV_STAGE);
         }
 
-        $params["iframe"] = $this->plugin->confHelper->getPaymentGlobal()["display_hosted_page"] === "iframe";
-        $params["authentication_indicator"] = $this->plugin->confHelper->getPaymentGlobal()["activate_3d_secure"];
+        $username = ($sandbox) ? $this->plugin->confHelper->getAccount()["sandbox"]["api_username_sandbox"]
+            : $this->plugin->confHelper->getAccount()["production"]["api_username_production"];
+        $password = ($sandbox) ? $this->plugin->confHelper->getAccount()["sandbox"]["api_password_sandbox"]
+            : $this->plugin->confHelper->getAccount()["production"]["api_password_production"];
+
+        $env = ($sandbox) ? HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENV_STAGE
+            : HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENV_PRODUCTION;
+
+        $config = new \HiPay\Fullservice\HTTP\Configuration\Configuration($username, $password, $env, null, $proxy);
+
+        //Instantiate client provider with configuration object
+        $clientProvider = new \HiPay\Fullservice\HTTP\SimpleHTTPClient($config);
+
+        //Create your gateway client
+        return new \HiPay\Fullservice\Gateway\Client\GatewayClient($clientProvider);
     }
 }
