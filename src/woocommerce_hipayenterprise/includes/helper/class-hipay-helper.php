@@ -294,4 +294,21 @@ class Hipay_Helper
         $file = WC_HIPAYENTERPRISE_PATH . 'includes/' . $type . '/template/' . $template;
         include $file;
     }
+
+    /**
+     * @param $needles
+     * @param $haystack
+     * @return bool
+     */
+    public static function allArrayKeyExists($needles, $haystack)
+    {
+
+        foreach ($needles as $needle) {
+            if (!array_key_exists($needle, $haystack)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

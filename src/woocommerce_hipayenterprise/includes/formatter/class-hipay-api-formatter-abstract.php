@@ -78,6 +78,10 @@ abstract class Hipay_Api_Formatter_Abstact implements Hipay_Api_Formatter
             $customDataHipay["createOneClick"] = true;
         }
 
+        if (isset($this->params["force_cvv"]) && $this->params["force_cvv"]) {
+            $customDataHipay["force_cvv"] = true;
+        }
+
         $customDataHipay = apply_filters('hipay_wc_request_custom_data', $customDataHipay, $order, $params);
 
         $request->custom_data = json_encode($customDataHipay);

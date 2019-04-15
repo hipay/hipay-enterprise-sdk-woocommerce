@@ -75,8 +75,6 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 $this->supports[] = 'tokenization';
             }
 
-            add_filter('woocommerce_available_payment_gateways', array($this, 'removeFromMyAccount'));
-
             if ($this->isAvailable()
                 && is_page()
                 && (is_checkout() || is_add_payment_method_page())
@@ -91,24 +89,9 @@ if (!class_exists('WC_Gateway_Hipay')) {
             }
         }
 
-        public function removeFromMyAccount($availableGateways)
-        {
-            if (is_add_payment_method_page()) {
-                unset($availableGateways[self::GATEWAY_CREDIT_CARD_ID]);
-            }
-
-            return $availableGateways;
-        }
-
         public function isAvailable()
         {
             return ('yes' === $this->enabled);
-        }
-
-
-        private function isDirectPostActivated()
-        {
-            return $this->confHelper->getPaymentGlobal()["operating_mode"] === OperatingMode::HOSTED_FIELDS;
         }
 
         /**
@@ -188,14 +171,9 @@ if (!class_exists('WC_Gateway_Hipay')) {
         private function form()
         {
             $paymentGlobal = $this->confHelper->getPaymentGlobal();
-            if ($paymentGlobal['operating_mode'] == OperatingMode::HOSTED_PAGE) {
 
-                $this->process_template(
-                    'hosted-page.php',
-                    'frontend',
-                    array()
-                );
-            } elseif ($paymentGlobal['operating_mode'] == OperatingMode::HOSTED_FIELDS) {
+            if ($paymentGlobal['operating_mode'] == OperatingMode::HOSTED_FIELDS ||
+                (is_user_logged_in() && is_add_payment_method_page())) {
 
                 $activatedCreditCard = Hipay_Helper::getActivatedPaymentByCountryAndCurrency(
                     $this,
@@ -212,6 +190,13 @@ if (!class_exists('WC_Gateway_Hipay')) {
                     array(
                         'activatedCreditCard' => '"' . implode('","', $activatedCreditCard) . '"'
                     )
+                );
+            } elseif ($paymentGlobal['operating_mode'] == OperatingMode::HOSTED_PAGE) {
+
+                $this->process_template(
+                    'hosted-page.php',
+                    'frontend',
+                    array()
                 );
             }
         }
@@ -432,6 +417,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
                     if ($token) {
                         Hipay_Token_Helper::handleTokenForm($token, $params);
                     }
+
                     $params["createOneClick"] = get_current_user_id() > 0 &&
                         Hipay_Helper::getPostData('wc-' . self::GATEWAY_CREDIT_CARD_ID . '-new-payment-method');
                 }
@@ -447,38 +433,66 @@ if (!class_exists('WC_Gateway_Hipay')) {
             }
         }
 
-//        public function add_payment_method()
-//        {
-//
-//            if (!$this->confHelper->getPaymentGlobal()["card_token"]) {
-//                return false;
-//            }
-//
-//            try {
-//                $values = array(
-//                    "token" => Hipay_Helper::getPostData('card-token'),
-//                    "pan" => Hipay_Helper::getPostData('card-pan'),
-//                    "expiry_year" => Hipay_Helper::getPostData('card-expiry-year'),
-//                    "expiry_month" => Hipay_Helper::getPostData('card-expiry-month'),
-//                    "brand" => Hipay_Helper::getPostData('payment-product'),
-//                    "card_holder" => Hipay_Helper::getPostData('card-holder'),
-//                    "user_id" => get_current_user_id(),
-//                    "gateway_id" => self::GATEWAY_CREDIT_CARD_ID
-//                );
-//
-//                Hipay_Token_Helper::createToken($values);
-//
-//                return array(
-//                    'result' => 'success',
-//                    'redirect' => wc_get_endpoint_url('payment-methods'),
-//                );
-//            } catch (Exception $e) {
-//                return array(
-//                    'result' => 'failure',
-//                    'redirect' => wc_get_endpoint_url('payment-methods'),
-//                );
-//            }
-//        }
+        public function add_payment_method()
+        {
+            try {
+
+                if (!$this->confHelper->getPaymentGlobal()["card_token"]) {
+                    throw new Hipay_Payment_Exception(
+                        __("One click not activated"),
+                        wc_get_endpoint_url('payment-methods'),
+                        "failure"
+                    );
+                }
+
+                $cardConfiguration = $this->confHelper->getPaymentCreditCard();
+                $cardType = Hipay_Helper::getPostData('card-payment_product');
+
+                if (!isset($cardConfiguration[$cardType])) {
+                    throw new Hipay_Payment_Exception(
+                        __("This card type doesn't exist"),
+                        wc_get_endpoint_url('payment-methods'),
+                        "failure"
+                    );
+                }
+
+                if (!$cardConfiguration[$cardType]["canRecurring"]) {
+                    throw new Hipay_Payment_Exception(
+                        __("This card type doesn't support one click"),
+                        wc_get_endpoint_url('payment-methods'),
+                        "failure"
+                    );
+                }
+
+                $values = array(
+                    "token" => Hipay_Helper::getPostData('card-token'),
+                    "pan" => str_replace('x', '*', Hipay_Helper::getPostData('card-pan')),
+                    "expiry_year" => Hipay_Helper::getPostData('card-card_expiry_year'),
+                    "expiry_month" => Hipay_Helper::getPostData('card-card_expiry_month'),
+                    "brand" => Hipay_Helper::getPostData('card-brand'),
+                    "card_holder" => Hipay_Helper::getPostData('card-card_holder'),
+                    "user_id" => get_current_user_id(),
+                    "gateway_id" => self::GATEWAY_CREDIT_CARD_ID,
+                    "payment_product" => Hipay_Helper::getPostData('card-payment_product'),
+                    "force_cvv" => true
+                );
+
+                Hipay_Token_Helper::createToken($values);
+
+                return array(
+                    'result' => 'success',
+                    'redirect' => wc_get_endpoint_url('payment-methods'),
+                );
+
+            } catch (Hipay_Payment_Exception $e) {
+                return $this->handlePaymentError($e);
+            } catch (Exception $e) {
+                return array(
+                    'result' => 'failure',
+                    'redirect' => wc_get_endpoint_url('payment-methods'),
+                );
+            }
+        }
 
         /**
          * Process Hipay Receipt page
