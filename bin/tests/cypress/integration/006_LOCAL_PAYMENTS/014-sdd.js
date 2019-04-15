@@ -24,7 +24,7 @@ describe('Pay by SEPA Direct Debit', function () {
 
         cy.get('[for="payment_method_hipayenterprise_sdd"]').click({force: true});
         cy.wait(3000);
-        cy.fill_hostedfield_sdd_form();
+        cy.fill_hostedfield_sdd_form('OLD');
 
         cy.get('#place_order').click({force: true});
         cy.checkOrderSuccess();
@@ -34,7 +34,7 @@ describe('Pay by SEPA Direct Debit', function () {
 
         cy.get('[for="payment_method_hipayenterprise_sdd"]').click({force: true});
         cy.wait(3000);
-        cy.fill_hostedfield_sdd_form({
+        cy.fill_hostedfield_sdd_form('OLD', {
             gender: "M",
             lastname: "&",
             bank_name: "ccc",
