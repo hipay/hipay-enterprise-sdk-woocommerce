@@ -154,8 +154,10 @@ class Hipay_Notification
 
                     $customData = $this->transaction->getCustomData();
                     if (
-                        isset($customData["createOneClick"])
-                        && $customData["createOneClick"]
+                        (isset($customData["createOneClick"])
+                            && $customData["createOneClick"])
+                        || (isset($customData["forceCvv"])
+                            && $customData["forceCvv"])
                         && $this->CardTypeAllowRecurring($this->transaction->getPaymentProduct())
                     ) {
                         Hipay_Token_Helper::createTokenFromTransaction($this->transaction, $this->order);
@@ -239,6 +241,6 @@ class Hipay_Notification
     private function CardTypeAllowRecurring($brand)
     {
         $configCC = $this->plugin->confHelper->getPaymentCreditCard()[strtolower($brand)];
-        return isset($configCC["recurring"]) && $configCC["recurring"];
+        return isset($configCC["canRecurring"]) && $configCC["canRecurring"];
     }
 }

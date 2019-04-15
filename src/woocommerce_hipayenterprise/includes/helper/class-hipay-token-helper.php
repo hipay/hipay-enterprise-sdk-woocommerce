@@ -33,7 +33,8 @@ class Hipay_Token_Helper
         "brand",
         "card_holder",
         "user_id",
-        "gateway_id"
+        "gateway_id",
+        "force_cvv"
     );
 
     /**
@@ -53,6 +54,7 @@ class Hipay_Token_Helper
         $values["payment_product"] = $transaction->getPaymentProduct();
         $values["user_id"] = $order->get_user_id();
         $values["gateway_id"] = $order->get_payment_method();
+        $values["force_cvv"] = false;
 
         self::createToken($values);
     }
@@ -63,24 +65,23 @@ class Hipay_Token_Helper
      */
     public static function createToken($values)
     {
-        if (in_array(array_keys($values), self::$tokenKeys)) {
+        if (!Hipay_Helper::allArrayKeyExists(self::$tokenKeys, $values)) {
             throw new Exception("Invalid create token values");
         }
 
-        if (!self::cardExists($values["pan"], $values["brand"], $values["user_id"])) {
-            $token = new WC_Payment_Token_CC_HiPay();
-            $token->set_token($values["token"]);
-            $token->set_pan($values["pan"]);
-            $token->set_expiry_year($values["expiry_year"]);
-            $token->set_expiry_month($values["expiry_month"]);
-            $token->set_card_type($values["brand"]);
-            $token->set_card_holder($values["card_holder"]);
-            $token->set_user_id($values["user_id"]);
-            $token->set_gateway_id($values["gateway_id"]);
-            $token->set_payment_product($values["payment_product"]);
+        $token = self::cardExists($values["pan"], $values["brand"], $values["user_id"]);
+        $token->set_token($values["token"]);
+        $token->set_pan($values["pan"]);
+        $token->set_expiry_year($values["expiry_year"]);
+        $token->set_expiry_month($values["expiry_month"]);
+        $token->set_card_type($values["brand"]);
+        $token->set_card_holder($values["card_holder"]);
+        $token->set_user_id($values["user_id"]);
+        $token->set_gateway_id($values["gateway_id"]);
+        $token->set_payment_product($values["payment_product"]);
+        $token->set_force_cvv($values["force_cvv"]);
 
-            $token->save();
-        }
+        $token->save();
     }
 
     /**
@@ -98,8 +99,9 @@ class Hipay_Token_Helper
                 $params["paymentProduct"] = $token->get_payment_product();
                 $params["card_holder"] = $token->get_card_holder();
                 $params["oneClick"] = true;
+                $params["force_cvv"] = $token->get_force_cvv();
             } else {
-                throw new Hipay_Payment_Exception(__("Invalid Card token"));
+                throw new Hipay_Payment_Exception(__("Invalid Card token", 'hipayenterprise'));
             }
         }
     }
@@ -108,7 +110,7 @@ class Hipay_Token_Helper
      * @param $pan
      * @param $brand
      * @param $customerId
-     * @return bool
+     * @return WC_Payment_Token_CC_HiPay
      */
     private static function cardExists($pan, $brand, $customerId)
     {
@@ -116,10 +118,10 @@ class Hipay_Token_Helper
 
         foreach ($tokens as $token) {
             if ($token->get_pan() == $pan && strtolower($token->get_card_type()) == strtolower($brand)) {
-                return true;
+                return $token;
             }
         }
 
-        return false;
+        return new WC_Payment_Token_CC_HiPay();
     }
 }

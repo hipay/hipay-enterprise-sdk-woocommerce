@@ -35,17 +35,4 @@ class Hipay_Sdd extends Hipay_Gateway_Local_Abstract
 
         parent::__construct();
     }
-
-    private static function fakeStringTranslations()
-    {
-        $strings = array(
-            __("Gender", "hipayenterprise"),
-            __("Firstname", "hipayenterprise"),
-            __("Lastname", "hipayenterprise"),
-            __("Bank name", "hipayenterprise"),
-            __("Bank name", "hipayenterprise"),
-            __("IBAN", "hipayenterprise"),
-            __("BIC", "hipayenterprise"),
-        );
-    }
 }

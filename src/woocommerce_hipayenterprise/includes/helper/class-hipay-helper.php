@@ -238,7 +238,7 @@ class Hipay_Helper
                 break;
             case TransactionStatus::REFUND_REQUESTED: //124
             case TransactionStatus::REFUNDED: //125
-                $message .= __('Registered notification from HiPay about refunded amount of ') .
+                $message .= __('Registered notification from HiPay about refunded amount of ', 'hipayenterprise') .
                     $transaction->getRefundedAmount() .
                     "\n";
                 break;
@@ -293,5 +293,22 @@ class Hipay_Helper
         extract($args);
         $file = WC_HIPAYENTERPRISE_PATH . 'includes/' . $type . '/template/' . $template;
         include $file;
+    }
+
+    /**
+     * @param $needles
+     * @param $haystack
+     * @return bool
+     */
+    public static function allArrayKeyExists($needles, $haystack)
+    {
+
+        foreach ($needles as $needle) {
+            if (!array_key_exists($needle, $haystack)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

@@ -1,4 +1,76 @@
-.hipay-form-no-field{
+[data-hipay-id='hipay-help-cvc-oneclick'].hipay-visible {
+    display: block;
+}
+
+[data-hipay-id='hipay-help-cvc-oneclick'] {
+    font-size: 14px;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.25rem;
+    color: #856404;
+    background-color: #fff3cd;
+    border: solid 1px #ffeeba;
+    display: none;
+}
+
+.hipay-container-oneclick-cvv {
+    margin: 0 10px 0 0 !important;
+    max-width: 120px;
+}
+
+.hipay-token-force-cvv {
+    margin-left: 26px;
+    margin-top: 16px;
+}
+
+.hipay-token-force-cvv > p {
+    font-size: 14px;
+}
+
+.hipay-token-update {
+    height: 36px;
+    outline: none;
+    border-style: none;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 16px;
+    align-self: flex-end;
+}
+
+.hipay-cvv-oneclick::placeholder {
+    color: #bfbfbf;
+}
+
+.hipay-cvv-oneclick {
+    padding: 0 !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+    width: 100% !important;
+
+}
+
+.hipay-container-oneclick {
+    justify-content: space-between;
+}
+
+@media (max-width: 768px) {
+    .hipay-container-oneclick {
+        justify-content: flex-start;
+    }
+}
+
+.hipay-field-oneclick {
+    display: flex;
+    align-items: center;
+}
+
+.hipay-field-oneclick:focus + .hipay-field-baseline {
+    border-color: #00ade9;
+}
+
+.hipay-form-no-field {
     font-size: 16px !important;
     padding-left: 30px;
     padding-top: 10px;
@@ -18,7 +90,7 @@
     margin-left: 10px;
 }
 
-.hosted-page{
+.hosted-page {
     padding-left: 30px;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -29,6 +101,18 @@
     list-style: none;
     padding: 1em 1.618em;
     margin-bottom: 2.617924em;
+    margin-left: 0;
+    border-radius: 2px;
+    color: #fff;
+    clear: both;
+    border-left: .6180469716em solid rgba(0, 0, 0, .15);
+}
+
+.woocommerce-hipay-success {
+    background-color: #0f834d;
+    list-style: none;
+    padding: 1em 1.618em;
+    margin-top: 0.617924em;
     margin-left: 0;
     border-radius: 2px;
     color: #fff;
