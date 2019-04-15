@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce HiPay Enterprise\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-22 14:51+0000\n"
+"POT-Creation-Date: 2019-04-15 15:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -23,6 +23,10 @@ msgstr ""
 msgid "You need to map your carriers."
 msgstr ""
 
+#: includes/helper/class-hipay-token-helper.php:104
+msgid "Invalid Card token"
+msgstr ""
+
 #: includes/helper/class-hipay-notification.php:126
 msgid "Transaction  refused. Order was cancelled with transaction:"
 msgstr ""
@@ -35,16 +39,16 @@ msgstr ""
 msgid "Authorization successful for transaction."
 msgstr ""
 
-#: includes/helper/class-hipay-notification.php:175
-#: includes/helper/class-hipay-notification.php:194
+#: includes/helper/class-hipay-notification.php:177
+#: includes/helper/class-hipay-notification.php:196
 msgid "Payment partially captured, amount:"
 msgstr ""
 
-#: includes/helper/class-hipay-notification.php:205
+#: includes/helper/class-hipay-notification.php:207
 msgid "Refund requested"
 msgstr ""
 
-#: includes/helper/class-hipay-notification.php:214
+#: includes/helper/class-hipay-notification.php:216
 msgid "Payment partially refunded, amount:"
 msgstr ""
 
@@ -103,7 +107,7 @@ msgstr ""
 msgid "Transactions  %s"
 msgstr ""
 
-#: includes/helper/class-hipay-payment-token-cc-hipay.php:41
+#: includes/helper/class-hipay-payment-token-cc-hipay.php:42
 #, php-format
 msgid "%1$s %2$s (expires %3$s/%4$s)"
 msgstr ""
@@ -129,6 +133,10 @@ msgstr ""
 msgid "Registered notification from HiPay about captured amount of "
 msgstr ""
 
+#: includes/helper/class-hipay-helper.php:241
+msgid "Registered notification from HiPay about refunded amount of "
+msgstr ""
+
 #: includes/helper/class-hipay-helper.php:246
 msgid "Registered notification "
 msgstr ""
@@ -145,26 +153,6 @@ msgstr ""
 msgid "HiPay status: "
 msgstr ""
 
-#: includes/gateways/class-hipay-gateway-abstract.php:117
-msgid "This field is mandatory."
-msgstr ""
-
-#: includes/gateways/class-hipay-gateway-abstract.php:118
-msgid "This is not a correct IBAN."
-msgstr ""
-
-#: includes/gateways/class-hipay-gateway-abstract.php:119
-msgid "This is not a correct BIC."
-msgstr ""
-
-#: includes/gateways/class-hipay-gateway-abstract.php:120
-msgid "This is not a correct CPF."
-msgstr ""
-
-#: includes/gateways/class-hipay-gateway-abstract.php:121
-msgid "This is not a correct CPN/CURP."
-msgstr ""
-
 #: includes/gateways/class-gateway-hipay.php:52
 msgid "HiPay Enterprise Credit Card"
 msgstr ""
@@ -173,25 +161,53 @@ msgstr ""
 msgid "Local and international payments using Hipay Enterprise."
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:376
+#: includes/gateways/class-gateway-hipay.php:361
 msgid "Available countries"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:377
+#: includes/gateways/class-gateway-hipay.php:362
 msgid "Authorized countries"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:398
+#: includes/gateways/class-gateway-hipay.php:383
 msgid ""
 "This credit card type or the order currency is not supported. \n"
 "                    Please choose an other payment method."
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:522
+#: includes/gateways/class-gateway-hipay.php:388
+msgid "Card updated with success"
+msgstr ""
+
+#: includes/gateways/class-gateway-hipay.php:389
+msgid "CVC is missing."
+msgstr ""
+
+#: includes/gateways/class-gateway-hipay.php:390
+msgid "cvc must be numeric."
+msgstr ""
+
+#: includes/gateways/class-gateway-hipay.php:391
+msgid "CVC is invalid."
+msgstr ""
+
+#: includes/gateways/class-gateway-hipay.php:446
+msgid "One click not activated"
+msgstr ""
+
+#: includes/gateways/class-gateway-hipay.php:457
+msgid "This card type doesn't exist"
+msgstr ""
+
+#: includes/gateways/class-gateway-hipay.php:465
+msgid "This card type doesn't support one click"
+msgstr ""
+
+#: includes/gateways/class-gateway-hipay.php:543
 msgid "Sorry, we cannot process your payment.. Please try again."
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:533
+#: includes/gateways/class-gateway-hipay.php:554
 msgid ""
 "We have received your order payment. We will process the order as soon as we "
 "get the payment confirmation."
@@ -308,31 +324,6 @@ msgstr ""
 #: includes/gateways/local/class-hipay-sdd.php:33
 #: includes/gateways/local/class-hipay-sdd.php:34
 msgid "SEPA Direct Debit"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-sdd.php:42
-msgid "Gender"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-sdd.php:43
-msgid "Firstname"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-sdd.php:44
-msgid "Lastname"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-sdd.php:45
-#: includes/gateways/local/class-hipay-sdd.php:46
-msgid "Bank name"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-sdd.php:47
-msgid "IBAN"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-sdd.php:48
-msgid "BIC"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-astropay-itau.php:32
@@ -1342,6 +1333,7 @@ msgid "Expiry Date"
 msgstr ""
 
 #: includes/frontend/template/hosted-fields.php:34
+#: includes/frontend/template/force-cvv-oc.php:12
 msgid "CVC"
 msgstr ""
 

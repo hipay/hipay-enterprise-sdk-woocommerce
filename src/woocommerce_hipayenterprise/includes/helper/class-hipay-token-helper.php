@@ -101,7 +101,7 @@ class Hipay_Token_Helper
                 $params["oneClick"] = true;
                 $params["force_cvv"] = $token->get_force_cvv();
             } else {
-                throw new Hipay_Payment_Exception(__("Invalid Card token"));
+                throw new Hipay_Payment_Exception(__("Invalid Card token", 'hipayenterprise'));
             }
         }
     }

@@ -36,6 +36,7 @@ jQuery(function ($) {
         hipaySDK.injectBaseStylesheet();
 
         oneClickListener();
+
         if (containerExist()) {
             createHostedFieldsInstance(defaultMethod);
         }
@@ -93,7 +94,7 @@ jQuery(function ($) {
             .updateToken({card_token: token, card_expiry_month: month, card_expiry_year: year, cvc: cvv})
             .then(function (response) {
                     $('#hipay-container-oneclick-' + id).remove();
-                    $('#success-js-oneclick-' + id).html("Card updated with success");
+                    $('#success-js-oneclick-' + id).html(hipay_config_i18n.card_update_ok);
                     $('#success-js-oneclick-' + id).show();
                 },
                 function (error) {
@@ -104,18 +105,15 @@ jQuery(function ($) {
     function checkOneClickCVV(cvv, id, cardType) {
 
         if (cvv.length === 0) {
-            handleError([{field: "cvc", error: "CVC is missing."}], "oneclick-" + id);
+            handleError([{field: "cvc", error: hipay_config_i18n.card_cvc_missing}], "oneclick-" + id);
             return false;
         }
 
         if (isNaN(cvv)) {
-            handleError([{field: "cvc", error: "cvc must be numeric"}], "oneclick-" + id);
+            handleError([{field: "cvc", error: hipay_config_i18n.card_cvc_numeric_error}], "oneclick-" + id);
             return false;
-        } else if (cardType === "american-express" && cvv.length !== 4) {
-            handleError([{field: "cvc", error: "CVC is invalid."}], "oneclick-" + id);
-            return false;
-        } else if (cvv.length !== 3) {
-            handleError([{field: "cvc", error: "CVC is invalid."}], "oneclick-" + id);
+        } else if ((cardType === "american-express" && cvv.length !== 4) || (cardType !== "american-express" && cvv.length !== 3)) {
+            handleError([{field: "cvc", error: hipay_config_i18n.card_cvc_invalid_error}], "oneclick-" + id);
             return false;
         }
 
@@ -232,7 +230,6 @@ jQuery(function ($) {
         if (isCreditCardSelected()) {
             method = "card";
             configHostedFields = getCardConfig();
-            oneClickListener();
         } else {
             configHostedFields["template"] = "auto";
         }

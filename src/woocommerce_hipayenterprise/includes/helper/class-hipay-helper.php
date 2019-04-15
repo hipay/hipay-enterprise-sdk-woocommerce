@@ -238,7 +238,7 @@ class Hipay_Helper
                 break;
             case TransactionStatus::REFUND_REQUESTED: //124
             case TransactionStatus::REFUNDED: //125
-                $message .= __('Registered notification from HiPay about refunded amount of ') .
+                $message .= __('Registered notification from HiPay about refunded amount of ', 'hipayenterprise') .
                     $transaction->getRefundedAmount() .
                     "\n";
                 break;

@@ -385,6 +385,10 @@ if (!class_exists('WC_Gateway_Hipay')) {
                     Please choose an other payment method.',
                             'hipayenterprise'
                         ),
+                        "card_update_ok" => __("Card updated with success", 'hipayenterprise'),
+                        "card_cvc_missing" => __("CVC is missing.", 'hipayenterprise'),
+                        "card_cvc_numeric_error" => __("cvc must be numeric.", 'hipayenterprise'),
+                        "card_cvc_invalid_error" => __("CVC is invalid.", 'hipayenterprise'),
                     )
                 );
             }
@@ -439,7 +443,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
                 if (!$this->confHelper->getPaymentGlobal()["card_token"]) {
                     throw new Hipay_Payment_Exception(
-                        __("One click not activated"),
+                        __("One click not activated", 'hipayenterprise'),
                         wc_get_endpoint_url('payment-methods'),
                         "failure"
                     );
@@ -450,7 +454,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
                 if (!isset($cardConfiguration[$cardType])) {
                     throw new Hipay_Payment_Exception(
-                        __("This card type doesn't exist"),
+                        __("This card type doesn't exist", 'hipayenterprise'),
                         wc_get_endpoint_url('payment-methods'),
                         "failure"
                     );
@@ -458,7 +462,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
                 if (!$cardConfiguration[$cardType]["canRecurring"]) {
                     throw new Hipay_Payment_Exception(
-                        __("This card type doesn't support one click"),
+                        __("This card type doesn't support one click", 'hipayenterprise'),
                         wc_get_endpoint_url('payment-methods'),
                         "failure"
                     );
@@ -487,6 +491,9 @@ if (!class_exists('WC_Gateway_Hipay')) {
             } catch (Hipay_Payment_Exception $e) {
                 return $this->handlePaymentError($e);
             } catch (Exception $e) {
+
+                $this->logs->logException($e);
+
                 return array(
                     'result' => 'failure',
                     'redirect' => wc_get_endpoint_url('payment-methods'),
