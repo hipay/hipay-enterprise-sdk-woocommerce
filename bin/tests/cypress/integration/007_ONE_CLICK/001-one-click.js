@@ -249,6 +249,7 @@ describe('Pay by credit card One click', function () {
 
             cy.get('#methods-tab').click();
             cy.get('#operating_mode').select(operating_mode);
+            cy.get('#display_hosted_page').select("redirect", {force: true});
             cy.get('#card_token').check();
 
             cy.resetCCConfigForm();

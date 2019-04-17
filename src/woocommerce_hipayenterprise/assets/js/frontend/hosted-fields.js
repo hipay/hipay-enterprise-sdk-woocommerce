@@ -61,6 +61,7 @@ jQuery(function ($) {
     }
 
     function oneClickListener() {
+
         $('input[name="wc-hipayenterprise_credit_card-payment-token"]').click(function () {
             var id = this.id.replace('wc-hipayenterprise_credit_card-payment-token-', '');
             hideErrorDiv("oneclick-" + id);
@@ -71,6 +72,30 @@ jQuery(function ($) {
         $('.hipay-token-update').click(function (e) {
             var id = this.id.replace('hipay-token-update-', '');
             updateToken(e, id);
+        });
+
+        $('.oneclick-cvv-help-button').click(function (e) {
+            e.preventDefault();
+
+            var id = $('input[name="wc-hipayenterprise_credit_card-payment-token"]:checked').val();
+
+            // Get error container
+            var domElement = document.querySelector("#hipay-help-cvc-oneclick-" + id);
+
+            // Finish function if no error DOM element
+            if (!domElement) {
+                return;
+            }
+
+            if (domElement) {
+                // Toggle visible class
+                domElement.classList.toggle('hipay-visible');
+                if (domElement.innerHTML.trim()) {
+                    domElement.innerHTML = '';
+                } else {
+                    domElement.innerHTML = hipaySDK.translations['cvc-message'];
+                }
+            }
         });
     }
 
@@ -293,6 +318,28 @@ jQuery(function ($) {
             }
         });
 
+        methodsInstance[method].on("helpButtonToggled", function (data) {
+            // Get error container
+            var domElement = document.querySelector(
+                "[data-hipay-id='hipay-help-" + data.element + "']"
+            );
+
+            // Finish function if no error DOM element
+            if (!domElement) {
+                return;
+            }
+
+            if (domElement) {
+                // Toggle visible class
+                domElement.classList.toggle('hipay-visible');
+                if (domElement.innerHTML.trim()) {
+                    domElement.innerHTML = '';
+                } else {
+                    domElement.innerHTML = data.message;
+                }
+            }
+        });
+
         methodsInstance[method].on("ready", function () {
             unBlockUI();
         });
@@ -319,8 +366,7 @@ jQuery(function ($) {
                 },
                 cvc: {
                     selector: "hipay-card-field-cvc",
-                    helpButton: true,
-                    helpSelector: "hipay-help-cvc"
+                    helpButton: true
                 }
             },
         };

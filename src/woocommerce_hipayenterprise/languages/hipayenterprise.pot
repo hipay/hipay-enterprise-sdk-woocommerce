@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce HiPay Enterprise\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-15 15:01+0000\n"
+"POT-Creation-Date: 2019-04-17 15:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -169,45 +169,45 @@ msgstr ""
 msgid "Authorized countries"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:383
+#: includes/gateways/class-gateway-hipay.php:382
 msgid ""
 "This credit card type or the order currency is not supported. \n"
 "                    Please choose an other payment method."
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:388
+#: includes/gateways/class-gateway-hipay.php:387
 msgid "Card updated with success"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:389
+#: includes/gateways/class-gateway-hipay.php:388
 msgid "CVC is missing."
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:390
+#: includes/gateways/class-gateway-hipay.php:389
 msgid "cvc must be numeric."
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:391
+#: includes/gateways/class-gateway-hipay.php:390
 msgid "CVC is invalid."
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:446
+#: includes/gateways/class-gateway-hipay.php:444
 msgid "One click not activated"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:457
+#: includes/gateways/class-gateway-hipay.php:455
 msgid "This card type doesn't exist"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:465
+#: includes/gateways/class-gateway-hipay.php:463
 msgid "This card type doesn't support one click"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:543
+#: includes/gateways/class-gateway-hipay.php:541
 msgid "Sorry, we cannot process your payment.. Please try again."
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:554
+#: includes/gateways/class-gateway-hipay.php:552
 msgid ""
 "We have received your order payment. We will process the order as soon as we "
 "get the payment confirmation."
@@ -1333,8 +1333,16 @@ msgid "Expiry Date"
 msgstr ""
 
 #: includes/frontend/template/hosted-fields.php:34
-#: includes/frontend/template/force-cvv-oc.php:12
+#: includes/frontend/template/force-cvv-oc.php:23
 msgid "CVC"
+msgstr ""
+
+#: includes/frontend/template/force-cvv-oc.php:15
+msgid "For security reason, your card CVC must be updated."
+msgstr ""
+
+#: includes/frontend/template/force-cvv-oc.php:34
+msgid "Update"
 msgstr ""
 
 #: includes/frontend/template/hosted-page.php:3

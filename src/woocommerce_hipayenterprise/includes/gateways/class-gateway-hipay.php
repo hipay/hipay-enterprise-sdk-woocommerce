@@ -375,23 +375,21 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 )
             );
 
-            if ($this->confHelper->getPaymentGlobal()["operating_mode"] == OperatingMode::HOSTED_FIELDS) {
-                wp_localize_script(
-                    'hipay-js-front',
-                    'hipay_config_i18n',
-                    array(
-                        "activated_card_error" => __(
-                            'This credit card type or the order currency is not supported. 
+            wp_localize_script(
+                'hipay-js-front',
+                'hipay_config_i18n',
+                array(
+                    "activated_card_error" => __(
+                        'This credit card type or the order currency is not supported. 
                     Please choose an other payment method.',
-                            'hipayenterprise'
-                        ),
-                        "card_update_ok" => __("Card updated with success", 'hipayenterprise'),
-                        "card_cvc_missing" => __("CVC is missing.", 'hipayenterprise'),
-                        "card_cvc_numeric_error" => __("cvc must be numeric.", 'hipayenterprise'),
-                        "card_cvc_invalid_error" => __("CVC is invalid.", 'hipayenterprise'),
-                    )
-                );
-            }
+                        'hipayenterprise'
+                    ),
+                    "card_update_ok" => __("Card updated with success", 'hipayenterprise'),
+                    "card_cvc_missing" => __("CVC is missing.", 'hipayenterprise'),
+                    "card_cvc_numeric_error" => __("cvc must be numeric.", 'hipayenterprise'),
+                    "card_cvc_invalid_error" => __("CVC is invalid.", 'hipayenterprise'),
+                )
+            );
         }
 
         /**

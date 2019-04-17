@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce HiPay Enterprise\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-15 15:01+0000\n"
-"PO-Revision-Date: 2019-04-15 15:02+0000\n"
+"POT-Creation-Date: 2019-04-17 15:13+0000\n"
+"PO-Revision-Date: 2019-04-17 15:16+0000\n"
 "Last-Translator: admin <admin-wordpress@hipay.com>\n"
 "Language-Team: French (France)\n"
 "Language: fr_FR\n"
@@ -177,7 +177,7 @@ msgstr "Pays disponibles"
 msgid "Authorized countries"
 msgstr "Pays authorisés"
 
-#: includes/gateways/class-gateway-hipay.php:383
+#: includes/gateways/class-gateway-hipay.php:382
 msgid ""
 "This credit card type or the order currency is not supported. \n"
 "                    Please choose an other payment method."
@@ -186,39 +186,39 @@ msgstr ""
 "charge. \n"
 "                    Veuillez choisir un autre mode de paiement."
 
-#: includes/gateways/class-gateway-hipay.php:388
+#: includes/gateways/class-gateway-hipay.php:387
 msgid "Card updated with success"
 msgstr "Carte mises à jour avec sucés. "
 
-#: includes/gateways/class-gateway-hipay.php:389
+#: includes/gateways/class-gateway-hipay.php:388
 msgid "CVC is missing."
 msgstr "Le CVC est manquant."
 
-#: includes/gateways/class-gateway-hipay.php:390
+#: includes/gateways/class-gateway-hipay.php:389
 msgid "cvc must be numeric."
 msgstr "Le CVC ne doit contenir que des chiffres."
 
-#: includes/gateways/class-gateway-hipay.php:391
+#: includes/gateways/class-gateway-hipay.php:390
 msgid "CVC is invalid."
 msgstr "Le CVC est invalide."
 
-#: includes/gateways/class-gateway-hipay.php:446
+#: includes/gateways/class-gateway-hipay.php:444
 msgid "One click not activated"
 msgstr "Le one click n'est pas activé"
 
-#: includes/gateways/class-gateway-hipay.php:457
+#: includes/gateways/class-gateway-hipay.php:455
 msgid "This card type doesn't exist"
 msgstr "Ce type de carte n'existe pas"
 
-#: includes/gateways/class-gateway-hipay.php:465
+#: includes/gateways/class-gateway-hipay.php:463
 msgid "This card type doesn't support one click"
 msgstr "Ce type de carte ne supporte pas le one click"
 
-#: includes/gateways/class-gateway-hipay.php:543
+#: includes/gateways/class-gateway-hipay.php:541
 msgid "Sorry, we cannot process your payment.. Please try again."
 msgstr "Désolé, nous ne pouvons traiter votre paiement. Veuillez réessayer."
 
-#: includes/gateways/class-gateway-hipay.php:554
+#: includes/gateways/class-gateway-hipay.php:552
 msgid ""
 "We have received your order payment. We will process the order as soon as we "
 "get the payment confirmation."
@@ -1426,9 +1426,18 @@ msgid "Expiry Date"
 msgstr "Date d'exp."
 
 #: includes/frontend/template/hosted-fields.php:34
-#: includes/frontend/template/force-cvv-oc.php:12
+#: includes/frontend/template/force-cvv-oc.php:23
 msgid "CVC"
 msgstr ""
+
+#: includes/frontend/template/force-cvv-oc.php:15
+msgid "For security reason, your card CVC must be updated."
+msgstr ""
+"Pour des raisons de sécurité, vous devez mettre à jour le CVC de votre carte."
+
+#: includes/frontend/template/force-cvv-oc.php:34
+msgid "Update"
+msgstr "Mettre à jour"
 
 #: includes/frontend/template/hosted-page.php:3
 msgid ""
