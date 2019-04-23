@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce HiPay Enterprise\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-22 14:51+0000\n"
-"PO-Revision-Date: 2019-03-22 14:54+0000\n"
+"POT-Creation-Date: 2019-04-17 15:13+0000\n"
+"PO-Revision-Date: 2019-04-17 15:16+0000\n"
 "Last-Translator: admin <admin-wordpress@hipay.com>\n"
 "Language-Team: French (France)\n"
 "Language: fr_FR\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.2.1; wp-4.9.8"
+"X-Loco-Version: 2.2.2; wp-4.9.8"
 
 #: includes/helper/class-hipay-config.php:360
 msgid "You need to map your product categories."
@@ -21,6 +21,10 @@ msgstr "Vous devez mapper vos catégories de produits."
 #: includes/helper/class-hipay-config.php:364
 msgid "You need to map your carriers."
 msgstr "Vous devez mapper vos transporteurs."
+
+#: includes/helper/class-hipay-token-helper.php:104
+msgid "Invalid Card token"
+msgstr "Token de carte invalide"
 
 #: includes/helper/class-hipay-notification.php:126
 msgid "Transaction  refused. Order was cancelled with transaction:"
@@ -34,16 +38,16 @@ msgstr "Authorization annulée. La commande a été annulée avec la transaction
 msgid "Authorization successful for transaction."
 msgstr "Demande d'authorization en succès pour la transaction"
 
-#: includes/helper/class-hipay-notification.php:175
-#: includes/helper/class-hipay-notification.php:194
+#: includes/helper/class-hipay-notification.php:177
+#: includes/helper/class-hipay-notification.php:196
 msgid "Payment partially captured, amount:"
 msgstr "Paiement partiellement capturé, montant:"
 
-#: includes/helper/class-hipay-notification.php:205
+#: includes/helper/class-hipay-notification.php:207
 msgid "Refund requested"
 msgstr "Remboursement demandé"
 
-#: includes/helper/class-hipay-notification.php:214
+#: includes/helper/class-hipay-notification.php:216
 msgid "Payment partially refunded, amount:"
 msgstr "Paiement partiellement remboursé, montant:"
 
@@ -106,7 +110,7 @@ msgstr ""
 msgid "Transactions  %s"
 msgstr "Transactions  %s"
 
-#: includes/helper/class-hipay-payment-token-cc-hipay.php:41
+#: includes/helper/class-hipay-payment-token-cc-hipay.php:42
 #, php-format
 msgid "%1$s %2$s (expires %3$s/%4$s)"
 msgstr "%1$s %2$s (expire %3$s/%4$s)"
@@ -135,7 +139,11 @@ msgstr ""
 
 #: includes/helper/class-hipay-helper.php:235
 msgid "Registered notification from HiPay about captured amount of "
-msgstr "Notification enregistrée HiPay sur la quantité capturée de"
+msgstr "Notification enregistrée HiPay sur le montant capturé de"
+
+#: includes/helper/class-hipay-helper.php:241
+msgid "Registered notification from HiPay about refunded amount of "
+msgstr "Notification enregistrée HiPay sur le montant remboursé de"
 
 #: includes/helper/class-hipay-helper.php:246
 msgid "Registered notification "
@@ -153,26 +161,6 @@ msgstr "Transaction ID:"
 msgid "HiPay status: "
 msgstr "Satus HiPay"
 
-#: includes/gateways/class-hipay-gateway-abstract.php:117
-msgid "This field is mandatory."
-msgstr "Champ obligatoire."
-
-#: includes/gateways/class-hipay-gateway-abstract.php:118
-msgid "This is not a correct IBAN."
-msgstr "IBAN incorrect."
-
-#: includes/gateways/class-hipay-gateway-abstract.php:119
-msgid "This is not a correct BIC."
-msgstr "BIC incorrect."
-
-#: includes/gateways/class-hipay-gateway-abstract.php:120
-msgid "This is not a correct CPF."
-msgstr "CPF incorrect."
-
-#: includes/gateways/class-hipay-gateway-abstract.php:121
-msgid "This is not a correct CPN/CURP."
-msgstr "CPN/CURP incorrect."
-
 #: includes/gateways/class-gateway-hipay.php:52
 msgid "HiPay Enterprise Credit Card"
 msgstr "HiPay Enterprise Carte de crédit"
@@ -181,15 +169,15 @@ msgstr "HiPay Enterprise Carte de crédit"
 msgid "Local and international payments using Hipay Enterprise."
 msgstr "Paiements locaux et internationaux avec Hipay Enterprise."
 
-#: includes/gateways/class-gateway-hipay.php:376
+#: includes/gateways/class-gateway-hipay.php:361
 msgid "Available countries"
 msgstr "Pays disponibles"
 
-#: includes/gateways/class-gateway-hipay.php:377
+#: includes/gateways/class-gateway-hipay.php:362
 msgid "Authorized countries"
 msgstr "Pays authorisés"
 
-#: includes/gateways/class-gateway-hipay.php:398
+#: includes/gateways/class-gateway-hipay.php:382
 msgid ""
 "This credit card type or the order currency is not supported. \n"
 "                    Please choose an other payment method."
@@ -198,11 +186,39 @@ msgstr ""
 "charge. \n"
 "                    Veuillez choisir un autre mode de paiement."
 
-#: includes/gateways/class-gateway-hipay.php:522
+#: includes/gateways/class-gateway-hipay.php:387
+msgid "Card updated with success"
+msgstr "Carte mises à jour avec sucés. "
+
+#: includes/gateways/class-gateway-hipay.php:388
+msgid "CVC is missing."
+msgstr "Le CVC est manquant."
+
+#: includes/gateways/class-gateway-hipay.php:389
+msgid "cvc must be numeric."
+msgstr "Le CVC ne doit contenir que des chiffres."
+
+#: includes/gateways/class-gateway-hipay.php:390
+msgid "CVC is invalid."
+msgstr "Le CVC est invalide."
+
+#: includes/gateways/class-gateway-hipay.php:444
+msgid "One click not activated"
+msgstr "Le one click n'est pas activé"
+
+#: includes/gateways/class-gateway-hipay.php:455
+msgid "This card type doesn't exist"
+msgstr "Ce type de carte n'existe pas"
+
+#: includes/gateways/class-gateway-hipay.php:463
+msgid "This card type doesn't support one click"
+msgstr "Ce type de carte ne supporte pas le one click"
+
+#: includes/gateways/class-gateway-hipay.php:541
 msgid "Sorry, we cannot process your payment.. Please try again."
 msgstr "Désolé, nous ne pouvons traiter votre paiement. Veuillez réessayer."
 
-#: includes/gateways/class-gateway-hipay.php:533
+#: includes/gateways/class-gateway-hipay.php:552
 msgid ""
 "We have received your order payment. We will process the order as soon as we "
 "get the payment confirmation."
@@ -325,31 +341,6 @@ msgstr ""
 #: includes/gateways/local/class-hipay-sdd.php:33
 #: includes/gateways/local/class-hipay-sdd.php:34
 msgid "SEPA Direct Debit"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-sdd.php:42
-msgid "Gender"
-msgstr "Civilité"
-
-#: includes/gateways/local/class-hipay-sdd.php:43
-msgid "Firstname"
-msgstr "Prénom"
-
-#: includes/gateways/local/class-hipay-sdd.php:44
-msgid "Lastname"
-msgstr "Nom"
-
-#: includes/gateways/local/class-hipay-sdd.php:45
-#: includes/gateways/local/class-hipay-sdd.php:46
-msgid "Bank name"
-msgstr "Nom de la banque"
-
-#: includes/gateways/local/class-hipay-sdd.php:47
-msgid "IBAN"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-sdd.php:48
-msgid "BIC"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-astropay-itau.php:32
@@ -1435,8 +1426,18 @@ msgid "Expiry Date"
 msgstr "Date d'exp."
 
 #: includes/frontend/template/hosted-fields.php:34
+#: includes/frontend/template/force-cvv-oc.php:23
 msgid "CVC"
 msgstr ""
+
+#: includes/frontend/template/force-cvv-oc.php:15
+msgid "For security reason, your card CVC must be updated."
+msgstr ""
+"Pour des raisons de sécurité, vous devez mettre à jour le CVC de votre carte."
+
+#: includes/frontend/template/force-cvv-oc.php:34
+msgid "Update"
+msgstr "Mettre à jour"
 
 #: includes/frontend/template/hosted-page.php:3
 msgid ""

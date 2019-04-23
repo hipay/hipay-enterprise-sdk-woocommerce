@@ -39,7 +39,7 @@
     </div>
     <div class="hipay-form-row">
         <div class="hipay-element-container">
-            <div id="hipay-help-cvc"></div>
+            <div id="hipay-help-cvc"  data-hipay-id='hipay-help-cvc'></div>
         </div>
     </div>
     <div id="error-js-card" style="display:none" class="woocommerce-hipay-error"></div>
