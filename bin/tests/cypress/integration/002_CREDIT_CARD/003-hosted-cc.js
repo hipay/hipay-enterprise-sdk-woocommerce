@@ -33,12 +33,12 @@ describe('Pay by credit card hosted', function () {
     });
 
     it('Pay by visa', function () {
-        cy.payCcHosted("visa_ok");
+        cy.payCcHostedWithHF("visa_ok");
         cy.checkOrderSuccess();
     });
 
     it('Pay by visa refused', function () {
-        cy.payCcHosted("visa_refused");
+        cy.payCcHostedWithHF("visa_refused");
         cy.checkOrderCancelled();
     });
 });

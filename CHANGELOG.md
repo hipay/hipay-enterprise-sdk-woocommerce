@@ -1,3 +1,7 @@
+# Version 1.3.0
+
+- Add oneclick in my account
+
 # Version 1.2.0
 
 - Fix: loader for local payment

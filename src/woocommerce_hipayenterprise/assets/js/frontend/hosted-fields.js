@@ -1,7 +1,12 @@
 jQuery(function ($) {
 
 
-    var checkout_form = $('form.checkout');
+    if (isAddPaymentPage()) {
+        var checkout_form = $('#add_payment_method');
+    } else {
+        var checkout_form = $('form.checkout');
+    }
+
     var methodsInstance = {};
     var hipaySDK = {};
 
@@ -30,8 +35,11 @@ jQuery(function ($) {
 
         hipaySDK.injectBaseStylesheet();
 
-        createHostedFieldsInstance(defaultMethod);
+        oneClickListener();
 
+        if (containerExist()) {
+            createHostedFieldsInstance(defaultMethod);
+        }
     }
 
     function addPaymentMethod() {
@@ -52,13 +60,116 @@ jQuery(function ($) {
             && $('input[name="wc-hipayenterprise_credit_card-payment-token"]:checked').val() !== 'new';
     }
 
+    function oneClickListener() {
+
+        $('input[name="wc-hipayenterprise_credit_card-payment-token"]').click(function () {
+            var id = this.id.replace('wc-hipayenterprise_credit_card-payment-token-', '');
+            hideErrorDiv("oneclick-" + id);
+            $('.hipay-token-force-cvv').hide();
+            $('#hipay-token-force-cvv-' + id).show();
+        });
+
+        $('.hipay-token-update').click(function (e) {
+            var id = this.id.replace('hipay-token-update-', '');
+            updateToken(e, id);
+        });
+
+        $('.oneclick-cvv-help-button').click(function (e) {
+            e.preventDefault();
+
+            var id = $('input[name="wc-hipayenterprise_credit_card-payment-token"]:checked').val();
+
+            // Get error container
+            var domElement = document.querySelector("#hipay-help-cvc-oneclick-" + id);
+
+            // Finish function if no error DOM element
+            if (!domElement) {
+                return;
+            }
+
+            if (domElement) {
+                // Toggle visible class
+                domElement.classList.toggle('hipay-visible');
+                if (domElement.innerHTML.trim()) {
+                    domElement.innerHTML = '';
+                } else {
+                    domElement.innerHTML = hipaySDK.translations['cvc-message'];
+                }
+            }
+        });
+    }
+
+    function updateToken(e, id) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        hideErrorDiv("oneclick-" + id);
+
+        var token = $('#hipay-token-value-' + id).val();
+        var month = $('#hipay-token-month-' + id).val();
+        var year = $('#hipay-token-year-' + id).val();
+        var cardType = $('#hipay-token-type-' + id).val();
+        var cvv = $('#hipay-token-cvv-' + id).val();
+
+        if (!checkOneClickCVV(cvv, id, cardType)) {
+            return false;
+        }
+
+        hipaySDK
+            .updateToken({card_token: token, card_expiry_month: month, card_expiry_year: year, cvc: cvv})
+            .then(function (response) {
+                    $('#hipay-container-oneclick-' + id).remove();
+                    $('#success-js-oneclick-' + id).html(hipay_config_i18n.card_update_ok);
+                    $('#success-js-oneclick-' + id).show();
+                },
+                function (error) {
+                    fillErrorDiv(error, "oneclick-" + id);
+                });
+    }
+
+    function checkOneClickCVV(cvv, id, cardType) {
+
+        if (cvv.length === 0) {
+            handleError([{field: "cvc", error: hipay_config_i18n.card_cvc_missing}], "oneclick-" + id);
+            return false;
+        }
+
+        if (isNaN(cvv)) {
+            handleError([{field: "cvc", error: hipay_config_i18n.card_cvc_numeric_error}], "oneclick-" + id);
+            return false;
+        } else if ((cardType === "american-express" && cvv.length !== 4) || (cardType !== "american-express" && cvv.length !== 3)) {
+            handleError([{field: "cvc", error: hipay_config_i18n.card_cvc_invalid_error}], "oneclick-" + id);
+            return false;
+        }
+
+        return true;
+    }
+
+    function checkPayment() {
+
+        if (isOneClick()) {
+
+            var id = $('input[name="wc-hipayenterprise_credit_card-payment-token"]:checked').val();
+            var cardType = $('#hipay-token-type-' + id).val();
+            var cvv = $('#hipay-token-cvv-' + id).val();
+
+            if (!$('#hipay-token-cvv-' + id).length) {
+                processPayment();
+            } else {
+                checkOneClickCVV(cvv, id, cardType);
+            }
+        } else {
+            processPayment();
+        }
+    }
+
     function submitOrder(e) {
         if (isHiPayMethod()) {
             e.preventDefault();
             e.stopPropagation();
 
-            if (isCreditCardSelected() && (!isHostedFields() || isOneClick())) {
-                processPayment();
+            if (isCreditCardSelected() && !isAddPaymentPage() && (!isHostedFields() || isOneClick())) {
+                checkPayment();
             } else {
 
                 var method = getSelectedMethod();
@@ -129,9 +240,13 @@ jQuery(function ($) {
         return $('input[name="payment_method"]:checked').val().indexOf('hipayenterprise_') !== -1;
     }
 
+    function isAddPaymentPage() {
+        return $('#add_payment_method').length;
+    }
+
     function createHostedFieldsInstance(method) {
 
-        if (!isHiPayMethod() || (isCreditCardSelected() && !isHostedFields())) {
+        if (!isHiPayMethod() || (isCreditCardSelected() && !isHostedFields() && !isAddPaymentPage())) {
             return true;
         }
 
@@ -203,6 +318,28 @@ jQuery(function ($) {
             }
         });
 
+        methodsInstance[method].on("helpButtonToggled", function (data) {
+            // Get error container
+            var domElement = document.querySelector(
+                "[data-hipay-id='hipay-help-" + data.element + "']"
+            );
+
+            // Finish function if no error DOM element
+            if (!domElement) {
+                return;
+            }
+
+            if (domElement) {
+                // Toggle visible class
+                domElement.classList.toggle('hipay-visible');
+                if (domElement.innerHTML.trim()) {
+                    domElement.innerHTML = '';
+                } else {
+                    domElement.innerHTML = data.message;
+                }
+            }
+        });
+
         methodsInstance[method].on("ready", function () {
             unBlockUI();
         });
@@ -229,8 +366,7 @@ jQuery(function ($) {
                 },
                 cvc: {
                     selector: "hipay-card-field-cvc",
-                    helpButton: true,
-                    helpSelector: "hipay-help-cvc"
+                    helpButton: true
                 }
             },
         };
@@ -268,10 +404,19 @@ jQuery(function ($) {
 
     $(document.body).on('updated_checkout', function () {
         destroy();
-        if (containerExist()) {
+
+        if ($('input[name="payment_method"]:checked').length) {
             init();
             $(document.body).on('click', '#place_order', submitOrder);
             checkout_form.on('click', 'input[name="payment_method"]', addPaymentMethod);
+        }
+    });
+
+    $(document.body).on('init_add_payment_method', function () {
+        destroy();
+        if (containerExist()) {
+            init();
+            $(document.body).on('click', '#place_order', submitOrder);
         }
     });
 
