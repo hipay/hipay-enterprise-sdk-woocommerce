@@ -1,19 +1,20 @@
+    var methodsInstance = {};
+
+
 jQuery(function ($) {
-
-
     if (isAddPaymentPage()) {
         var checkout_form = $('#add_payment_method');
     } else {
         var checkout_form = $('form.checkout');
-    }
 
-    var methodsInstance = {};
+    }
     var hipaySDK = {};
 
     function destroy() {
 
         for (var method in methodsInstance) {
             methodsInstance[method].destroy();
+            delete methodsInstance[method];
         }
 
         $(document.body).off('click', '#place_order', submitOrder);
@@ -22,7 +23,7 @@ jQuery(function ($) {
     }
 
     function init() {
-        methodsInstance = {};
+      //  methodsInstance = {};
 
         var defaultMethod = getSelectedMethod();
 
@@ -403,13 +404,15 @@ jQuery(function ($) {
     }
 
     $(document.body).on('updated_checkout', function () {
-        destroy();
-
         if ($('input[name="payment_method"]:checked').length) {
             init();
             $(document.body).on('click', '#place_order', submitOrder);
             checkout_form.on('click', 'input[name="payment_method"]', addPaymentMethod);
         }
+    });
+
+    $(document.body).on('update_checkout', function () {
+        destroy();
     });
 
     $(document.body).on('init_add_payment_method', function () {

@@ -115,14 +115,17 @@ class Hipay_Maintenance_Formatter extends Hipay_Api_Formatter_Abstact
                     $totalAmount = $this->calculateTotalForAnItem($itemOperation);
                 } else if ($this->params["operation"] == \HiPay\Fullservice\Enum\Transaction\Operation::CAPTURE) {
                     $itemOperation = reset(Hipay_Order_Helper::get_captures($this->order));
-                    $totalAmount = abs($this->calculateTotalForAnItem($itemOperation));
+                    $totalAmount = round(abs($this->calculateTotalForAnItem($itemOperation)), 2);
                 }
 
                 // Full Refund or Capture
                 if ($this->order->get_total() == $this->params["amount"]) {
                     $maintenanceRequest->basket = json_encode($authorizedBasket);
                     // Partial Refund or Capture
-                } else if (round($totalAmount, 2) == $this->params["amount"]) {
+                } else if (
+                    ($this->params["amount"] - 0.01 <= $totalAmount) &&
+                    ($totalAmount <= ($this->params["amount"] + 0.01))
+                ) {
                     $maintenanceRequest->basket = $this->cartMaintenanceFormatter->generate(
                         $itemOperation->get_items(),
                         $this->params["operation"],
