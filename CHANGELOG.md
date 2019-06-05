@@ -1,3 +1,7 @@
+# Version 1.4.0
+
+- Add MyBank Payment method
+
 # Version 1.3.0
 
 - Add oneclick in my account
