@@ -25,7 +25,10 @@ describe('Pay by Giropay', function () {
     it('Pay by Giropay', function () {
 
         cy.get('[for="payment_method_hipayenterprise_giropay"]').click({force: true});
-        cy.get('#giropay-issuer_bank_id').type(giropayJson.data.bic);
+        cy.wait(3000);
+
+        cy.fill_hostedfields_input("#hipay-giropay-field-issuer_bank_id", giropayJson.data.issuer_bank_id);
+
         cy.get('#place_order').click({force: true});
         cy.payAndCheck('payGiropay', giropayJson.url, "giropay");
     });

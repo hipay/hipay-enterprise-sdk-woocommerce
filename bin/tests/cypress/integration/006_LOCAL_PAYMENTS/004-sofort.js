@@ -25,6 +25,7 @@ describe('Pay by Sofort', function () {
     it('pay Sofort', function () {
 
         cy.get('[for="payment_method_hipayenterprise_sofort_uberweisung"]').click({force: true});
+        cy.wait(500);
         cy.get('#place_order').click({force: true});
         cy.payAndCheck('paySofort', sofortJson.url, "sofort");
     });

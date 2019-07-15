@@ -162,12 +162,14 @@ class Hipay_Config
                     ),
                     "css_url" => "",
                     "activate_3d_secure" => ThreeDS::THREE_D_S_DISABLED,
+                    "sdk_js_url" => 'https://libs.hipay.com/js/sdkjs.js',
                     "capture_mode" => "automatic",
                     "activate_basket" => 0,
                     "card_token" => 0,
                     SettingsField::PAYMENT_GLOBAL_LOGS_INFOS => 1,
                     "send_url_notification" => 1,
                     "ccDisplayName" => array("fr" => "Carte de crédit", "en" => "Credit card"),
+                    "enableAstropay" => 0
                 ),
                 "credit_card" => array(),
                 "local_payment" => array()

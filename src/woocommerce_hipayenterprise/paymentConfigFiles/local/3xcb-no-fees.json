@@ -3,17 +3,19 @@
   "config": {
     "group": {
       "code": "oney",
-      "label": "Oney Facily Pay"
+      "label": "Oney"
     },
-    "displayNameBO": "3x Carte Bancaire sans frais - Facily Pay",
+    "displayNameBO": "3x Carte Bancaire sans frais - Oney",
     "displayName": {
-      "fr": "3x Carte Bancaire sans frais - Facily Pay",
-      "en": "3x Credit card without fees - Facily Pay"
+      "fr": "3x Carte Bancaire sans frais - Oney",
+      "en": "3x Credit card without fees - Oney"
     },
     "frontPosition": 2,
     "activated": 0,
     "canRefund": 1,
+    "canRefundPartially": 1,
     "canManualCapture": 1,
+    "canManualCapturePartially": 1,
     "currencies": [
       "EUR"
     ],

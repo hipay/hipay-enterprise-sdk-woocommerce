@@ -1,5 +1,5 @@
 {
-  "name": "webmoney-transfert",
+  "name": "webmoney-transfer",
   "config": {
     "displayNameBO": "WebMoney Transfer",
     "displayName":  {
@@ -8,8 +8,10 @@
     },
     "frontPosition": 29,
     "activated": 0,
-    "canRefund": 1,
-    "canManualCapture": 1,
+    "canManualCapture": 0,
+    "canManualCapturePartially": 0,
+    "canRefund": 0,
+    "canRefundPartially": 0,
     "currencies": [
       "RUB"
     ],

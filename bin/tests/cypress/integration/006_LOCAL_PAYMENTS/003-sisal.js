@@ -24,6 +24,7 @@ describe('Pay by Sisal', function () {
     it('pay Belfius', function () {
 
         cy.get('[for="payment_method_hipayenterprise_sisal"]').click({force: true});
+        cy.wait(500);
         cy.get('#place_order').click({force: true});
         cy.payAndCheck('paySisal', sisalJson.url, "sisal");
     });

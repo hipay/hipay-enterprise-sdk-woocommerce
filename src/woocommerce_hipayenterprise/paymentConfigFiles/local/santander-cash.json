@@ -13,7 +13,9 @@
     "frontPosition": 24,
     "activated": 0,
     "canRefund": 0,
+    "canRefundPartially": 0,
     "canManualCapture": 0,
+    "canManualCapturePartially": 0,
     "currencies": [
       "MXN"
     ],

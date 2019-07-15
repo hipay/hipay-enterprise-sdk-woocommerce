@@ -27,7 +27,7 @@ class Hipay_Klarna extends Hipay_Gateway_Local_Abstract
 
     public function __construct()
     {
-        $this->id = 'hipayenterprise_klarna';
+        $this->id = 'hipayenterprise_klarnainvoice';
         $this->paymentProduct = 'klarnainvoice';
         $this->method_title = __('HiPay Enterprise Klarna', "hipayenterprise");
         $this->title = __('Klarna', "hipayenterprise");

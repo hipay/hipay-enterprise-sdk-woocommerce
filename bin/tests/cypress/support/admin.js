@@ -30,8 +30,24 @@ Cypress.Commands.add("adminLogOut", () => {
  * Go to Tab for Payment
  */
 Cypress.Commands.add("goToPaymentsTab", () => {
+    // cy.get('#toplevel_page_woocommerce > .wp-submenu > :nth-child(5) > a').click({force: true});
+    // cy.get('[href="' + Cypress.config('baseUrl') + '/wp-admin/admin.php?page=wc-settings&tab=checkout"]').click({force: true});
+    cy.visit('wp-admin/admin.php?page=wc-settings&tab=checkout"');
+});
+
+Cypress.Commands.add("activateBasket", () => {
+    cy.get('#methods-tab').click();
+    cy.get('#activate_basket').check();
+    cy.get('.submit > .button-primary').click();
+});
+
+/**
+ * Go to Tab for Payment
+ */
+Cypress.Commands.add("switchWooCurrency", (currency) => {
     cy.get('#toplevel_page_woocommerce > .wp-submenu > :nth-child(5) > a').click({force: true});
-    cy.get('[href="' + Cypress.config('baseUrl') + '/wp-admin/admin.php?page=wc-settings&tab=checkout"]').click({force: true});
+    cy.get('#woocommerce_currency').select(currency, {force: true});
+    cy.get('button[name="save"]').click();
 });
 
 Cypress.Commands.add("activateBasket", () => {
@@ -52,6 +68,11 @@ Cypress.Commands.add("switchWooCurrency", (currency) => {
 /**
  *  Go to Hipay configuration
  */
+Cypress.Commands.add("activateAstropayMethods", () => {
+    cy.get('#enableAstropay').check({force: true});
+    cy.get('button[name="save"]').click();
+});
+
 Cypress.Commands.add("goToAdminHipayConfig", () => {
     cy.get('[data-gateway_id="hipayenterprise_credit_card"] > .name > .wc-payment-gateway-method-title').click({force: true});
 });

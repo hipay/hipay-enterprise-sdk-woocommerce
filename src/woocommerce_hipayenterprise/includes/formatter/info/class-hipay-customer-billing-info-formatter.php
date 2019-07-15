@@ -41,9 +41,10 @@ class Hipay_Customer_Billing_Info_Formatter implements Hipay_Api_Formatter
     }
 
     /**
-     * return mapped customer billing informations
+     * return mapped customer billing information
      *
-     * @return \HiPay\Fullservice\Gateway\Request\Info\CustomerBillingInfoRequest
+     * @return \HiPay\Fullservice\Gateway\Request\Info\CustomerBillingInfoRequest|mixed
+     * @throws Hipay_Payment_Exception
      */
     public function generate()
     {
@@ -55,9 +56,11 @@ class Hipay_Customer_Billing_Info_Formatter implements Hipay_Api_Formatter
     }
 
     /**
-     * Map billing informations to request fields (Hpayment Post)
+     * Map billing information to request fields (Hpayment Post)
      *
-     * @param \HiPay\Fullservice\Gateway\Request\Info\CustomerBillingInfoRequest $customerBillingInfo
+     * @param $customerBillingInfo
+     * @return mixed|void
+     * @throws Hipay_Payment_Exception
      */
     public function mapRequest(&$customerBillingInfo)
     {
@@ -73,6 +76,7 @@ class Hipay_Customer_Billing_Info_Formatter implements Hipay_Api_Formatter
         $customerBillingInfo->phone = $this->order->get_billing_phone();
         $customerBillingInfo->gender = 'U';
 
+
         if ($this->payment_product == 'klarnainvoice') {
             $customerBillingInfo->gender = 'F';
             $customerBillingInfo->house_number = 1;
@@ -81,6 +85,20 @@ class Hipay_Customer_Billing_Info_Formatter implements Hipay_Api_Formatter
 
         if ($this->payment_product == 'bnpp-3xcb' || $this->payment_product == 'bnpp-4xcb') {
             $customerBillingInfo->phone = preg_replace('/^(\+33)|(33)/', '0', $customerBillingInfo->phone);
+        }
+
+        if (
+            preg_match('/^[0-9]{1}xcb(.*)/', $this->payment_product) &&
+            !preg_match('"(0|\\+33|0033)[1-9][0-9]{8}"', $customerBillingInfo->phone)
+        ) {
+            throw new Hipay_Payment_Exception(
+                __(
+                    "Wrong phone number format, Oney payment method require a valid french phone number (0123465789|+33123465789).",
+                    "hipayenterprise"
+                ),
+                '',
+                "fail"
+            );
         }
     }
 }

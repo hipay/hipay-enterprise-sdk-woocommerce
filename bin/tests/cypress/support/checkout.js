@@ -10,7 +10,7 @@ Cypress.Commands.add("goToFront", () => {
  */
 Cypress.Commands.add("selectItemAndGoToCart", () => {
     cy.goToFront();
-    cy.get('.post-73 > .add_to_cart_button').click();
+    cy.get('.post-21 > .add_to_cart_button').click();
     cy.get('.added_to_cart', {timeout: 50000}).click();
 });
 
@@ -19,13 +19,13 @@ Cypress.Commands.add("selectItemAndGoToCart", () => {
  */
 Cypress.Commands.add("selectSeveralItemsAndGoToCart", () => {
     cy.goToFront();
-    cy.get('.post-73 .add_to_cart_button').click();
-    cy.get('.post-73 .added_to_cart', {timeout: 50000});
-    cy.get('.post-48 .add_to_cart_button').click();
-    cy.get('.post-48 .added_to_cart', {timeout: 50000});
-    cy.get('.post-85 .add_to_cart_button').click();
-    cy.get('.post-85 .added_to_cart', {timeout: 50000});
-    cy.get('.post-85 .added_to_cart').click();
+    cy.get('.post-21 .add_to_cart_button').click();
+    cy.get('.post-21 .added_to_cart', {timeout: 50000});
+    cy.get('.post-13 .add_to_cart_button').click();
+    cy.get('.post-13 .added_to_cart', {timeout: 50000});
+    cy.get('.post-30 .add_to_cart_button').click();
+    cy.get('.post-30 .added_to_cart', {timeout: 50000});
+    cy.get('.post-30 .added_to_cart').click();
 });
 
 /**
@@ -43,7 +43,7 @@ Cypress.Commands.add("proceedToCheckout", (card) => {
     cy.goToCheckout();
     cy.fillBillingForm();
     cy.get('.payment_method_hipayenterprise_credit_card > label').click({force: true});
-    cy.get('#hipay-field-cardHolder > iframe');
+    cy.get('#hipay-card-field-cardHolder > iframe');
     cy.wait(3000);
     cy.fill_hostedfield_card(card);
     cy.get('#place_order').click({force: true});
@@ -104,7 +104,7 @@ Cypress.Commands.add("fillBillingForm", (country) => {
         cy.get('#billing_last_name').type(customer.lastName);
         cy.get('#billing_country').select(customer.country, {force: true});
         if (customer.state !== undefined) {
-            if (!["BR", "MX"].includes(country)) {
+            if (!["BR", "MX", "IT"].includes(country)) {
                 cy.get('#billing_state').clear({force: true});
                 cy.get('#billing_state').type(customer.state);
             } else {
@@ -149,9 +149,16 @@ Cypress.Commands.add("checkPaymentRefused", () => {
 /**
  *
  */
-Cypress.Commands.add("checkHostedFieldsError", (msg) => {
+Cypress.Commands.add("checkHostedFieldsError", (msg, method) => {
     cy.location('pathname', {timeout: 50000}).should('include', '/checkout/');
-    cy.get('#error-js', {timeout: 50000}).contains(
+    cy.get('#error-js-' + method, {timeout: 50000}).contains(
+        msg
+    );
+});
+
+Cypress.Commands.add("checkHostedFieldsInlineError", (msg, method, field) => {
+    cy.location('pathname', {timeout: 50000}).should('include', '/checkout/');
+    cy.get(`[data-hipay-id=hipay-${method}-field-error-${field}]`, {timeout: 50000}).contains(
         msg
     );
 });
@@ -160,7 +167,7 @@ Cypress.Commands.add("checkHostedFieldsError", (msg) => {
  *
  */
 Cypress.Commands.add("checkUnsupportedPayment", () => {
-    cy.checkHostedFieldsError("This credit card type or the order currency is not supported.");
+    cy.checkHostedFieldsError("This credit card type or the order currency is not supported.", "card");
 });
 
 /**
@@ -224,4 +231,13 @@ Cypress.Commands.add("waitOrderUpdate", () => {
     cy.server();
     cy.route('POST', "/?wc-ajax=update_order_review").as("updateOrder");
     cy.wait("@updateOrder");
+});
+
+Cypress.Commands.add("customerLogIn", () => {
+    cy.fixture('customerFR').then((customer) => {
+        cy.visit('/my-account/');
+        cy.get('#username').type(customer.email);
+        cy.get('#password').type(customer.password);
+        cy.get('[name="login"]').click();
+    });
 });

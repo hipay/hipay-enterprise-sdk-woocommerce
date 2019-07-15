@@ -25,6 +25,7 @@ describe('Pay by PostFinance E-Finance', function () {
     it('Pay by PostFinance E-Finance', function () {
 
         cy.get('[for="payment_method_hipayenterprise_postfinance_efinance"]').click({force: true});
+        cy.wait(500);
         cy.get('#place_order').click({force: true});
         cy.payAndCheck('payPostfinanceEfinance', postfinanceEfinanceJson.url, "postfinance-efinance");
     });

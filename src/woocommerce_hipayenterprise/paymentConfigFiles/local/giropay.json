@@ -8,8 +8,10 @@
     },
     "frontPosition": 14,
     "activated": 0,
-    "canRefund": 1,
-    "canManualCapture": 1,
+    "canManualCapture": 0,
+    "canManualCapturePartially": 0,
+    "canRefund": 0,
+    "canRefundPartially": 0,
     "currencies": [
       "EUR"
     ],

@@ -3,17 +3,19 @@
   "config": {
     "group": {
       "code": "oney",
-      "label": "Oney Facily Pay"
+      "label": "Oney"
     },
-    "displayNameBO": "4x Carte Bancaire - Facily Pay",
+    "displayNameBO": "4x Carte Bancaire - Oney",
     "displayName":  {
-      "fr": "4x Carte Bancaire - Facily Pay",
-      "en": "4x Credit card - Facily Pay"
+      "fr": "4x Carte Bancaire - Oney",
+      "en": "4x Credit card - Oney"
     },
     "frontPosition": 5,
     "activated": 0,
     "canRefund": 1,
+    "canRefundPartially": 1,
     "canManualCapture": 1,
+    "canManualCapturePartially": 1,
     "currencies": [
       "EUR"
     ],

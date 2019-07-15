@@ -56,6 +56,7 @@ sleep 20
     SHIPPING_ZONE=$(wp wc shipping_zone create --allow-root --name="FR" --user=admin-wordpress@hipay.com --porcelain)
     wp wc --allow-root shipping_zone_method create $SHIPPING_ZONE --method_id="flat_rate" --user=admin-wordpress@hipay.com
     wp wc --allow-root shop_coupon create --code=test --amount=12.25 --discount_type=percent --user=admin-wordpress@hipay.com
+    wp wc --allow-root customer create --email='d.denis@hipay.com' --user=1 --password='password123'
 
     CONFIG=$(wp option --allow-root get hipay_enterprise --format=json)
     CONFIG=${CONFIG/'"api_username_sandbox":""'/'"api_username_sandbox":"'$HIPAY_API_USER_TEST'"'}

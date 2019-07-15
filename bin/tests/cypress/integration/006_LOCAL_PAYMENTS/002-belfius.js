@@ -5,7 +5,7 @@ describe('Pay by Belfius', function () {
     before(function () {
         cy.logToAdmin();
         cy.goToPaymentsTab();
-        cy.activatePaymentMethods("belfius");
+        cy.activatePaymentMethods("dexia_directnet");
         cy.switchWooCurrency("EUR");
         cy.adminLogOut();
     });
@@ -23,7 +23,8 @@ describe('Pay by Belfius', function () {
 
     it('pay Belfius', function () {
 
-        cy.get('[for="payment_method_hipayenterprise_belfius"]').click({force: true});
+        cy.get('[for="payment_method_hipayenterprise_dexia_directnet"]').click({force: true});
+        cy.wait(500);
         cy.get('#place_order').click({force: true});
         cy.payAndCheck('payBelfius', belfiusJson.url, "belfius");
     });

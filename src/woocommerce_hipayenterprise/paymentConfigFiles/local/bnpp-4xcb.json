@@ -10,10 +10,12 @@
       "fr": "4x Carte Bancaire - BNP Personal Finance",
       "en": "4x Carte Bancaire - BNP Personal Finance"
     },
-    "frontPosition": 30,
+    "frontPosition": 35,
     "activated": 0,
+    "canManualCapture": 0,
+    "canManualCapturePartially": 0,
     "canRefund": 1,
-    "canManualCapture": 1,
+    "canRefundPartially": 1,
     "currencies": [
       "EUR"
     ],

@@ -32,26 +32,24 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
         $this->has_fields = true;
         parent::__construct();
 
-        if(!empty($this->confHelper->getLocalPayment($this->paymentProduct)["displayName"][Hipay_Helper::getLanguage()])){
-            $this->title = $this->confHelper->getLocalPayment($this->paymentProduct)["displayName"][Hipay_Helper::getLanguage()];
-        }else{
-            $this->title = $this->confHelper->getLocalPayment($this->paymentProduct)["displayName"]['en'];
+        $methodConf = $this->confHelper->getLocalPayment($this->paymentProduct);
+
+        if (!empty($methodConf["displayName"][Hipay_Helper::getLanguage()])) {
+            $this->title = $methodConf["displayName"][Hipay_Helper::getLanguage()];
+        } else {
+            $this->title = $methodConf["displayName"]['en'];
         }
 
         $this->init_form_fields();
         $this->init_settings();
 
-        if ($this->isAvailable() && is_page() && is_checkout() && !is_order_received_page()) {
-
-            wp_enqueue_script(
-                'hipay-js-form-input-control',
-                plugins_url('/assets/js/frontend/form-input-control.js', WC_HIPAYENTERPRISE_BASE_FILE),
-                array(),
-                'all',
-                false
-            );
+        if ($methodConf["canManualCapture"]) {
+            $this->supports[] = "captures";
         }
 
+        if ($methodConf["canRefund"]) {
+            $this->supports[] = "refunds";
+        }
     }
 
     public function isAvailable()
@@ -61,22 +59,14 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
 
     public function payment_fields()
     {
-        if (empty($this->confHelper->getLocalPayment($this->paymentProduct)["additionalFields"])) {
-            _e(
-                'You will be redirected to an external payment page.' .
-                ' Please do not refresh the page during the process.',
-                "hipayenterprise"
-            );
-        } else {
-            $this->process_template(
-                'local-payment.php',
-                'frontend',
-                array(
-                    'localPaymentName' => $this->paymentProduct,
-                    'additionalFields' => $this->confHelper->getLocalPayment($this->paymentProduct)["additionalFields"]
-                )
-            );
-        }
+        $this->process_template(
+            'local-payment.php',
+            'frontend',
+            array(
+                'localPaymentName' => $this->paymentProduct,
+                'additionalFields' => $this->confHelper->getLocalPayment($this->paymentProduct)["additionalFields"]
+            )
+        );
     }
 
     public function admin_options()
@@ -138,7 +128,9 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
 
             $params = array(
                 "order_id" => $order_id,
-                "paymentProduct" => $this->paymentProduct
+                "paymentProduct" => $this->paymentProduct,
+                "forceSalesMode" => $this->forceSalesMode(),
+                "deviceFingerprint" => Hipay_Helper::getPostData($this->paymentProduct.'-device_fingerprint')
             );
 
             foreach ($method["additionalFields"]["formFields"] as $name => $field) {
@@ -155,5 +147,10 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
         } catch (Hipay_Payment_Exception $e) {
             return $this->handlePaymentError($e);
         }
+    }
+
+    private function forceSalesMode()
+    {
+        return !$this->confHelper->getLocalPayment($this->paymentProduct)["canManualCapture"];
     }
 }

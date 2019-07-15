@@ -15,11 +15,6 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-
-use \HiPay\Fullservice\Enum\Transaction\TransactionStatus;
-use \HiPay\Fullservice\Helper\Signature;
-use \HiPay\Fullservice\HTTP\Configuration\Configuration;
-
 /**
  *
  * @author      HiPay <support.tpp@hipay.com>

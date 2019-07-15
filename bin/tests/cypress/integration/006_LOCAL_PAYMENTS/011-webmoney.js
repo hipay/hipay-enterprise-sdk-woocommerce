@@ -32,6 +32,7 @@ describe('Pay by WebMoney Transfer', function () {
     it('Pay by WebMoney Transfer', function () {
 
         cy.get('[for="payment_method_hipayenterprise_webmoney_transfert"]').click({force: true});
+        cy.wait(500);
         cy.get('#place_order').click({force: true});
         cy.payAndCheck('payWebmoney', webmoneyJson.url, "webmoney");
     });

@@ -11,7 +11,7 @@
     }
   ],
   "require": {
-    "hipay/hipay-fullservice-sdk-php": "1.10.0"
+    "hipay/hipay-fullservice-sdk-php": "2.0.1"
   },
   "require-dev": {
     "phpunit/phpunit": "5.6.1"

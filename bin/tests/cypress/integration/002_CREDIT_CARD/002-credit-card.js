@@ -24,7 +24,7 @@ describe('Pay by credit card', function () {
         cy.fillBillingForm();
 
         cy.get('[for="payment_method_hipayenterprise_credit_card"]').click({force: true});
-        cy.get('#hipay-field-cardHolder > iframe');
+        cy.get('#hipay-card-field-cardHolder > iframe');
         cy.wait(3000);
     });
 
@@ -64,7 +64,7 @@ describe('Pay by credit card', function () {
 
         cy.fill_hostedfield_card('custom', customCard);
         cy.get('#place_order').click({force: true});
-        cy.checkHostedFieldsError("Card number is invalid.");
+        cy.checkHostedFieldsInlineError("Card number is invalid.", "card", "cardNumber");
     });
 
 });

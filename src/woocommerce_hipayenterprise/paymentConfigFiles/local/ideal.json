@@ -2,14 +2,16 @@
   "name": "ideal",
   "config": {
     "displayNameBO": "IDEAL",
-    "displayName":  {
+    "displayName": {
       "fr": "IDEAL",
       "en": "IDEAL"
     },
     "frontPosition": 15,
     "activated": 0,
+    "canManualCapture": 0,
+    "canManualCapturePartially": 0,
     "canRefund": 1,
-    "canManualCapture": 1,
+    "canRefundPartially": 1,
     "currencies": [
       "EUR"
     ],

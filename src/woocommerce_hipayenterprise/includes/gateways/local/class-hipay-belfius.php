@@ -27,7 +27,7 @@ class Hipay_Belfius extends Hipay_Gateway_Local_Abstract
 
     public function __construct()
     {
-        $this->id = 'hipayenterprise_belfius';
+        $this->id = 'hipayenterprise_dexia_directnet';
         $this->paymentProduct = 'dexia-directnet';
         $this->method_title = __('HiPay Enterprise Belfius', "hipayenterprise");
         $this->title = __('Belfius', "hipayenterprise");

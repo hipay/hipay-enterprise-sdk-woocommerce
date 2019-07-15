@@ -37,7 +37,7 @@ class Hipay_Customer_Shipping_Info_Formatter implements Hipay_Api_Formatter
     }
 
     /**
-     * return mapped customer shipping informations
+     * return mapped customer shipping information
      * @return \HiPay\Fullservice\Gateway\Request\Info\CustomerShippingInfoRequest
      */
     public function generate()
@@ -50,7 +50,7 @@ class Hipay_Customer_Shipping_Info_Formatter implements Hipay_Api_Formatter
     }
 
     /**
-     * Map shipping informations to request fields (Hpayment Post)
+     * Map shipping information to request fields (Hpayment Post)
      *
      * @param \HiPay\Fullservice\Gateway\Request\Info\CustomerShippingInfoRequest $customerShippingInfo
      */

@@ -96,7 +96,7 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
 
         wp_enqueue_script(
             'hipay-js-hosted-fields-sdk',
-            'https://libs.hipay.com/js/sdkjs.js',
+            $this->confHelper->getPaymentGlobal()["sdk_js_url"],
             array(),
             'all',
             true
@@ -110,15 +110,27 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
             true
         );
 
+        $sandbox = $this->confHelper->getAccount()["global"]["sandbox_mode"];
+        $username = ($sandbox) ? $this->confHelper->getAccount()["sandbox"]["api_tokenjs_username_sandbox"]
+            : $this->confHelper->getAccount()["production"]["api_tokenjs_username_production"];
+        $password = ($sandbox) ? $this->confHelper->getAccount()["sandbox"]["api_tokenjs_password_publickey_sandbox"]
+            : $this->confHelper->getAccount()["production"]["api_tokenjs_password_publickey_production"];
+
         wp_localize_script(
             'hipay-js-front',
-            'hipay_i18n',
+            'hipay_config',
             array(
-                "i18nFieldIsMandatory" => __('This field is mandatory'),
-                "i18nBadIban" => __('This is not a correct IBAN'),
-                "i18nBadBic" => __('This is not a correct BIC'),
-                "i18nBadCPF" => __('This is not a correct CPF'),
-                "i18nBadCPNCURP" => __('This is not a correct CPN/CURP'),
+                "apiUsernameTokenJs" => $username,
+                "apiPasswordTokenJs" => $password,
+                "lang" => substr(get_locale(), 0, 2),
+                "environment" => $sandbox ? "stage" : "production",
+                "fontFamily" => $this->confHelper->getHostedFieldsStyle()["fontFamily"],
+                "color" => $this->confHelper->getHostedFieldsStyle()["color"],
+                "fontSize" => $this->confHelper->getHostedFieldsStyle()["fontSize"],
+                "fontWeight" => $this->confHelper->getHostedFieldsStyle()["fontWeight"],
+                "placeholderColor" => $this->confHelper->getHostedFieldsStyle()["placeholderColor"],
+                "caretColor" => $this->confHelper->getHostedFieldsStyle()["caretColor"],
+                "iconColor" => $this->confHelper->getHostedFieldsStyle()["iconColor"],
             )
         );
     }
@@ -209,5 +221,66 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
         extract($args);
         $file = WC_HIPAYENTERPRISE_PATH . 'includes/' . $type . '/template/' . $template;
         include $file;
+    }
+
+    /**
+     * @param int $order_id
+     * @param null $amount
+     * @param string $reason
+     * @return array|bool
+     * @throws Exception
+     */
+    public function process_refund($order_id, $amount = null, $reason = "")
+    {
+        try {
+            $this->logs->logInfos(" # Process Refund for  " . $order_id);
+
+            $redirect = $this->apiRequestHandler->handleMaintenance(
+                \HiPay\Fullservice\Enum\Transaction\Operation::REFUND,
+                array(
+                    "order_id" => $order_id,
+                    "amount" => (float)$amount
+                )
+            );
+
+            return array(
+                'result' => 'success',
+                'redirect' => $redirect,
+            );
+        } catch (Hipay_Payment_Exception $e) {
+            return $this->handlePaymentError($e);
+        }
+    }
+
+    /**
+     * Manual Capture
+     *
+     * @param $order_id
+     * @param null $amount
+     * @param string $reason
+     * @return array
+     * @throws Exception
+     */
+    public function process_capture($order_id, $amount = null, $reason = "")
+    {
+        try {
+            $this->logs->logInfos(" # Process Manual Capture for  " . $order_id);
+
+            $redirect = $this->apiRequestHandler->handleMaintenance(
+                \HiPay\Fullservice\Enum\Transaction\Operation::CAPTURE,
+                array(
+                    "order_id" => $order_id,
+                    "amount" => (float)$amount
+                )
+            );
+
+            $this->logs->logInfos(" # End Process Manual Capture for  " . $order_id);
+            return array(
+                'result' => 'success',
+                'redirect' => $redirect,
+            );
+        } catch (Hipay_Payment_Exception $e) {
+            return $this->handlePaymentError($e);
+        }
     }
 }

@@ -238,19 +238,19 @@ class Hipay_Helper
                 break;
             case TransactionStatus::REFUND_REQUESTED: //124
             case TransactionStatus::REFUNDED: //125
-                $message .= __('Registered notification from HiPay about refunded amount of ') .
+                $message .= __('Registered notification from HiPay about refunded amount of ', 'hipayenterprise') .
                     $transaction->getRefundedAmount() .
                     "\n";
                 break;
             default:
-                $message .= __('Registered notification ' . $transaction->getStatus()) .
+                $message .= __('Registered notification ', "hipayenterprise") . $transaction->getStatus() .
                     "\n";
                 break;
         }
 
         $message .= __('Order total amount :', "hipayenterprise") . $transaction->getAuthorizedAmount() . "\n";
         $message .= "\n";
-        $message .= __('Transaction ID: ',"hipayenterprise") . $transaction->getTransactionReference() . "\n";
+        $message .= __('Transaction ID: ', "hipayenterprise") . $transaction->getTransactionReference() . "\n";
         $message .= __('HiPay status: ', "hipayenterprise") . $transaction->getStatus() . "\n";
 
 
@@ -267,7 +267,7 @@ class Hipay_Helper
     public static function getPostData($index, $default = false)
     {
         if (isset($_POST[$index])) {
-            return  wc_clean( wp_unslash( $_POST[$index]));
+            return wc_clean(wp_unslash($_POST[$index]));
         }
 
         return $default;
@@ -293,5 +293,22 @@ class Hipay_Helper
         extract($args);
         $file = WC_HIPAYENTERPRISE_PATH . 'includes/' . $type . '/template/' . $template;
         include $file;
+    }
+
+    /**
+     * @param $needles
+     * @param $haystack
+     * @return bool
+     */
+    public static function allArrayKeyExists($needles, $haystack)
+    {
+
+        foreach ($needles as $needle) {
+            if (!array_key_exists($needle, $haystack)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

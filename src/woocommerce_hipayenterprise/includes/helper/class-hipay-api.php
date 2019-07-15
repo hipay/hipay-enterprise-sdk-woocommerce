@@ -54,7 +54,7 @@ class Hipay_Api
      * @param $order
      * @param $params
      * @return \HiPay\Fullservice\Gateway\Model\Transaction|\HiPay\Fullservice\Model\AbstractModel
-     * @throws Exception
+     * @throws Hipay_Payment_Exception
      */
     public function requestDirectPost($order, $params)
     {
@@ -73,10 +73,9 @@ class Hipay_Api
     /**
      * Request capture or refund to HiPay API
      *
-     * @param $moduleInstance
      * @param $params
      * @return \HiPay\Fullservice\Gateway\Model\Operation|\HiPay\Fullservice\Model\AbstractModel
-     * @throws GatewayException
+     * @throws Exception
      */
     public function requestMaintenance($params)
     {
@@ -116,6 +115,7 @@ class Hipay_Api
      * @param $order
      * @param $params
      * @return string
+     * @throws Exception
      */
     public function requestHostedPaymentPage($order, $params)
     {
@@ -170,6 +170,7 @@ class Hipay_Api
      *
      * @param bool $forceConfig : Configuration::API_ENV_STAGE | Configuration::API_ENV_PRODUCTION | false
      * @return \HiPay\Fullservice\Gateway\Client\GatewayClient
+     * @throws Exception
      */
     private function createGatewayClient($forceConfig = false)
     {

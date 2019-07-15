@@ -1,24 +1,2 @@
-<?php foreach ($additionalFields['formFields'] as $fieldName => $field): ?>
-    <label> <?php echo $field["label"]["fr"]; ?></label>
-    <div>
-        <?php if($field["type"] === "gender"): ?>
-            <div >
-                <select id="<?php echo $localPaymentName . '-' . $fieldName ?>"
-                        name="<?php echo $localPaymentName . '-' . $fieldName ?>"
-                    <?php if(isset($field["required"]) && $field["required"]){ echo 'required';} ?>
-                >
-                    <option value="M"><?php echo _e('Mr', "hipayenterprise") ?></option>
-                    <option value="F"><?php echo _e('Mrs', "hipayenterprise") ?></option>
-                </select>
-            </div>
-        <?php else: ?>
-        <input
-                id="<?php echo $localPaymentName . '-' . $fieldName ?>" name="<?php echo $localPaymentName . '-' . $fieldName ?>" type="text" value=""
-                <?php if(isset($field["required"]) && $field["required"]){ echo 'required';} ?>
-        />
-        <?php endif; ?>
-    </div>
-    <script>
-        hiPayInputControl.addInput('<?php echo $localPaymentName ?>', '<?php echo $localPaymentName."-".$fieldName ?>', '<?php echo $field["controlType"] ?>', <?php if(isset($field['required'])){ echo $field['required']; }else{ echo "false";} ?>);
-</script>
-<?php endforeach; ?>
+<div class="hipay-container-hosted-fields" id="hipayHF-container-<?php echo $localPaymentName ?>"></div>
+<div id="error-js-<?php echo $localPaymentName ?>" style="display:none" class="woocommerce-hipay-error"></div>
