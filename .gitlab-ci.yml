@@ -7,7 +7,6 @@ stages:
 - package
 - build
 - deploy
-- sync
 
 variables:
   PROJECT_NAME_TEST_1: ${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_PIPELINE_ID}-1
@@ -170,13 +169,3 @@ stop_review:
   environment:
     name: review/${CI_COMMIT_REF_SLUG}
     action: stop
-
-sync:
-  stage: sync
-  script:
-  - git clone --mirror https://$GITLAB_USER:$GITLAB_PASSWORD@gitlab.hipay.org/pi-ecommerce/hipay-enterprise-sdk-woocommerce.git
-  - cd hipay-enterprise-sdk-woocommerce.git
-  - git push --mirror https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/hipay/hipay-enterprise-sdk-woocommerce.git
-  allow_failure: true
-  tags:
-  - pi-ecommerce
