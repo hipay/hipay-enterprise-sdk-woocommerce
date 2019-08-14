@@ -57,16 +57,20 @@ class Hipay_Transactions_Helper
 
     const TRANSACTION_BASKET = "basket";
 
+    const TRANSACTION_MULTI_USE = 'attempt_create_multi_use';
+
+    const TRANSACTION_CUSTOMER_ID = 'customer_id';
+
     /**
-     *  Save Post Type Transaction
+     *  Save Post type Transaction
      *
-     * @param $orderId
+     * @param $order
      * @param $transaction
      */
-    public function saveTransaction($orderId, $transaction)
+    public function saveTransaction($order, $transaction)
     {
         $post = array(
-            self::TRANSACTION_ORDER_ID => $orderId,
+            self::TRANSACTION_ORDER_ID => $order->get_id(),
             self::TRANSACTION_TRANSACTION_REF => $transaction->getTransactionReference(),
             self::TRANSACTION_STATE => $transaction->getState(),
             self::TRANSACTION_STATUS => $transaction->getStatus(),
@@ -78,7 +82,9 @@ class Hipay_Transactions_Helper
             self::TRANSACTION_PAYMENT_START => $transaction->getDateCreated(),
             self::TRANSACTION_PAYMENT_AUTHORIZED => $transaction->getDateAuthorized(),
             self::TRANSACTION_AUTHORIZATION_CODE => $transaction->getAuthorizationCode(),
-            self::TRANSACTION_BASKET => $transaction->getBasket()
+            self::TRANSACTION_BASKET => $transaction->getBasket(),
+            self::TRANSACTION_MULTI_USE => !empty($transaction->getCustomData()) && isset($transaction->getCustomData()["createOneClick"]) ? $transaction->getCustomData()["createOneClick"] : 0,
+            self::TRANSACTION_CUSTOMER_ID => $order->get_user_id(),
         );
 
         $this->createPostTypeTransactions($post);
@@ -183,5 +189,84 @@ class Hipay_Transactions_Helper
         }
         return self::$instance;
     }
+
+    /**
+     *  Nb Attempt for create token per user from a date
+     *
+     * @param $customerId
+     * @param $paymentStart
+     * @return int
+     */
+    public static function nbAttemptCreateCard($customerId, $paymentStart)
+    {
+        $status_sql = "'" . TransactionStatus::AUTHORIZED . "','"
+            . TransactionStatus::DENIED . "','"
+            . TransactionStatus::CANCELLED . "','"
+            . TransactionStatus::EXPIRED . "','"
+            . TransactionStatus::REFUSED . "','"
+            . TransactionStatus::CAPTURED. "'";
+
+        global $wpdb;
+        $multiUserAttempt = $wpdb->get_col($wpdb->prepare(
+            "SELECT COUNT(distinct(posts.ID)) FROM {$wpdb->posts} AS posts 
+                    INNER JOIN {$wpdb->postmeta} AS p ON p.post_id = posts.ID
+                    INNER JOIN {$wpdb->postmeta} AS q ON q.post_id = posts.ID 
+                    INNER JOIN {$wpdb->postmeta} AS r ON r.post_id = posts.ID 
+                    INNER JOIN {$wpdb->postmeta} AS s ON s.post_id = posts.ID 
+                    WHERE posts.post_type = '" . Hipay_Admin_Post_Types::POST_TYPE_TRANSACTION . "' 
+                    AND posts.post_date > %s
+                    AND p.meta_key = '" . self::TRANSACTION_CUSTOMER_ID . "' AND p.meta_value = %s
+                    AND q.meta_key = '" . self::TRANSACTION_STATUS . "' AND q.meta_value in ($status_sql)
+                    AND r.meta_key = '" . self::TRANSACTION_MULTI_USE . "' AND r.meta_value = '1'", $paymentStart, $customerId));
+
+        return !empty($multiUserAttempt) && empty($multiUserAttempt[0]) ? $multiUserAttempt[0] : 0;
+    }
+
+    /**
+     * @param $customerId
+     * @param $paymentStart
+     * @param $paymentMethods
+     * @return int
+     */
+    public static function getNbPaymentAttempt($customerId, $paymentStart, $paymentMethods)
+    {
+        global $wpdb;
+        $paymentProductList = "'" .  implode("','", $paymentMethods)  . "'" ;
+        $paymentAttempt = $wpdb->get_col($wpdb->prepare(
+            "SELECT COUNT(distinct(posts.ID)) FROM {$wpdb->posts} AS posts 
+                    INNER JOIN {$wpdb->postmeta} AS p ON p.post_id = posts.ID
+                    INNER JOIN {$wpdb->postmeta} AS q ON q.post_id = posts.ID 
+                    INNER JOIN {$wpdb->postmeta} AS r ON r.post_id = posts.ID 
+                    INNER JOIN {$wpdb->postmeta} AS s ON s.post_id = posts.ID 
+                    WHERE posts.post_type = '" . Hipay_Admin_Post_Types::POST_TYPE_TRANSACTION . "' 
+                    AND posts.post_date > %s
+                    AND p.meta_key = '" . self::TRANSACTION_CUSTOMER_ID . "' AND p.meta_value = %s
+                    AND q.meta_key = '" . self::TRANSACTION_REFUND_PAYMENT_PRODUCT. "' 
+                    AND q.meta_value IN ($paymentProductList)", $paymentStart, $customerId));
+
+        return !empty($paymentAttempt) && empty($paymentAttempt[0]) ? $paymentAttempt[0] : 0;
+    }
+
+    /**
+     * Get transaction ref for an order
+     *
+     * @param $orderId
+     * @return string
+     */
+    public static function getTransactionReference($orderId)
+    {
+        global $wpdb;
+        $transactionByOrder = $wpdb->get_col($wpdb->prepare(
+            "SELECT q.meta_value FROM {$wpdb->posts} AS posts
+                    INNER JOIN {$wpdb->postmeta} AS p ON p.post_id = posts.ID
+                    INNER JOIN {$wpdb->postmeta} AS q ON q.post_id = posts.ID
+                    WHERE posts.post_type = '" . Hipay_Admin_Post_Types::POST_TYPE_TRANSACTION . "' 
+                    AND p.meta_key = '" . self::TRANSACTION_ORDER_ID . "' AND p.meta_value = %s
+                    AND q.meta_key = 'transaction_ref'
+                    ORDER BY posts.ID", $orderId));
+        return !empty($transactionByOrder) && $transactionByOrder[0] != null ? $transactionByOrder[0]: "";
+    }
+
+
 
 }

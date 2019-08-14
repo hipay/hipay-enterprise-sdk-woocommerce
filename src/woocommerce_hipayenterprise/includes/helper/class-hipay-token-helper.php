@@ -68,6 +68,8 @@ class Hipay_Token_Helper
         if (!Hipay_Helper::allArrayKeyExists(self::$tokenKeys, $values)) {
             throw new Exception("Invalid create token values");
         }
+        $dateCreated = new \DateTime('now');
+        $dateCreated = $dateCreated->format('Ymd');
 
         $token = self::cardExists($values["pan"], $values["brand"], $values["user_id"]);
         $token->set_token($values["token"]);
@@ -80,6 +82,7 @@ class Hipay_Token_Helper
         $token->set_gateway_id($values["gateway_id"]);
         $token->set_payment_product($values["payment_product"]);
         $token->set_force_cvv($values["force_cvv"]);
+        $token->set_date_created($dateCreated);
 
         $token->save();
     }
@@ -123,5 +126,27 @@ class Hipay_Token_Helper
         }
 
         return new WC_Payment_Token_CC_HiPay();
+    }
+
+
+    /**
+     *  Get Customer token by token value
+     *
+     * @param $customerId
+     * @param $userToken
+     * @return WC_Payment_Token
+     * @throws Exception
+     */
+    public static function getToken($customerId, $userToken)
+    {
+        $tokens = WC_Payment_Tokens::get_customer_tokens($customerId);
+
+        foreach ($tokens as $token) {
+            if ($token->get_token() ===  $userToken) {
+                return $token;
+            }
+        }
+
+        throw new Exception("Invalid token values");
     }
 }

@@ -193,7 +193,8 @@ jQuery(function ($) {
         var methodForm = $("#" + methodsInstance[method].options.selector);
 
         for (var data in response) {
-            methodForm.append($("<input>").attr("type", "hidden").attr("name", method + "-" + data).val(response[data]));
+            var valueResponse = response[data] instanceof Object ? JSON.stringify(response[data]) : response[data];
+            methodForm.append($("<input>").attr("type", "hidden").attr("name", method + "-" + data).val(valueResponse));
         }
     }
 

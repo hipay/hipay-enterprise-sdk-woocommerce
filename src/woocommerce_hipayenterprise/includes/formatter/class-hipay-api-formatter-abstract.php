@@ -28,6 +28,16 @@ abstract class Hipay_Api_Formatter_Abstact implements Hipay_Api_Formatter
 
     protected $order;
 
+    protected $cardPaymentProduct = array(
+        CardPaymentProduct::AMERICAN_EXPRESS,
+        CardPaymentProduct::BCMC,
+        CardPaymentProduct::CB,
+        CardPaymentProduct::MAESTRO,
+        CardPaymentProduct::MASTERCARD,
+        CardPaymentProduct::VISA,
+        CardPaymentProduct::HOSTED
+    );
+
     /**
      * Hipay_Api_Formatter_Abstact constructor.
      * @param $plugin

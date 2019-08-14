@@ -228,7 +228,7 @@ class Hipay_Notification
             }
 
             $this->orderHandler->addNote(Hipay_Helper::formatOrderData($this->transaction));
-            $this->transactionsHelper->saveTransaction($this->order->get_id(), $this->transaction);
+            $this->transactionsHelper->saveTransaction($this->order, $this->transaction);
 
             return true;
         } catch (Exception $e) {

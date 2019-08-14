@@ -33,7 +33,8 @@ class WC_Payment_Token_CC_HiPay extends WC_Payment_Token
         'card_type' => '',
         'card_holder' => '',
         'payment_product' => '',
-        'force_cvv' => false
+        'force_cvv' => false,
+        'date_created' => ''
     );
 
     public function get_display_name($deprecated = '')
@@ -158,6 +159,16 @@ class WC_Payment_Token_CC_HiPay extends WC_Payment_Token
     public function set_force_cvv($force_cvv)
     {
         $this->set_prop('force_cvv', $force_cvv);
+    }
+
+    public function get_date_created($context = 'view')
+    {
+        return $this->get_prop('date_created', $context);
+    }
+
+    public function set_date_created($date_created)
+    {
+        $this->set_prop('date_created', $date_created);
     }
 
     public static function wc_get_account_saved_payment_methods_list_item_cc_hipay($item, $payment_token)

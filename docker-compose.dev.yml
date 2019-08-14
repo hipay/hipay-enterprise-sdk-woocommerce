@@ -8,7 +8,7 @@ services:
        context: .
        dockerfile: bin/docker/images/woocommerce/Dockerfile
      volumes:
-       - ./wordpress/core:/var/www/html
+#       - ./wordpress/core:/var/www/html
        - ./src/woocommerce_hipayenterprise:/var/www/html/wp-content/plugins/woocommerce_hipayenterprise
      ports:
        - "8000:80"
@@ -19,8 +19,6 @@ services:
 
    database:
      image: mysql:5.7
-     volumes:
-     - ./data:/var/lib/mysql
      restart: always
      ports:
      - "3309:3306"

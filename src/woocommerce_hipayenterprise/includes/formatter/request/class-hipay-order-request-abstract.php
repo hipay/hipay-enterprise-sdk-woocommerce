@@ -11,9 +11,13 @@
  * @license   https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
  */
 
+use HiPay\Fullservice\Gateway\Model\Request\ThreeDSTwo\PreviousAuthInfo;
+
 if (!defined('ABSPATH')) {
     exit;
 }
+
+use \HiPay\Fullservice\Enum\ThreeDSTwo\DeviceChannel;
 
 /**
  *
@@ -51,6 +55,22 @@ abstract class Hipay_Order_Request_Abstract extends Hipay_Api_Formatter_Abstact
         parent::mapRequest($orderRequest);
         $this->setCustomData($orderRequest, $this->order, $this->params);
 
+        if (
+            in_array(
+                strtolower($this->params["paymentProduct"]),
+                $this->cardPaymentProduct
+            ) || empty(array_diff(explode(",", $this->params["productlist"]), $this->cardPaymentProduct))
+        ) {
+            if (isset($this->params["paymentProduct"])) {
+                $orderRequest->browser_info = $this->getBrowserInfo();
+            }
+
+            $orderRequest->previous_auth_info = $this->getPreviousAuthInfo();
+            $orderRequest->merchant_risk_statement = $this->getMerchantRiskStatement();
+            $orderRequest->account_info = $this->getAccountInfo();
+            $orderRequest->device_channel = DeviceChannel::BROWSER;
+        }
+
         $orderRequest->orderid = $this->order->get_id() . '-' . time();
         if (
             $this->plugin->confHelper->getPaymentGlobal()["capture_mode"] === CaptureMode::AUTOMATIC
@@ -82,13 +102,63 @@ abstract class Hipay_Order_Request_Abstract extends Hipay_Api_Formatter_Abstact
         $orderRequest->firstname = $this->order->get_billing_first_name();
         $orderRequest->lastname = $this->order->get_billing_last_name();
         $orderRequest->email = $this->order->get_billing_email();
-        $orderRequest->ipaddr = $_SERVER ['REMOTE_ADDR'];
+        $orderRequest->ipaddr = $this->order->get_customer_ip_address();
         $orderRequest->language = get_locale();
         $orderRequest->http_user_agent = $_SERVER ['HTTP_USER_AGENT'];
         $orderRequest->basket = $this->params["basket"];
         $orderRequest->delivery_information = $this->params["delivery_information"];
         $orderRequest->authentication_indicator = $this->params["authentication_indicator"];
     }
+
+    /**
+     *  Get Browser Information
+     *
+     * @return \HiPay\Fullservice\Gateway\Model\Request\ThreeDSTwo\BrowserInfo
+     * @throws Hipay_Payment_Exception
+     */
+    private function getBrowserInfo()
+    {
+        $browserInfo = new Hipay_Browser_Info_Formatter($this->order, $this->params);
+        return $browserInfo->generate();
+    }
+
+    /**
+     * @return \HiPay\Fullservice\Gateway\Model\Request\ThreeDSTwo\MerchantRiskStatement
+     *
+     * @throws Hipay_Payment_Exception
+     */
+    private function getMerchantRiskStatement()
+    {
+        $merchantRiskInfo = new Hipay_Merchant_Risk_Formatter($this->order, $this->params);
+        return $merchantRiskInfo->generate();
+    }
+
+    /**
+     *  Get Account Information
+     *
+     * @return PreviousAuthInfo
+     *
+     * @throws Hipay_Payment_Exception
+     */
+    private function getAccountInfo()
+    {
+        $accountInfo = new Hipay_Account_Info_Formatter($this->order, $this->params);
+        return $accountInfo->generate();
+    }
+
+    /**
+     *  Get Browser Information
+     *
+     * @return PreviousAuthInfo
+     *
+     * @throws Hipay_Payment_Exception
+     */
+    private function getPreviousAuthInfo()
+    {
+        $previousAuthInfo = new Hipay_Previous_Auth_Info_Formatter($this->order, $this->params);
+        return $previousAuthInfo->generate();
+    }
+
 
     /**
      * @return string
