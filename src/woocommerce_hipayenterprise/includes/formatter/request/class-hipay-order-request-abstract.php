@@ -55,16 +55,8 @@ abstract class Hipay_Order_Request_Abstract extends Hipay_Api_Formatter_Abstact
         parent::mapRequest($orderRequest);
         $this->setCustomData($orderRequest, $this->order, $this->params);
 
-        if (
-            in_array(
-                strtolower($this->params["paymentProduct"]),
-                $this->cardPaymentProduct
-            ) || empty(array_diff(explode(",", $this->params["productlist"]), $this->cardPaymentProduct))
-        ) {
-            if (isset($this->params["paymentProduct"])) {
-                $orderRequest->browser_info = $this->getBrowserInfo();
-            }
-
+        if ($this->plugin->getPaymentProduct() === Gateway_Hipay::CREDIT_CARD_PAYMENT_PRODUCT) {
+            $orderRequest->browser_info = $this->getBrowserInfo();
             $orderRequest->previous_auth_info = $this->getPreviousAuthInfo();
             $orderRequest->merchant_risk_statement = $this->getMerchantRiskStatement();
             $orderRequest->account_info = $this->getAccountInfo();
@@ -72,6 +64,7 @@ abstract class Hipay_Order_Request_Abstract extends Hipay_Api_Formatter_Abstact
         }
 
         $orderRequest->orderid = $this->order->get_id() . '-' . time();
+
         if (
             $this->plugin->confHelper->getPaymentGlobal()["capture_mode"] === CaptureMode::AUTOMATIC
             || $this->params["forceSalesMode"]

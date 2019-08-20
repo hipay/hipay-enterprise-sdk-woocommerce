@@ -68,6 +68,7 @@ class Hipay_Token_Helper
         if (!Hipay_Helper::allArrayKeyExists(self::$tokenKeys, $values)) {
             throw new Exception("Invalid create token values");
         }
+
         $dateCreated = new \DateTime('now');
         $dateCreated = $dateCreated->format('Ymd');
 
@@ -142,7 +143,7 @@ class Hipay_Token_Helper
         $tokens = WC_Payment_Tokens::get_customer_tokens($customerId);
 
         foreach ($tokens as $token) {
-            if ($token->get_token() ===  $userToken) {
+            if ($token->get_token() === $userToken) {
                 return $token;
             }
         }

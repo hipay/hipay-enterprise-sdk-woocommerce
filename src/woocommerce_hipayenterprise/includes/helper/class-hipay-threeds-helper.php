@@ -43,11 +43,10 @@ class Hipay_Threeds_Helper
     }
 
     /**
-     *  Check if cart is reordered
-     *
-     * @param $operation
-     * @param $orderId
-     * @return int
+     * @param $customer_user_id
+     * @param $orderID
+     * @param $carts
+     * @return bool
      */
     public static function existsSameOrder($customer_user_id, $orderID, $carts)
     {
@@ -64,6 +63,7 @@ class Hipay_Threeds_Helper
         foreach ($customerOrders as $order) {
             $sameOrder = false;
             $items = $order->get_items('line_item');
+
             foreach ($items as $item) {
                 if (isset($carts[$item->get_product_id()])
                     && $carts[$item->get_product_id()] == $item->get_quantity()) {
@@ -73,10 +73,12 @@ class Hipay_Threeds_Helper
                     break;
                 }
             }
+
             if ($sameOrder) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -90,7 +92,7 @@ class Hipay_Threeds_Helper
         $shippingSerialized = self::serializeAddress($shipping);
         $billingSerialized = self::serializeAddress($billing);
 
-        return (bool)strcmp($shippingSerialized, $billingSerialized);
+        return strcmp($shippingSerialized, $billingSerialized) !== 0;
     }
 
     /**
@@ -121,17 +123,16 @@ class Hipay_Threeds_Helper
     public static function isVerifiedAddress($currentAddress)
     {
         $userAddress = array();
-        $userAddress['first_name'] =  WC()->customer->get_first_name();
+        $userAddress['first_name'] = WC()->customer->get_first_name();
         $userAddress['last_name'] = WC()->customer->get_last_name();
         $userAddress['address_1'] = WC()->customer->get_shipping_address_1();
         $userAddress['city'] = WC()->customer->get_shipping_city();
         $userAddress['postcode'] = WC()->customer->get_shipping_postcode();
         $userAddress['country'] = WC()->customer->get_shipping_country();
         $userAddress['company'] = WC()->customer->get_shipping_company();
-        
-        return !self::areDifferentAddresses($currentAddress,$userAddress);
-    }
 
+        return !self::areDifferentAddresses($currentAddress, $userAddress);
+    }
 
     /**
      *
@@ -141,13 +142,14 @@ class Hipay_Threeds_Helper
      * @return array
      * @throws Exception
      */
-    public static function getOrdersFromDate($customer_user_id, $date) {
+    public static function getOrdersFromDate($customer_user_id, $date)
+    {
         $order_statuses = array('wc-on-hold', 'wc-processing', 'wc-completed');
         $query = new WC_Order_Query(
             array(
                 'return' => 'ids',
                 'customer_id' => $customer_user_id,
-                'date_created' => '>' . $date,
+                'date_created' => '>=' . $date,
                 'post_status' => $order_statuses
             )
         );
@@ -158,7 +160,8 @@ class Hipay_Threeds_Helper
      * @param $shippingAddress
      * @return array
      */
-    public static function getFirstOrderWithShippingAddress($shippingAddress) {
+    public static function getFirstOrderWithShippingAddress($shippingAddress)
+    {
         $order_statuses = array('wc-on-hold', 'wc-processing', 'wc-completed');
         return wc_get_orders(array(
             'meta_key' => '_shipping_address_index',

@@ -74,12 +74,10 @@ class Hipay_Account_Info_Formatter extends Hipay_Api_Formatter_Abstact
         return $accountInfo;
     }
 
-
     /**
-     * Map browser info
-     *
-     * @param AccountInfo
-     *
+     * @param AccountInfo $accountInfo
+     * @return mixed|void
+     * @throws Exception
      */
     public function mapRequest(&$accountInfo)
     {
@@ -99,8 +97,7 @@ class Hipay_Account_Info_Formatter extends Hipay_Api_Formatter_Abstact
             // #### SHIPPING USED DATE #### ////
             $shippingAddress = !empty($this->order->get_shipping_first_name()) ? $this->order->get_address('shipping') :
                 $this->order->get_address('billing');
-            $firstOrderWithShippingAddress = Hipay_Threeds_Helper::getFirstOrderWithShippingAddress(
-                implode(' ', $shippingAddress));
+            $firstOrderWithShippingAddress = Hipay_Threeds_Helper::getFirstOrderWithShippingAddress(implode(' ', $shippingAddress));
 
             if (!empty($firstOrderWithShippingAddress)) {
                 $shippingInfo->shipping_used_date = $firstOrderWithShippingAddress[0]->get_date_created()->format('Ymd');
@@ -109,7 +106,7 @@ class Hipay_Account_Info_Formatter extends Hipay_Api_Formatter_Abstact
 
         // #### NAME INDICATOR #### ////
         $billing = strtoupper($this->order->get_billing_first_name() . $this->order->get_billing_last_name());
-        $shipping = strtoupper($this->order->get_billing_first_name() . $this->order->get_shipping_last_name());
+        $shipping = strtoupper($this->order->get_shipping_first_name() . $this->order->get_shipping_last_name());
 
         $shippingInfo->name_indicator = NameIndicator::DIFFERENT;
         if ($shipping === "" || $shipping === $billing) {
@@ -129,6 +126,7 @@ class Hipay_Account_Info_Formatter extends Hipay_Api_Formatter_Abstact
             $customerInfo->account_change = date('Ymd', strtotime(WC()->customer->get_date_modified()));
             $customerInfo->opening_account_date = date('Ymd', strtotime(WC()->customer->get_date_created()));
         }
+
         return $customerInfo;
     }
 
@@ -136,14 +134,11 @@ class Hipay_Account_Info_Formatter extends Hipay_Api_Formatter_Abstact
      * @return PurchaseInfo
      * @throws Exception
      */
-    private
-    function getPurchaseInfo()
+    private function getPurchaseInfo()
     {
         $purchaseInfo = new PurchaseInfo();
 
         if (is_user_logged_in()) {
-            $now = new \DateTime('now');
-            $now = $now->format('Y-m-d H:i:s');
             $sixMonthAgo = new \DateTime('6 months ago');
             $sixMonthAgo = $sixMonthAgo->format('Y-m-d');
             $twentyFourHoursAgo = new \DateTime('24 hours ago');

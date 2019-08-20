@@ -24,6 +24,9 @@ if (!defined('ABSPATH')) {
  */
 abstract class Hipay_Api_Formatter_Abstact implements Hipay_Api_Formatter
 {
+    /**
+     * @var Hipay_Gateway_Abstract $plugin
+     */
     protected $plugin;
 
     protected $order;

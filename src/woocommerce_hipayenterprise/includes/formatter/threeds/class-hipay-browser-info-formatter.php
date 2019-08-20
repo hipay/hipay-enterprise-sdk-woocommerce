@@ -35,7 +35,6 @@ class Hipay_Browser_Info_Formatter extends Hipay_Api_Formatter_Abstact
      */
     protected $params;
 
-
     /**
      * Hipay_Browser_Info_Formatter constructor.
      *
@@ -62,7 +61,6 @@ class Hipay_Browser_Info_Formatter extends Hipay_Api_Formatter_Abstact
 
         return $browserInfo;
     }
-
 
     /**
      * Map browser info

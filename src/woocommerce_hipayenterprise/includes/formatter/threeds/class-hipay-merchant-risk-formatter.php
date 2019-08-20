@@ -82,6 +82,7 @@ class Hipay_Merchant_Risk_Formatter extends Hipay_Api_Formatter_Abstact
             $merchantRiskStatement->email_delivery_address = $this->order->get_billing_email();
             $merchantRiskStatement->delivery_time_frame = DeliveryTimeFrame::ELECTRONIC_DELIVERY;
         }
+
         $merchantRiskStatement->purchase_indicator = $this->getPurchaseIndicator();
 
         if (is_user_logged_in()) {
@@ -89,7 +90,6 @@ class Hipay_Merchant_Risk_Formatter extends Hipay_Api_Formatter_Abstact
         }
 
         $merchantRiskStatement->shipping_indicator = $this->getShippingIndicator();
-
     }
 
     /**
@@ -99,6 +99,7 @@ class Hipay_Merchant_Risk_Formatter extends Hipay_Api_Formatter_Abstact
     {
         $carts = array();
         $cartItems = WC()->cart->get_cart_contents();
+
         foreach ($cartItems as $key => $value) {
             $carts[$value["product_id"]] = $value["quantity"];
         }
@@ -106,6 +107,7 @@ class Hipay_Merchant_Risk_Formatter extends Hipay_Api_Formatter_Abstact
         if (Hipay_Threeds_Helper::existsSameOrder(get_current_user_id(), $this->order->get_id(), $carts)) {
             return ReorderIndicator::REORDERED;
         }
+
         return ReorderIndicator::FIRST_TIME_ORDERED;
     }
 
@@ -124,6 +126,7 @@ class Hipay_Merchant_Risk_Formatter extends Hipay_Api_Formatter_Abstact
                 return \HiPay\Fullservice\Enum\ThreeDSTwo\PurchaseIndicator::FUTURE_AVAILABILITY;
             }
         }
+
         return \HiPay\Fullservice\Enum\ThreeDSTwo\PurchaseIndicator::MERCHANDISE_AVAILABLE;
     }
 
@@ -184,6 +187,4 @@ class Hipay_Merchant_Risk_Formatter extends Hipay_Api_Formatter_Abstact
 
         return ShippingIndicator::SHIP_TO_DIFFERENT_ADDRESS;
     }
-
-
 }

@@ -35,7 +35,6 @@ class Hipay_Previous_Auth_Info_Formatter extends Hipay_Api_Formatter_Abstact
      */
     protected $params;
 
-
     /**
      * Hipay_Browser_Info_Formatter constructor.
      *
@@ -63,7 +62,6 @@ class Hipay_Previous_Auth_Info_Formatter extends Hipay_Api_Formatter_Abstact
         return $previousAuthInfo;
     }
 
-
     /**
      * Map Previous Auth info
      *
@@ -79,6 +77,7 @@ class Hipay_Previous_Auth_Info_Formatter extends Hipay_Api_Formatter_Abstact
                 if (empty($transactionID)) {
                     $transactionID = Hipay_Transactions_Helper::getTransactionReference($lastOrder[0]->get_id());
                 }
+
                 $previousAuthInfo->transaction_reference = $transactionID;
             }
         }

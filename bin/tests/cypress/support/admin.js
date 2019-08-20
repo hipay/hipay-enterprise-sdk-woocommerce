@@ -50,21 +50,6 @@ Cypress.Commands.add("switchWooCurrency", (currency) => {
     cy.get('button[name="save"]').click();
 });
 
-Cypress.Commands.add("activateBasket", () => {
-    cy.get('#methods-tab').click();
-    cy.get('#activate_basket').check();
-    cy.get('.submit > .button-primary').click();
-});
-
-/**
- * Go to Tab for Payment
- */
-Cypress.Commands.add("switchWooCurrency", (currency) => {
-    cy.get('#toplevel_page_woocommerce > .wp-submenu > :nth-child(5) > a').click({force: true});
-    cy.get('#woocommerce_currency').select(currency, {force: true});
-    cy.get('button[name="save"]').click();
-});
-
 /**
  *  Go to Hipay configuration
  */
@@ -213,4 +198,3 @@ Cypress.Commands.add("mapCarriers", () => {
     cy.get('.button-primary').click();
     cy.get('#message').contains("Your settings have been saved.");
 });
-

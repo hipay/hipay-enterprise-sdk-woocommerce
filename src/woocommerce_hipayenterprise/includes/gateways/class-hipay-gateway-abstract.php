@@ -136,6 +136,14 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
     }
 
     /**
+     * @return string
+     */
+    public function getPaymentProduct()
+    {
+        return $this->paymentProduct;
+    }
+
+    /**
      * @return Hipay_Api
      */
     public function getApi()
