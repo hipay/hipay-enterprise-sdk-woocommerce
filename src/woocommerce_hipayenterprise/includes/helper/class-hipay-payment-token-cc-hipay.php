@@ -211,6 +211,22 @@ class WC_Payment_Token_CC_HiPay extends WC_Payment_Token
 
         return $html . $cvvUpdateForm;
     }
+
+    public function wc_get_form_saved_payment_methods_html_hipay($html, $gateways)
+    {
+
+        ob_start();
+
+        Hipay_Helper::process_template(
+            'oc-payment-data.php',
+            'frontend'
+        );
+
+        $ocPaymentData = ob_get_contents();
+        ob_end_clean();
+
+        return $html . $ocPaymentData;
+    }
 }
 
 add_filter(
@@ -223,6 +239,13 @@ add_filter(
 add_filter(
     'woocommerce_payment_gateway_get_saved_payment_method_option_html',
     array('WC_Payment_Token_CC_HiPay', 'wc_get_get_saved_payment_method_option_html_hipay'),
+    10,
+    2
+);
+
+add_filter(
+    'wc_payment_gateway_form_saved_payment_methods_html',
+    array('WC_Payment_Token_CC_HiPay', 'wc_get_form_saved_payment_methods_html_hipay'),
     10,
     2
 );
