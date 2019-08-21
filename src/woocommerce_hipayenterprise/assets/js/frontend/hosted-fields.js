@@ -1,4 +1,4 @@
-    var methodsInstance = {};
+var methodsInstance = {};
 
 
 jQuery(function ($) {
@@ -23,7 +23,6 @@ jQuery(function ($) {
     }
 
     function init() {
-      //  methodsInstance = {};
 
         var defaultMethod = getSelectedMethod();
 
@@ -155,6 +154,13 @@ jQuery(function ($) {
             var cvv = $('#hipay-token-cvv-' + id).val();
 
             if (!$('#hipay-token-cvv-' + id).length) {
+                applyPaymentData(
+                    {
+                        'browser_info': hipaySDK.getBrowserInfo(),
+                        'device_fingerprint': hipaySDK.getDeviceFingerprint()
+                    },
+                    "card"
+                );
                 processPayment();
             } else {
                 checkOneClickCVV(cvv, id, cardType);

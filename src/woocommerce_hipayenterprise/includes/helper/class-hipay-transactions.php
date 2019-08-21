@@ -219,7 +219,7 @@ class Hipay_Transactions_Helper
                     AND q.meta_key = '" . self::TRANSACTION_STATUS . "' AND q.meta_value in ($status_sql)
                     AND r.meta_key = '" . self::TRANSACTION_MULTI_USE . "' AND r.meta_value = '1'", $paymentStart, $customerId));
 
-        return !empty($multiUserAttempt) && empty($multiUserAttempt[0]) ? $multiUserAttempt[0] : 0;
+        return !empty($multiUserAttempt) && empty($multiUserAttempt[0]) ? (int)$multiUserAttempt[0] : 0;
     }
 
     /**
@@ -244,7 +244,7 @@ class Hipay_Transactions_Helper
                     AND q.meta_key = '" . self::TRANSACTION_REFUND_PAYMENT_PRODUCT. "' 
                     AND q.meta_value IN ($paymentProductList)", $paymentStart, $customerId));
 
-        return !empty($paymentAttempt) && empty($paymentAttempt[0]) ? $paymentAttempt[0] : 0;
+        return !empty($paymentAttempt) && empty($paymentAttempt[0]) ? (int)$paymentAttempt[0] : 0;
     }
 
     /**

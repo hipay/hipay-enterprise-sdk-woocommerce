@@ -68,7 +68,7 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
      */
     public function __construct()
     {
-        if (is_admin()) {
+        if (is_admin() && function_exists('get_plugin_data')) {
             $plugin_data = get_plugin_data(__FILE__);
             $this->plugin_version = $plugin_data['Version'];
         }

@@ -76,7 +76,7 @@ class Hipay_Browser_Info_Formatter extends Hipay_Api_Formatter_Abstact
         $browserInfo->javascript_enabled = isset($this->params['browser_info']) && ($this->params['browser_info'] !== false);
 
         if (isset($this->params['browser_info'])) {
-            $browserInfo->java_enabled = isset($this->params['browser_info']->java_enabled) ? $this->params['browser_info']->java_enabled : null;
+            $browserInfo->java_enabled = isset($this->params['browser_info']->java_enabled) ? (bool)$this->params['browser_info']->java_enabled : null;
             $browserInfo->language = isset($this->params['browser_info']->language) ? $this->params['browser_info']->language : null;
             $browserInfo->color_depth = isset($this->params['browser_info']->color_depth) ? $this->params['browser_info']->color_depth : null;
             $browserInfo->screen_height = isset($this->params['browser_info']->screen_height) ? $this->params['browser_info']->screen_height : null;

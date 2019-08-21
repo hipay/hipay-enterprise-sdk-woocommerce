@@ -100,7 +100,7 @@ class Hipay_Account_Info_Formatter extends Hipay_Api_Formatter_Abstact
             $firstOrderWithShippingAddress = Hipay_Threeds_Helper::getFirstOrderWithShippingAddress(implode(' ', $shippingAddress));
 
             if (!empty($firstOrderWithShippingAddress)) {
-                $shippingInfo->shipping_used_date = $firstOrderWithShippingAddress[0]->get_date_created()->format('Ymd');
+                $shippingInfo->shipping_used_date = (int)$firstOrderWithShippingAddress[0]->get_date_created()->format('Ymd');
             }
         }
 
@@ -123,8 +123,8 @@ class Hipay_Account_Info_Formatter extends Hipay_Api_Formatter_Abstact
     {
         $customerInfo = new CustomerInfo();
         if (is_user_logged_in()) {
-            $customerInfo->account_change = date('Ymd', strtotime(WC()->customer->get_date_modified()));
-            $customerInfo->opening_account_date = date('Ymd', strtotime(WC()->customer->get_date_created()));
+            $customerInfo->account_change = (int)date('Ymd', strtotime(WC()->customer->get_date_modified()));
+            $customerInfo->opening_account_date = (int)date('Ymd', strtotime(WC()->customer->get_date_created()));
         }
 
         return $customerInfo;
@@ -187,7 +187,7 @@ class Hipay_Account_Info_Formatter extends Hipay_Api_Formatter_Abstact
             );
 
             if (!empty($userToken->get_date_created())) {
-                $paymentInfo->enrollment_date = $userToken->get_date_created();
+                $paymentInfo->enrollment_date = (int)$userToken->get_date_created();
             }
         }
         return $paymentInfo;
