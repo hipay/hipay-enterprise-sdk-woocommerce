@@ -204,7 +204,7 @@ class Hipay_Transactions_Helper
             . TransactionStatus::CANCELLED . "','"
             . TransactionStatus::EXPIRED . "','"
             . TransactionStatus::REFUSED . "','"
-            . TransactionStatus::CAPTURED. "'";
+            . TransactionStatus::CAPTURED . "'";
 
         global $wpdb;
         $multiUserAttempt = $wpdb->get_col($wpdb->prepare(
@@ -217,9 +217,10 @@ class Hipay_Transactions_Helper
                     AND posts.post_date > %s
                     AND p.meta_key = '" . self::TRANSACTION_CUSTOMER_ID . "' AND p.meta_value = %s
                     AND q.meta_key = '" . self::TRANSACTION_STATUS . "' AND q.meta_value in ($status_sql)
-                    AND r.meta_key = '" . self::TRANSACTION_MULTI_USE . "' AND r.meta_value = '1'", $paymentStart, $customerId));
+                    AND r.meta_key = '" . self::TRANSACTION_MULTI_USE . "' AND r.meta_value = '1'", $paymentStart,
+            $customerId));
 
-        return !empty($multiUserAttempt) && empty($multiUserAttempt[0]) ? (int)$multiUserAttempt[0] : 0;
+        return !empty($multiUserAttempt) && isset($multiUserAttempt[0]) ? (int)$multiUserAttempt[0] : 0;
     }
 
     /**
@@ -231,7 +232,7 @@ class Hipay_Transactions_Helper
     public static function getNbPaymentAttempt($customerId, $paymentStart, $paymentMethods)
     {
         global $wpdb;
-        $paymentProductList = "'" .  implode("','", $paymentMethods)  . "'" ;
+        $paymentProductList = "'" . implode("','", $paymentMethods) . "'";
         $paymentAttempt = $wpdb->get_col($wpdb->prepare(
             "SELECT COUNT(distinct(posts.ID)) FROM {$wpdb->posts} AS posts 
                     INNER JOIN {$wpdb->postmeta} AS p ON p.post_id = posts.ID
@@ -241,10 +242,10 @@ class Hipay_Transactions_Helper
                     WHERE posts.post_type = '" . Hipay_Admin_Post_Types::POST_TYPE_TRANSACTION . "' 
                     AND posts.post_date > %s
                     AND p.meta_key = '" . self::TRANSACTION_CUSTOMER_ID . "' AND p.meta_value = %s
-                    AND q.meta_key = '" . self::TRANSACTION_REFUND_PAYMENT_PRODUCT. "' 
+                    AND q.meta_key = '" . self::TRANSACTION_REFUND_PAYMENT_PRODUCT . "' 
                     AND q.meta_value IN ($paymentProductList)", $paymentStart, $customerId));
 
-        return !empty($paymentAttempt) && empty($paymentAttempt[0]) ? (int)$paymentAttempt[0] : 0;
+        return !empty($paymentAttempt) && isset($paymentAttempt[0]) ? (int)$paymentAttempt[0] : 0;
     }
 
     /**
@@ -264,9 +265,6 @@ class Hipay_Transactions_Helper
                     AND p.meta_key = '" . self::TRANSACTION_ORDER_ID . "' AND p.meta_value = %s
                     AND q.meta_key = 'transaction_ref'
                     ORDER BY posts.ID", $orderId));
-        return !empty($transactionByOrder) && $transactionByOrder[0] != null ? $transactionByOrder[0]: "";
+        return !empty($transactionByOrder) && isset($transactionByOrder[0]) ? $transactionByOrder[0] : null;
     }
-
-
-
 }
