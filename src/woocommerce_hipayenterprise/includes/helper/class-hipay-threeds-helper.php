@@ -50,12 +50,11 @@ class Hipay_Threeds_Helper
      */
     public static function existsSameOrder($customer_user_id, $orderID, $carts)
     {
-        $order_statuses = array('wc-on-hold', 'wc-processing', 'wc-completed');
+        $order_statuses = array('on-hold', 'processing', 'completed', 'refunded');
         $customerOrders = wc_get_orders(array(
             'exclude' => array($orderID),
-            'meta_key' => '_customer_user',
-            'meta_value' => $customer_user_id,
-            'post_status' => $order_statuses,
+            'customer_id' => $customer_user_id,
+            'status' => $order_statuses,
             'orderby' => 'date',
             'order' => 'DESC',
         ));
@@ -123,13 +122,13 @@ class Hipay_Threeds_Helper
     public static function isVerifiedAddress($currentAddress)
     {
         $userAddress = array();
-        $userAddress['first_name'] = WC()->customer->get_first_name();
-        $userAddress['last_name'] = WC()->customer->get_last_name();
+        $userAddress['first_name'] = WC()->customer->get_shipping_first_name();
+        $userAddress['last_name'] = WC()->customer->get_shipping_last_name();
+        $userAddress['company'] = WC()->customer->get_shipping_company();
         $userAddress['address_1'] = WC()->customer->get_shipping_address_1();
         $userAddress['city'] = WC()->customer->get_shipping_city();
         $userAddress['postcode'] = WC()->customer->get_shipping_postcode();
         $userAddress['country'] = WC()->customer->get_shipping_country();
-        $userAddress['company'] = WC()->customer->get_shipping_company();
 
         return !self::areDifferentAddresses($currentAddress, $userAddress);
     }

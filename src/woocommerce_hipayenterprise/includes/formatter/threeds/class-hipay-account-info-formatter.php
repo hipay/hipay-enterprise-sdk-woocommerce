@@ -46,6 +46,11 @@ class Hipay_Account_Info_Formatter extends Hipay_Api_Formatter_Abstact
      */
     protected $params;
 
+    /**
+     * @var WC_Customer
+     */
+    protected $customer;
+
 
     /**
      * Hipay_Account_Info_Formatter constructor.
@@ -57,6 +62,11 @@ class Hipay_Account_Info_Formatter extends Hipay_Api_Formatter_Abstact
     {
         $this->order = $order;
         $this->params = $params;
+        $this->customer = null;
+
+        if (is_user_logged_in()) {
+            $this->customer = new WC_Customer(get_current_user_id());
+        }
     }
 
     /**
@@ -93,11 +103,12 @@ class Hipay_Account_Info_Formatter extends Hipay_Api_Formatter_Abstact
     private function getShippingInfo()
     {
         $shippingInfo = new ShippingInfo();
-        if (is_user_logged_in()) {
+        if ($this->customer !== null) {
             // #### SHIPPING USED DATE #### ////
             $shippingAddress = !empty($this->order->get_shipping_first_name()) ? $this->order->get_address('shipping') :
                 $this->order->get_address('billing');
-            $firstOrderWithShippingAddress = Hipay_Threeds_Helper::getFirstOrderWithShippingAddress(implode(' ', $shippingAddress));
+            $firstOrderWithShippingAddress = Hipay_Threeds_Helper::getFirstOrderWithShippingAddress(implode(' ',
+                $shippingAddress));
 
             if (!empty($firstOrderWithShippingAddress)) {
                 $shippingInfo->shipping_used_date = (int)$firstOrderWithShippingAddress[0]->get_date_created()->format('Ymd');
@@ -122,9 +133,9 @@ class Hipay_Account_Info_Formatter extends Hipay_Api_Formatter_Abstact
     private function getCustomerInfo()
     {
         $customerInfo = new CustomerInfo();
-        if (is_user_logged_in()) {
-            $customerInfo->account_change = (int)date('Ymd', strtotime(WC()->customer->get_date_modified()));
-            $customerInfo->opening_account_date = (int)date('Ymd', strtotime(WC()->customer->get_date_created()));
+        if ($this->customer !== null) {
+            $customerInfo->account_change = (int)date('Ymd', strtotime($this->customer->get_date_modified()));
+            $customerInfo->opening_account_date = (int)date('Ymd', strtotime($this->customer->get_date_created()));
         }
 
         return $customerInfo;
@@ -138,7 +149,7 @@ class Hipay_Account_Info_Formatter extends Hipay_Api_Formatter_Abstact
     {
         $purchaseInfo = new PurchaseInfo();
 
-        if (is_user_logged_in()) {
+        if ($this->customer !== null) {
             $sixMonthAgo = new \DateTime('6 months ago');
             $sixMonthAgo = $sixMonthAgo->format('Y-m-d');
             $twentyFourHoursAgo = new \DateTime('24 hours ago');
@@ -146,21 +157,25 @@ class Hipay_Account_Info_Formatter extends Hipay_Api_Formatter_Abstact
             $oneYearAgo = new \DateTime('1 years ago');
             $oneYearAgo = $oneYearAgo->format('Y-m-d H:i:s');
 
-            $purchaseInfo->count = count(Hipay_Threeds_Helper::getOrdersFromDate(WC()->customer->get_id(), $sixMonthAgo));
+            $purchaseInfo->count = count(
+                    Hipay_Threeds_Helper::getOrdersFromDate(
+                        $this->customer->get_id(),
+                        $sixMonthAgo)
+                ) - 1;
 
             $purchaseInfo->card_stored_24h = Hipay_Transactions_Helper::nbAttemptCreateCard(
-                WC()->customer->get_id(),
+                $this->customer->get_id(),
                 $twentyFourHoursAgo
             );
 
             $purchaseInfo->payment_attempts_24h = Hipay_Transactions_Helper::getNbPaymentAttempt(
-                WC()->customer->get_id(),
+                $this->customer->get_id(),
                 $twentyFourHoursAgo,
                 $this->cardPaymentProduct
             );
 
             $purchaseInfo->payment_attempts_1y = Hipay_Transactions_Helper::getNbPaymentAttempt(
-                WC()->customer->get_id(),
+                $this->customer->get_id(),
                 $oneYearAgo,
                 $this->cardPaymentProduct
             );
@@ -172,17 +187,14 @@ class Hipay_Account_Info_Formatter extends Hipay_Api_Formatter_Abstact
      * @return PaymentInfo
      * @throws Exception
      */
-    private
-    function getPaymentInfo()
+    private function getPaymentInfo()
     {
         $paymentInfo = new PaymentInfo();
 
-        if (is_user_logged_in()
-            && isset($this->params["oneClick"]) && $this->params["oneClick"]
-            && !empty($this->params["cardtoken"])) {
+        if ($this->customer !== null && isset($this->params["oneClick"]) && $this->params["oneClick"] && !empty($this->params["cardtoken"])) {
 
             $userToken = Hipay_Token_Helper::getToken(
-                WC()->customer->get_id(),
+                $this->customer->get_id(),
                 $this->params["cardtoken"]
             );
 
@@ -192,6 +204,4 @@ class Hipay_Account_Info_Formatter extends Hipay_Api_Formatter_Abstact
         }
         return $paymentInfo;
     }
-
-
 }
