@@ -199,28 +199,53 @@ class Hipay_Transactions_Helper
      */
     public static function nbAttemptCreateCard($customerId, $paymentStart)
     {
-        $status_sql = "'" . TransactionStatus::AUTHORIZED . "','"
-            . TransactionStatus::DENIED . "','"
-            . TransactionStatus::CANCELLED . "','"
-            . TransactionStatus::EXPIRED . "','"
-            . TransactionStatus::REFUSED . "','"
-            . TransactionStatus::CAPTURED . "'";
+        $status_sql = array(
+            TransactionStatus::AUTHORIZED,
+            TransactionStatus::DENIED,
+            TransactionStatus::CANCELLED,
+            TransactionStatus::EXPIRED,
+            TransactionStatus::REFUSED,
+            TransactionStatus::CAPTURED
+        );
 
-        global $wpdb;
-        $multiUserAttempt = $wpdb->get_col($wpdb->prepare(
-            "SELECT COUNT(distinct(posts.ID)) FROM {$wpdb->posts} AS posts 
-                    INNER JOIN {$wpdb->postmeta} AS p ON p.post_id = posts.ID
-                    INNER JOIN {$wpdb->postmeta} AS q ON q.post_id = posts.ID 
-                    INNER JOIN {$wpdb->postmeta} AS r ON r.post_id = posts.ID 
-                    INNER JOIN {$wpdb->postmeta} AS s ON s.post_id = posts.ID 
-                    WHERE posts.post_type = '" . Hipay_Admin_Post_Types::POST_TYPE_TRANSACTION . "' 
-                    AND posts.post_date > %s
-                    AND p.meta_key = '" . self::TRANSACTION_CUSTOMER_ID . "' AND p.meta_value = %s
-                    AND q.meta_key = '" . self::TRANSACTION_STATUS . "' AND q.meta_value in ($status_sql)
-                    AND r.meta_key = '" . self::TRANSACTION_MULTI_USE . "' AND r.meta_value = '1'", $paymentStart,
-            $customerId));
+        $query_args = array(
+            'post_type' => Hipay_Admin_Post_Types::POST_TYPE_TRANSACTION,
+            'no_found_rows' => true,
+            'posts_per_page' => -1,
+            'date_query' => array(
+                array(
+                    'after' => $paymentStart,
+                    'inclusive' => true,
+                ),
+            ),
+            'meta_query' => array(
+                array(
+                    'key' => self::TRANSACTION_CUSTOMER_ID,
+                    'value' => $customerId,
+                    'compare' => '='
+                ),
+                array(
+                    'key' => self::TRANSACTION_STATUS,
+                    'value' => $status_sql,
+                    'compare' => 'IN'
+                ),
+                array(
+                    'key' => self::TRANSACTION_MULTI_USE,
+                    'value' => "1",
+                    'compare' => '='
+                )
+            )
+        );
 
-        return !empty($multiUserAttempt) && isset($multiUserAttempt[0]) ? (int)$multiUserAttempt[0] : 0;
+        $postTransactions = new WP_Query($query_args);
+
+        $transactionIds = array();
+
+        foreach ($postTransactions->get_posts() as $transaction) {
+            $transactionIds[] = $transaction->{self::TRANSACTION_TRANSACTION_REF};
+        }
+
+        return count(array_unique($transactionIds));
     }
 
     /**
@@ -231,21 +256,40 @@ class Hipay_Transactions_Helper
      */
     public static function getNbPaymentAttempt($customerId, $paymentStart, $paymentMethods)
     {
-        global $wpdb;
-        $paymentProductList = "'" . implode("','", $paymentMethods) . "'";
-        $paymentAttempt = $wpdb->get_col($wpdb->prepare(
-            "SELECT COUNT(distinct(posts.ID)) FROM {$wpdb->posts} AS posts 
-                    INNER JOIN {$wpdb->postmeta} AS p ON p.post_id = posts.ID
-                    INNER JOIN {$wpdb->postmeta} AS q ON q.post_id = posts.ID 
-                    INNER JOIN {$wpdb->postmeta} AS r ON r.post_id = posts.ID 
-                    INNER JOIN {$wpdb->postmeta} AS s ON s.post_id = posts.ID 
-                    WHERE posts.post_type = '" . Hipay_Admin_Post_Types::POST_TYPE_TRANSACTION . "' 
-                    AND posts.post_date > %s
-                    AND p.meta_key = '" . self::TRANSACTION_CUSTOMER_ID . "' AND p.meta_value = %s
-                    AND q.meta_key = '" . self::TRANSACTION_REFUND_PAYMENT_PRODUCT . "' 
-                    AND q.meta_value IN ($paymentProductList)", $paymentStart, $customerId));
 
-        return !empty($paymentAttempt) && isset($paymentAttempt[0]) ? (int)$paymentAttempt[0] : 0;
+        $query_args = array(
+            'post_type' => Hipay_Admin_Post_Types::POST_TYPE_TRANSACTION,
+            'no_found_rows' => true,
+            'posts_per_page' => -1,
+            'date_query' => array(
+                array(
+                    'after' => $paymentStart,
+                    'inclusive' => true,
+                ),
+            ),
+            'meta_query' => array(
+                array(
+                    'key' => self::TRANSACTION_CUSTOMER_ID,
+                    'value' => $customerId,
+                    'compare' => '='
+                ),
+                array(
+                    'key' => self::TRANSACTION_REFUND_PAYMENT_PRODUCT,
+                    'value' => $paymentMethods,
+                    'compare' => 'IN'
+                )
+            )
+        );
+
+        $postTransactions = new WP_Query($query_args);
+
+        $transactionIds = array();
+
+        foreach ($postTransactions->get_posts() as $transaction) {
+            $transactionIds[] = $transaction->{self::TRANSACTION_TRANSACTION_REF};
+        }
+
+        return count(array_unique($transactionIds));
     }
 
     /**

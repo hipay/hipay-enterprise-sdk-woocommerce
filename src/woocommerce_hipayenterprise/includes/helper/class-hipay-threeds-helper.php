@@ -146,6 +146,7 @@ class Hipay_Threeds_Helper
         $order_statuses = array('wc-on-hold', 'wc-processing', 'wc-completed');
         $query = new WC_Order_Query(
             array(
+                'limit' => -1,
                 'return' => 'ids',
                 'customer_id' => $customer_user_id,
                 'date_created' => '>=' . $date,
