@@ -25,46 +25,36 @@ if (!defined('ABSPATH')) {
 class Hipay_Threeds_Helper
 {
     /**
-     * Get last order for on customer
-     *
+     * Get last transaction ref from user
      * @param $customer_user_id
      * @param $currentOrderId
-     * @return WC_Order
+     * @return string|null
+     * @throws Exception
      */
-    public static function getLastOrderWithTransactionRef($customer_user_id, $currentOrderId)
+    public static function getLastOrderTransactionRef($customer_user_id, $currentOrderId)
     {
-//        $orders = wc_get_orders(array(
-//            'meta_key' => '_customer_user',
-//            'meta_value' => $customer_user_id,
-//            'orderby' => 'date',
-//            'order' => 'DESC',
-//            'numberposts' => 1,
-//            'exclude' => array($currentOrderId),
-//        ));
-
         $order_statuses = array('wc-on-hold', 'wc-processing', 'wc-completed');
 
         $query = new WC_Order_Query(
             array(
-                'limit' => 1,
+                'limit' => -1,
                 'orderby' => 'date',
                 'order' => 'DESC',
                 'customer_id' => $customer_user_id,
                 'post_status' => $order_statuses,
                 'exclude' => array($currentOrderId),
-                'meta_query' => array(
-                    array(
-                        'key' => '_transaction_id',
-                        'value' => null,
-                        'compare' => '!='
-                    )
-                )
             )
         );
 
         $orders = $query->get_orders();
 
-        return !empty($orders) ? $orders[0] : false;
+        foreach ($orders as $order) {
+            if ($order->get_transaction_id() != "") {
+                return $order->get_transaction_id();
+            }
+        }
+
+        return null;
     }
 
     /**

@@ -71,10 +71,10 @@ class Hipay_Previous_Auth_Info_Formatter extends Hipay_Api_Formatter_Abstact
     public function mapRequest(&$previousAuthInfo)
     {
         if (is_user_logged_in()) {
-            $lastOrder = Hipay_Threeds_Helper::getLastOrderWithTransactionRef(get_current_user_id(), $this->order->get_id());
-            if ($lastOrder) {
-                $previousAuthInfo->transaction_reference = $lastOrder->get_transaction_id();
-            }
+            $previousAuthInfo->transaction_reference = Hipay_Threeds_Helper::getLastOrderTransactionRef(
+                get_current_user_id(),
+                $this->order->get_id()
+            );
         }
     }
 }

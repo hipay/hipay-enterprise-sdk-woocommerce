@@ -106,7 +106,17 @@ sleep 20
     echo "define( 'WP_DEBUG_LOG', true );" >> /var/www/html/wp-config.php
 fi
 
-#==========================================
-# APACHE RUNNING
-#==========================================
+#===================================#
+#       START WEBSERVER
+#===================================#
+printf "${COLOR_SUCCESS}                                                                           ${NC}\n"
+printf "${COLOR_SUCCESS}    |======================================================================${NC}\n"
+printf "${COLOR_SUCCESS}    |                                                                      ${NC}\n"
+printf "${COLOR_SUCCESS}    |               DOCKER WOOCOMMERCE TO HIPAY $ENVIRONMENT IS UP         ${NC}\n"
+printf "${COLOR_SUCCESS}    |                                                                      ${NC}\n"
+printf "${COLOR_SUCCESS}    |   URL FRONT       : http://$WORDPRESS_URL                            ${NC}\n"
+printf "${COLOR_SUCCESS}    |   URL BACK        : http://$WORDPRESS_URL/wp-admin                   ${NC}\n"
+printf "${COLOR_SUCCESS}    |                                                                      ${NC}\n"
+printf "${COLOR_SUCCESS}    |   PHP VERSION     : $PHP_VERSION                                     ${NC}\n"
+printf "${COLOR_SUCCESS}    |======================================================================${NC}\n"
 exec apache2 -DFOREGROUND
