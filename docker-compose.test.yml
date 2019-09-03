@@ -14,8 +14,7 @@ services:
       context: .
       dockerfile: bin/docker/images/woocommerce/Dockerfile
     depends_on:
-      database:
-        condition: service_healthy
+      - database
     env_file:
       - ./bin/docker/conf/test/hipay.env.sample
       - bin/docker/conf/test/wordpress.env.sample
