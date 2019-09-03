@@ -28,18 +28,43 @@ class Hipay_Threeds_Helper
      * Get last order for on customer
      *
      * @param $customer_user_id
-     * @return stdClass|WC_Order[]
+     * @param $currentOrderId
+     * @return WC_Order
      */
-    public static function getLastOrder($customer_user_id, $currentOrderId)
+    public static function getLastOrderWithTransactionRef($customer_user_id, $currentOrderId)
     {
-        return wc_get_orders(array(
-            'meta_key' => '_customer_user',
-            'meta_value' => $customer_user_id,
-            'orderby' => 'date',
-            'order' => 'DESC',
-            'numberposts' => 1,
-            'exclude' => array($currentOrderId),
-        ));
+//        $orders = wc_get_orders(array(
+//            'meta_key' => '_customer_user',
+//            'meta_value' => $customer_user_id,
+//            'orderby' => 'date',
+//            'order' => 'DESC',
+//            'numberposts' => 1,
+//            'exclude' => array($currentOrderId),
+//        ));
+
+        $order_statuses = array('wc-on-hold', 'wc-processing', 'wc-completed');
+
+        $query = new WC_Order_Query(
+            array(
+                'limit' => 1,
+                'orderby' => 'date',
+                'order' => 'DESC',
+                'customer_id' => $customer_user_id,
+                'post_status' => $order_statuses,
+                'exclude' => array($currentOrderId),
+                'meta_query' => array(
+                    array(
+                        'key' => '_transaction_id',
+                        'value' => null,
+                        'compare' => '!='
+                    )
+                )
+            )
+        );
+
+        $orders = $query->get_orders();
+
+        return !empty($orders) ? $orders[0] : false;
     }
 
     /**
@@ -121,16 +146,9 @@ class Hipay_Threeds_Helper
      */
     public static function isVerifiedAddress($currentAddress)
     {
-        $userAddress = array();
-        $userAddress['first_name'] = WC()->customer->get_shipping_first_name();
-        $userAddress['last_name'] = WC()->customer->get_shipping_last_name();
-        $userAddress['company'] = WC()->customer->get_shipping_company();
-        $userAddress['address_1'] = WC()->customer->get_shipping_address_1();
-        $userAddress['city'] = WC()->customer->get_shipping_city();
-        $userAddress['postcode'] = WC()->customer->get_shipping_postcode();
-        $userAddress['country'] = WC()->customer->get_shipping_country();
+        $order = self::getFirstOrderWithShippingAddress($currentAddress);
 
-        return !self::areDifferentAddresses($currentAddress, $userAddress);
+        return !empty($order);
     }
 
     /**
@@ -162,7 +180,9 @@ class Hipay_Threeds_Helper
      */
     public static function getFirstOrderWithShippingAddress($shippingAddress)
     {
+        $shippingAddress = implode(' ', $shippingAddress);
         $order_statuses = array('wc-on-hold', 'wc-processing', 'wc-completed');
+
         return wc_get_orders(array(
             'meta_key' => '_shipping_address_index',
             'meta_value' => $shippingAddress,

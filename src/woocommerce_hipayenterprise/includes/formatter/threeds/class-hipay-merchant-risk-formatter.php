@@ -122,7 +122,7 @@ class Hipay_Merchant_Risk_Formatter extends Hipay_Api_Formatter_Abstact
         $cartItems = WC()->cart->get_cart_contents();
         foreach ($cartItems as $key => $value) {
             $product = wc_get_product($value["product_id"]);
-            if ('yes' === $product->get_backorders()) {
+            if ('no' !== $product->get_backorders()) {
                 return \HiPay\Fullservice\Enum\ThreeDSTwo\PurchaseIndicator::FUTURE_AVAILABILITY;
             }
         }

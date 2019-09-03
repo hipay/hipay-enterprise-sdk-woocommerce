@@ -70,12 +70,10 @@ class Hipay_Browser_Info_Formatter extends Hipay_Api_Formatter_Abstact
      */
     public function mapRequest(&$browserInfo)
     {
-        $browserInfo->ipaddr = $this->order->get_customer_ip_address();
-        $browserInfo->http_accept = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : null;
-
-        $browserInfo->javascript_enabled = isset($this->params['browser_info']) && ($this->params['browser_info'] !== false);
-
         if (isset($this->params['browser_info'])) {
+            $browserInfo->ipaddr = $this->order->get_customer_ip_address();
+            $browserInfo->http_accept = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : null;
+            $browserInfo->javascript_enabled = isset($this->params['browser_info']) && ($this->params['browser_info'] !== false);
             $browserInfo->java_enabled = isset($this->params['browser_info']->java_enabled) ? (bool)$this->params['browser_info']->java_enabled : null;
             $browserInfo->language = isset($this->params['browser_info']->language) ? $this->params['browser_info']->language : null;
             $browserInfo->color_depth = isset($this->params['browser_info']->color_depth) ? $this->params['browser_info']->color_depth : null;

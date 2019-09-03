@@ -107,8 +107,8 @@ class Hipay_Account_Info_Formatter extends Hipay_Api_Formatter_Abstact
             // #### SHIPPING USED DATE #### ////
             $shippingAddress = !empty($this->order->get_shipping_first_name()) ? $this->order->get_address('shipping') :
                 $this->order->get_address('billing');
-            $firstOrderWithShippingAddress = Hipay_Threeds_Helper::getFirstOrderWithShippingAddress(implode(' ',
-                $shippingAddress));
+
+            $firstOrderWithShippingAddress = Hipay_Threeds_Helper::getFirstOrderWithShippingAddress($shippingAddress);
 
             if (!empty($firstOrderWithShippingAddress)) {
                 $shippingInfo->shipping_used_date = (int)$firstOrderWithShippingAddress[0]->get_date_created()->format('Ymd');
@@ -120,6 +120,7 @@ class Hipay_Account_Info_Formatter extends Hipay_Api_Formatter_Abstact
         $shipping = strtoupper($this->order->get_shipping_first_name() . $this->order->get_shipping_last_name());
 
         $shippingInfo->name_indicator = NameIndicator::DIFFERENT;
+
         if ($shipping === "" || $shipping === $billing) {
             $shippingInfo->name_indicator = NameIndicator::IDENTICAL;
         }

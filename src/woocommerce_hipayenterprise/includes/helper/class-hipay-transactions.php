@@ -291,24 +291,4 @@ class Hipay_Transactions_Helper
 
         return count(array_unique($transactionIds));
     }
-
-    /**
-     * Get transaction ref for an order
-     *
-     * @param $orderId
-     * @return string
-     */
-    public static function getTransactionReference($orderId)
-    {
-        global $wpdb;
-        $transactionByOrder = $wpdb->get_col($wpdb->prepare(
-            "SELECT q.meta_value FROM {$wpdb->posts} AS posts
-                    INNER JOIN {$wpdb->postmeta} AS p ON p.post_id = posts.ID
-                    INNER JOIN {$wpdb->postmeta} AS q ON q.post_id = posts.ID
-                    WHERE posts.post_type = '" . Hipay_Admin_Post_Types::POST_TYPE_TRANSACTION . "' 
-                    AND p.meta_key = '" . self::TRANSACTION_ORDER_ID . "' AND p.meta_value = %s
-                    AND q.meta_key = 'transaction_ref'
-                    ORDER BY posts.ID", $orderId));
-        return !empty($transactionByOrder) && isset($transactionByOrder[0]) ? $transactionByOrder[0] : null;
-    }
 }
