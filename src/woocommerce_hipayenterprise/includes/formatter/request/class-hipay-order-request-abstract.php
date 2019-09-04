@@ -63,6 +63,8 @@ abstract class Hipay_Order_Request_Abstract extends Hipay_Api_Formatter_Abstact
             $orderRequest->device_channel = DeviceChannel::BROWSER;
         }
 
+        $orderRequest = apply_filters('hipay_wc_before_request', $orderRequest, $this->order);
+
         $orderRequest->orderid = $this->order->get_id() . '-' . time();
 
         if (
