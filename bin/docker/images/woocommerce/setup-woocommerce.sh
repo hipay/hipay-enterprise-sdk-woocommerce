@@ -100,7 +100,7 @@ sleep 20
         printf "\n${COLOR_SUCCESS}     INSTALLATION XDEBUG $ENVIRONMENT    ${NC}\n"
         printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
 
-        echo '' && pecl install xdebug-2.6.0
+        echo '' && pecl install xdebug
         echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini
         echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini
         echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini
@@ -110,6 +110,21 @@ sleep 20
     echo "define( 'WP_DEBUG', true );" >> /var/www/html/wp-config.php
     echo "define( 'WP_DEBUG_LOG', true );" >> /var/www/html/wp-config.php
 fi
+
+#===================================#
+#       START WEBSERVER
+#===================================#
+printf "${COLOR_SUCCESS}                                                                           ${NC}\n"
+printf "${COLOR_SUCCESS}    |======================================================================${NC}\n"
+printf "${COLOR_SUCCESS}    |                                                                      ${NC}\n"
+printf "${COLOR_SUCCESS}    |               DOCKER WOOCOMMERCE TO HIPAY $ENVIRONMENT IS UP         ${NC}\n"
+printf "${COLOR_SUCCESS}    |                                                                      ${NC}\n"
+printf "${COLOR_SUCCESS}    |   URL FRONT       : http://$WORDPRESS_URL                            ${NC}\n"
+printf "${COLOR_SUCCESS}    |   URL BACK        : http://$WORDPRESS_URL/wp-admin                   ${NC}\n"
+printf "${COLOR_SUCCESS}    |                                                                      ${NC}\n"
+printf "${COLOR_SUCCESS}    |   PHP VERSION     : $PHP_VERSION                                     ${NC}\n"
+printf "${COLOR_SUCCESS}    |======================================================================${NC}\n"
+
 
 printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
 printf "\n${COLOR_SUCCESS}           HOSTS CONGIGURATION           ${NC}\n"

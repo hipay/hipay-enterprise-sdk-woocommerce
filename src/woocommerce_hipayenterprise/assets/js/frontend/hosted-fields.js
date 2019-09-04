@@ -1,4 +1,4 @@
-    var methodsInstance = {};
+var methodsInstance = {};
 
 
 jQuery(function ($) {
@@ -23,7 +23,6 @@ jQuery(function ($) {
     }
 
     function init() {
-      //  methodsInstance = {};
 
         var defaultMethod = getSelectedMethod();
 
@@ -155,6 +154,8 @@ jQuery(function ($) {
             var cvv = $('#hipay-token-cvv-' + id).val();
 
             if (!$('#hipay-token-cvv-' + id).length) {
+                injectInput($("#hipay-token-payment-data"), 'browser_info', hipaySDK.getBrowserInfo(), 'card');
+                injectInput($("#hipay-token-payment-data"), 'device_fingerprint', hipaySDK.getDeviceFingerprint(), 'card');
                 processPayment();
             } else {
                 checkOneClickCVV(cvv, id, cardType);
@@ -192,8 +193,15 @@ jQuery(function ($) {
 
         var methodForm = $("#" + methodsInstance[method].options.selector);
 
-        for (var data in response) {
-            methodForm.append($("<input>").attr("type", "hidden").attr("name", method + "-" + data).val(response[data]));
+        for (var key in response) {
+            injectInput(methodForm, key, response[key], method);
+        }
+    }
+
+    function injectInput(form, key, data, method) {
+        if (form) {
+            var valueResponse = data instanceof Object ? JSON.stringify(data) : data;
+            form.append($("<input>").attr("type", "hidden").attr("name", method + "-" + key).val(valueResponse));
         }
     }
 
