@@ -100,6 +100,11 @@ class Hipay_Notification
                 $this->transaction->getStatus()
             );
 
+            update_post_meta(
+                $this->order->get_id(),
+                '_transaction_id',
+                $this->transaction->getTransactionReference()
+            );
 
             switch ($this->transaction->getStatus()) {
                 case TransactionStatus::CREATED:
@@ -163,11 +168,6 @@ class Hipay_Notification
                         Hipay_Token_Helper::createTokenFromTransaction($this->transaction, $this->order);
                     }
 
-                    update_post_meta(
-                        $this->order->get_id(),
-                        '_transaction_id',
-                        $this->transaction->getTransactionReference()
-                    );
                     break;
                 case TransactionStatus::CAPTURED: //118
                 case TransactionStatus::CAPTURE_REQUESTED: //117
@@ -228,7 +228,7 @@ class Hipay_Notification
             }
 
             $this->orderHandler->addNote(Hipay_Helper::formatOrderData($this->transaction));
-            $this->transactionsHelper->saveTransaction($this->order->get_id(), $this->transaction);
+            $this->transactionsHelper->saveTransaction($this->order, $this->transaction);
 
             return true;
         } catch (Exception $e) {

@@ -410,6 +410,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
                     "cardtoken" => Hipay_Helper::getPostData('card-token'),
                     "card_holder" => Hipay_Helper::getPostData('card-holder'),
                     "deviceFingerprint" => Hipay_Helper::getPostData('card-device_fingerprint'),
+                    "browser_info" => json_decode(Hipay_Helper::getPostData('card-browser_info')),
                     "forceSalesMode" => false
                 );
 

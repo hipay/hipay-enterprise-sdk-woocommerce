@@ -4,10 +4,13 @@
 Cypress.Commands.add("logToAdmin", () => {
     cy.visit('/wp-admin');
     cy.wait(300);
-    cy.get('#user_login').type("admin-wordpress@hipay.com");
-    cy.get('#user_pass').type('hipay');
-    cy.get('#wp-submit').click();
-
+    cy.get('body').then(($body) => {
+        if ($body.find('#user_login').length) {
+            cy.get('#user_login').type("admin-wordpress@hipay.com");
+            cy.get('#user_pass').type('hipay');
+            cy.get('#wp-submit').click();
+        }
+    });
 });
 
 /**
@@ -24,6 +27,28 @@ Cypress.Commands.add("logAndGoToDetailOrder", (lastOrderId) => {
  */
 Cypress.Commands.add("adminLogOut", () => {
     cy.get('#wp-admin-bar-logout > .ab-item').click({force: true});
+});
+
+Cypress.Commands.add('addClient', (customerLang) => {
+
+    let customerFixture = "customerFR";
+
+    if (customerLang != undefined) {
+        customerFixture = "customer" + customerLang;
+    }
+
+    cy.fixture(customerFixture).then((customer) => {
+        cy.visit('/wp-admin/user-new.php');
+        cy.get("#first_name").type(customer.firstName);
+        cy.get("#last_name").type(customer.lastName);
+        cy.get("#user_login").type(customer.email);
+        cy.get("#email").type(customer.email);
+        cy.get('button.wp-generate-pw').click();
+        cy.get("#pass1-text").type(customer.password);
+        cy.get('.pw-checkbox').click();
+        cy.get("#role").select('Customer');
+        cy.get("#createusersub").click();
+    });
 });
 
 /**
@@ -162,6 +187,18 @@ Cypress.Commands.add("configureAndSetCaptureMode", (mode) => {
     cy.get('#capture_mode').select(mode);
 });
 
+Cypress.Commands.add("activateOneClick", () => {
+    cy.logToAdmin();
+    cy.visit('/wp-admin/admin.php?page=wc-settings&tab=checkout&section=hipayenterprise_credit_card');
+    cy.get('#methods-tab').click();
+    cy.get('#card_token').then(($cardToken) => {
+        if(!$cardToken.is(':checked')){
+            cy.wrap($cardToken).click();
+        }
+        cy.get('button').contains('Save changes').click();
+    });
+});
+
 /**
  * Clear All configuration for credit Card (Min Amount etc) ,save and log out form admin
  * At the end ready for checkout on front end
@@ -174,7 +211,7 @@ Cypress.Commands.add("saveConfigurationAndLogOut", () => {
 
 Cypress.Commands.add("mapCategories", () => {
     cy.get('#toplevel_page_hipay-settings.wp-has-submenu a.wp-first-item').contains("Mapping category");
-    cy.get('#toplevel_page_hipay-settings.wp-has-submenu a.wp-first-item').click({force:true});
+    cy.get('#toplevel_page_hipay-settings.wp-has-submenu a.wp-first-item').click({force: true});
     cy.get('table.table-striped tbody tr:nth-child(1) select.form-control').select("Home & Gardening");
     cy.get('table.table-striped tbody tr:nth-child(2) select.form-control').select("Home appliances");
     cy.get('table.table-striped tbody tr:nth-child(3) select.form-control').select("Home appliances");
@@ -186,7 +223,7 @@ Cypress.Commands.add("mapCategories", () => {
 });
 
 Cypress.Commands.add("mapCarriers", () => {
-    cy.get('#toplevel_page_hipay-settings.wp-has-submenu a ').contains("Mapping delivery method").click({force:true});
+    cy.get('#toplevel_page_hipay-settings.wp-has-submenu a ').contains("Mapping delivery method").click({force: true});
     cy.get('table.table-striped tbody tr:nth-child(1) input[name="mapping_order_preparation_flat_rate"]').clear();
     cy.get('table.table-striped tbody tr:nth-child(1) input[name="mapping_delivery_estimated_flat_rate"]').clear();
     cy.get('.button-primary').click();
@@ -199,3 +236,95 @@ Cypress.Commands.add("mapCarriers", () => {
     cy.get('#message').contains("Your settings have been saved.");
 });
 
+Cypress.Commands.add('deleteClients', () => {
+    cy.visit('/wp-admin/users.php');
+
+    cy.get('#cb-select-all-1').click();
+    cy.get('#bulk-action-selector-top').select('Delete');
+    cy.get('#doaction').click();
+
+    cy.get('body').then(($body) => {
+        if ($body.find('#delete_option0').length) {
+            cy.get('#delete_option0').click();
+            cy.get('#submit').click();
+        }
+    });
+});
+
+Cypress.Commands.add('setInStock', (productId, inStock) => {
+    cy.visit('/wp-admin/post.php?post=' + productId + '&action=edit');
+
+    cy.get('.inventory_options').click();
+
+    if (inStock) {
+        cy.get('#_stock_status').select('In stock');
+    } else {
+        cy.get('#_stock_status').select('On backorder');
+    }
+
+    cy.get('#publish').click();
+});
+
+Cypress.Commands.add("getLastOrderRequest", () => {
+    cy.getAllRequests().then((requests) => {
+        requests.reverse();
+        for (let request of requests) {
+            if (request.orderid) {
+                return request;
+            }
+        }
+
+        return null;
+    });
+});
+
+Cypress.Commands.add("getOrderRequest", (orderId) => {
+    let goodOrder = null;
+    let regex = new RegExp(orderId + ".*");
+    cy.getAllRequests().then((requests) => {
+        for (let request of requests) {
+            if (request.orderid && request.orderid.match(regex)) {
+                goodOrder = request;
+            }
+        }
+
+        return goodOrder;
+    });
+});
+
+
+Cypress.Commands.add("getAllRequests", () => {
+    cy.visit('/wp-admin/admin.php?page=wc-status&tab=logs');
+    cy.get('select[name="log_file"] option').contains('hipayenterprise_credit_card-request').then(($option) => {
+        cy.get('select[name="log_file"]').select($option.text());
+        cy.get('button').contains('View').click();
+
+        cy.get('#log-viewer pre')
+            .invoke('text')
+            .then((text) => {
+                let rawLogArray = text.split(/^20[0-9]{2}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\+[0-9]{2}:[0-9]{2} DEBUG /gm);
+                let logArray = [];
+                for (let rawLog of rawLogArray) {
+                    if (rawLog !== "") {
+                        let logJson = rawLog.replace(/\\/gm, '\\\\"')
+                            .replace(/"/gm, '\\"')
+                            .replace(/ => /gm, '": "')
+                            .replace(/^\s*\[(.*)\]": /gm, '"$1": ')
+                            .replace(/(.)$/gm, '$1",')
+                            .replace(/\s*"?Array",\s*\(",/gm, '{')
+                            .replace(/^\s*\)",\s*$/gm, '},')
+                            .replace(/,\s*}/gm, '}')
+                        logJson = logJson.substr(0, logJson.length - 1);
+
+                        let log = JSON.parse(logJson);
+                        logArray.push(log);
+                    }
+                }
+
+                cy.log(logArray).then(() => {
+                    return logArray;
+                });
+            });
+    });
+
+});
