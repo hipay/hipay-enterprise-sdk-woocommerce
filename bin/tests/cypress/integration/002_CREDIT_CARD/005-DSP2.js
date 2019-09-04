@@ -6,6 +6,7 @@ var utils = require('../../support/utils');
 import cardDatas from '@hipay/hipay-cypress-utils/fixtures/payment-means/card.json';
 
 describe('DSP2 field population', function () {
+
     beforeEach(function () {
         this.cards = cardDatas;
         cy.fixture('notification').as("notification");
@@ -20,6 +21,18 @@ describe('DSP2 field population', function () {
         cy.setInStock(29, true);
         cy.setInStock(16, true);
         cy.setInStock(21, true);
+
+        cy.goToPaymentsTab();
+        cy.activatePaymentMethods("credit_card");
+        cy.goToAdminHipayConfig();
+
+        cy.get('#methods-tab').click();
+        cy.get('#operating_mode').select("hosted_fields");
+
+        cy.resetCCConfigForm();
+
+        cy.get('.submit > .button-primary').click();
+
         cy.adminLogOut();
 
         cy.selectShirtItem(5);
