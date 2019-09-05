@@ -145,18 +145,18 @@ class Hipay_Api
     /**
      * Get Security Settings form Backend Hipay
      *
-     * @param $plateform
+     * @param $platform
      * @return \HiPay\Fullservice\Model\AbstractModel|mixed
      * @throws Exception
      */
-    public function getSecuritySettings($plateform)
+    public function getSecuritySettings($platform)
     {
         try {
-            $gatewayClient = $this->createGatewayClient($plateform);
+            $gatewayClient = $this->createGatewayClient($platform);
 
             $response = $gatewayClient->requestSecuritySettings();
 
-            $this->plugin->logs->logInfos("# RequestSecuritySettings for ${plateform}");
+            $this->plugin->logs->logInfos("# RequestSecuritySettings for ${$platform}");
 
             return $response;
         } catch (Exception $e) {
@@ -188,10 +188,17 @@ class Hipay_Api
         $password = ($sandbox) ? $this->plugin->confHelper->getAccount()["sandbox"]["api_password_sandbox"]
             : $this->plugin->confHelper->getAccount()["production"]["api_password_production"];
 
-        $env = ($sandbox) ? HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENV_STAGE
-            : HiPay\Fullservice\HTTP\Configuration\Configuration::API_ENV_PRODUCTION;
+        $env = ($sandbox) ? Configuration::API_ENV_STAGE : Configuration::API_ENV_PRODUCTION;
 
-        $config = new \HiPay\Fullservice\HTTP\Configuration\Configuration($username, $password, $env, null, $proxy);
+        $config = new Configuration(
+            array(
+                'apiUsername' => $username,
+                'apiPassword' => $password,
+                'apiEnv' => $env,
+                'apiHTTPHeaderAccept' => 'application/json',
+                'proxy' => $proxy
+            )
+        );
 
         //Instantiate client provider with configuration object
         $clientProvider = new \HiPay\Fullservice\HTTP\SimpleHTTPClient($config);

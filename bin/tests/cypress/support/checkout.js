@@ -28,6 +28,24 @@ Cypress.Commands.add("selectSeveralItemsAndGoToCart", () => {
     cy.get('.post-30 .added_to_cart').click();
 });
 
+Cypress.Commands.add('selectItem', (id, qty) => {
+    for (let i = 0; i < qty; i++) {
+        cy.visit('/?add-to-cart=' + id);
+    }
+});
+
+Cypress.Commands.add('selectShirtItem', (qty) => {
+    cy.selectItem(29, qty);
+});
+
+Cypress.Commands.add('selectMugItem', (qty) => {
+    cy.selectItem(16, qty);
+});
+
+Cypress.Commands.add('selectVirtualItem', (qty) => {
+    cy.selectItem(21, qty);
+});
+
 /**
  * Add coupon code test and apply it for the cart
  */
@@ -78,6 +96,7 @@ Cypress.Commands.add("addProductQuantity", (qty) => {
  * Go To Checkout Page
  */
 Cypress.Commands.add("goToCheckout", () => {
+    cy.visit('/cart');
     cy.get('.checkout-button').click({force: true});
 });
 
@@ -118,6 +137,43 @@ Cypress.Commands.add("fillBillingForm", (country) => {
         cy.get('#billing_phone').type(customer.phone);
 
         cy.get('#billing_email').type(customer.email);
+    });
+});
+
+/**
+ * Fill Shipping from in checkout
+ */
+Cypress.Commands.add("fillShippingForm", (country) => {
+    cy.get('#ship-to-different-address-checkbox').click();
+
+    cy.get('#shipping_first_name').clear({force: true});
+    cy.get('#shipping_last_name').clear({force: true});
+    cy.get('#shipping_address_1').clear({force: true});
+    cy.get('#shipping_postcode').clear({force: true});
+    cy.get('#shipping_city').clear({force: true});
+
+    let customerFixture = "customerFR";
+
+    if (country !== undefined) {
+        customerFixture = "customer" + country
+    }
+
+    cy.fixture(customerFixture).then((customer) => {
+        cy.get('#shipping_first_name').type(customer.firstName + "1");
+        cy.get('#shipping_last_name').type(customer.lastName + "1");
+        cy.get('#shipping_country').select(customer.country, {force: true});
+        if (customer.state !== undefined) {
+            if (!["BR", "MX", "IT"].includes(country)) {
+                cy.get('#shipping_state').clear({force: true});
+                cy.get('#shipping_state').type(customer.state);
+            } else {
+                cy.get('#shipping_state').select(customer.state, {force: true});
+            }
+        }
+        cy.get('#shipping_address_1').type(customer.streetAddress + "1");
+        cy.get('#shipping_postcode').type(customer.zipCode);
+        cy.get('#shipping_city').type(customer.city);
+        cy.waitOrderUpdateShipping();
     });
 });
 
@@ -233,6 +289,13 @@ Cypress.Commands.add("waitOrderUpdate", () => {
     cy.wait("@updateOrder");
 });
 
+Cypress.Commands.add("waitOrderUpdateShipping", () => {
+    cy.server();
+    cy.route('POST', "/?wc-ajax=update_order_review").as("updateOrderShipping");
+    cy.wait("@updateOrderShipping");
+});
+
+
 Cypress.Commands.add("customerLogIn", () => {
     cy.fixture('customerFR').then((customer) => {
         cy.visit('/my-account/');
@@ -240,4 +303,9 @@ Cypress.Commands.add("customerLogIn", () => {
         cy.get('#password').type(customer.password);
         cy.get('[name="login"]').click();
     });
+});
+
+Cypress.Commands.add("customerLogOut", () => {
+    cy.visit('/my-account/');
+    cy.get('li.woocommerce-MyAccount-navigation-link--customer-logout a').click();
 });

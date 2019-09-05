@@ -74,35 +74,38 @@ describe('Process transaction and do manual refund with basket', function () {
         });
     });
 
-    /**
-     * Process refund withoit
-     */
-    it('Process partial without basket', function () {
-        const stub = cy.stub();
-        cy.logAndGoToDetailOrder(this.order.lastOrderId);
-        cy.on('window:confirm', stub);
-        cy.get("#woocommerce-order-items  p.add-items > button.button.refund-items").click();
-        // Invalid Refund
-        cy.get('#refund_amount', { timeout: 10000 }).type('900');
-        cy.get('.do-api-refund').click();
-        cy.wait(5000);
-        cy.get("#woocommerce-order-items  p.add-items > button.button.refund-items",{ timeout: 10000 }).click();
-        cy.get('#refund_amount', { timeout: 10000 }).clear();
-        cy.get('#refund_amount', { timeout: 10000 }).type('574,94');
-        cy.get('.do-api-refund').click();
-    });
+    // refund amount is read-only this woocommerce 3.6.1
+    // so tests doesn't work anymore
 
-    /**
-     * Check basket is not sent
-     */
-    it('Check basket transaction', function () {
-        cy.connectAndSelectAccountOnHipayBO();
-
-        cy.openTransactionOnHipayBO(this.order.lastOrderId + "-");
-        cy.openNotificationOnHipayBO(124).then(() => {
-            var basketTransaction = utils.fetchInput("basket",decodeURI(this.data));
-            assert.equal(basketTransaction,"");
-        });
-    });
+    // /**
+    //  * Process refund withoit
+    //  */
+    // it('Process partial without basket', function () {
+    //     const stub = cy.stub();
+    //     cy.logAndGoToDetailOrder(this.order.lastOrderId);
+    //     cy.on('window:confirm', stub);
+    //     cy.get("#woocommerce-order-items  p.add-items > button.button.refund-items").click();
+    //     // Invalid Refund
+    //     cy.get('#refund_amount', { timeout: 10000 }).type('900');
+    //     cy.get('.do-api-refund').click();
+    //     cy.wait(5000);
+    //     cy.get("#woocommerce-order-items  p.add-items > button.button.refund-items",{ timeout: 10000 }).click();
+    //     cy.get('#refund_amount', { timeout: 10000 }).clear();
+    //     cy.get('#refund_amount', { timeout: 10000 }).type('574,94');
+    //     cy.get('.do-api-refund').click();
+    // });
+    //
+    // /**
+    //  * Check basket is not sent
+    //  */
+    // it('Check basket transaction', function () {
+    //     cy.connectAndSelectAccountOnHipayBO();
+    //
+    //     cy.openTransactionOnHipayBO(this.order.lastOrderId + "-");
+    //     cy.openNotificationOnHipayBO(124).then(() => {
+    //         var basketTransaction = utils.fetchInput("basket",decodeURI(this.data));
+    //         assert.equal(basketTransaction,"");
+    //     });
+    // });
 
 });

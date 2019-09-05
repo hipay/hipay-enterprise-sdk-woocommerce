@@ -1,8 +1,8 @@
 describe('Pay by credit card One click', function () {
 
     it('Pay by : visa_ok', function () {
-
         cy.logToAdmin();
+        cy.addClient();
         cy.goToPaymentsTab();
         cy.activatePaymentMethods("credit_card");
         cy.goToAdminHipayConfig();

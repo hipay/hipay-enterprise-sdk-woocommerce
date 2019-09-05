@@ -24,9 +24,22 @@ if (!defined('ABSPATH')) {
  */
 abstract class Hipay_Api_Formatter_Abstact implements Hipay_Api_Formatter
 {
+    /**
+     * @var Hipay_Gateway_Abstract $plugin
+     */
     protected $plugin;
 
     protected $order;
+
+    protected $cardPaymentProduct = array(
+        CardPaymentProduct::AMERICAN_EXPRESS,
+        CardPaymentProduct::BCMC,
+        CardPaymentProduct::CB,
+        CardPaymentProduct::MAESTRO,
+        CardPaymentProduct::MASTERCARD,
+        CardPaymentProduct::VISA,
+        CardPaymentProduct::HOSTED
+    );
 
     /**
      * Hipay_Api_Formatter_Abstact constructor.

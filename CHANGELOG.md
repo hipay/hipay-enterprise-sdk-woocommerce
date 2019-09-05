@@ -1,3 +1,7 @@
+# Version 1.5.0
+
+- Added DSP2 handling (3DSv2)
+
 # Version 1.4.0
 
 - Add MyBank Payment method
