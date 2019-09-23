@@ -37,6 +37,11 @@ class Hipay_Order_Handler
      */
     protected $adminCapture;
 
+    /**
+     * Hipay_Order_Handler constructor.
+     * @param $order
+     * @param $plugin Hipay_Gateway_Abstract
+     */
     public function __construct($order, $plugin)
     {
         $this->order = $order;
@@ -117,6 +122,20 @@ class Hipay_Order_Handler
     }
 
     /**
+     * Cancel order and add note.
+     *
+     * @param  string $reason Reason why the payment is Canceled.
+     */
+    public function paymentCancelled($reason = '')
+    {
+        $this->plugin->logs->logInfos("### paymentCancelled change status: ".$this->order->get_id());
+
+        $this->order->update_status('cancelled', $reason);
+        WC()->cart->empty_cart();
+    }
+
+
+    /**
      * Refund order and add note.
      *
      * @param  string $reason Reason why the payment is refunded.
@@ -193,5 +212,41 @@ class Hipay_Order_Handler
     public function addNote($note)
     {
         $this->order->add_order_note($note);
+    }
+
+
+    public function handleStatusChange($statusTo, $statusFrom){
+        switch($statusTo){
+            case "cancelled":
+                $this->handleCancel($statusFrom);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private function handleCancel($statusFrom){
+        if($statusFrom == "pending" ||
+            $statusFrom == "on-hold") {
+            try {
+                $this->plugin->process_cancel($this->order->get_id());
+            } catch (Exception $e) {
+                $displayMsg = __("There was an error on the cancellation of the HiPay transaction. You can see and cancel the transaction directly from HiPay's BackOffice",
+                    "hipayenterprise");
+                $displayMsg .= " (https://merchant.hipay-tpp.com/default/auth/login)\n";
+                $displayMsg .= __("Message was : ", "hipayenterprise") . $e->getMessage();
+                $displayMsg .= "\n";
+                $displayMsg .= __('Transaction ID: ', "hipayenterprise") . $this->order->get_transaction_id() . "\n";
+
+            }
+        } else {
+            $displayMsg = __("The HiPay transaction was not canceled because it's status doesn't allow cancellation. You can see and cancel the transaction directly from HiPay's BackOffice");
+            $displayMsg .= " (https://merchant.hipay-tpp.com/default/auth/login)";
+        }
+
+        if(!empty($displayMsg)){
+            $this->addNote($displayMsg);
+        }
+
     }
 }

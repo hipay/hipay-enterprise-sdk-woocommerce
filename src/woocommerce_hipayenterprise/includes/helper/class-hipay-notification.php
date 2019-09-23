@@ -144,7 +144,6 @@ class Hipay_Notification
                     $this->orderHandler->paymentOnHold("pending payment");
                     break;
                 case TransactionStatus::EXPIRED:
-                case TransactionStatus::CANCELLED:
                     $this->orderHandler->paymentFailed(
                         __(
                             "Authorization cancelled. Order was cancelled with transaction:",
@@ -152,6 +151,14 @@ class Hipay_Notification
                         )
                     );
                     break;
+                case TransactionStatus::CANCELLED:
+                case TransactionStatus::AUTHORIZATION_CANCELLATION_REQUESTED:
+                    $this->orderHandler->paymentCancelled(
+                        __(
+                            "Authorization cancelled. Order was cancelled with transaction:",
+                            "hipayenterprise"
+                        )
+                    );
                 case TransactionStatus::AUTHORIZED: //116
                     $this->orderHandler->paymentOnHold(
                         __("Authorization successful for transaction.", "hipayenterprise")

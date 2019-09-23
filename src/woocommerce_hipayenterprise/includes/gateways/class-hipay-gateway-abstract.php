@@ -308,11 +308,11 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
 
             $order = wc_get_order($orderId);
 
-            $redirect = $this->apiRequestHandler->handleCancel(
+            $redirect = $this->apiRequestHandler->handleMaintenance(
+                \HiPay\Fullservice\Enum\Transaction\Operation::CANCEL,
                 array(
                     "order_id" => $orderId,
                     "transaction_reference" => $order->get_transaction_id(),
-                    "operation" => \HiPay\Fullservice\Enum\Transaction\Operation::CANCEL
                 )
             );
 

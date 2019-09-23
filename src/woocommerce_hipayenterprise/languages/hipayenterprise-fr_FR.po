@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce HiPay Enterprise\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-12 15:03+0000\n"
-"PO-Revision-Date: 2019-09-12 15:05+0000\n"
+"POT-Creation-Date: 2019-09-24 08:47+0000\n"
+"PO-Revision-Date: 2019-09-24 08:48+0000\n"
 "Last-Translator: admin <admin-wordpress@hipay.com>\n"
 "Language-Team: French (France)\n"
 "Language: fr_FR\n"
@@ -14,9 +14,9 @@ msgstr ""
 "X-Generator: Loco https://localise.biz/\n"
 "X-Loco-Version: 2.3.0; wp-5.2.3"
 
-#: class-wc-hipay-enterprise.php:125
-#: includes/helper/class-hipay-api-request-handler.php:164
-#: includes/helper/class-hipay-api-request-handler.php:171
+#: class-wc-hipay-enterprise.php:126
+#: includes/helper/class-hipay-api-request-handler.php:170
+#: includes/helper/class-hipay-api-request-handler.php:179
 msgid ""
 "There was an error on the cancellation of the HiPay transaction. You can see "
 "and cancel the transaction directly from HiPay's BackOffice"
@@ -25,14 +25,14 @@ msgstr ""
 "pouvez consulter et directement annuler la transaction depuis le back-office "
 "HiPay"
 
-#: class-wc-hipay-enterprise.php:128
-#: includes/helper/class-hipay-api-request-handler.php:174
+#: class-wc-hipay-enterprise.php:129
+#: includes/helper/class-hipay-api-request-handler.php:182
 msgid "Message was : "
 msgstr "Le message est : "
 
-#: class-wc-hipay-enterprise.php:130
-#: includes/helper/class-hipay-api-request-handler.php:182
-#: includes/helper/class-hipay-helper.php:252
+#: class-wc-hipay-enterprise.php:131
+#: includes/helper/class-hipay-api-request-handler.php:191
+#: includes/helper/class-hipay-helper.php:258
 msgid "Transaction ID: "
 msgstr "Transaction ID:"
 
@@ -218,13 +218,13 @@ msgstr "Token de carte invalide"
 msgid "Operations  %s"
 msgstr "Operations  %s"
 
-#: includes/helper/class-hipay-api-request-handler.php:129
+#: includes/helper/class-hipay-api-request-handler.php:130
 msgid "Maintenance operation is not allowed according to the order status."
 msgstr ""
 "L'opération de maintenance n'est pas autorisée en fonction du statut de la "
 "commande."
 
-#: includes/helper/class-hipay-api-request-handler.php:156
+#: includes/helper/class-hipay-api-request-handler.php:159
 msgid ""
 "The HiPay transaction was not canceled because no transaction reference "
 "exists. You can see and cancel the transaction directly from HiPay's "
@@ -234,22 +234,22 @@ msgstr ""
 "transaction. Vous pouvez consulter et directement annuler la transaction "
 "depuis le back-office HiPay"
 
-#: includes/helper/class-hipay-api-request-handler.php:183
-#: includes/helper/class-hipay-helper.php:253
+#: includes/helper/class-hipay-api-request-handler.php:192
+#: includes/helper/class-hipay-helper.php:259
 msgid "HiPay status: "
 msgstr "Satus HiPay"
 
-#: includes/helper/class-hipay-api-request-handler.php:217
+#: includes/helper/class-hipay-api-request-handler.php:225
 msgid "An error occured, process has been cancelled.."
 msgstr "Une erreur s'est produite, le processus à été annulé."
 
-#: includes/helper/class-hipay-api-request-handler.php:253
-#: includes/helper/class-hipay-api-request-handler.php:285
-#: includes/helper/class-hipay-api-request-handler.php:291
+#: includes/helper/class-hipay-api-request-handler.php:261
+#: includes/helper/class-hipay-api-request-handler.php:293
+#: includes/helper/class-hipay-api-request-handler.php:299
 msgid "An error occured, process has been cancelled."
 msgstr "Une erreur s'est produite, le processus à été annulé."
 
-#: includes/helper/class-hipay-api-request-handler.php:273
+#: includes/helper/class-hipay-api-request-handler.php:281
 msgid ""
 "Sorry, your payment has been declined. Please try again with an other means "
 "of payment."
@@ -274,24 +274,25 @@ msgstr "%1$s %2$s (expire %3$s/%4$s)"
 msgid "Transaction  refused. Order was cancelled with transaction:"
 msgstr "Transaction refusée. La commande a été annulé pour la transaction:"
 
-#: includes/helper/class-hipay-notification.php:149
+#: includes/helper/class-hipay-notification.php:148
+#: includes/helper/class-hipay-notification.php:157
 msgid "Authorization cancelled. Order was cancelled with transaction:"
 msgstr "Authorization annulée. La commande a été annulée avec la transaction:"
 
-#: includes/helper/class-hipay-notification.php:157
+#: includes/helper/class-hipay-notification.php:164
 msgid "Authorization successful for transaction."
 msgstr "Demande d'authorization en succès pour la transaction"
 
-#: includes/helper/class-hipay-notification.php:177
-#: includes/helper/class-hipay-notification.php:196
+#: includes/helper/class-hipay-notification.php:184
+#: includes/helper/class-hipay-notification.php:203
 msgid "Payment partially captured, amount:"
 msgstr "Paiement partiellement capturé, montant:"
 
-#: includes/helper/class-hipay-notification.php:207
+#: includes/helper/class-hipay-notification.php:214
 msgid "Refund requested"
 msgstr "Remboursement demandé"
 
-#: includes/helper/class-hipay-notification.php:216
+#: includes/helper/class-hipay-notification.php:223
 msgid "Payment partially refunded, amount:"
 msgstr "Paiement partiellement remboursé, montant:"
 
@@ -321,10 +322,18 @@ msgid "Registered notification from HiPay about refunded amount of "
 msgstr "Notification enregistrée HiPay sur le montant remboursé de"
 
 #: includes/helper/class-hipay-helper.php:245
+msgid "Transaction cancellation requested"
+msgstr "Annulation de la transaction demandée"
+
+#: includes/helper/class-hipay-helper.php:248
+msgid "Transaction cancelled"
+msgstr "Transaction annulée"
+
+#: includes/helper/class-hipay-helper.php:251
 msgid "Registered notification "
 msgstr "Notification enregistrée"
 
-#: includes/helper/class-hipay-helper.php:250
+#: includes/helper/class-hipay-helper.php:256
 msgid "Order total amount :"
 msgstr "Montal total:"
 

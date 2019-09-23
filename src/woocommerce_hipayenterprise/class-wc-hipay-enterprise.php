@@ -62,7 +62,7 @@ class WC_HipayEnterprise
         Hipay_Admin_Capture::initHiPayAdminCapture();
 
         add_filter('woocommerce_payment_gateways', array($this, 'addGateway'));
-        add_action('woocommerce_order_status_changed', array($this, 'handleOrderCancellation'), 10, 4);
+        add_action('woocommerce_order_status_changed', array($this, 'handleStatusChange'), 10, 4);
     }
 
     /**
@@ -110,30 +110,18 @@ class WC_HipayEnterprise
     }
 
     /**
+     * Handles order status change for HiPay plugin
+     *
      * @param $orderId
+     * @param $statusFrom
+     * @param $statusTo
+     * @param $order
      */
-    public function handleOrderCancellation($orderId, $statusFrom, $statusTo, $order)
+    public function handleStatusChange($orderId, $statusFrom, $statusTo, $order)
     {
-        if ($statusTo == "cancelled" &&
-            ($statusFrom == "pending" ||
-                $statusFrom == "on-hold")) {
-            $gateway = new Hipay_Gateway_Abstract();
-            try {
-                $gateway->process_cancel($orderId);
-            } catch (Exception $e) {
-                $errorMsg = array();
-                $displayMsg = __("There was an error on the cancellation of the HiPay transaction. You can see and cancel the transaction directly from HiPay's BackOffice",
-                    "hipayenterprise");
-                $displayMsg .= " (https://merchant.hipay-tpp.com/default/auth/login)\n";
-                $displayMsg .= __("Message was : ", "hipayenterprise") . $e->getMessage();
-                $displayMsg .= "\n";
-                $displayMsg .= __('Transaction ID: ', "hipayenterprise") . $order->get_transaction_id() . "\n";
-
-                $orderHandler = new Hipay_Order_Handler($order, $gateway);
-                $orderHandler->addNote($displayMsg);
-            }
-
-        }
+        $gateway = new Hipay_Gateway_Abstract();
+        $orderHandler = new Hipay_Order_Handler($order, $gateway);
+        $orderHandler->handleStatusChange($statusTo, $statusFrom);
     }
 
     public static function get_instance()
