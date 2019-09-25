@@ -1,3 +1,7 @@
+# Version 1.5.1
+
+- Fix: card token saving now on 116 and 118 notifications 
+
 # Version 1.5.0
 
 - Added DSP2 handling (3DSv2)
