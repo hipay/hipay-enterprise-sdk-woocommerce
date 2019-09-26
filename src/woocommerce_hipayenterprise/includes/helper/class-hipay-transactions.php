@@ -312,7 +312,7 @@ class Hipay_Transactions_Helper
         );
 
         $query = new WP_Query($query_args);
-        if($query->found_posts > 0){
+        if($query->have_posts()){
             return true;
         }
 

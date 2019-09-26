@@ -106,6 +106,9 @@ class Hipay_Notification
                 $this->transaction->getTransactionReference()
             );
 
+            $this->orderHandler->addNote(Hipay_Helper::formatOrderData($this->transaction));
+            $this->transactionsHelper->saveTransaction($this->order, $this->transaction);
+
             switch ($this->transaction->getStatus()) {
                 case TransactionStatus::CREATED:
                 case TransactionStatus::CARD_HOLDER_ENROLLED:
@@ -159,6 +162,7 @@ class Hipay_Notification
                             "hipayenterprise"
                         )
                     );
+                    break;
                 case TransactionStatus::AUTHORIZED: //116
                     $this->orderHandler->paymentOnHold(
                         __("Authorization successful for transaction.", "hipayenterprise")
@@ -235,9 +239,6 @@ class Hipay_Notification
                     Hipay_Token_Helper::createTokenFromTransaction($this->transaction, $this->order);
                 }
             }
-
-            $this->orderHandler->addNote(Hipay_Helper::formatOrderData($this->transaction));
-            $this->transactionsHelper->saveTransaction($this->order, $this->transaction);
 
             return true;
         } catch (Exception $e) {
