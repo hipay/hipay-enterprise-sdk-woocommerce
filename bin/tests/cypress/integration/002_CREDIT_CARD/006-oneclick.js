@@ -65,7 +65,7 @@ describe('Oneclick card registration', function () {
 
         cy.goToCheckout();
 
-        cy.get('#wc-hipayenterprise_credit_card-payment-token-1').then(($input) => {
+        cy.get('*[name="wc-hipayenterprise_credit_card-payment-token"]').then(($input) => {
             expect($input).to.exist;
             expect($input).to.be.visible;
         });
@@ -122,7 +122,7 @@ describe('Oneclick card registration', function () {
 
         cy.goToCheckout();
 
-        cy.get('#wc-hipayenterprise_credit_card-payment-token-1').then(($input) => {
+        cy.get('*[name="wc-hipayenterprise_credit_card-payment-token"]').then(($input) => {
             expect($input).to.exist;
             expect($input).to.be.visible;
         });
