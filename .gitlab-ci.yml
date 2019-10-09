@@ -37,7 +37,7 @@ stages:
     - cd bin/tests
     - yarn install
   tags:
-    - cypress-runner
+    - gpc-cypress-runner
   artifacts:
     paths:
       - bin/tests/cypress/videos
@@ -52,6 +52,8 @@ build-test:
   stage: build-test
   script:
     - docker-compose -f docker-compose.test.yml build
+  tags:
+    - gpc-default-runner
 
 test-cypress-1:
   <<: *test_definition
