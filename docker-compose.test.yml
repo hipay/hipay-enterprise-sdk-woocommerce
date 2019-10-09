@@ -1,14 +1,7 @@
 version: '3.3'
 
-networks:
-  wordpress:
-    internal: true
-  outside:
-    external: true
-
 services:
   wordpress:
-    container_name: ${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}_web
     image: ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
     build:
       context: .
@@ -18,21 +11,15 @@ services:
     env_file:
       - ./bin/docker/conf/test/hipay.env.sample
       - bin/docker/conf/test/wordpress.env.sample
-    networks:
-      wordpress:
-      outside:
-        aliases:
-          - ${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}-web
+    ports:
+      - "8000:80"
   database:
     image: mysql:5.7
-    container_name: ${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}_database
     env_file:
       - bin/docker/conf/test/wordpress.env.sample
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 20s
       retries: 10
-    networks:
-      wordpress:
-        aliases:
-        - ${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}_database
+    ports:
+      - "3309:3306"
