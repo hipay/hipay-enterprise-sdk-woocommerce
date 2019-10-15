@@ -59,6 +59,7 @@ build-test:
   stage: build-test
   script:
     - docker-compose -f docker-compose.test.yml build
+    - docker-compose -f docker-compose.test.yml push
   tags:
     - gcp-default-runner
 
