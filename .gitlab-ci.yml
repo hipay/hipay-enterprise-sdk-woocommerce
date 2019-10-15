@@ -37,7 +37,6 @@ stages:
     - sed -i -e "s@{PI_CI_DATA_URL\}@$PI_CI_DATA_URL@" ./bin/docker/conf/test/hipay.env.sample
     - cp ./bin/tests/.npmrc.sample ./bin/tests/.npmrc
     - sed -i -e "s/\${NPM_REGISTRY_TOKEN\}/$NPM_REGISTRY_TOKEN/" ./bin/tests/.npmrc
-    - docker-compose -f docker-compose.test.yml pull
     - docker-compose -f docker-compose.test.yml up -d
     - until docker-compose -f docker-compose.test.yml logs | grep -m 1 "DOCKER WOOCOMMERCE TO HIPAY stage IS UP" ; do sleep 10 ; done
     - docker-compose -f docker-compose.test.yml logs
