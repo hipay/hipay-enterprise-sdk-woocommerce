@@ -199,6 +199,15 @@ Cypress.Commands.add("activateOneClick", () => {
     });
 });
 
+Cypress.Commands.add("setCaptureMode", (mode) => {
+    cy.logToAdmin();
+    cy.visit('/wp-admin/admin.php?page=wc-settings&tab=checkout&section=hipayenterprise_credit_card');
+    cy.get('#methods-tab').click();
+    cy.get('#capture_mode').select(mode);
+    cy.get('button').contains('Save changes').click();
+});
+
+
 /**
  * Clear All configuration for credit Card (Min Amount etc) ,save and log out form admin
  * At the end ready for checkout on front end

@@ -291,4 +291,31 @@ class Hipay_Transactions_Helper
 
         return count(array_unique($transactionIds));
     }
+
+    public static function isTransactionCancelled($orderId){
+        $query_args = array(
+            'post_type' => Hipay_Admin_Post_Types::POST_TYPE_TRANSACTION,
+            'no_found_rows' => true,
+            'posts_per_page' => -1,
+            'meta_query' => array(
+                array(
+                    'key' => self::TRANSACTION_ORDER_ID,
+                    'value' => $orderId,
+                    'compare' => '='
+                ),
+                array(
+                    'key' => self::TRANSACTION_STATUS,
+                    'value' => array(TransactionStatus::CANCELLED, TransactionStatus::AUTHORIZATION_CANCELLATION_REQUESTED),
+                    'compare' => 'IN'
+                )
+            )
+        );
+
+        $query = new WP_Query($query_args);
+        if($query->have_posts()){
+            return true;
+        }
+
+        return false;
+    }
 }

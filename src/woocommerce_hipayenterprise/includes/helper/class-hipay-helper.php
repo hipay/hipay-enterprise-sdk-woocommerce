@@ -241,6 +241,12 @@ class Hipay_Helper
                     $transaction->getRefundedAmount() .
                     "\n";
                 break;
+            case TransactionStatus::AUTHORIZATION_CANCELLATION_REQUESTED: //175
+                $message .= __('Transaction cancellation requested', 'hipayenterprise') . "\n";
+                break;
+            case TransactionStatus::CANCELLED: //115
+                $message .= __('Transaction cancelled', 'hipayenterprise') . "\n";
+                break;
             default:
                 $message .= __('Registered notification ', "hipayenterprise") . $transaction->getStatus() .
                     "\n";
