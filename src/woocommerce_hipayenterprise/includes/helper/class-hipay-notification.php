@@ -106,6 +106,9 @@ class Hipay_Notification
                 $this->transaction->getTransactionReference()
             );
 
+            $this->orderHandler->addNote(Hipay_Helper::formatOrderData($this->transaction));
+            $this->transactionsHelper->saveTransaction($this->order, $this->transaction);
+
             switch ($this->transaction->getStatus()) {
                 case TransactionStatus::CREATED:
                 case TransactionStatus::CARD_HOLDER_ENROLLED:
@@ -144,8 +147,16 @@ class Hipay_Notification
                     $this->orderHandler->paymentOnHold("pending payment");
                     break;
                 case TransactionStatus::EXPIRED:
-                case TransactionStatus::CANCELLED:
                     $this->orderHandler->paymentFailed(
+                        __(
+                            "Authorization cancelled. Order was cancelled with transaction:",
+                            "hipayenterprise"
+                        )
+                    );
+                    break;
+                case TransactionStatus::CANCELLED:
+                case TransactionStatus::AUTHORIZATION_CANCELLATION_REQUESTED:
+                    $this->orderHandler->paymentCancelled(
                         __(
                             "Authorization cancelled. Order was cancelled with transaction:",
                             "hipayenterprise"
@@ -228,9 +239,6 @@ class Hipay_Notification
                     Hipay_Token_Helper::createTokenFromTransaction($this->transaction, $this->order);
                 }
             }
-
-            $this->orderHandler->addNote(Hipay_Helper::formatOrderData($this->transaction));
-            $this->transactionsHelper->saveTransaction($this->order, $this->transaction);
 
             return true;
         } catch (Exception $e) {

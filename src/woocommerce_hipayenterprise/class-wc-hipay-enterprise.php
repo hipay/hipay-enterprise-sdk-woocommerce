@@ -62,6 +62,7 @@ class WC_HipayEnterprise
         Hipay_Admin_Capture::initHiPayAdminCapture();
 
         add_filter('woocommerce_payment_gateways', array($this, 'addGateway'));
+        add_action('woocommerce_order_status_changed', array($this, 'handleStatusChange'), 10, 4);
     }
 
     /**
@@ -106,6 +107,21 @@ class WC_HipayEnterprise
         }
         $methods[] = 'Gateway_Hipay';
         return array_merge($methods, $localMethod);
+    }
+
+    /**
+     * Handles order status change for HiPay plugin
+     *
+     * @param $orderId
+     * @param $statusFrom
+     * @param $statusTo
+     * @param $order
+     */
+    public function handleStatusChange($orderId, $statusFrom, $statusTo, $order)
+    {
+        $gateway = new Hipay_Gateway_Abstract();
+        $orderHandler = new Hipay_Order_Handler($order, $gateway);
+        $orderHandler->handleStatusChange($statusTo, $statusFrom);
     }
 
     public static function get_instance()
