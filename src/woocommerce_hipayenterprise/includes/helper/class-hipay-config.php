@@ -338,7 +338,13 @@ class Hipay_Config
 
         if (preg_match('/(.*)\.json/', $file) == 1) {
             $json = json_decode(file_get_contents($this->jsonFilesPath . $folderName . $file), true);
-            $creditCard[$json["name"]] = $json["config"];
+
+            $sdkConfig = \HiPay\Fullservice\Data\PaymentProduct\Collection::getItem($json["name"]);
+
+            if($sdkConfig !== null) {
+                // Array merge gives priority to the last array over the first when keys are in both tables
+                $creditCard[$json["name"]] = array_merge($sdkConfig->toArray(), $json["config"]);
+            }
         }
 
         return $creditCard;

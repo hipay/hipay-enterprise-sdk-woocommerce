@@ -2,22 +2,12 @@
   "name": "giropay",
   "config": {
     "displayNameBO": "Giropay",
-    "displayName":  {
+    "displayName": {
       "fr": "Giropay",
       "en": "Giropay"
     },
     "frontPosition": 14,
     "activated": 0,
-    "canManualCapture": 0,
-    "canManualCapturePartially": 0,
-    "canRefund": 0,
-    "canRefundPartially": 0,
-    "currencies": [
-      "EUR"
-    ],
-    "countries": [
-      "DE"
-    ],
     "displayConfigurationFields": [
       "displayName",
       "minAmount",
@@ -33,21 +23,6 @@
     "maxAmount": {
       "EUR": false
     },
-    "logo": "giropay.png",
-    "additionalFields": {
-      "sdkClass": "HiPay\\Fullservice\\Gateway\\Request\\PaymentMethod\\IssuerBankIDPaymentMethod",
-      "defaultFieldsValue": {},
-      "formFields": {
-        "issuer_bank_id": {
-          "label": {
-            "en": "Business Identifier Code (BIC)",
-            "fr": "Business Identifier Code (BIC)"
-          },
-          "type": "text",
-          "required": true,
-          "controlType": "bic"
-        }
-      }
-    }
+    "logo": "giropay.png"
   }
 }

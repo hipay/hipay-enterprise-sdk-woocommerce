@@ -6,22 +6,12 @@
       "label": "Astropay"
     },
     "displayNameBO": "Banco do brazil",
-    "displayName":  {
+    "displayName": {
       "fr": "Banco do brazil",
       "en": "Banco do brazil"
     },
     "frontPosition": 8,
     "activated": 0,
-    "canRefund": 0,
-    "canRefundPartially": 0,
-    "canManualCapture": 0,
-    "canManualCapturePartially": 0,
-    "currencies": [
-      "BRL"
-    ],
-    "countries": [
-      "BR"
-    ],
     "displayConfigurationFields": [
       "displayName",
       "minAmount",
@@ -37,21 +27,6 @@
     "maxAmount": {
       "EUR": false
     },
-    "logo": "banco-do-brasil.png",
-    "additionalFields": {
-      "sdkClass": "HiPay\\Fullservice\\Gateway\\Request\\PaymentMethod\\AstropayPaymentMethod",
-      "defaultFieldsValue": {},
-      "formFields": {
-        "national_identification_number": {
-          "label": {
-            "en": "CPF",
-            "fr": "CPF"
-          },
-          "type": "text",
-          "required": true,
-          "controlType": "cpf"
-        }
-      }
-    }
+    "logo": "banco-do-brasil.png"
   }
 }
