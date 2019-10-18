@@ -207,6 +207,18 @@ Cypress.Commands.add("setCaptureMode", (mode) => {
     cy.get('button').contains('Save changes').click();
 });
 
+Cypress.Commands.add("setSkipOnhOld", (state) => {
+    cy.logToAdmin();
+    cy.visit('/wp-admin/admin.php?page=wc-settings&tab=checkout&section=hipayenterprise_credit_card');
+    cy.get('#methods-tab').click();
+    cy.get('#skip_onhold').then((checkbox) => {
+        if(checkbox.is(':checked') !== state){
+            cy.wrap(checkbox).click();
+        }
+    });
+    cy.get('button').contains('Save changes').click();
+});
+
 
 /**
  * Clear All configuration for credit Card (Min Amount etc) ,save and log out form admin
