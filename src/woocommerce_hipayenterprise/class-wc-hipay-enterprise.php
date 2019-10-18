@@ -63,6 +63,9 @@ class WC_HipayEnterprise
 
         add_filter('woocommerce_payment_gateways', array($this, 'addGateway'));
         add_action('woocommerce_order_status_changed', array($this, 'handleStatusChange'), 10, 4);
+
+        // Init Plugin Update handling
+        new Hipay_Admin_Plugin_Update_Handler($currentPluginVersion, WC_HIPAYENTERPRISE_PLUGIN_NAME);
     }
 
     /**

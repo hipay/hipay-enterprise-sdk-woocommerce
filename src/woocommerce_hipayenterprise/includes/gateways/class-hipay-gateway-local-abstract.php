@@ -133,8 +133,10 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
                 "deviceFingerprint" => Hipay_Helper::getPostData($this->paymentProduct.'-device_fingerprint')
             );
 
-            foreach ($method["additionalFields"]["formFields"] as $name => $field) {
-                $params[$name] = Hipay_Helper::getPostData($this->paymentProduct . '-' . $name);
+            if(is_array($method["additionalFields"]["formFields"])) {
+                foreach ($method["additionalFields"]["formFields"] as $name => $field) {
+                    $params[$name] = Hipay_Helper::getPostData($this->paymentProduct . '-' . $name);
+                }
             }
 
             $redirectUrl = $this->apiRequestHandler->handleLocalPayment($params);

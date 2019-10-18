@@ -38,6 +38,7 @@ class Hipay_Autoloader
         WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-admin-post-types.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-admin-menus.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-admin-capture.php',
+        WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-admin-plugin-update.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-upgrade-helper.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/gateways/class-hipay-gateway-abstract.php',
         WC_HIPAYENTERPRISE_PATH . 'includes/gateways/class-hipay-gateway-local-abstract.php',

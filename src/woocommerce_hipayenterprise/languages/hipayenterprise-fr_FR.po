@@ -2,39 +2,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce HiPay Enterprise\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-24 08:47+0000\n"
-"PO-Revision-Date: 2019-09-24 08:48+0000\n"
+"POT-Creation-Date: 2019-10-18 13:27+0000\n"
+"PO-Revision-Date: 2019-10-18 13:43+0000\n"
 "Last-Translator: admin <admin-wordpress@hipay.com>\n"
-"Language-Team: French (France)\n"
+"Language-Team: Français\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.3.0; wp-5.2.3"
-
-#: class-wc-hipay-enterprise.php:126
-#: includes/helper/class-hipay-api-request-handler.php:170
-#: includes/helper/class-hipay-api-request-handler.php:179
-msgid ""
-"There was an error on the cancellation of the HiPay transaction. You can see "
-"and cancel the transaction directly from HiPay's BackOffice"
-msgstr ""
-"Une erreur est survenue lors de l'annulation de la transaction HiPay.  "
-"pouvez consulter et directement annuler la transaction depuis le back-office "
-"HiPay"
-
-#: class-wc-hipay-enterprise.php:129
-#: includes/helper/class-hipay-api-request-handler.php:182
-msgid "Message was : "
-msgstr "Le message est : "
-
-#: class-wc-hipay-enterprise.php:131
-#: includes/helper/class-hipay-api-request-handler.php:191
-#: includes/helper/class-hipay-helper.php:258
-msgid "Transaction ID: "
-msgstr "Transaction ID:"
+"X-Loco-Version: 2.3.1; wp-5.2.4"
 
 #: includes/gateways/class-gateway-hipay.php:52
 msgid "HiPay Enterprise Credit Card"
@@ -44,15 +22,15 @@ msgstr "HiPay Enterprise Carte de crédit"
 msgid "Local and international payments using Hipay Enterprise."
 msgstr "Paiements locaux et internationaux avec Hipay Enterprise."
 
-#: includes/gateways/class-gateway-hipay.php:361
+#: includes/gateways/class-gateway-hipay.php:362
 msgid "Available countries"
 msgstr "Pays disponibles"
 
-#: includes/gateways/class-gateway-hipay.php:362
+#: includes/gateways/class-gateway-hipay.php:363
 msgid "Authorized countries"
 msgstr "Pays authorisés"
 
-#: includes/gateways/class-gateway-hipay.php:382
+#: includes/gateways/class-gateway-hipay.php:383
 msgid ""
 "This credit card type or the order currency is not supported. \n"
 "                    Please choose an other payment method."
@@ -61,39 +39,39 @@ msgstr ""
 "charge. \n"
 "                    Veuillez choisir un autre mode de paiement."
 
-#: includes/gateways/class-gateway-hipay.php:387
+#: includes/gateways/class-gateway-hipay.php:388
 msgid "Card updated with success"
 msgstr "Carte mises à jour avec sucés. "
 
-#: includes/gateways/class-gateway-hipay.php:388
+#: includes/gateways/class-gateway-hipay.php:389
 msgid "CVC is missing."
 msgstr "Le CVC est manquant."
 
-#: includes/gateways/class-gateway-hipay.php:389
+#: includes/gateways/class-gateway-hipay.php:390
 msgid "cvc must be numeric."
 msgstr "Le CVC ne doit contenir que des chiffres."
 
-#: includes/gateways/class-gateway-hipay.php:390
+#: includes/gateways/class-gateway-hipay.php:391
 msgid "CVC is invalid."
 msgstr "Le CVC est invalide."
 
-#: includes/gateways/class-gateway-hipay.php:445
+#: includes/gateways/class-gateway-hipay.php:446
 msgid "One click not activated"
 msgstr "Le one click n'est pas activé"
 
-#: includes/gateways/class-gateway-hipay.php:456
+#: includes/gateways/class-gateway-hipay.php:457
 msgid "This card type doesn't exist"
 msgstr "Ce type de carte n'existe pas"
 
-#: includes/gateways/class-gateway-hipay.php:464
+#: includes/gateways/class-gateway-hipay.php:465
 msgid "This card type doesn't support one click"
 msgstr "Ce type de carte ne supporte pas le one click"
 
-#: includes/gateways/class-gateway-hipay.php:542
+#: includes/gateways/class-gateway-hipay.php:543
 msgid "Sorry, we cannot process your payment.. Please try again."
 msgstr "Désolé, nous ne pouvons traiter votre paiement. Veuillez réessayer."
 
-#: includes/gateways/class-gateway-hipay.php:553
+#: includes/gateways/class-gateway-hipay.php:554
 msgid ""
 "We have received your order payment. We will process the order as soon as we "
 "get the payment confirmation."
@@ -218,13 +196,7 @@ msgstr "Token de carte invalide"
 msgid "Operations  %s"
 msgstr "Operations  %s"
 
-#: includes/helper/class-hipay-api-request-handler.php:130
-msgid "Maintenance operation is not allowed according to the order status."
-msgstr ""
-"L'opération de maintenance n'est pas autorisée en fonction du statut de la "
-"commande."
-
-#: includes/helper/class-hipay-api-request-handler.php:159
+#: includes/helper/class-hipay-api-request-handler.php:119
 msgid ""
 "The HiPay transaction was not canceled because no transaction reference "
 "exists. You can see and cancel the transaction directly from HiPay's "
@@ -234,22 +206,50 @@ msgstr ""
 "transaction. Vous pouvez consulter et directement annuler la transaction "
 "depuis le back-office HiPay"
 
-#: includes/helper/class-hipay-api-request-handler.php:192
+#: includes/helper/class-hipay-api-request-handler.php:130
+#: includes/helper/class-hipay-api-request-handler.php:139
+#: includes/helper/class-hipay-order-handler.php:234
+msgid ""
+"There was an error on the cancellation of the HiPay transaction. You can see "
+"and cancel the transaction directly from HiPay's BackOffice"
+msgstr ""
+"Une erreur est survenue lors de l'annulation de la transaction HiPay.  "
+"pouvez consulter et directement annuler la transaction depuis le back-office "
+"HiPay"
+
+#: includes/helper/class-hipay-api-request-handler.php:142
+#: includes/helper/class-hipay-order-handler.php:237
+msgid "Message was : "
+msgstr "Le message est : "
+
+#: includes/helper/class-hipay-api-request-handler.php:151
+#: includes/helper/class-hipay-order-handler.php:239
+#: includes/helper/class-hipay-helper.php:258
+msgid "Transaction ID: "
+msgstr "Transaction ID:"
+
+#: includes/helper/class-hipay-api-request-handler.php:152
 #: includes/helper/class-hipay-helper.php:259
 msgid "HiPay status: "
 msgstr "Satus HiPay"
 
-#: includes/helper/class-hipay-api-request-handler.php:225
+#: includes/helper/class-hipay-api-request-handler.php:172
+msgid "Maintenance operation is not allowed according to the order status."
+msgstr ""
+"L'opération de maintenance n'est pas autorisée en fonction du statut de la "
+"commande."
+
+#: includes/helper/class-hipay-api-request-handler.php:227
 msgid "An error occured, process has been cancelled.."
 msgstr "Une erreur s'est produite, le processus à été annulé."
 
-#: includes/helper/class-hipay-api-request-handler.php:261
-#: includes/helper/class-hipay-api-request-handler.php:293
-#: includes/helper/class-hipay-api-request-handler.php:299
+#: includes/helper/class-hipay-api-request-handler.php:263
+#: includes/helper/class-hipay-api-request-handler.php:295
+#: includes/helper/class-hipay-api-request-handler.php:301
 msgid "An error occured, process has been cancelled."
 msgstr "Une erreur s'est produite, le processus à été annulé."
 
-#: includes/helper/class-hipay-api-request-handler.php:281
+#: includes/helper/class-hipay-api-request-handler.php:283
 msgid ""
 "Sorry, your payment has been declined. Please try again with an other means "
 "of payment."
@@ -270,29 +270,29 @@ msgstr "Vous devez mapper vos transporteurs."
 msgid "%1$s %2$s (expires %3$s/%4$s)"
 msgstr "%1$s %2$s (expire %3$s/%4$s)"
 
-#: includes/helper/class-hipay-notification.php:131
+#: includes/helper/class-hipay-notification.php:134
 msgid "Transaction  refused. Order was cancelled with transaction:"
 msgstr "Transaction refusée. La commande a été annulé pour la transaction:"
 
-#: includes/helper/class-hipay-notification.php:148
-#: includes/helper/class-hipay-notification.php:157
+#: includes/helper/class-hipay-notification.php:151
+#: includes/helper/class-hipay-notification.php:160
 msgid "Authorization cancelled. Order was cancelled with transaction:"
 msgstr "Authorization annulée. La commande a été annulée avec la transaction:"
 
-#: includes/helper/class-hipay-notification.php:164
+#: includes/helper/class-hipay-notification.php:168
 msgid "Authorization successful for transaction."
 msgstr "Demande d'authorization en succès pour la transaction"
 
-#: includes/helper/class-hipay-notification.php:184
-#: includes/helper/class-hipay-notification.php:203
+#: includes/helper/class-hipay-notification.php:176
+#: includes/helper/class-hipay-notification.php:195
 msgid "Payment partially captured, amount:"
 msgstr "Paiement partiellement capturé, montant:"
 
-#: includes/helper/class-hipay-notification.php:214
+#: includes/helper/class-hipay-notification.php:206
 msgid "Refund requested"
 msgstr "Remboursement demandé"
 
-#: includes/helper/class-hipay-notification.php:223
+#: includes/helper/class-hipay-notification.php:215
 msgid "Payment partially refunded, amount:"
 msgstr "Paiement partiellement remboursé, montant:"
 
@@ -1390,20 +1390,35 @@ msgstr "Woocommerce REST API"
 msgid "Please ensure you have Woocommerce REST API activated."
 msgstr "Assurez-vous que l’API REST Woocommerce est activée."
 
-#: includes/admin/template/admin-general-settings.php:108
+#: includes/admin/template/admin-general-settings.php:99
+msgid "Module update"
+msgstr ""
+
+#: includes/admin/template/admin-general-settings.php:102
+#, php-format
+msgid ""
+"There is a new version of WooCommerce HiPay Enterprise available. <a "
+"href='%s'>View version %s details</a> or <a href='/wp-admin/update-core.php'>"
+"update now</a>."
+msgstr ""
+"Une nouvelle version de WooCommerce HiPay Enterprise est disponible. <a "
+"href='%s'>Voir les détails de la version %s</a> ou <a href='/wp-admin/update-"
+"core.php'>mettre à jour</a>."
+
+#: includes/admin/template/admin-general-settings.php:120
 msgid "Plugin Settings"
 msgstr "Paramétrage"
 
-#: includes/admin/template/admin-general-settings.php:114
+#: includes/admin/template/admin-general-settings.php:126
 msgid "Payment Methods"
 msgstr "Méthode de paiement"
 
-#: includes/admin/template/admin-general-settings.php:119
+#: includes/admin/template/admin-general-settings.php:131
 #: includes/admin/template/admin-fraud-settings.php:3
 msgid "Fraud"
 msgstr "Fraude"
 
-#: includes/admin/template/admin-general-settings.php:124
+#: includes/admin/template/admin-general-settings.php:136
 msgid "FAQ"
 msgstr "FAQ"
 
