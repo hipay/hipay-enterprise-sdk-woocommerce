@@ -339,7 +339,8 @@ if (!class_exists('WC_Gateway_Hipay')) {
                     'simplexml_active' => extension_loaded('simplexml'),
                     'https_active' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off',
                     'notifications' => $this->notifications,
-                    'currentPluginVersion' => get_option("hipay_enterprise_version")
+                    'currentPluginVersion' => get_option("hipay_enterprise_version"),
+                    'updateInformation' => get_option("wc_hipay_update_info")
                 )
             );
         }

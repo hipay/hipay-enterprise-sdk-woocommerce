@@ -60,13 +60,18 @@ test-cypress-1:
     - docker-compose -p $PROJECT_NAME_TEST_1 -f docker-compose.test.yml stop
     - docker-compose -p $PROJECT_NAME_TEST_1 -f docker-compose.test.yml rm -fv
     - docker-compose -p $PROJECT_NAME_TEST_1 -f docker-compose.test.yml up -d
+    - cd bin/tests
+    - yarn install
+    - cd ../../
     - until docker-compose -p $PROJECT_NAME_TEST_1 -f docker-compose.test.yml logs | grep -m 1 "DOCKER WOOCOMMERCE TO HIPAY stage IS UP" ; do sleep 10 ; done
     - docker-compose -p $PROJECT_NAME_TEST_1 -f docker-compose.test.yml logs
     - curl --retry 10 --retry-delay 20 -v http:\/\/${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}-web/
     - cd bin/tests
-    - yarn install
     - bash /tools/run-cypress-test.sh -f $TESTS_FOLDERS_1 -e $EXCLUDED_TEST_FILES --config baseUrl=http://${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}-web/ --env $CYPRESS_ENV
-    - docker logs ${PROJECT_NAME_TEST_1}_wordpress_1 2> tmperror1.log ; cat tmperror1.log | grep -i hipay ; if [[ $? -eq 1 ]]; then exit 0; else exit 1; fi;
+    - docker logs ${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}_web 2> tmperror2.log 1> /dev/null
+    - sed -i 's/, referer:.*$//g' tmperror2.log
+    - if [ "$(grep -i "^\[.*hipay" tmperror2.log)" != "" ]; then grep -i "^\[.*hipay" tmperror2.log; exit 1; fi
+
   after_script:
     - /tools/clean-job.sh $PROJECT_NAME_TEST_1 docker-compose.test.yml wordpress ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
 
@@ -78,13 +83,17 @@ test-cypress-2:
     - docker-compose -p $PROJECT_NAME_TEST_2 -f docker-compose.test.yml stop
     - docker-compose -p $PROJECT_NAME_TEST_2 -f docker-compose.test.yml rm -fv
     - docker-compose -p $PROJECT_NAME_TEST_2 -f docker-compose.test.yml up -d
+    - cd bin/tests
+    - yarn install
+    - cd ../../
     - until docker-compose -p $PROJECT_NAME_TEST_2 -f docker-compose.test.yml logs | grep -m 1 "DOCKER WOOCOMMERCE TO HIPAY stage IS UP" ; do sleep 10 ; done
     - docker-compose -p $PROJECT_NAME_TEST_2 -f docker-compose.test.yml logs
     - curl --retry 10 --retry-delay 20 -v http:\/\/${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}-web/
     - cd bin/tests
-    - yarn install
     - bash /tools/run-cypress-test.sh -f $TESTS_FOLDERS_2 -e $EXCLUDED_TEST_FILES --config baseUrl=http://${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}-web/ --env $CYPRESS_ENV
-    - docker logs ${PROJECT_NAME_TEST_2}_wordpress_1 2> tmperror2.log ; cat tmperror2.log | grep -i hipay ; if [[ $? -eq 1 ]]; then exit 0; else exit 1; fi;
+    - docker logs ${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}_web 2> tmperror2.log 1> /dev/null
+    - sed -i 's/, referer:.*$//g' tmperror2.log
+    - if [ "$(grep -i "^\[.*hipay" tmperror2.log)" != "" ]; then grep -i "^\[.*hipay" tmperror2.log; exit 1; fi
   after_script:
     - /tools/clean-job.sh $PROJECT_NAME_TEST_2 docker-compose.test.yml wordpress ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
 
