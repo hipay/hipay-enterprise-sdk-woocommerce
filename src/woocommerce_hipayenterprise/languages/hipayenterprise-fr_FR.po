@@ -2,10 +2,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce HiPay Enterprise\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-18 13:27+0000\n"
-"PO-Revision-Date: 2019-10-18 13:43+0000\n"
+"POT-Creation-Date: 2019-10-18 15:57+0000\n"
+"PO-Revision-Date: 2019-10-18 15:59+0000\n"
 "Last-Translator: admin <admin-wordpress@hipay.com>\n"
-"Language-Team: Français\n"
+"Language-Team: French (France)\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "MIME-Version: 1.0\n"
@@ -257,11 +257,11 @@ msgstr ""
 "Désolé, votre paiement a été refusé. Veuillez réessayer avec un autre moyen "
 "de paiement."
 
-#: includes/helper/class-hipay-config.php:360
+#: includes/helper/class-hipay-config.php:367
 msgid "You need to map your product categories."
 msgstr "Vous devez mapper vos catégories de produits."
 
-#: includes/helper/class-hipay-config.php:364
+#: includes/helper/class-hipay-config.php:371
 msgid "You need to map your carriers."
 msgstr "Vous devez mapper vos transporteurs."
 
@@ -270,29 +270,30 @@ msgstr "Vous devez mapper vos transporteurs."
 msgid "%1$s %2$s (expires %3$s/%4$s)"
 msgstr "%1$s %2$s (expire %3$s/%4$s)"
 
-#: includes/helper/class-hipay-notification.php:134
+#: includes/helper/class-hipay-notification.php:142
 msgid "Transaction  refused. Order was cancelled with transaction:"
 msgstr "Transaction refusée. La commande a été annulé pour la transaction:"
 
-#: includes/helper/class-hipay-notification.php:151
-#: includes/helper/class-hipay-notification.php:160
+#: includes/helper/class-hipay-notification.php:159
+#: includes/helper/class-hipay-notification.php:168
 msgid "Authorization cancelled. Order was cancelled with transaction:"
 msgstr "Authorization annulée. La commande a été annulée avec la transaction:"
 
-#: includes/helper/class-hipay-notification.php:168
+#: includes/helper/class-hipay-notification.php:178
+#: includes/helper/class-hipay-notification.php:182
 msgid "Authorization successful for transaction."
 msgstr "Demande d'authorization en succès pour la transaction"
 
-#: includes/helper/class-hipay-notification.php:176
-#: includes/helper/class-hipay-notification.php:195
+#: includes/helper/class-hipay-notification.php:191
+#: includes/helper/class-hipay-notification.php:210
 msgid "Payment partially captured, amount:"
 msgstr "Paiement partiellement capturé, montant:"
 
-#: includes/helper/class-hipay-notification.php:206
+#: includes/helper/class-hipay-notification.php:221
 msgid "Refund requested"
 msgstr "Remboursement demandé"
 
-#: includes/helper/class-hipay-notification.php:215
+#: includes/helper/class-hipay-notification.php:230
 msgid "Payment partially refunded, amount:"
 msgstr "Paiement partiellement remboursé, montant:"
 
@@ -358,12 +359,12 @@ msgid ""
 "is mandatory"
 msgstr ""
 
-#: includes/helper/class-hipay-settings-handler.php:233
+#: includes/helper/class-hipay-settings-handler.php:234
 msgid "Email should be valid"
 msgstr "L'e-mail doit être valide"
 
 #. Author of the plugin
-#: includes/helper/class-hipay-settings-handler.php:359
+#: includes/helper/class-hipay-settings-handler.php:360
 msgid "HiPay"
 msgstr ""
 
@@ -1256,38 +1257,50 @@ msgid "Automatic: if all transactions will be captured automatically."
 msgstr "Automatique: toutes les transactions seront capturées automatiquement."
 
 #: includes/admin/template/admin-global-settings.php:216
+msgid "Skip on-hold status"
+msgstr "Passer le statut En attente"
+
+#: includes/admin/template/admin-global-settings.php:226
+msgid ""
+"Indicates whether a command should go through the on-hold status during an "
+"automatic capture."
+msgstr ""
+"Détermine si les commandes doivent passer par le statut En attente lors "
+"d'une capture automatique."
+
+#: includes/admin/template/admin-global-settings.php:236
 msgid "Use Oneclick"
 msgstr "Utiliser le paiement One-click"
 
-#: includes/admin/template/admin-global-settings.php:227
+#: includes/admin/template/admin-global-settings.php:247
 msgid "Customer's cart sending"
 msgstr "Envoyer les informations du panier client"
 
-#: includes/admin/template/admin-global-settings.php:238
+#: includes/admin/template/admin-global-settings.php:258
 msgid "Logs information"
 msgstr "Logs débug"
 
-#: includes/admin/template/admin-global-settings.php:248
+#: includes/admin/template/admin-global-settings.php:268
 msgid "Send url Notification"
 msgstr "Envoyer l'url de notification"
 
-#: includes/admin/template/admin-global-settings.php:258
+#: includes/admin/template/admin-global-settings.php:278
 msgid "SDK js url"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:265
+#: includes/admin/template/admin-global-settings.php:285
 msgid "Activate 3-D Secure"
 msgstr "Activer le 3D Secure"
 
-#: includes/admin/template/admin-global-settings.php:272
+#: includes/admin/template/admin-global-settings.php:292
 msgid "Deactivated"
 msgstr "Désactivé"
 
-#: includes/admin/template/admin-global-settings.php:276
+#: includes/admin/template/admin-global-settings.php:296
 msgid "Try to enable for all transactions"
 msgstr "Essayer d'activer pour toutes les transactions"
 
-#: includes/admin/template/admin-global-settings.php:281
+#: includes/admin/template/admin-global-settings.php:301
 msgid "Force for all transactions"
 msgstr "Forcer pour tous les transactions"
 

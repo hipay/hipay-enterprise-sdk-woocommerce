@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce HiPay Enterprise\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-18 13:27+0000\n"
+"POT-Creation-Date: 2019-10-18 15:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -239,11 +239,11 @@ msgid ""
 "of payment."
 msgstr ""
 
-#: includes/helper/class-hipay-config.php:360
+#: includes/helper/class-hipay-config.php:367
 msgid "You need to map your product categories."
 msgstr ""
 
-#: includes/helper/class-hipay-config.php:364
+#: includes/helper/class-hipay-config.php:371
 msgid "You need to map your carriers."
 msgstr ""
 
@@ -252,29 +252,30 @@ msgstr ""
 msgid "%1$s %2$s (expires %3$s/%4$s)"
 msgstr ""
 
-#: includes/helper/class-hipay-notification.php:134
+#: includes/helper/class-hipay-notification.php:142
 msgid "Transaction  refused. Order was cancelled with transaction:"
 msgstr ""
 
-#: includes/helper/class-hipay-notification.php:151
-#: includes/helper/class-hipay-notification.php:160
+#: includes/helper/class-hipay-notification.php:159
+#: includes/helper/class-hipay-notification.php:168
 msgid "Authorization cancelled. Order was cancelled with transaction:"
 msgstr ""
 
-#: includes/helper/class-hipay-notification.php:168
+#: includes/helper/class-hipay-notification.php:178
+#: includes/helper/class-hipay-notification.php:182
 msgid "Authorization successful for transaction."
 msgstr ""
 
-#: includes/helper/class-hipay-notification.php:176
-#: includes/helper/class-hipay-notification.php:195
+#: includes/helper/class-hipay-notification.php:191
+#: includes/helper/class-hipay-notification.php:210
 msgid "Payment partially captured, amount:"
 msgstr ""
 
-#: includes/helper/class-hipay-notification.php:206
+#: includes/helper/class-hipay-notification.php:221
 msgid "Refund requested"
 msgstr ""
 
-#: includes/helper/class-hipay-notification.php:215
+#: includes/helper/class-hipay-notification.php:230
 msgid "Payment partially refunded, amount:"
 msgstr ""
 
@@ -335,12 +336,12 @@ msgid ""
 "is mandatory"
 msgstr ""
 
-#: includes/helper/class-hipay-settings-handler.php:233
+#: includes/helper/class-hipay-settings-handler.php:234
 msgid "Email should be valid"
 msgstr ""
 
 #. Author of the plugin
-#: includes/helper/class-hipay-settings-handler.php:359
+#: includes/helper/class-hipay-settings-handler.php:360
 msgid "HiPay"
 msgstr ""
 
@@ -1158,38 +1159,48 @@ msgid "Automatic: if all transactions will be captured automatically."
 msgstr ""
 
 #: includes/admin/template/admin-global-settings.php:216
+msgid "Skip on-hold status"
+msgstr ""
+
+#: includes/admin/template/admin-global-settings.php:226
+msgid ""
+"Indicates whether a command should go through the on-hold status during an "
+"automatic capture."
+msgstr ""
+
+#: includes/admin/template/admin-global-settings.php:236
 msgid "Use Oneclick"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:227
+#: includes/admin/template/admin-global-settings.php:247
 msgid "Customer's cart sending"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:238
+#: includes/admin/template/admin-global-settings.php:258
 msgid "Logs information"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:248
+#: includes/admin/template/admin-global-settings.php:268
 msgid "Send url Notification"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:258
+#: includes/admin/template/admin-global-settings.php:278
 msgid "SDK js url"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:265
+#: includes/admin/template/admin-global-settings.php:285
 msgid "Activate 3-D Secure"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:272
+#: includes/admin/template/admin-global-settings.php:292
 msgid "Deactivated"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:276
+#: includes/admin/template/admin-global-settings.php:296
 msgid "Try to enable for all transactions"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:281
+#: includes/admin/template/admin-global-settings.php:301
 msgid "Force for all transactions"
 msgstr ""
 
