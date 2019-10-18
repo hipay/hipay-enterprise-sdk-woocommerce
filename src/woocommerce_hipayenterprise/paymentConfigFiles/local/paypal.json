@@ -2,23 +2,12 @@
   "name": "paypal",
   "config": {
     "displayNameBO": "Paypal",
-    "displayName":  {
+    "displayName": {
       "fr": "Paypal",
       "en": "Paypal"
     },
     "frontPosition": 20,
     "activated": 0,
-    "canManualCapture": 1,
-    "canManualCapturePartially": 1,
-    "canRefund": 1,
-    "canRefundPartially": 1,
-    "currencies": [
-      "EUR"
-    ],
-    "countries": [
-      "GB",
-      "FR"
-    ],
     "displayConfigurationFields": [
       "displayName",
       "minAmount",
@@ -34,7 +23,6 @@
     "maxAmount": {
       "EUR": false
     },
-    "logo": "paypal.png",
-    "additionalFields": {}
+    "logo": "paypal.png"
   }
 }

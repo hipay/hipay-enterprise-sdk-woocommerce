@@ -2,22 +2,12 @@
   "name": "mybank",
   "config": {
     "displayNameBO": "MyBank",
-    "displayName":  {
+    "displayName": {
       "fr": "MyBank",
       "en": "MyBank"
     },
     "frontPosition": 14,
     "activated": 0,
-    "canManualCapture": 0,
-    "canManualCapturePartially": 0,
-    "canRefund": 1,
-    "canRefundPartially": 1,
-    "currencies": [
-      "EUR"
-    ],
-    "countries": [
-      "IT"
-    ],
     "displayConfigurationFields": [
       "displayName",
       "minAmount",
@@ -33,7 +23,6 @@
     "maxAmount": {
       "EUR": false
     },
-    "logo": "mybank.png",
-    "additionalFields": {}
+    "logo": "mybank.png"
   }
 }

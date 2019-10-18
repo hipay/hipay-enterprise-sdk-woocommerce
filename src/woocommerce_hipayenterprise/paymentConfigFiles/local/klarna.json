@@ -2,22 +2,12 @@
   "name": "klarnainvoice",
   "config": {
     "displayNameBO": "Klarna",
-    "displayName":  {
+    "displayName": {
       "fr": "Klarna",
       "en": "Klarna"
     },
     "frontPosition": 18,
     "activated": 0,
-    "canManualCapture": 1,
-    "canManualCapturePartially": 0,
-    "canRefund": 1,
-    "canRefundPartially": 0,
-    "currencies": [
-      "EUR"
-    ],
-    "countries": [
-      "DE"
-    ],
     "displayConfigurationFields": [
       "displayName",
       "minAmount",
@@ -33,7 +23,6 @@
     "maxAmount": {
       "EUR": false
     },
-    "logo": "klarna.png",
-    "additionalFields": {}
+    "logo": "klarna.png"
   }
 }

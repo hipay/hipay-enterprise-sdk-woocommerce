@@ -2,22 +2,12 @@
   "name": "przelewy24",
   "config": {
     "displayNameBO": "Przelewy24",
-    "displayName":  {
+    "displayName": {
       "fr": "Przelewy24",
       "en": "Przelewy24"
     },
     "frontPosition": 23,
     "activated": 0,
-    "canManualCapture": 1,
-    "canManualCapturePartially": 0,
-    "canRefund": 1,
-    "canRefundPartially": 1,
-    "currencies": [
-      "PLN"
-    ],
-    "countries": [
-      "PL"
-    ],
     "displayConfigurationFields": [
       "displayName",
       "minAmount",
@@ -33,7 +23,6 @@
     "maxAmount": {
       "EUR": false
     },
-    "logo": "p24.png",
-    "additionalFields": {}
+    "logo": "p24.png"
   }
 }
