@@ -356,8 +356,9 @@ class Hipay_Settings_Handler
     {
         if (!empty($this->errors)) {
             foreach ($this->errors as $error) {
-                add_settings_error(__("HiPay", "hipayenterprise"), null, $error);
+                $this->plugin->add_error($error);
             }
+
             $this->errors = array();
 
             throw new Hipay_Settings_Exception();

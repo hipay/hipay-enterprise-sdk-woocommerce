@@ -1,17 +1,19 @@
-image: hipay/gitlab-ci-base:jessie
+image: gcr.io/pi-dev-sandbox/gitlab-ci-base:buster
 
 stages:
 - build-test
 - test
-- clean-stack
 - package
 - build
 - deploy
 
 variables:
-  PROJECT_NAME_TEST_1: ${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_PIPELINE_ID}-1
-  PROJECT_NAME_TEST_2: ${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_PIPELINE_ID}-2
+  DOCKER_HOST: tcp://localhost:2375/
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
 
+services:
+  - docker:19.03.1-dind
 
 #########################
 ####  TEMPLATE      ####
@@ -20,7 +22,7 @@ variables:
 .test_template: &test_definition
   stage: test
   tags:
-    - pi-commerce-no-overlay
+    - gcp-cypress-runner
   allow_failure: false
   before_script:
     - sed -i -e "s/{HIPAY_API_USER_TEST\}/$HIPAY_API_USER_TEST/" ./bin/docker/conf/test/hipay.env.sample
@@ -32,6 +34,15 @@ variables:
     - sed -i -e "s@{PI_CI_DATA_URL\}@$PI_CI_DATA_URL@" ./bin/docker/conf/test/hipay.env.sample
     - cp ./bin/tests/.npmrc.sample ./bin/tests/.npmrc
     - sed -i -e "s/\${NPM_REGISTRY_TOKEN\}/$NPM_REGISTRY_TOKEN/" ./bin/tests/.npmrc
+    - docker-compose -f docker-compose.test.yml pull
+    - docker-compose -f docker-compose.test.yml up -d
+    - cd bin/tests
+    - yarn install
+    - cd ../../
+    - until docker-compose -f docker-compose.test.yml logs | grep -m 1 "DOCKER WOOCOMMERCE TO HIPAY stage IS UP" ; do sleep 10 ; done
+    - docker-compose -f docker-compose.test.yml logs
+    - curl --retry 10 --retry-delay 20 -v http:\/\/localhost:8000
+    - cd bin/tests
   artifacts:
     paths:
       - bin/tests/cypress/videos
@@ -48,68 +59,26 @@ variables:
 build-test:
   stage: build-test
   script:
-  - docker-compose -f docker-compose.test.yml build
+    - docker-compose -f docker-compose.test.yml build
+    - docker-compose -f docker-compose.test.yml push
   tags:
-  - pi-commerce-no-overlay
+    - gcp-default-runner
 
 test-cypress-1:
   <<: *test_definition
   script:
-    - sed -i -e "s/{DB_HOST\}/${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}_database/" ./bin/docker/conf/test/wordpress.env.sample
-    - sed -i -e "s/{WORDPRESS_URL\}/${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}-web/" ./bin/docker/conf/test/wordpress.env.sample
-    - docker-compose -p $PROJECT_NAME_TEST_1 -f docker-compose.test.yml stop
-    - docker-compose -p $PROJECT_NAME_TEST_1 -f docker-compose.test.yml rm -fv
-    - docker-compose -p $PROJECT_NAME_TEST_1 -f docker-compose.test.yml up -d
-    - cd bin/tests
-    - yarn install
-    - cd ../../
-    - until docker-compose -p $PROJECT_NAME_TEST_1 -f docker-compose.test.yml logs | grep -m 1 "DOCKER WOOCOMMERCE TO HIPAY stage IS UP" ; do sleep 10 ; done
-    - docker-compose -p $PROJECT_NAME_TEST_1 -f docker-compose.test.yml logs
-    - curl --retry 10 --retry-delay 20 -v http:\/\/${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}-web/
-    - cd bin/tests
-    - bash /tools/run-cypress-test.sh -f $TESTS_FOLDERS_1 -e $EXCLUDED_TEST_FILES --config baseUrl=http://${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}-web/ --env $CYPRESS_ENV
-    - docker logs ${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}_web 2> tmperror2.log 1> /dev/null
+    - bash /tools/run-cypress-test.sh -f $TESTS_FOLDERS_1 -e $EXCLUDED_TEST_FILES --config baseUrl=http://localhost:8000 --env $CYPRESS_ENV
+    - docker logs wordpress_web 2> tmperror2.log 1> /dev/null
     - sed -i 's/, referer:.*$//g' tmperror2.log
     - if [ "$(grep -i "^\[.*hipay" tmperror2.log)" != "" ]; then grep -i "^\[.*hipay" tmperror2.log; exit 1; fi
-
-  after_script:
-    - /tools/clean-job.sh $PROJECT_NAME_TEST_1 docker-compose.test.yml wordpress ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
 
 test-cypress-2:
   <<: *test_definition
   script:
-    - sed -i -e "s/{DB_HOST\}/${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}_database/" ./bin/docker/conf/test/wordpress.env.sample
-    - sed -i -e "s/{WORDPRESS_URL\}/${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}-web/" ./bin/docker/conf/test/wordpress.env.sample
-    - docker-compose -p $PROJECT_NAME_TEST_2 -f docker-compose.test.yml stop
-    - docker-compose -p $PROJECT_NAME_TEST_2 -f docker-compose.test.yml rm -fv
-    - docker-compose -p $PROJECT_NAME_TEST_2 -f docker-compose.test.yml up -d
-    - cd bin/tests
-    - yarn install
-    - cd ../../
-    - until docker-compose -p $PROJECT_NAME_TEST_2 -f docker-compose.test.yml logs | grep -m 1 "DOCKER WOOCOMMERCE TO HIPAY stage IS UP" ; do sleep 10 ; done
-    - docker-compose -p $PROJECT_NAME_TEST_2 -f docker-compose.test.yml logs
-    - curl --retry 10 --retry-delay 20 -v http:\/\/${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}-web/
-    - cd bin/tests
-    - bash /tools/run-cypress-test.sh -f $TESTS_FOLDERS_2 -e $EXCLUDED_TEST_FILES --config baseUrl=http://${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}-web/ --env $CYPRESS_ENV
-    - docker logs ${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}_web 2> tmperror2.log 1> /dev/null
+    - bash /tools/run-cypress-test.sh -f $TESTS_FOLDERS_2 -e $EXCLUDED_TEST_FILES --config baseUrl=http://localhost:8000 --env $CYPRESS_ENV
+    - docker logs wordpress_web 2> tmperror2.log 1> /dev/null
     - sed -i 's/, referer:.*$//g' tmperror2.log
     - if [ "$(grep -i "^\[.*hipay" tmperror2.log)" != "" ]; then grep -i "^\[.*hipay" tmperror2.log; exit 1; fi
-  after_script:
-    - /tools/clean-job.sh $PROJECT_NAME_TEST_2 docker-compose.test.yml wordpress ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
-
-clean-stack-test:
-  stage: clean-stack
-  script:
-  - echo "Clean remaining containers, network and images"
-  after_script:
-    - /tools/clean-job.sh $PROJECT_NAME_TEST_1 docker-compose.test.yml wordpress ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
-    - /tools/clean-job.sh $PROJECT_NAME_TEST_2 docker-compose.test.yml wordpress ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
-  tags:
-    - pi-commerce-no-overlay
-  except:
-    variables:
-      - $CI_COMMIT_MESSAGE =~ /skip-tests/
-  when: always
 
 package:
   stage: package
@@ -121,17 +90,15 @@ package:
     - composer install --no-dev
     - cd ../..
     - ./bin/package/builder.sh -v $CI_COMMIT_REF_SLUG
-    - chmod u+x bin/deployment/deploy_package.sh
-    - ./bin/deployment/deploy_package.sh
   artifacts:
     paths:
       - ./bin/package
   tags:
-    - pi-commerce-no-overlay
-
+    - gcp-default-runner
 
 build:
   stage: build
+  when: manual
   before_script:
   - /tools/docker-rmi.sh ${REGISTRY_URL}/${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
   script:
