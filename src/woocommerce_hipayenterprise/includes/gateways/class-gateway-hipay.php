@@ -339,7 +339,8 @@ if (!class_exists('WC_Gateway_Hipay')) {
                     'simplexml_active' => extension_loaded('simplexml'),
                     'https_active' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off',
                     'notifications' => $this->notifications,
-                    'currentPluginVersion' => get_option("hipay_enterprise_version")
+                    'currentPluginVersion' => get_option("hipay_enterprise_version"),
+                    'updateInformation' => get_option("wc_hipay_update_info")
                 )
             );
         }
@@ -410,6 +411,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
                     "cardtoken" => Hipay_Helper::getPostData('card-token'),
                     "card_holder" => Hipay_Helper::getPostData('card-holder'),
                     "deviceFingerprint" => Hipay_Helper::getPostData('card-device_fingerprint'),
+                    "browser_info" => json_decode(Hipay_Helper::getPostData('card-browser_info')),
                     "forceSalesMode" => false
                 );
 

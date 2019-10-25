@@ -57,16 +57,20 @@ class Hipay_Transactions_Helper
 
     const TRANSACTION_BASKET = "basket";
 
+    const TRANSACTION_MULTI_USE = 'attempt_create_multi_use';
+
+    const TRANSACTION_CUSTOMER_ID = 'customer_id';
+
     /**
-     *  Save Post Type Transaction
+     *  Save Post type Transaction
      *
-     * @param $orderId
+     * @param $order
      * @param $transaction
      */
-    public function saveTransaction($orderId, $transaction)
+    public function saveTransaction($order, $transaction)
     {
         $post = array(
-            self::TRANSACTION_ORDER_ID => $orderId,
+            self::TRANSACTION_ORDER_ID => $order->get_id(),
             self::TRANSACTION_TRANSACTION_REF => $transaction->getTransactionReference(),
             self::TRANSACTION_STATE => $transaction->getState(),
             self::TRANSACTION_STATUS => $transaction->getStatus(),
@@ -78,7 +82,9 @@ class Hipay_Transactions_Helper
             self::TRANSACTION_PAYMENT_START => $transaction->getDateCreated(),
             self::TRANSACTION_PAYMENT_AUTHORIZED => $transaction->getDateAuthorized(),
             self::TRANSACTION_AUTHORIZATION_CODE => $transaction->getAuthorizationCode(),
-            self::TRANSACTION_BASKET => $transaction->getBasket()
+            self::TRANSACTION_BASKET => $transaction->getBasket(),
+            self::TRANSACTION_MULTI_USE => !empty($transaction->getCustomData()) && isset($transaction->getCustomData()["createOneClick"]) ? $transaction->getCustomData()["createOneClick"] : 0,
+            self::TRANSACTION_CUSTOMER_ID => $order->get_user_id(),
         );
 
         $this->createPostTypeTransactions($post);
@@ -184,4 +190,132 @@ class Hipay_Transactions_Helper
         return self::$instance;
     }
 
+    /**
+     *  Nb Attempt for create token per user from a date
+     *
+     * @param $customerId
+     * @param $paymentStart
+     * @return int
+     */
+    public static function nbAttemptCreateCard($customerId, $paymentStart)
+    {
+        $status_sql = array(
+            TransactionStatus::AUTHORIZED,
+            TransactionStatus::DENIED,
+            TransactionStatus::CANCELLED,
+            TransactionStatus::EXPIRED,
+            TransactionStatus::REFUSED,
+            TransactionStatus::CAPTURED
+        );
+
+        $query_args = array(
+            'post_type' => Hipay_Admin_Post_Types::POST_TYPE_TRANSACTION,
+            'no_found_rows' => true,
+            'posts_per_page' => -1,
+            'date_query' => array(
+                array(
+                    'after' => $paymentStart,
+                    'inclusive' => true,
+                ),
+            ),
+            'meta_query' => array(
+                array(
+                    'key' => self::TRANSACTION_CUSTOMER_ID,
+                    'value' => $customerId,
+                    'compare' => '='
+                ),
+                array(
+                    'key' => self::TRANSACTION_STATUS,
+                    'value' => $status_sql,
+                    'compare' => 'IN'
+                ),
+                array(
+                    'key' => self::TRANSACTION_MULTI_USE,
+                    'value' => "1",
+                    'compare' => '='
+                )
+            )
+        );
+
+        $postTransactions = new WP_Query($query_args);
+
+        $transactionIds = array();
+
+        foreach ($postTransactions->get_posts() as $transaction) {
+            $transactionIds[] = $transaction->{self::TRANSACTION_TRANSACTION_REF};
+        }
+
+        return count(array_unique($transactionIds));
+    }
+
+    /**
+     * @param $customerId
+     * @param $paymentStart
+     * @param $paymentMethods
+     * @return int
+     */
+    public static function getNbPaymentAttempt($customerId, $paymentStart, $paymentMethods)
+    {
+
+        $query_args = array(
+            'post_type' => Hipay_Admin_Post_Types::POST_TYPE_TRANSACTION,
+            'no_found_rows' => true,
+            'posts_per_page' => -1,
+            'date_query' => array(
+                array(
+                    'after' => $paymentStart,
+                    'inclusive' => true,
+                ),
+            ),
+            'meta_query' => array(
+                array(
+                    'key' => self::TRANSACTION_CUSTOMER_ID,
+                    'value' => $customerId,
+                    'compare' => '='
+                ),
+                array(
+                    'key' => self::TRANSACTION_REFUND_PAYMENT_PRODUCT,
+                    'value' => $paymentMethods,
+                    'compare' => 'IN'
+                )
+            )
+        );
+
+        $postTransactions = new WP_Query($query_args);
+
+        $transactionIds = array();
+
+        foreach ($postTransactions->get_posts() as $transaction) {
+            $transactionIds[] = $transaction->{self::TRANSACTION_TRANSACTION_REF};
+        }
+
+        return count(array_unique($transactionIds));
+    }
+
+    public static function isTransactionCancelled($orderId){
+        $query_args = array(
+            'post_type' => Hipay_Admin_Post_Types::POST_TYPE_TRANSACTION,
+            'no_found_rows' => true,
+            'posts_per_page' => -1,
+            'meta_query' => array(
+                array(
+                    'key' => self::TRANSACTION_ORDER_ID,
+                    'value' => $orderId,
+                    'compare' => '='
+                ),
+                array(
+                    'key' => self::TRANSACTION_STATUS,
+                    'value' => array(TransactionStatus::CANCELLED, TransactionStatus::AUTHORIZATION_CANCELLATION_REQUESTED),
+                    'compare' => 'IN'
+                )
+            )
+        );
+
+        $query = new WP_Query($query_args);
+        if($query->have_posts()){
+            return true;
+        }
+
+        return false;
+    }
 }

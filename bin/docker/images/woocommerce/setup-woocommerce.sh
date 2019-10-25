@@ -29,8 +29,13 @@ sleep 20
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     printf "\n${COLOR_SUCCESS}            INSTALLATION SDK PHP         ${NC}\n"
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
-    cd /var/www/html/wp-content/plugins/woocommerce_hipayenterprise/ \
-    && composer install --no-dev
+    cd /var/www/html/wp-content/plugins/woocommerce_hipayenterprise/
+
+    cp composer.json composer.json.bak
+    cat composer.json.bak | python -c "import sys, json; composerObj=json.load(sys.stdin); composerObj['scripts'] = {'post-install-cmd': ['@managePiDataURLDev'], 'post-update-cmd': ['@managePiDataURLDev'], 'managePiDataURLDev': [\"sed -i 's@https://stage-data.hipay.com@"$PI_DATA_URL"@g' vendor/hipay/hipay-fullservice-sdk-php/lib/HiPay/Fullservice/HTTP/Configuration/Configuration.php\", \"sed -i 's@https://data.hipay.com@"$PI_DATA_URL"@g' vendor/hipay/hipay-fullservice-sdk-php/lib/HiPay/Fullservice/HTTP/Configuration/Configuration.php\"]}; print json.dumps(composerObj, False, True, True, True, None, 2);" > composer.json
+    rm composer.json.bak
+
+    composer install --no-dev
 
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     printf "\n${COLOR_SUCCESS}    INSTALL HIPAY WOOCOMMERCE MODULE     ${NC}\n"
@@ -95,7 +100,7 @@ sleep 20
         printf "\n${COLOR_SUCCESS}     INSTALLATION XDEBUG $ENVIRONMENT    ${NC}\n"
         printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
 
-        echo '' && pecl install xdebug-2.6.0
+        echo '' && pecl install xdebug
         echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini
         echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini
         echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini
@@ -105,6 +110,28 @@ sleep 20
     echo "define( 'WP_DEBUG', true );" >> /var/www/html/wp-config.php
     echo "define( 'WP_DEBUG_LOG', true );" >> /var/www/html/wp-config.php
 fi
+
+#===================================#
+#       START WEBSERVER
+#===================================#
+printf "${COLOR_SUCCESS}                                                                           ${NC}\n"
+printf "${COLOR_SUCCESS}    |======================================================================${NC}\n"
+printf "${COLOR_SUCCESS}    |                                                                      ${NC}\n"
+printf "${COLOR_SUCCESS}    |               DOCKER WOOCOMMERCE TO HIPAY $ENVIRONMENT IS UP         ${NC}\n"
+printf "${COLOR_SUCCESS}    |                                                                      ${NC}\n"
+printf "${COLOR_SUCCESS}    |   URL FRONT       : http://$WORDPRESS_URL                            ${NC}\n"
+printf "${COLOR_SUCCESS}    |   URL BACK        : http://$WORDPRESS_URL/wp-admin                   ${NC}\n"
+printf "${COLOR_SUCCESS}    |                                                                      ${NC}\n"
+printf "${COLOR_SUCCESS}    |   PHP VERSION     : $PHP_VERSION                                     ${NC}\n"
+printf "${COLOR_SUCCESS}    |======================================================================${NC}\n"
+
+
+printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+printf "\n${COLOR_SUCCESS}           HOSTS CONGIGURATION           ${NC}\n"
+printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+cp /etc/hosts ~/hosts.bak
+sed -i 's/^127\.0\.0\.1.*/127.0.0.1    localhost    data.hipay.com    stage-data.hipay.com/g' ~/hosts.bak
+cp  ~/hosts.bak /etc/hosts
 
 #==========================================
 # APACHE RUNNING

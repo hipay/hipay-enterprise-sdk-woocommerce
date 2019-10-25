@@ -41,9 +41,10 @@ class Hipay_Helper
         $maxAmount = $conf["maxAmount"]["EUR"];
 
         if ((!empty($maxAmount) && $maxAmount != 0 && $total > $maxAmount)
-            || ($minAmount != 0 && $total < $minAmount)) {
+            || (!empty($minAmount) && $minAmount != 0 && $total < $minAmount)) {
             return false;
         }
+
         return true;
     }
 
@@ -93,10 +94,8 @@ class Hipay_Helper
      */
     private static function isPaymentMethodAuthorized($conf, $currency, $country, $orderTotal)
     {
-        return !empty($conf["currencies"])
-            && !empty($conf["countries"])
-            && in_array($currency, $conf["currencies"])
-            && in_array($country, $conf["countries"])
+        return (empty($conf["currencies"]) || in_array($currency, $conf["currencies"]))
+            && (empty($conf["countries"]) || in_array($country, $conf["countries"]))
             && Hipay_Helper::isInAuthorizedAmount($conf, $orderTotal);
     }
 
@@ -241,6 +240,12 @@ class Hipay_Helper
                 $message .= __('Registered notification from HiPay about refunded amount of ', 'hipayenterprise') .
                     $transaction->getRefundedAmount() .
                     "\n";
+                break;
+            case TransactionStatus::AUTHORIZATION_CANCELLATION_REQUESTED: //175
+                $message .= __('Transaction cancellation requested', 'hipayenterprise') . "\n";
+                break;
+            case TransactionStatus::CANCELLED: //115
+                $message .= __('Transaction cancelled', 'hipayenterprise') . "\n";
                 break;
             default:
                 $message .= __('Registered notification ', "hipayenterprise") . $transaction->getStatus() .

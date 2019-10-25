@@ -33,7 +33,8 @@ class WC_Payment_Token_CC_HiPay extends WC_Payment_Token
         'card_type' => '',
         'card_holder' => '',
         'payment_product' => '',
-        'force_cvv' => false
+        'force_cvv' => false,
+        'date_created' => ''
     );
 
     public function get_display_name($deprecated = '')
@@ -160,6 +161,16 @@ class WC_Payment_Token_CC_HiPay extends WC_Payment_Token
         $this->set_prop('force_cvv', $force_cvv);
     }
 
+    public function get_date_created($context = 'view')
+    {
+        return $this->get_prop('date_created', $context);
+    }
+
+    public function set_date_created($date_created)
+    {
+        $this->set_prop('date_created', $date_created);
+    }
+
     public static function wc_get_account_saved_payment_methods_list_item_cc_hipay($item, $payment_token)
     {
         if ('cc_hipay' !== strtolower($payment_token->get_type())) {
@@ -200,6 +211,22 @@ class WC_Payment_Token_CC_HiPay extends WC_Payment_Token
 
         return $html . $cvvUpdateForm;
     }
+
+    public function wc_get_form_saved_payment_methods_html_hipay($html, $gateways)
+    {
+
+        ob_start();
+
+        Hipay_Helper::process_template(
+            'oc-payment-data.php',
+            'frontend'
+        );
+
+        $ocPaymentData = ob_get_contents();
+        ob_end_clean();
+
+        return $html . $ocPaymentData;
+    }
 }
 
 add_filter(
@@ -212,6 +239,13 @@ add_filter(
 add_filter(
     'woocommerce_payment_gateway_get_saved_payment_method_option_html',
     array('WC_Payment_Token_CC_HiPay', 'wc_get_get_saved_payment_method_option_html_hipay'),
+    10,
+    2
+);
+
+add_filter(
+    'wc_payment_gateway_form_saved_payment_methods_html',
+    array('WC_Payment_Token_CC_HiPay', 'wc_get_form_saved_payment_methods_html_hipay'),
     10,
     2
 );

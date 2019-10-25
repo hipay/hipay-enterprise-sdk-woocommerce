@@ -5,23 +5,13 @@
       "code": "astropay",
       "label": "Astropay"
     },
-    "displayNameBO": "Caïxa",
-    "displayName":  {
-      "fr": "Caïxa",
-      "en": "Caïxa"
+    "displayNameBO": "Ca\u00efxa",
+    "displayName": {
+      "fr": "Ca\u00efxa",
+      "en": "Ca\u00efxa"
     },
     "frontPosition": 13,
     "activated": 0,
-    "canRefund": 0,
-    "canRefundPartially": 0,
-    "canManualCapture": 0,
-    "canManualCapturePartially": 0,
-    "currencies": [
-      "BRL"
-    ],
-    "countries": [
-      "BR"
-    ],
     "displayConfigurationFields": [
       "displayName",
       "minAmount",
@@ -37,21 +27,6 @@
     "maxAmount": {
       "EUR": false
     },
-    "logo": "aura.png",
-    "additionalFields": {
-      "sdkClass": "HiPay\\Fullservice\\Gateway\\Request\\PaymentMethod\\AstropayPaymentMethod",
-      "defaultFieldsValue": {},
-      "formFields": {
-        "national_identification_number": {
-          "label": {
-            "en": "CPF",
-            "fr": "CPF"
-          },
-          "type": "text",
-          "required": true,
-          "controlType": "cpf"
-        }
-      }
-    }
+    "logo": "aura.png"
   }
 }

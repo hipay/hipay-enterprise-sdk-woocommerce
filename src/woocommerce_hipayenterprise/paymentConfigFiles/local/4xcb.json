@@ -6,22 +6,12 @@
       "label": "Oney"
     },
     "displayNameBO": "4x Carte Bancaire - Oney",
-    "displayName":  {
+    "displayName": {
       "fr": "4x Carte Bancaire - Oney",
       "en": "4x Credit card - Oney"
     },
     "frontPosition": 5,
     "activated": 0,
-    "canRefund": 1,
-    "canRefundPartially": 1,
-    "canManualCapture": 1,
-    "canManualCapturePartially": 1,
-    "currencies": [
-      "EUR"
-    ],
-    "countries": [
-      "FR"
-    ],
     "displayConfigurationFields": [
       "displayName",
       "minAmount",
@@ -37,7 +27,6 @@
     "maxAmount": {
       "EUR": false
     },
-    "logo": "oney.png",
-    "additionalFields": {}
+    "logo": "oney.png"
   }
 }

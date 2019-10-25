@@ -100,6 +100,14 @@ class Hipay_Notification
                 $this->transaction->getStatus()
             );
 
+            update_post_meta(
+                $this->order->get_id(),
+                '_transaction_id',
+                $this->transaction->getTransactionReference()
+            );
+
+            $this->orderHandler->addNote(Hipay_Helper::formatOrderData($this->transaction));
+            $this->transactionsHelper->saveTransaction($this->order, $this->transaction);
 
             switch ($this->transaction->getStatus()) {
                 case TransactionStatus::CREATED:
@@ -139,8 +147,16 @@ class Hipay_Notification
                     $this->orderHandler->paymentOnHold("pending payment");
                     break;
                 case TransactionStatus::EXPIRED:
-                case TransactionStatus::CANCELLED:
                     $this->orderHandler->paymentFailed(
+                        __(
+                            "Authorization cancelled. Order was cancelled with transaction:",
+                            "hipayenterprise"
+                        )
+                    );
+                    break;
+                case TransactionStatus::CANCELLED:
+                case TransactionStatus::AUTHORIZATION_CANCELLATION_REQUESTED:
+                    $this->orderHandler->paymentCancelled(
                         __(
                             "Authorization cancelled. Order was cancelled with transaction:",
                             "hipayenterprise"
@@ -150,23 +166,6 @@ class Hipay_Notification
                 case TransactionStatus::AUTHORIZED: //116
                     $this->orderHandler->paymentOnHold(
                         __("Authorization successful for transaction.", "hipayenterprise")
-                    );
-
-                    $customData = $this->transaction->getCustomData();
-                    if (
-                        (isset($customData["createOneClick"])
-                            && $customData["createOneClick"])
-                        || (isset($customData["forceCvv"])
-                            && $customData["forceCvv"])
-                        && $this->CardTypeAllowRecurring($this->transaction->getPaymentProduct())
-                    ) {
-                        Hipay_Token_Helper::createTokenFromTransaction($this->transaction, $this->order);
-                    }
-
-                    update_post_meta(
-                        $this->order->get_id(),
-                        '_transaction_id',
-                        $this->transaction->getTransactionReference()
                     );
                     break;
                 case TransactionStatus::CAPTURED: //118
@@ -227,8 +226,19 @@ class Hipay_Notification
                     break;
             }
 
-            $this->orderHandler->addNote(Hipay_Helper::formatOrderData($this->transaction));
-            $this->transactionsHelper->saveTransaction($this->order->get_id(), $this->transaction);
+            if($this->transaction->getStatus() == TransactionStatus::AUTHORIZED ||
+                $this->transaction->getStatus() == TransactionStatus::CAPTURED){
+                $customData = $this->transaction->getCustomData();
+                if (
+                    (isset($customData["createOneClick"])
+                        && $customData["createOneClick"])
+                    || (isset($customData["forceCvv"])
+                        && $customData["forceCvv"])
+                    && $this->CardTypeAllowRecurring($this->transaction->getPaymentProduct())
+                ) {
+                    Hipay_Token_Helper::createTokenFromTransaction($this->transaction, $this->order);
+                }
+            }
 
             return true;
         } catch (Exception $e) {

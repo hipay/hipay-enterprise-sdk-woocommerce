@@ -68,7 +68,7 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
      */
     public function __construct()
     {
-        if (is_admin()) {
+        if (is_admin() && function_exists('get_plugin_data')) {
             $plugin_data = get_plugin_data(__FILE__);
             $this->plugin_version = $plugin_data['Version'];
         }
@@ -133,6 +133,14 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
                 "iconColor" => $this->confHelper->getHostedFieldsStyle()["iconColor"],
             )
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaymentProduct()
+    {
+        return $this->paymentProduct;
     }
 
     /**
@@ -275,6 +283,40 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
             );
 
             $this->logs->logInfos(" # End Process Manual Capture for  " . $order_id);
+            return array(
+                'result' => 'success',
+                'redirect' => $redirect,
+            );
+        } catch (Hipay_Payment_Exception $e) {
+            return $this->handlePaymentError($e);
+        }
+    }
+
+    /**
+     * Order cancel
+     *
+     * @param $order_id
+     * @param null $amount
+     * @param string $reason
+     * @return array
+     * @throws Exception
+     */
+    public function process_cancel($orderId)
+    {
+        try {
+            $this->logs->logInfos(" # Process Cancel for  " . $orderId);
+
+            $order = wc_get_order($orderId);
+
+            $redirect = $this->apiRequestHandler->handleMaintenance(
+                \HiPay\Fullservice\Enum\Transaction\Operation::CANCEL,
+                array(
+                    "order_id" => $orderId,
+                    "transaction_reference" => $order->get_transaction_id(),
+                )
+            );
+
+            $this->logs->logInfos(" # End Process Cancel for  " . $orderId);
             return array(
                 'result' => 'success',
                 'redirect' => $redirect,
