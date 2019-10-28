@@ -213,6 +213,26 @@
         </div>
     </div>
     <div class="form-group">
+        <label class="control-label col-lg-2"><?php _e('Skip on-hold status', "hipayenterprise"); ?></label>
+        <div class="col-lg-8">
+            <input class="form-control" type="checkbox" name="skip_onhold"
+                   id="skip_onhold" style=""
+                   value="1" <?php if ($paymentCommon["skip_onhold"]) {
+                echo 'checked="checked"';
+            } ?>>
+            <div class="help-block">
+                <ul>
+                    <li>
+                        <?php _e(
+                            "Indicates whether a command should go through the on-hold status during an automatic capture.",
+                            "hipayenterprise"
+                        ); ?>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
         <label class="control-label col-lg-2"><?php _e('Use Oneclick', "hipayenterprise"); ?></label>
         <div class="col-lg-8">
             <input class="form-control" type="checkbox" name="card_token"
