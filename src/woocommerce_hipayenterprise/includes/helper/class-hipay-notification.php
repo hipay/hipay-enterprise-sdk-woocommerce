@@ -53,6 +53,11 @@ class Hipay_Notification
     protected $transactionsHelper;
 
     /**
+     * @var Hipay_Config
+     */
+    protected $confHelper;
+
+    /**
      * Hipay_Notification constructor.
      * @param Hipay_Gateway_Abstract $plugin
      * @param $data
@@ -62,6 +67,9 @@ class Hipay_Notification
         $this->plugin = $plugin;
         $this->transaction = (new HiPay\Fullservice\Gateway\Mapper\TransactionMapper($data))->getModelObjectMapped();
         $plugin->logs->logCallback(print_r($this->transaction, true));
+
+        $this->confHelper = new Hipay_Config();
+        $this->confHelper->getConfigHipay();
 
         // if cart_id exist or not
         if ($this->transaction->getOrder() == null || $this->transaction->getOrder()->getId() == null) {
@@ -164,9 +172,16 @@ class Hipay_Notification
                     );
                     break;
                 case TransactionStatus::AUTHORIZED: //116
-                    $this->orderHandler->paymentOnHold(
-                        __("Authorization successful for transaction.", "hipayenterprise")
-                    );
+                    if($this->confHelper->getPaymentGlobal()['skip_onhold'] &&
+                        $this->confHelper->getPaymentGlobal()['capture_mode'] == "automatic"){
+                        $this->orderHandler->addNote(
+                            __("Authorization successful for transaction.", "hipayenterprise")
+                        );
+                    } else {
+                        $this->orderHandler->paymentOnHold(
+                            __("Authorization successful for transaction.", "hipayenterprise")
+                        );
+                    }
                     break;
                 case TransactionStatus::CAPTURED: //118
                 case TransactionStatus::CAPTURE_REQUESTED: //117

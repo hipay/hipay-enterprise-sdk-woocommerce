@@ -183,6 +183,7 @@ class Hipay_Settings_Handler
                 'display_card_selector' => sanitize_title(Hipay_Helper::getPostData('display_card_selector')),
                 'send_url_notification' => sanitize_title(Hipay_Helper::getPostData('send_url_notification')),
                 'enableAstropay' => sanitize_title(Hipay_Helper::getPostData('enableAstropay')),
+                'skip_onhold' => sanitize_title(Hipay_Helper::getPostData('skip_onhold')),
                 "hosted_fields_style" => array(
                     "base" => array(
                         "color" => Hipay_Helper::getPostData('color'),
