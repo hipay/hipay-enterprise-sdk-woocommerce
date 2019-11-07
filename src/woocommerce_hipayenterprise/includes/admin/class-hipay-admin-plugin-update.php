@@ -47,6 +47,10 @@ class Hipay_Admin_Plugin_Update_Handler
     public $pluginUpdateInfo;
 
 
+    public $confHelper;
+    private $logs;
+    private $configHipay;
+
     /**
      * Initialize a new instance of the WordPress Auto-Update class
      * @param string $current_version
@@ -54,6 +58,9 @@ class Hipay_Admin_Plugin_Update_Handler
      */
     function __construct($current_version, $plugin_slug)
     {
+        $this->confHelper = new Hipay_Config();
+        $this->logs = new Hipay_Log($this);
+
         // Set the class public variables
         $this->current_version = $current_version;
         $this->plugin_slug = $plugin_slug;
@@ -155,10 +162,14 @@ class Hipay_Admin_Plugin_Update_Handler
             $requestRate = wp_remote_get(static::$WC_HIPAYENTERPRISE_GITHUB_RATE_URL);
             if (!is_wp_error($requestRate) || wp_remote_retrieve_response_code($requestRate) === 200) {
                 $rateLimit = json_decode($requestRate['body']);
+                $this->logs->logInfos("[UPGRADE CHECK] Got remaining rate from GitHub  : " . $rateLimit->rate->remaining);
+
                 if ($rateLimit->rate->remaining > 1) {
                     $request = wp_remote_get(static::$WC_HIPAYENTERPRISE_GITHUB_RELEASE_URL);
                     if (!is_wp_error($request) || wp_remote_retrieve_response_code($request) === 200) {
                         $body = json_decode($request['body']);
+
+                        $this->logs->logInfos("[UPGRADE CHECK] Got latest version from GitHub : " . $body->tag_name);
 
                         $updateInfo = new \stdClass();
                         $updateInfo->remoteVersion = $body->tag_name;
@@ -183,8 +194,14 @@ class Hipay_Admin_Plugin_Update_Handler
                         update_option("wc_hipay_update_info", $remoteInfo);
                         return $remoteInfo;
                     }
+                } else {
+                    $this->logs->logErrors("[UPGRADE CHECK] Error when getting new version from GitHub  : " . implode(', ', $request->get_error_messages()));
                 }
+            } else {
+                $this->logs->logErrors("[UPGRADE CHECK] Error when getting remaining rate from GitHub  : " . implode(', ', $requestRate->get_error_messages()));
             }
+        } else {
+            $this->logs->logInfos("[UPGRADE CHECK] Last check is less than 1 hour ago, getting from local save : " . $remoteInfo->updateInfo->remoteVersion);
         }
 
         return $remoteInfo;
