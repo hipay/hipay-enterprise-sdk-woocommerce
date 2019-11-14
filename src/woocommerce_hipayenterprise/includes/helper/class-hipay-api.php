@@ -58,7 +58,7 @@ class Hipay_Api
      */
     public function requestDirectPost($order, $params)
     {
-        $this->plugin->logs->logInfos("# requestDirectPost " . $order->id);
+        $this->plugin->logs->logInfos("# requestDirectPost " . $order->get_id());
 
         $gatewayClient = $this->createGatewayClient();
 

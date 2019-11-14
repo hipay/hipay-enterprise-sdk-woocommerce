@@ -183,6 +183,7 @@ class Hipay_Upgrade_Helper
     private function getPropertiesNoOverride()
     {
         return array(
+            "displayName" => "",
             "currencies" => "",
             "countries" => "",
             "minAmount" => "",

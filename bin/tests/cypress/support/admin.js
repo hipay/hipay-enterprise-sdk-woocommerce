@@ -75,6 +75,21 @@ Cypress.Commands.add("switchWooCurrency", (currency) => {
     cy.get('button[name="save"]').click();
 });
 
+Cypress.Commands.add("activateBasket", () => {
+    cy.get('#methods-tab').click();
+    cy.get('#activate_basket').check();
+    cy.get('.submit > .button-primary').click();
+});
+
+/**
+ * Go to Tab for Payment
+ */
+Cypress.Commands.add("switchWooCurrency", (currency) => {
+    cy.get('#toplevel_page_woocommerce > .wp-submenu > :nth-child(5) > a').click({force: true});
+    cy.get('#woocommerce_currency').select(currency, {force: true});
+    cy.get('button[name="save"]').click();
+});
+
 /**
  *  Go to Hipay configuration
  */
@@ -198,6 +213,27 @@ Cypress.Commands.add("activateOneClick", () => {
         cy.get('button').contains('Save changes').click();
     });
 });
+
+Cypress.Commands.add("setCaptureMode", (mode) => {
+    cy.logToAdmin();
+    cy.visit('/wp-admin/admin.php?page=wc-settings&tab=checkout&section=hipayenterprise_credit_card');
+    cy.get('#methods-tab').click();
+    cy.get('#capture_mode').select(mode);
+    cy.get('button').contains('Save changes').click();
+});
+
+Cypress.Commands.add("setSkipOnhOld", (state) => {
+    cy.logToAdmin();
+    cy.visit('/wp-admin/admin.php?page=wc-settings&tab=checkout&section=hipayenterprise_credit_card');
+    cy.get('#methods-tab').click();
+    cy.get('#skip_onhold').then((checkbox) => {
+        if(checkbox.is(':checked') !== state){
+            cy.wrap(checkbox).click();
+        }
+    });
+    cy.get('button').contains('Save changes').click();
+});
+
 
 /**
  * Clear All configuration for credit Card (Min Amount etc) ,save and log out form admin

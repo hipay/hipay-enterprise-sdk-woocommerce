@@ -8,16 +8,6 @@
     },
     "frontPosition": 30,
     "activated": 0,
-    "canManualCapture": 0,
-    "canManualCapturePartially": 0,
-    "canRefund": 0,
-    "canRefundPartially": 0,
-    "currencies": [
-      "RUB"
-    ],
-    "countries": [
-      "RU"
-    ],
     "displayConfigurationFields": [
       "displayName",
       "minAmount",
@@ -33,7 +23,6 @@
     "maxAmount": {
       "EUR": false
     },
-    "logo": "yandex.png",
-    "additionalFields": {}
+    "logo": "yandex.png"
   }
 }

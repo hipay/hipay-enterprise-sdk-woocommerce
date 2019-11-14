@@ -291,4 +291,38 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
             return $this->handlePaymentError($e);
         }
     }
+
+    /**
+     * Order cancel
+     *
+     * @param $order_id
+     * @param null $amount
+     * @param string $reason
+     * @return array
+     * @throws Exception
+     */
+    public function process_cancel($orderId)
+    {
+        try {
+            $this->logs->logInfos(" # Process Cancel for  " . $orderId);
+
+            $order = wc_get_order($orderId);
+
+            $redirect = $this->apiRequestHandler->handleMaintenance(
+                \HiPay\Fullservice\Enum\Transaction\Operation::CANCEL,
+                array(
+                    "order_id" => $orderId,
+                    "transaction_reference" => $order->get_transaction_id(),
+                )
+            );
+
+            $this->logs->logInfos(" # End Process Cancel for  " . $orderId);
+            return array(
+                'result' => 'success',
+                'redirect' => $redirect,
+            );
+        } catch (Hipay_Payment_Exception $e) {
+            return $this->handlePaymentError($e);
+        }
+    }
 }

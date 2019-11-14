@@ -169,7 +169,8 @@ class Hipay_Config
                     SettingsField::PAYMENT_GLOBAL_LOGS_INFOS => 1,
                     "send_url_notification" => 1,
                     "ccDisplayName" => array("fr" => "Carte de crédit", "en" => "Credit card"),
-                    "enableAstropay" => 0
+                    "enableAstropay" => 0,
+                    "skip_onhold" => 0
                 ),
                 "credit_card" => array(),
                 "local_payment" => array()
@@ -338,7 +339,13 @@ class Hipay_Config
 
         if (preg_match('/(.*)\.json/', $file) == 1) {
             $json = json_decode(file_get_contents($this->jsonFilesPath . $folderName . $file), true);
-            $creditCard[$json["name"]] = $json["config"];
+
+            $sdkConfig = \HiPay\Fullservice\Data\PaymentProduct\Collection::getItem($json["name"]);
+
+            if($sdkConfig !== null) {
+                // Array merge gives priority to the last array over the first when keys are in both tables
+                $creditCard[$json["name"]] = array_merge($sdkConfig->toArray(), $json["config"]);
+            }
         }
 
         return $creditCard;

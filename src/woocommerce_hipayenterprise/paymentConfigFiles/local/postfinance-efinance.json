@@ -6,22 +6,14 @@
       "label": "PostFinance"
     },
     "displayNameBO": "PostFinance E-Finance",
-    "displayName":  {
+    "displayName": {
       "fr": "PostFinance E-Finance",
       "en": "PostFinance E-Finance"
     },
     "frontPosition": 22,
     "activated": 0,
-    "canManualCapture": 0,
-    "canManualCapturePartially": 0,
-    "canRefund": 1,
-    "canRefundPartially": 1,
     "currencies": [
       "EUR"
-    ],
-    "countries": [
-      "GB",
-      "FR"
     ],
     "displayConfigurationFields": [
       "displayName",
@@ -38,7 +30,6 @@
     "maxAmount": {
       "EUR": false
     },
-    "logo": "postfinance-efinance.png",
-    "additionalFields": {}
+    "logo": "postfinance-efinance.png"
   }
 }

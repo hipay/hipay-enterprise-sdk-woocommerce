@@ -3,23 +3,11 @@
   "config": {
     "displayName": "Bancontact",
     "activated": 1,
-    "can3ds": 1,
-    "canRecurring": 0,
-    "canManualCapture": 0,
-    "canManualCapturePartially": 0,
-    "canRefund": 0,
-    "canRefundPartially": 0,
-    "currencies": [
-      "EUR"
-    ],
     "minAmount": {
       "EUR": 0
     },
     "maxAmount": {
       "EUR": false
-    },
-    "countries": [
-      "BE"
-    ]
+    }
   }
 }

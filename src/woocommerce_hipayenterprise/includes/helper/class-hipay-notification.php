@@ -53,6 +53,11 @@ class Hipay_Notification
     protected $transactionsHelper;
 
     /**
+     * @var Hipay_Config
+     */
+    protected $confHelper;
+
+    /**
      * Hipay_Notification constructor.
      * @param Hipay_Gateway_Abstract $plugin
      * @param $data
@@ -62,6 +67,9 @@ class Hipay_Notification
         $this->plugin = $plugin;
         $this->transaction = (new HiPay\Fullservice\Gateway\Mapper\TransactionMapper($data))->getModelObjectMapped();
         $plugin->logs->logCallback(print_r($this->transaction, true));
+
+        $this->confHelper = new Hipay_Config();
+        $this->confHelper->getConfigHipay();
 
         // if cart_id exist or not
         if ($this->transaction->getOrder() == null || $this->transaction->getOrder()->getId() == null) {
@@ -106,6 +114,9 @@ class Hipay_Notification
                 $this->transaction->getTransactionReference()
             );
 
+            $this->orderHandler->addNote(Hipay_Helper::formatOrderData($this->transaction));
+            $this->transactionsHelper->saveTransaction($this->order, $this->transaction);
+
             switch ($this->transaction->getStatus()) {
                 case TransactionStatus::CREATED:
                 case TransactionStatus::CARD_HOLDER_ENROLLED:
@@ -144,7 +155,6 @@ class Hipay_Notification
                     $this->orderHandler->paymentOnHold("pending payment");
                     break;
                 case TransactionStatus::EXPIRED:
-                case TransactionStatus::CANCELLED:
                     $this->orderHandler->paymentFailed(
                         __(
                             "Authorization cancelled. Order was cancelled with transaction:",
@@ -152,10 +162,26 @@ class Hipay_Notification
                         )
                     );
                     break;
-                case TransactionStatus::AUTHORIZED: //116
-                    $this->orderHandler->paymentOnHold(
-                        __("Authorization successful for transaction.", "hipayenterprise")
+                case TransactionStatus::CANCELLED:
+                case TransactionStatus::AUTHORIZATION_CANCELLATION_REQUESTED:
+                    $this->orderHandler->paymentCancelled(
+                        __(
+                            "Authorization cancelled. Order was cancelled with transaction:",
+                            "hipayenterprise"
+                        )
                     );
+                    break;
+                case TransactionStatus::AUTHORIZED: //116
+                    if($this->confHelper->getPaymentGlobal()['skip_onhold'] &&
+                        $this->confHelper->getPaymentGlobal()['capture_mode'] == "automatic"){
+                        $this->orderHandler->addNote(
+                            __("Authorization successful for transaction.", "hipayenterprise")
+                        );
+                    } else {
+                        $this->orderHandler->paymentOnHold(
+                            __("Authorization successful for transaction.", "hipayenterprise")
+                        );
+                    }
                     break;
                 case TransactionStatus::CAPTURED: //118
                 case TransactionStatus::CAPTURE_REQUESTED: //117
@@ -228,9 +254,6 @@ class Hipay_Notification
                     Hipay_Token_Helper::createTokenFromTransaction($this->transaction, $this->order);
                 }
             }
-
-            $this->orderHandler->addNote(Hipay_Helper::formatOrderData($this->transaction));
-            $this->transactionsHelper->saveTransaction($this->order, $this->transaction);
 
             return true;
         } catch (Exception $e) {

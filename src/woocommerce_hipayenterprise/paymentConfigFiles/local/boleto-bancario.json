@@ -6,22 +6,12 @@
       "label": "Astropay"
     },
     "displayNameBO": "Boleto bancario",
-    "displayName":  {
+    "displayName": {
       "fr": "Boleto bancario",
       "en": "Boleto bancario"
     },
     "frontPosition": 11,
     "activated": 0,
-    "canRefund": 0,
-    "canRefundPartially": 0,
-    "canManualCapture": 0,
-    "canManualCapturePartially": 0,
-    "currencies": [
-      "BRL"
-    ],
-    "countries": [
-      "BR"
-    ],
     "displayConfigurationFields": [
       "displayName",
       "minAmount",
@@ -37,21 +27,6 @@
     "maxAmount": {
       "EUR": false
     },
-    "logo": "boleto.png",
-    "additionalFields": {
-      "sdkClass": "HiPay\\Fullservice\\Gateway\\Request\\PaymentMethod\\AstropayPaymentMethod",
-      "defaultFieldsValue": {},
-      "formFields": {
-        "national_identification_number": {
-          "label": {
-            "en": "CPF",
-            "fr": "CPF"
-          },
-          "type": "text",
-          "required": true,
-          "controlType": "cpf"
-        }
-      }
-    }
+    "logo": "boleto.png"
   }
 }

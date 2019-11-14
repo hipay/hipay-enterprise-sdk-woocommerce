@@ -92,12 +92,20 @@
             ?>
         </td>
     </tr>
+
+    <?php if ($updateInformation && $updateInformation->updateInfo->remoteVersion !== $currentPluginVersion) : ?>
+    <tr>
+        <td class="wc-email-settings-table-status"><span class="dashicons dashicons-warning text-danger"></span></td>
+        <td class="wc-email-settings-table-name"><?php _e('Module update', "hipayenterprise"); ?></td>
+        <td>
+            <?php
+            echo sprintf(__("There is a new version of WooCommerce HiPay Enterprise available. <a href='%s'>View version %s details</a> or <a href='/wp-admin/update-core.php'>update now</a>.", "hipayenterprise"), $updateInformation->updateInfo->remoteUrl, $updateInformation->updateInfo->remoteVersion);
+            ?>
+        </td>
+    </tr>
+    <?php endif; ?>
     </tbody>
 </table>
-</div>
-
-<div class="bg-danger" id="error-message">
-    <?php settings_errors(); ?>
 </div>
 
 <div role="tabpanel" id="hipay-container-admin" class="tab col-md-12">
@@ -141,9 +149,6 @@
         </div>
     </div>
 </div>
-
-
-
 <script>
     jQuery(document).ready(function ($) {
         var url = location.href.replace(/\/$/, "");

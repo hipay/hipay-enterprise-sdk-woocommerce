@@ -1,8 +1,9 @@
 {
-  "name": "Hipay Enterprise Woo-commerce", 
+  "name": "hipay/hipay-enterprise-woocommerce", 
   "license": "Apache 2.0", 
   "require": {
-    "hipay/hipay-fullservice-sdk-php": "^2.3.0"
+    "hipay/hipay-fullservice-sdk-php": "^2.4.2", 
+    "michelf/php-markdown": "1.8.0"
   }, 
   "version": "1.0.0", 
   "authors": [
