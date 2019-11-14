@@ -1,3 +1,9 @@
+# Version 1.6.0
+- **New**: Init HiPay configuration from SDK-PHP
+- **New**: Notification when a new version is available
+- **New**: Add Skip on-hold status field
+- **New**: Cancel an order on woocommerce cancels the transaction on Hipay 
+
 # Version 1.5.1
 
 - Fix: card token saving now on 116 and 118 notifications 
