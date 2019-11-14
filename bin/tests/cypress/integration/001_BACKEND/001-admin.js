@@ -13,7 +13,7 @@ describe('Check admin', function () {
         cy.get('#woocommerce_hipayenterprise_account_production_password_publickey').type("test");
         cy.get('.submit > .button-primary').click();
 
-        cy.get('#setting-error- > p > strong').contains("If production api username is filled production api password is mandatory");
+        cy.get('#woocommerce_errors > p').contains("If production api username is filled production api password is mandatory");
     });
 
     it('Should save credentials', function () {
