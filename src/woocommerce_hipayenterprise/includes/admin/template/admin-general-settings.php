@@ -108,10 +108,6 @@
 </table>
 </div>
 
-<div class="bg-danger" id="error-message">
-    <?php settings_errors(); ?>
-</div>
-
 <div role="tabpanel" id="hipay-container-admin" class="tab col-md-12">
     <ul class="hipay-enterprise nav nav-tabs" role="tablist">
         <li role="presentation" class="">
@@ -153,9 +149,6 @@
         </div>
     </div>
 </div>
-
-
-
 <script>
     jQuery(document).ready(function ($) {
         var url = location.href.replace(/\/$/, "");

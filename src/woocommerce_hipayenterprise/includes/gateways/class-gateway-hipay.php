@@ -150,6 +150,8 @@ if (!class_exists('WC_Gateway_Hipay')) {
             $this->settingsHandler->savePaymentGlobal($settings);
             $settings["payment"]["local_payment"] = $this->confHelper->getLocalPayments();
 
+            $this->display_errors();
+
             $this->confHelper->saveConfiguration($settings);
         }
 
