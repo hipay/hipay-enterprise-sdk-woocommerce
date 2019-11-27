@@ -45,7 +45,7 @@ spec:
         tier: mysql-{{ .Release.Name }}
     spec:
       containers:
-      - image: {{ Values.mysql_image }}:{{ Values.mysql_tag }}
+      - image: {{ .Values.mysql_image }}:{{ .Values.mysql_tag }}
         name: mysql-{{ .Release.Name }}
         resources:
           requests:

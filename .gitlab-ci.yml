@@ -113,7 +113,10 @@ deploy2recette:
     - bash /tools/auth-to-cd-cluster.sh
   script:
     - echo ${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}
+    - sleep 900
     - helm install "${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}" ./bin/docker/kubernetes/helm/ \
+      --set wordpress_image="${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web" \
+      --set wordpress_tag="${CI_COMMIT_REF_SLUG}" \
       --set wordpress_url="${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}.${PI_CD_URL}" \
       --set hipay_api_user_test="{$HIPAY_API_USER_RE7}" \
       --set hipay_api_password_test="{$HIPAY_API_PASSWORD_RE7}" \

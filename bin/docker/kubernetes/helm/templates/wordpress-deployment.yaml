@@ -61,7 +61,7 @@ spec:
         tier: frontend-{{ .Release.Name }}
     spec:
       containers:
-      - image: {{ Values.wordpress_image }}:{{ Values.wordpress_tag }}
+      - image: {{ .Values.wordpress_image }}:{{ .Values.wordpress_tag }}
         imagePullPolicy: Always
         name: wordpress-{{ .Release.Name }}
         resources:
