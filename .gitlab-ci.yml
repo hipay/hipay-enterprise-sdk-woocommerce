@@ -11,6 +11,7 @@ variables:
   DOCKER_HOST: tcp://localhost:2375/
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: ""
+  RELEASE_NAME: ${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}
 
 services:
   - docker:19.03.1-dind
@@ -112,8 +113,17 @@ deploy2recette:
   before_script:
     - bash /tools/auth-to-cd-cluster.sh
   script:
-    - echo ${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}
-    - helm install $DOCKER_STACK-$DOCKER_SERVICE-$CI_COMMIT_REF_SLUG ./bin/docker/kubernetes/helm/
+    - echo $RELEASE_NAME
+    - helm install $RELEASE_NAME ./bin/docker/kubernetes/helm/ \
+      --set wordpress_image="${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web" \
+      --set wordpress_tag="${CI_COMMIT_REF_SLUG}" \
+      --set wordpress_url="${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}.${PI_CD_URL}" \
+      --set hipay_api_user_test="$HIPAY_API_USER_RE7" \
+      --set hipay_api_password_test="$HIPAY_API_PASSWORD_RE7" \
+      --set hipay_tokenjs_username_test="$HIPAY_TOKENJS_USERNAME_RE7" \
+      --set hipay_tokenjs_publickey_test="$HIPAY_TOKENJS_PUBLICKEY_RE7" \
+      --set hipay_secret_passphrase_test="$HIPAY_SECRET_PASSPHRASE_RE7" \
+      --set pi_data_url="$PI_CI_DATA_URL"
   allow_failure: true
   tags:
   - gcp-default-runner
@@ -140,7 +150,7 @@ stop_review:
     - gcloud config set project $GCP_CD_PROJECT_ID
     - gcloud container clusters get-credentials cd-pi-poc
   script:
-    - helm uninstall ${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}
+    - helm uninstall $RELEASE_NAME
   when: manual
   environment:
     name: review/${CI_COMMIT_REF_SLUG}
