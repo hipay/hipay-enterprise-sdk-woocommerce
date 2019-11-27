@@ -100,14 +100,7 @@ build:
   stage: build
   when: manual
   before_script:
-    # Get GCP credentials as file
-    - echo $GCP_CD_CR_SERVICE_ACCOUNT_KEY_FILE > ${HOME}/gcloud-service-key.json
-    # Auth gcloud with key file
-    - gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
-    # Rm auth file
-    - rm ${HOME}/gcloud-service-key.json
-    # Set current project
-    - gcloud config set project $GCP_CD_PROJECT_ID
+    - bash /tools/auth-to-cd-registry.sh
   script:
     - docker build -f bin/docker/images/woocommerce/Dockerfile . -t ${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web:${CI_COMMIT_REF_SLUG}
     - docker push ${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web:${CI_COMMIT_REF_SLUG}
@@ -117,15 +110,7 @@ build:
 deploy2recette:
   stage: deploy
   before_script:
-    # Get GCP credentials as file
-    - echo $GCP_CD_CR_SERVICE_ACCOUNT_KEY_FILE > ${HOME}/gcloud-service-key.json
-    # Auth gcloud with key file
-    - gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
-    # Rm auth file
-    - rm ${HOME}/gcloud-service-key.json
-    # Set current project
-    - gcloud config set project $GCP_CD_PROJECT_ID
-    - gcloud container clusters get-credentials cd-pi-poc
+    - bash /tools/auth-to-cd-cluster.sh
   script:
     - helm install ${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG} ./bin/docker/kubernetes/helm/ \
       --set wordpress_url="${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}.${PI_CD_URL}" \
@@ -152,7 +137,7 @@ stop_review:
     GIT_STRATEGY: none
   before_script:
     # Get GCP credentials as file
-    - echo $GCP_CD_CR_SERVICE_ACCOUNT_KEY_FILE > ${HOME}/gcloud-service-key.json
+    - echo $GCP_CD_CLUSTER_SERVICE_ACCOUNT_KEY_FILE > ${HOME}/gcloud-service-key.json
     # Auth gcloud with key file
     - gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
     # Rm auth file
@@ -166,3 +151,5 @@ stop_review:
   environment:
     name: review/${CI_COMMIT_REF_SLUG}
     action: stop
+  tags:
+    - gcp-default-runner
