@@ -1,0 +1,26 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: wordpress-configmap-{{ .Release.Name }}
+data:
+  # Wordpress and MySQL env var
+  ADMIN_USERNAME: admin
+  ADMIN_EMAIL: admin-wordpress@hipay.com
+  ADMIN_PASSWORD: hipay
+  WOOCOMMERCE_VERSION: {{ .Values.woocommerce_version  }}
+  WORDPRESS_DB_USER: wordpress
+  WORDPRESS_DB_HOST: wordpress-mysql-{{ .Release.Name }}
+  WORDPRESS_URL: {{ .Values.wordpress_url  }}
+  WORDPRESS_DB_PASSWORD: password-mysql
+  MYSQL_PASSWORD: password-mysql
+  MYSQL_ROOT_PASSWORD: password-mysql
+  MYSQL_USER: wordpress
+  MYSQL_DATABASE: wordpress
+  # HiPay env var
+  ENVIRONMENT: production
+  HIPAY_API_USER_TEST: {{ .Values.hipay_api_user_test  }}
+  HIPAY_API_PASSWORD_TEST: {{ .Values.hipay_api_password_test  }}
+  HIPAY_TOKENJS_USERNAME_TEST: {{ .Values.hipay_tokenjs_username_test  }}
+  HIPAY_TOKENJS_PUBLICKEY_TEST: {{ .Values.hipay_tokenjs_publickey_test  }}
+  HIPAY_SECRET_PASSPHRASE_TEST: {{ .Values.hipay_secret_passphrase_test  }}
+  PI_DATA_URL: {{ .Values.pi_data_url  }}

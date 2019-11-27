@@ -114,43 +114,55 @@ build:
   tags:
     - gcp-default-runner
 
-#deploy2recette:
-#  stage: deploy
-#  before_script:
-#  - sed -i -e "s/{HIPAY_API_USER_RECETTE\}/$HIPAY_API_USER_RE7/" ./bin/docker/conf/acceptance/hipay.env.sample
-#  - sed -i -e "s/{HIPAY_API_PASSWORD_RECETTE\}/$HIPAY_API_PASSWORD_RE7/" ./bin/docker/conf/acceptance/hipay.env.sample
-#  - sed -i -e "s/{HIPAY_TOKENJS_PUBLICKEY_RECETTE\}/$HIPAY_TOKENJS_PUBLICKEY_RE7/" ./bin/docker/conf/acceptance/hipay.env.sample
-#  - sed -i -e "s/{HIPAY_TOKENJS_USERNAME_RECETTE\}/$HIPAY_TOKENJS_USERNAME_RE7/" ./bin/docker/conf/acceptance/hipay.env.sample
-#  - sed -i -e "s/{HIPAY_SECRET_PASSPHRASE_RECETTE\}/$HIPAY_SECRET_PASSPHRASE_RE7/" ./bin/docker/conf/acceptance/hipay.env.sample
-#  - sed -i -e "s/{DB_HOST\}/${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-${CI_JOB_ID}_database/" ./bin/docker/conf/acceptance/wordpress.env.sample
-#  - sed -i -e "s/{WORDPRESS_URL\}/${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}.hipay-pos-platform.com/" ./bin/docker/conf/acceptance/wordpress.env.sample
-#  - sed -i "s/$(echo {HIPAY_SECRET_PASSPHRASE_RECETTE} | sed -e 's/\([[\/.*]\|\]\)/\\&/g')/$(echo '$HIPAY_SECRET_PASSPHRASE_RE7' | sed -e 's/[\/&]/\\&/g')/g" ./bin/docker/conf/acceptance/hipay.env.sample
-#  - sed -i -e "s@{PI_CI_DATA_URL\}@$PI_CI_DATA_URL@" ./bin/docker/conf/acceptance/hipay.env.sample
-#  # Substitute env variables which doesn't exists on the distant machine
-#  - /tools/substitute-env-var.sh docker-compose.acceptance.yml
-#  # Change path for relative path to environment files
-#  - sed -i -e "s|bin/docker/conf/acceptance/hipay.env.sample|hipay.env.sample|g" docker-compose.acceptance.yml
-#  - sed -i -e "s|bin/docker/conf/acceptance/wordpress.env.sample|wordpress.env.sample|g" docker-compose.acceptance.yml
-#  script:
-#  - bash /tools/deployToDockerMachine.sh -e ./bin/docker/conf/acceptance/hipay.env.sample -e ./bin/docker/conf/acceptance/wordpress.env.sample -s docker-compose.acceptance.yml -n $DOCKER_STACK-$DOCKER_SERVICE-$CI_COMMIT_REF_SLUG
-#  allow_failure: true
-#  tags:
-#  - pi-commerce-no-overlay
-#  when: manual
-#  environment:
-#    name: review/${CI_COMMIT_REF_SLUG}
-#    url: https://${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}.hipay-pos-platform.com
-#    on_stop: stop_review
-#  only:
-#    - branches
-#
-#stop_review:
-#  stage: deploy
-#  variables:
-#    GIT_STRATEGY: none
-#  script:
-#    - bash /tools/docker-rm-stack.sh -n $DOCKER_STACK-$DOCKER_SERVICE-$CI_COMMIT_REF_SLUG
-#  when: manual
-#  environment:
-#    name: review/${CI_COMMIT_REF_SLUG}
-#    action: stop
+deploy2recette:
+  stage: deploy
+  before_script:
+    # Get GCP credentials as file
+    - echo $GCP_CD_CR_SERVICE_ACCOUNT_KEY_FILE > ${HOME}/gcloud-service-key.json
+    # Auth gcloud with key file
+    - gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
+    # Rm auth file
+    - rm ${HOME}/gcloud-service-key.json
+    # Set current project
+    - gcloud config set project $GCP_CD_PROJECT_ID
+    - gcloud container clusters get-credentials cd-pi-poc
+  script:
+    - helm install ${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG} ./bin/docker/kubernetes/helm/ \
+      --set wordpress_url="${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}.${PI_CD_URL}" \
+      --set hipay_api_user_test="{$HIPAY_API_USER_RE7}" \
+      --set hipay_api_password_test="{$HIPAY_API_PASSWORD_RE7}" \
+      --set hipay_tokenjs_username_test="{$HIPAY_TOKENJS_USERNAME_RE7}" \
+      --set hipay_tokenjs_publickey_test="{$HIPAY_TOKENJS_PUBLICKEY_RE7}" \
+      --set hipay_secret_passphrase_test="{$HIPAY_SECRET_PASSPHRASE_RE7}" \
+      --set pi_data_url="{$PI_CI_DATA_URL}"
+  allow_failure: true
+  tags:
+  - gcp-default-runner
+  when: manual
+  environment:
+    name: review/${CI_COMMIT_REF_SLUG}
+    url: https://${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}.${PI_CD_URL}
+    on_stop: stop_review
+  only:
+    - branches
+
+stop_review:
+  stage: deploy
+  variables:
+    GIT_STRATEGY: none
+  before_script:
+    # Get GCP credentials as file
+    - echo $GCP_CD_CR_SERVICE_ACCOUNT_KEY_FILE > ${HOME}/gcloud-service-key.json
+    # Auth gcloud with key file
+    - gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
+    # Rm auth file
+    - rm ${HOME}/gcloud-service-key.json
+    # Set current project
+    - gcloud config set project $GCP_CD_PROJECT_ID
+    - gcloud container clusters get-credentials cd-pi-poc
+  script:
+    - helm uninstall ${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}
+  when: manual
+  environment:
+    name: review/${CI_COMMIT_REF_SLUG}
+    action: stop
