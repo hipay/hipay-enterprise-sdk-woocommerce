@@ -131,15 +131,7 @@ stop_review:
   variables:
     GIT_STRATEGY: none
   before_script:
-    # Get GCP credentials as file
-    - echo $GCP_CD_CLUSTER_SERVICE_ACCOUNT_KEY_FILE > ${HOME}/gcloud-service-key.json
-    # Auth gcloud with key file
-    - gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
-    # Rm auth file
-    - rm ${HOME}/gcloud-service-key.json
-    # Set current project
-    - gcloud config set project $GCP_CD_PROJECT_ID
-    - gcloud container clusters get-credentials cd-pi-poc
+    - bash /tools/auth-to-cd-cluster.sh
   script:
     - helm uninstall $RELEASE_NAME
   when: manual
