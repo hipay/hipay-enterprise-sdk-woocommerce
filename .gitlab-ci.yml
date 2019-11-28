@@ -114,7 +114,17 @@ deploy2recette:
     - bash /tools/auth-to-cd-cluster.sh
   script:
     - echo $RELEASE_NAME
-    - helm install $RELEASE_NAME ./bin/docker/kubernetes/helm/ --set wordpress_image="${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web" --set wordpress_tag="${CI_COMMIT_REF_SLUG}" --set wordpress_url="${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}.${PI_CD_URL}" --set hipay_api_user_test="$HIPAY_API_USER_RE7" --set hipay_api_password_test="$HIPAY_API_PASSWORD_RE7" --set hipay_tokenjs_username_test="$HIPAY_TOKENJS_USERNAME_RE7" --set hipay_tokenjs_publickey_test="$HIPAY_TOKENJS_PUBLICKEY_RE7" --set hipay_secret_passphrase_test="$HIPAY_SECRET_PASSPHRASE_RE7" --set pi_data_url="$PI_CI_DATA_URL"
+    - >
+      helm install $RELEASE_NAME ./bin/docker/kubernetes/helm/
+      --set wordpress_image="${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web"
+      --set wordpress_tag="${CI_COMMIT_REF_SLUG}"
+      --set wordpress_url="${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}.${PI_CD_URL}"
+      --set hipay_api_user_test="$HIPAY_API_USER_RE7"
+      --set hipay_api_password_test="$HIPAY_API_PASSWORD_RE7"
+      --set hipay_tokenjs_username_test="$HIPAY_TOKENJS_USERNAME_RE7"
+      --set hipay_tokenjs_publickey_test="$HIPAY_TOKENJS_PUBLICKEY_RE7"
+      --set hipay_secret_passphrase_test="$HIPAY_SECRET_PASSPHRASE_RE7"
+      --set pi_data_url="$PI_CI_DATA_URL"
   allow_failure: true
   tags:
   - gcp-default-runner
