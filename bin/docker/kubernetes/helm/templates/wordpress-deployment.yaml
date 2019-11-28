@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: wordpress-service-{{ .Release.Name }}
   namespace: default
+  labels:
+    cd-hipay: cron-delete
 spec:
   ports:
     - port: 80
@@ -19,6 +21,8 @@ kind: IngressRoute
 metadata:
   name: ingressroute-{{ .Release.Name }}
   namespace: default
+  labels:
+    cd-hipay: cron-delete
 spec:
   routes:
     - match: Host(`{{ .Values.wordpress_url  }}`)
@@ -34,6 +38,7 @@ metadata:
   name: wp-pv-claim-{{ .Release.Name }}
   labels:
     app: wordpress-{{ .Release.Name }}
+    cd-hipay: cron-delete
 spec:
   accessModes:
     - ReadWriteOnce
@@ -47,6 +52,7 @@ metadata:
   name: wordpress-{{ .Release.Name }}
   labels:
     app: wordpress-{{ .Release.Name }}
+    cd-hipay: cron-delete
 spec:
   selector:
     matchLabels:
@@ -59,6 +65,7 @@ spec:
       labels:
         app: wordpress-{{ .Release.Name }}
         tier: frontend-{{ .Release.Name }}
+        cd-hipay: cron-delete
     spec:
       containers:
       - image: {{ .Values.wordpress_image }}:{{ .Values.wordpress_tag }}

@@ -4,6 +4,7 @@ metadata:
   name: wordpress-mysql-{{ .Release.Name }}
   labels:
     app: wordpress-{{ .Release.Name }}
+    cd-hipay: cron-delete
 spec:
   ports:
     - port: 3306
@@ -18,6 +19,7 @@ metadata:
   name: mysql-pv-claim-{{ .Release.Name }}
   labels:
     app: wordpress-{{ .Release.Name }}
+    cd-hipay: cron-delete
 spec:
   accessModes:
     - ReadWriteOnce
@@ -31,6 +33,7 @@ metadata:
   name: wordpress-mysql-{{ .Release.Name }}
   labels:
     app: wordpress-{{ .Release.Name }}
+    cd-hipay: cron-delete
 spec:
   selector:
     matchLabels:
@@ -43,6 +46,7 @@ spec:
       labels:
         app: wordpress-{{ .Release.Name }}
         tier: mysql-{{ .Release.Name }}
+        cd-hipay: cron-delete
     spec:
       containers:
       - image: {{ .Values.mysql_image }}:{{ .Values.mysql_tag }}
