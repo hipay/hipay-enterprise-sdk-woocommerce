@@ -99,6 +99,7 @@ package:
 
 build:
   stage: build
+  image: $REGISTRY_CI/gitlab-ci-base:deployment
   when: manual
   before_script:
     - bash /tools/auth-to-cd-registry.sh
@@ -110,6 +111,7 @@ build:
 
 deploy2recette:
   stage: deploy
+  image: $REGISTRY_CI/gitlab-ci-base:deployment
   before_script:
     - bash /tools/auth-to-cd-cluster.sh
   script:
@@ -138,6 +140,7 @@ deploy2recette:
 
 stop_review:
   stage: deploy
+  image: $REGISTRY_CI/gitlab-ci-base:deployment
   variables:
     GIT_STRATEGY: none
   before_script:
