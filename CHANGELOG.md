@@ -1,3 +1,6 @@
+# Version 1.6.1
+- **Fix**: Error logs on Wordpress BO
+
 # Version 1.6.0
 - **New**: Init HiPay configuration from SDK-PHP
 - **New**: Notification when a new version is available
