@@ -49,7 +49,7 @@ class Hipay_Admin_Plugin_Update_Handler
 
     public $confHelper;
     private $logs;
-    private $configHipay;
+    public $id;
 
     /**
      * Initialize a new instance of the WordPress Auto-Update class
@@ -58,6 +58,7 @@ class Hipay_Admin_Plugin_Update_Handler
      */
     function __construct($current_version, $plugin_slug)
     {
+        $this->id = 'Hipay_Plugin_Update_Helper';
         $this->confHelper = new Hipay_Config();
         $this->logs = new Hipay_Log($this);
 
@@ -193,9 +194,9 @@ class Hipay_Admin_Plugin_Update_Handler
 
                         update_option("wc_hipay_update_info", $remoteInfo);
                         return $remoteInfo;
+                    } else {
+                        $this->logs->logErrors("[UPGRADE CHECK] Error when getting new version from GitHub  : " . implode(', ', $request->get_error_messages()));
                     }
-                } else {
-                    $this->logs->logErrors("[UPGRADE CHECK] Error when getting new version from GitHub  : " . implode(', ', $request->get_error_messages()));
                 }
             } else {
                 $this->logs->logErrors("[UPGRADE CHECK] Error when getting remaining rate from GitHub  : " . implode(', ', $requestRate->get_error_messages()));
