@@ -113,7 +113,7 @@ deploy2recette:
   stage: deploy
   image: $REGISTRY_CI/gitlab-ci-base:deployment
   variables:
-    - $GPC_ACCOUNT
+    GPC_ACCOUNT : ""
   before_script:
     - bash /tools/auth-to-cd-cluster.sh
   script:
