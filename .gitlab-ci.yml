@@ -1,11 +1,11 @@
 image: $REGISTRY_CI/gitlab-ci-base:buster
 
 stages:
-- build-test
-- test
-- package
-- build
-- deploy
+  - build-test
+  - test
+  - package
+  - build
+  - deploy
 
 variables:
   DOCKER_HOST: tcp://localhost:2375/
@@ -112,6 +112,8 @@ build:
 deploy2recette:
   stage: deploy
   image: $REGISTRY_CI/gitlab-ci-base:deployment
+  variables:
+    - $GPC_ACCOUNT
   before_script:
     - bash /tools/auth-to-cd-cluster.sh
   script:
@@ -129,7 +131,7 @@ deploy2recette:
       --set pi_data_url="$PI_CI_DATA_URL"
   allow_failure: true
   tags:
-  - gcp-default-runner-prod
+    - gcp-default-runner-prod
   when: manual
   environment:
     name: review/${CI_COMMIT_REF_SLUG}
