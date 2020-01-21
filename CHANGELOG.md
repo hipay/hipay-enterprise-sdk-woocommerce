@@ -1,3 +1,6 @@
+# Version 1.6.2
+- **Fix**: Error logs on Wordpress BO
+
 # Version 1.6.1
 - **Fix**: Error logs on Wordpress BO
 

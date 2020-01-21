@@ -10,8 +10,7 @@ ENV APACHE_RUN_USER=www-data \
      APACHE_LOG_DIR=/var/log/apache2
 
 RUN apt-get update \
-    && apt-get install -y default-mysql-client \
-    && apt-get install -y python \
+    && apt-get install -y python default-mysql-client \
     && curl -sS https://getcomposer.org/installer | php -- --filename=composer -- --install-dir=/usr/local/bin \
     &&  rm -rf /var/lib/apt/lists/*
 
