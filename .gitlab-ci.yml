@@ -102,7 +102,8 @@ build:
   image: $REGISTRY_CI/gitlab-ci-base:deployment
   when: manual
   before_script:
-    - bash /tools/auth-to-cd-registry.sh
+    - git clone https://oauth2:${ACCESS_TOKEN}@gitlab.hipay.org/${GITLAB_USER_LOGIN}/gcloud-application_default_credentials.git
+    - mv gcloud-application_default_credentials/application_default_credentials.json ${HOME}/.config/gcloud/application_default_credentials.json
   script:
     - docker build -f bin/docker/images/woocommerce/Dockerfile . -t ${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web:${CI_COMMIT_REF_SLUG}
     - docker push ${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web:${CI_COMMIT_REF_SLUG}
