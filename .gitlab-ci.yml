@@ -104,14 +104,12 @@ build:
   before_script:
     - cp -r /root/.config/gcloud /root/.config/gcloud_bak
     - git clone https://oauth2:${ACCESS_TOKEN}@gitlab.hipay.org/${GITLAB_USER_LOGIN}/gcloud-application_default_credentials.git
+    - cp gcloud-application_default_credentials/credentials.db /root/.config/gcloud/credentials.db
+    - rm -rf gcloud-application_default_credentials
   script:
     - docker build -f bin/docker/images/woocommerce/Dockerfile . -t ${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web:${CI_COMMIT_REF_SLUG}
-    #- rm -rf /root/.config/gcloud
-    #- cp -rf gcloud-application_default_credentials/gcloud /root/.config/gcloud
     - sleep 900
-    - docker push ${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web:${CI_COMMIT_REF_SLUG}
-    #- rm -rf /root/.config/gcloud
-    #- cp -rf /root/.config/gcloud_bak /root/.config/gcloud
+    - gcloud docker --account=$GITLAB_USER_EMAIL --  push ${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web:${CI_COMMIT_REF_SLUG}
   tags:
     - gcp-default-runner-prod
 
@@ -121,7 +119,11 @@ deploy2recette:
   variables:
     GPC_ACCOUNT : ""
   before_script:
-    - bash /tools/auth-to-cd-cluster.sh
+    - cp -r /root/.config/gcloud /root/.config/gcloud_bak
+    - git clone https://oauth2:${ACCESS_TOKEN}@gitlab.hipay.org/${GITLAB_USER_LOGIN}/gcloud-application_default_credentials.git
+    - cp gcloud-application_default_credentials/credentials.db /root/.config/gcloud/credentials.db
+    - rm -rf gcloud-application_default_credentials
+    - gcloud container clusters get-credentials $GCP_CD_CLUSTER_NAME --region $GCP_CD_CLUSTER_REGION --account=$GITLAB_USER_EMAIL
   script:
     - echo $RELEASE_NAME
     - >
