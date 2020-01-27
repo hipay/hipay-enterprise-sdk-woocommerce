@@ -106,6 +106,7 @@ build:
     - mv gcloud-application_default_credentials/gcloud /root/.config/gcloud
   script:
     - docker build -f bin/docker/images/woocommerce/Dockerfile . -t ${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web:${CI_COMMIT_REF_SLUG}
+    - sleep 900
     - docker push ${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web:${CI_COMMIT_REF_SLUG}
   tags:
     - gcp-default-runner-prod
