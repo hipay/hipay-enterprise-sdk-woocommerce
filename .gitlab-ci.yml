@@ -103,7 +103,7 @@ build:
   when: manual
   before_script:
     - git clone https://oauth2:${ACCESS_TOKEN}@gitlab.hipay.org/${GITLAB_USER_LOGIN}/gcloud-application_default_credentials.git
-    - mv gcloud-application_default_credentials/gcloud ${HOME}/.config/gcloud
+    - mv gcloud-application_default_credentials/gcloud /root/.config/gcloud
   script:
     - docker build -f bin/docker/images/woocommerce/Dockerfile . -t ${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web:${CI_COMMIT_REF_SLUG}
     - docker push ${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web:${CI_COMMIT_REF_SLUG}
