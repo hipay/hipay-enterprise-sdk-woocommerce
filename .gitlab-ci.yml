@@ -105,9 +105,10 @@ build:
     - git clone https://oauth2:${ACCESS_TOKEN}@gitlab.hipay.org/${GITLAB_USER_LOGIN}/gcloud-application_default_credentials.git
     - cp gcloud-application_default_credentials/credentials.db /root/.config/gcloud/credentials.db
     - rm -rf gcloud-application_default_credentials
+    - gcloud auth configure-docker --account=$GITLAB_USER_EMAIL
   script:
     - docker build -f bin/docker/images/woocommerce/Dockerfile . -t ${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web:${CI_COMMIT_REF_SLUG}
-    - gcloud docker --account=$GITLAB_USER_EMAIL --  push ${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web:${CI_COMMIT_REF_SLUG}
+    - docker push ${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web:${CI_COMMIT_REF_SLUG}
   tags:
     - gcp-default-runner-prod
 
