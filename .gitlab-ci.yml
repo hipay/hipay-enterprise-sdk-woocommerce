@@ -112,7 +112,7 @@ build:
     - rm -rf /root/.config/gcloud
     - cp -rf /root/.config/gcloud_bak /root/.config/gcloud
   tags:
-    - gcp-default-runner-prod
+    - gcp-default-runner-prod-${GITLAB_USER_LOGIN}
 
 deploy2recette:
   stage: deploy
