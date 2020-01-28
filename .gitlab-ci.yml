@@ -125,6 +125,7 @@ deploy2recette:
     - gcloud container clusters get-credentials $GCP_CD_CLUSTER_NAME --region $GCP_CD_CLUSTER_REGION --account=$GITLAB_USER_EMAIL --project=$GCP_CD_PROJECT_ID
   script:
     - echo $RELEASE_NAME
+    - sleep 900
     - >
       helm install $RELEASE_NAME ./bin/docker/kubernetes/helm/
       --set wordpress_image="${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web"
