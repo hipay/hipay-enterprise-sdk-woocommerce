@@ -108,7 +108,7 @@ build:
     - gcloud auth configure-docker --account=$GITLAB_USER_EMAIL
   script:
     - docker build -f bin/docker/images/woocommerce/Dockerfile . -t ${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web:${CI_COMMIT_REF_SLUG}
-    - docker push ${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web:${CI_COMMIT_REF_SLUG}
+    - gcloud config set account $GITLAB_USER_EMAIL | docker push ${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web:${CI_COMMIT_REF_SLUG}
   tags:
     - gcp-default-runner-prod
 
