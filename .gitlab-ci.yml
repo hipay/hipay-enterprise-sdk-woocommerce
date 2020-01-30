@@ -101,15 +101,11 @@ build:
   stage: build
   image: $REGISTRY_CI/gitlab-ci-base:deployment
   when: manual
-  before_script:
-    - git clone https://oauth2:${ACCESS_TOKEN}@gitlab.hipay.org/${GITLAB_USER_LOGIN}/gcloud-application_default_credentials.git
-    - cp gcloud-application_default_credentials/credentials.db /root/.config/gcloud/credentials.db
-    - rm -rf gcloud-application_default_credentials
-    - gcloud auth configure-docker
   script:
     - docker build -f bin/docker/images/woocommerce/Dockerfile . -t ${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web:${CI_COMMIT_REF_SLUG}
-    - gcloud config set account $GITLAB_USER_EMAIL
+    - /tools/auth-as-end-user.sh
     - docker push ${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web:${CI_COMMIT_REF_SLUG}
+    - /tools/logout-end-user.sh
   tags:
     - gcp-default-runner-prod
 
@@ -118,14 +114,9 @@ deploy2recette:
   image: $REGISTRY_CI/gitlab-ci-base:deployment
   variables:
     GPC_ACCOUNT : ""
-  before_script:
-    - git clone https://oauth2:${ACCESS_TOKEN}@gitlab.hipay.org/${GITLAB_USER_LOGIN}/gcloud-application_default_credentials.git
-    - cp gcloud-application_default_credentials/credentials.db /root/.config/gcloud/credentials.db
-    - rm -rf gcloud-application_default_credentials
-    - gcloud config set account $GITLAB_USER_EMAIL
-    - gcloud container clusters get-credentials $GCP_CD_CLUSTER_NAME --region $GCP_CD_CLUSTER_REGION --account=$GITLAB_USER_EMAIL --project=$GCP_CD_PROJECT_ID
   script:
     - echo $RELEASE_NAME
+    - /tools/auth-to-cd-cluster.sh
     - >
       helm install $RELEASE_NAME ./bin/docker/kubernetes/helm/
       --set wordpress_image="${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web"
@@ -137,6 +128,7 @@ deploy2recette:
       --set hipay_tokenjs_publickey_test="$HIPAY_TOKENJS_PUBLICKEY_RE7"
       --set hipay_secret_passphrase_test="$HIPAY_SECRET_PASSPHRASE_RE7"
       --set pi_data_url="$PI_CI_DATA_URL"
+    - /tools/logout-end-user.sh
   allow_failure: true
   tags:
     - gcp-default-runner-prod
@@ -153,10 +145,10 @@ stop_review:
   image: $REGISTRY_CI/gitlab-ci-base:deployment
   variables:
     GIT_STRATEGY: none
-  before_script:
-    - bash /tools/auth-to-cd-cluster.sh
   script:
+    - /tools/auth-to-cd-cluster.sh
     - helm uninstall $RELEASE_NAME
+    - /tools/logout-end-user.sh
   when: manual
   environment:
     name: review/${CI_COMMIT_REF_SLUG}
