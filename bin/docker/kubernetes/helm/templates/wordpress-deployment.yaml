@@ -31,6 +31,8 @@ spec:
       services:
         - name: wordpress-service-{{ .Release.Name }}
           port: 80
+  tls:
+    certResolver: default
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
