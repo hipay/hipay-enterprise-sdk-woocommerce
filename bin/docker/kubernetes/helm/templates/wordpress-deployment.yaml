@@ -25,6 +25,8 @@ metadata:
     cd-hipay: cron-delete
 spec:
   routes:
+    middlewares:
+      - name: hipay-ipwhitelist
     - match: Host(`{{ .Values.wordpress_url  }}`)
       kind: Rule
       priority: 1
