@@ -35,6 +35,7 @@ spec:
           port: 80
       middlewares:
         - name: hipay-ipwhitelist
+        - name: hipay-redirecttohttps
   tls:
     certResolver: default
 ---
