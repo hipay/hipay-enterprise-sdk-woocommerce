@@ -24,6 +24,8 @@ metadata:
   labels:
     cd-hipay: cron-delete
 spec:
+  entryPoints:
+    - websecure
   routes:
     - match: Host(`{{ .Values.wordpress_url  }}`)
       kind: Rule
@@ -33,6 +35,8 @@ spec:
           port: 80
       middlewares:
         - name: hipay-ipwhitelist
+  tls:
+    certResolver: default
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
