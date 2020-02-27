@@ -19,14 +19,13 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: ingressroute-{{ .Release.Name }}
+  name: ingressroute-tls-{{ .Release.Name }}
   namespace: default
   labels:
     cd-hipay: cron-delete
 spec:
   entryPoints:
     - websecure
-    - web
   routes:
     - match: Host(`{{ .Values.wordpress_url  }}`)
       kind: Rule
@@ -38,6 +37,26 @@ spec:
         - name: hipay-ipwhitelist
   tls:
     certResolver: default
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroute-{{ .Release.Name }}
+  namespace: default
+  labels:
+    cd-hipay: cron-delete
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`{{ .Values.wordpress_url  }}`)
+      kind: Rule
+      priority: 1
+      services:
+        - name: wordpress-service-{{ .Release.Name }}
+          port: 80
+      middlewares:
+        - name: hipay-ipwhitelist
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
