@@ -26,6 +26,7 @@ metadata:
 spec:
   entryPoints:
     - websecure
+    - web
   routes:
     - match: Host(`{{ .Values.wordpress_url  }}`)
       kind: Rule
@@ -35,7 +36,6 @@ spec:
           port: 80
       middlewares:
         - name: hipay-ipwhitelist
-        - name: hipay-redirecttohttps
   tls:
     certResolver: default
 ---
