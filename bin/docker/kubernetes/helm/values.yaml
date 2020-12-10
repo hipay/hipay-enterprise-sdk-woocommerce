@@ -1,0 +1,16 @@
+mysql_image: "mysql"
+mysql_tag: "5.7"
+
+wordpress_image: ""
+wordpress_tag: ""
+
+woocommerce_version: "3.7.1"
+wordpress_url: ""
+
+hipay_api_user_test: ""
+hipay_api_password_test: ""
+hipay_tokenjs_username_test: ""
+hipay_tokenjs_publickey_test: ""
+hipay_secret_passphrase_test: ""
+
+pi_data_url: ""
