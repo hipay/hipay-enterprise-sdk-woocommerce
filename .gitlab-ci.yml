@@ -1,4 +1,4 @@
-image: eu.gcr.io/ci-sandbox-262308/gitlab-ci-base:buster
+image: $REGISTRY_CI/gitlab-ci-base:buster
 
 stages:
   - build-test
@@ -63,7 +63,7 @@ build-test:
     - docker-compose -f docker-compose.test.yml build
     - docker-compose -f docker-compose.test.yml push
   tags:
-    - gcp-default-runner-sandbox
+    - gcp-default-runner-prod
 
 test-cypress-1:
   <<: *test_definition
@@ -95,11 +95,11 @@ package:
     paths:
       - ./bin/package
   tags:
-    - gcp-default-runner-sandbox
+    - gcp-default-runner-prod
 
 build:
   stage: build
-  image: eu.gcr.io/ci-sandbox-262308/gitlab-ci-base:deployment
+  image: $REGISTRY_CI/gitlab-ci-base:deployment
   when: manual
   script:
     - docker build -f bin/docker/images/woocommerce/Dockerfile . -t ${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web:${CI_COMMIT_REF_SLUG}
@@ -107,11 +107,11 @@ build:
     - docker push ${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web:${CI_COMMIT_REF_SLUG}
     - /tools/logout-end-user.sh
   tags:
-    - gcp-default-runner-sandbox
+    - gcp-default-runner-prod
 
 deploy2recette:
   stage: deploy
-  image: eu.gcr.io/ci-sandbox-262308/gitlab-ci-base:deployment
+  image: $REGISTRY_CI/gitlab-ci-base:deployment
   variables:
     GPC_ACCOUNT : ""
   script:
@@ -131,7 +131,7 @@ deploy2recette:
     - /tools/logout-end-user.sh
   allow_failure: true
   tags:
-    - gcp-default-runner-sandbox
+    - gcp-default-runner-prod
   when: manual
   environment:
     name: review/${CI_COMMIT_REF_SLUG}
@@ -142,7 +142,7 @@ deploy2recette:
 
 stop_review:
   stage: deploy
-  image: eu.gcr.io/ci-sandbox-262308/gitlab-ci-base:deployment
+  image: $REGISTRY_CI/gitlab-ci-base:deployment
   variables:
     GIT_STRATEGY: none
   script:
@@ -154,4 +154,4 @@ stop_review:
     name: review/${CI_COMMIT_REF_SLUG}
     action: stop
   tags:
-    - gcp-default-runner-sandbox
+    - gcp-default-runner-prod
