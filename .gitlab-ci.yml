@@ -1,4 +1,4 @@
-image: $REGISTRY_CI/gitlab-ci-base:buster
+image: eu.gcr.io/ci-sandbox-262308/gitlab-ci-base:buster
 
 stages:
   - build-test
@@ -99,7 +99,7 @@ package:
 
 build:
   stage: build
-  image: $REGISTRY_CI/gitlab-ci-base:deployment
+  image: eu.gcr.io/ci-sandbox-262308/gitlab-ci-base:deployment
   when: manual
   script:
     - docker build -f bin/docker/images/woocommerce/Dockerfile . -t ${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web:${CI_COMMIT_REF_SLUG}
@@ -111,7 +111,7 @@ build:
 
 deploy2recette:
   stage: deploy
-  image: $REGISTRY_CI/gitlab-ci-base:deployment
+  image: eu.gcr.io/ci-sandbox-262308/gitlab-ci-base:deployment
   variables:
     GPC_ACCOUNT : ""
   script:
@@ -142,7 +142,7 @@ deploy2recette:
 
 stop_review:
   stage: deploy
-  image: $REGISTRY_CI/gitlab-ci-base:deployment
+  image: eu.gcr.io/ci-sandbox-262308/gitlab-ci-base:deployment
   variables:
     GIT_STRATEGY: none
   script:
