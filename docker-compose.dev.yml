@@ -1,26 +1,24 @@
-version: '3.3'
+version: "3.3"
 
 services:
-   wordpress:
-     depends_on:
-       - database
-     build:
-       context: .
-       dockerfile: bin/docker/images/woocommerce/Dockerfile
-     volumes:
-       - ./wordpress/core:/var/www/html
-       - ./src/woocommerce_hipayenterprise:/var/www/html/wp-content/plugins/woocommerce_hipayenterprise
-     ports:
-       - "8000:80"
-     restart: always
-     env_file:
-       - bin/docker/conf/development/hipay.env
-       - bin/docker/conf/development/wordpress.env.sample
+  wordpress:
+    depends_on:
+      - database
+    build:
+      context: .
+      dockerfile: bin/docker/images/woocommerce/Dockerfile
+    volumes:
+      - ./wordpress/core:/var/www/html
+      - ./src/woocommerce_hipayenterprise:/var/www/html/wp-content/plugins/woocommerce_hipayenterprise
+    ports:
+      - "8000:80"
+    env_file:
+      - bin/docker/conf/development/hipay.env
+      - bin/docker/conf/development/wordpress.env.sample
 
-   database:
-     image: mysql:5.7
-     restart: always
-     ports:
-     - "3309:3306"
-     env_file:
+  database:
+    image: mysql:5.7
+    ports:
+      - "3309:3306"
+    env_file:
       - bin/docker/conf/development/wordpress.env.sample
