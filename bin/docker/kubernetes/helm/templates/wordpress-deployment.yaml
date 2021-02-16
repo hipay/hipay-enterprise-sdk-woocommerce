@@ -33,8 +33,6 @@ spec:
       services:
         - name: wordpress-service-{{ .Release.Name }}
           port: 80
-      middlewares:
-        - name: hipay-ipwhitelist
   tls:
     certResolver: default
 ---

@@ -121,13 +121,13 @@ deploy2recette:
       helm install $RELEASE_NAME ./bin/docker/kubernetes/helm/
       --set wordpress_image="${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web"
       --set wordpress_tag="${CI_COMMIT_REF_SLUG}"
-      --set wordpress_url="${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}.${PI_CD_URL}"
+      --set wordpress_url="${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}.${URL_CD}"
       --set hipay_api_user_test="$HIPAY_API_USER_RE7"
       --set hipay_api_password_test="$HIPAY_API_PASSWORD_RE7"
       --set hipay_tokenjs_username_test="$HIPAY_TOKENJS_USERNAME_RE7"
       --set hipay_tokenjs_publickey_test="$HIPAY_TOKENJS_PUBLICKEY_RE7"
       --set hipay_secret_passphrase_test="$HIPAY_SECRET_PASSPHRASE_RE7"
-      --set pi_data_url="$URL_CD"
+      --set pi_data_url="$PI_CI_DATA_URL"
     - /tools/logout-end-user.sh
   allow_failure: true
   tags:
@@ -135,7 +135,7 @@ deploy2recette:
   when: manual
   environment:
     name: review/${CI_COMMIT_REF_SLUG}
-    url: https://${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}.${PI_CD_URL}
+    url: https://${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}.${URL_CD}
     on_stop: stop_review
   only:
     - branches
