@@ -11,4 +11,3 @@
  * @license   https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
  */
 
-exit;
