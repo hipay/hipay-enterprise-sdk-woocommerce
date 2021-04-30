@@ -63,7 +63,7 @@ build-test:
     - docker-compose -f docker-compose.test.yml build
     - docker-compose -f docker-compose.test.yml push
   tags:
-    - gcp-default-runner-prod
+    - gcp-default-runner-sandbox
 
 test-cypress-1:
   <<: *test_definition
@@ -95,7 +95,7 @@ package:
     paths:
       - ./bin/package
   tags:
-    - gcp-default-runner-prod
+    - gcp-default-runner-sandbox
 
 build:
   stage: build
@@ -107,7 +107,7 @@ build:
     - docker push ${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web:${CI_COMMIT_REF_SLUG}
     - /tools/logout-end-user.sh
   tags:
-    - gcp-default-runner-prod
+    - gcp-default-runner-sandbox
 
 deploy2recette:
   stage: deploy
@@ -131,7 +131,7 @@ deploy2recette:
     - /tools/logout-end-user.sh
   allow_failure: true
   tags:
-    - gcp-default-runner-prod
+    - gcp-default-runner-sandbox
   when: manual
   environment:
     name: review/${CI_COMMIT_REF_SLUG}
@@ -154,4 +154,4 @@ stop_review:
     name: review/${CI_COMMIT_REF_SLUG}
     action: stop
   tags:
-    - gcp-default-runner-prod
+    - gcp-default-runner-sandbox
