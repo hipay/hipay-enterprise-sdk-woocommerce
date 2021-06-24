@@ -11,7 +11,7 @@ manageComposerForData() {
      echo "if [ $? -eq 0 ]" >>.git/hooks/pre-commit
      echo "then" >>.git/hooks/pre-commit
      echo "    cp \$COMPOSER_JSON_FILE \$COMPOSER_JSON_FILE.bak" >>.git/hooks/pre-commit
-     echo "    cat \$COMPOSER_JSON_FILE.bak | python -c \"import sys, json; composerObj=json.load(sys.stdin); composerObj['scripts'] = None; del composerObj['scripts']; print json.dumps(composerObj, False, True, True, True, None, 2);\" > \$COMPOSER_JSON_FILE" >>.git/hooks/pre-commit
+     echo "    cat \$COMPOSER_JSON_FILE.bak | python -c \"import sys, json; composerObj=json.load(sys.stdin); composerObj['scripts'] = None; del composerObj['scripts']; print( json.dumps(composerObj, sort_keys=True, indent=4));\" > \$COMPOSER_JSON_FILE" >>.git/hooks/pre-commit
      echo "    git add \$COMPOSER_JSON_FILE" >>.git/hooks/pre-commit
      echo "fi" >>.git/hooks/pre-commit
      echo "exit 0" >>.git/hooks/pre-commit
