@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+CONTAINER=hipay-enterprise-sdk-woocommerce_wordpress_1
+
 manageComposerForData() {
      COMPOSER_JSON_FILE="src/woocommerce_hipayenterprise/composer.json"
 
@@ -35,8 +37,13 @@ manageComposerForData() {
 manageComposerForData
 
 if [ "$1" = 'init' ] && [ "$2" = '' ]; then
+     if docker inspect $CONTAINER >/dev/null 2>&1; then
+          if [ "$(docker inspect -f '{{.State.Running}}' $CONTAINER)" = 'true' ]; then
+               docker exec $CONTAINER bash -c 'chmod -R 777 /var/www/html'
+          fi
+     fi
      docker-compose -f docker-compose.dev.yml rm -sfv
-     sudo rm -Rf wordpress/ data/ src/woocommerce_hipayenterprise/vendor/ src/woocommerce_hipayenterprise/composer.lock
+     rm -Rf wordpress/ data/ src/woocommerce_hipayenterprise/vendor/ src/woocommerce_hipayenterprise/composer.lock
      docker-compose -f docker-compose.dev.yml build
      docker-compose -f docker-compose.dev.yml up -d
 fi

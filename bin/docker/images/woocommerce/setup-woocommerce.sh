@@ -94,6 +94,7 @@ if [ ! -f /var/www/html/wp-content/plugins/woocommerce/woocommerce.php ]; then
     printf "\n${COLOR_SUCCESS}     INSTALL PLUGIN EXTERNAL             ${NC}\n"
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     wp plugin install wp-mail-logging --allow-root --activate --path="/var/www/html"
+    wp plugin install loco-translate --allow-root --activate --path="/var/www/html"
 
     #==========================================
     # Set permissions
