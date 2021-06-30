@@ -37,13 +37,9 @@ manageComposerForData() {
 manageComposerForData
 
 if [ "$1" = 'init' ] && [ "$2" = '' ]; then
-     if docker inspect $CONTAINER >/dev/null 2>&1; then
-          if [ "$(docker inspect -f '{{.State.Running}}' $CONTAINER)" = 'true' ]; then
-               docker exec $CONTAINER bash -c 'chmod -R 777 /var/www/html'
-          fi
-     fi
      docker-compose -f docker-compose.dev.yml rm -sfv
-     rm -Rf wordpress/ data/ src/woocommerce_hipayenterprise/vendor/ src/woocommerce_hipayenterprise/composer.lock
+     rm -R wordpress/
+     rm -Rf data/ src/woocommerce_hipayenterprise/vendor/ src/woocommerce_hipayenterprise/composer.lock
      docker-compose -f docker-compose.dev.yml build
      docker-compose -f docker-compose.dev.yml up -d
 fi
@@ -55,9 +51,10 @@ fi
 
 if [ "$1" = 'kill' ]; then
      docker-compose -f docker-compose.dev.yml rm -sfv
-     rm -Rf wordpress/ data/ src/woocommerce_hipayenterprise/vendor/ src/woocommerce_hipayenterprise/composer.lock
+     rm -R wordpress/
+     rm -Rf data/ src/woocommerce_hipayenterprise/vendor/ src/woocommerce_hipayenterprise/composer.lock
 fi
 
 if [ "$1" = 'l' ]; then
-     docker-compose -f docker-compose.dev.yml logs -f
+     docker logs $CONTAINER -f
 fi
