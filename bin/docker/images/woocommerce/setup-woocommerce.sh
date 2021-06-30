@@ -108,14 +108,22 @@ if [ ! -f /var/www/html/wp-content/plugins/woocommerce/woocommerce.php ]; then
     # Install XDebug
     #==========================================
     if [ "$XDEBUG_ENABLED" = "1" ]; then
-        printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
-        printf "\n${COLOR_SUCCESS}     INSTALLATION XDEBUG $ENVIRONMENT    ${NC}\n"
-        printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+        if ! pecl list | grep xdebug >/dev/null 2>&1; then
+            printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+            printf "\n${COLOR_SUCCESS}            INSTALLATION XDEBUG          ${NC}\n"
+            printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
 
-        echo '' && pecl install xdebug
-        echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" >/usr/local/etc/php/conf.d/xdebug.ini
-        echo "xdebug.remote_enable=on" >>/usr/local/etc/php/conf.d/xdebug.ini
-        echo "xdebug.remote_autostart=off" >>/usr/local/etc/php/conf.d/xdebug.ini
+            echo '' | pecl install xdebug
+        fi
+
+        xdebugFile=/usr/local/etc/php/conf.d/xdebug.ini
+        echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" >$xdebugFile
+
+        echo "xdebug.mode=debug" >>$xdebugFile
+        echo "xdebug.idekey=PHPSTORM" >>$xdebugFile
+
+        echo "xdebug.remote_enable=on" >>$xdebugFile
+        echo "xdebug.remote_autostart=off" >>$xdebugFile
     fi
 
     echo "define( 'WP_DEBUG_DISPLAY', true );" >>/var/www/html/wp-config.php
