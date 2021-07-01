@@ -40,6 +40,12 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
             $this->title = $methodConf["displayName"]['en'];
         }
 
+        if (isset($methodConf["logo"])) {
+            if (file_exists(WC_HIPAYENTERPRISE_PATH_ASSETS . "/local_payments_images/" . $methodConf["logo"])) {
+                $this->icon = WC_HIPAYENTERPRISE_URL_ASSETS . "/local_payments_images/" . $methodConf["logo"];
+            }
+        }
+
         $this->init_form_fields();
         $this->init_settings();
 
@@ -133,7 +139,7 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
                 "deviceFingerprint" => Hipay_Helper::getPostData($this->paymentProduct.'-device_fingerprint')
             );
 
-            if(is_array($method["additionalFields"]["formFields"])) {
+            if (is_array($method["additionalFields"]["formFields"])) {
                 foreach ($method["additionalFields"]["formFields"] as $name => $field) {
                     $params[$name] = Hipay_Helper::getPostData($this->paymentProduct . '-' . $name);
                 }
@@ -145,7 +151,6 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
                 'result' => 'success',
                 'redirect' => $redirectUrl,
             );
-
         } catch (Hipay_Payment_Exception $e) {
             return $this->handlePaymentError($e);
         }

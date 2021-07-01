@@ -26,3 +26,8 @@ bin/tests/.npmrc
 # Env vars #
 ############
 *.env
+
+############
+#  Source  #
+############
+src/woocommerce_hipayenterprise/composer.lock

@@ -232,6 +232,19 @@ class Hipay_Cart_Formatter implements Hipay_Api_Formatter
         return $item;
     }
 
+    /**
+     * Concat sku with id if product is a variation
+     * @param $product
+     * @return String sku
+     */
+    private function getSku($product)
+    {
+        $sku = $product->get_sku();
+        if ($product instanceof \WC_Product_Variation) {
+            $sku .= '-' . $product->get_id();
+        }
+        return $sku;
+    }
 
     /**
      * Init a type good item
@@ -267,7 +280,7 @@ class Hipay_Cart_Formatter implements Hipay_Api_Formatter
 
         $item->__constructItem(
             null,
-            $product->get_sku(),
+            $this->getSku($product),
             "good",
             $product->get_name(),
             $quantity,
@@ -329,7 +342,7 @@ class Hipay_Cart_Formatter implements Hipay_Api_Formatter
         $product = wc_get_product($cartItem->get_product_id());
         $item = new HiPay\Fullservice\Gateway\Model\Cart\Item();
 
-        $productReference = $product->get_sku();
+        $productReference = $this->getSku($product);
         $originalItem = $this->getOriginalItem($productReference);
         $quantityOperation = abs($cartItem["quantity"]);
 
@@ -360,7 +373,6 @@ class Hipay_Cart_Formatter implements Hipay_Api_Formatter
         );
 
         return $item;
-
     }
 
     public static function initHiPayCartFormatter()

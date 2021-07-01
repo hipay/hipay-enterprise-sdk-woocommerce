@@ -55,7 +55,10 @@ abstract class Hipay_Order_Request_Abstract extends Hipay_Api_Formatter_Abstact
         parent::mapRequest($orderRequest);
         $this->setCustomData($orderRequest, $this->order, $this->params);
 
-        if ($this->plugin->getPaymentProduct() === Gateway_Hipay::CREDIT_CARD_PAYMENT_PRODUCT) {
+        $product = $this->plugin->getPaymentProduct();
+        $confProduct = $this->plugin->confHelper->getLocalPayment($product);
+
+        if ($product === Gateway_Hipay::CREDIT_CARD_PAYMENT_PRODUCT) {
             $orderRequest->browser_info = $this->getBrowserInfo();
             $orderRequest->previous_auth_info = $this->getPreviousAuthInfo();
             $orderRequest->merchant_risk_statement = $this->getMerchantRiskStatement();
@@ -67,8 +70,7 @@ abstract class Hipay_Order_Request_Abstract extends Hipay_Api_Formatter_Abstact
 
         $orderRequest->orderid = $this->order->get_id() . '-' . time();
 
-        if (
-            $this->plugin->confHelper->getPaymentGlobal()["capture_mode"] === CaptureMode::AUTOMATIC
+        if ($this->plugin->confHelper->getPaymentGlobal()["capture_mode"] === CaptureMode::AUTOMATIC
             || $this->params["forceSalesMode"]
         ) {
             $orderRequest->operation = "Sale";
@@ -103,6 +105,23 @@ abstract class Hipay_Order_Request_Abstract extends Hipay_Api_Formatter_Abstact
         $orderRequest->basket = $this->params["basket"];
         $orderRequest->delivery_information = $this->params["delivery_information"];
         $orderRequest->authentication_indicator = $this->params["authentication_indicator"];
+
+        if (isset($confProduct['orderExpirationTime'])) {
+            $orderRequest->expiration_limit = $confProduct['orderExpirationTime'];
+        }
+
+        if (isset($confProduct['merchantPromotion'])) {
+            $orderRequest->payment_product_parameters = json_encode(
+                array(
+                    "merchantPromotion" => !empty($confProduct['merchantPromotion']) ?
+                    $confProduct['merchantPromotion'] :
+                    \HiPay\Fullservice\Helper\MerchantPromotionCalculator::calculate(
+                        $product,
+                        $orderRequest->amount
+                    )
+                )
+            );
+        }
     }
 
     /**
