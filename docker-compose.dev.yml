@@ -8,8 +8,8 @@ services:
       context: .
       dockerfile: bin/docker/images/woocommerce/Dockerfile
     volumes:
-      - ./wordpress/core:/var/www/html
-      - ./src/woocommerce_hipayenterprise:/var/www/html/wp-content/plugins/woocommerce_hipayenterprise
+      - ./wordpress/core:/var/www/html:delegated
+      - ./src/woocommerce_hipayenterprise:/var/www/html/wp-content/plugins/woocommerce_hipayenterprise:delegated
     ports:
       - "8000:80"
     env_file:
