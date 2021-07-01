@@ -53,8 +53,7 @@ class Hipay_Settings_Handler
         $this->plugin->logs->logInfos("# saveAccountSettings");
 
         try {
-            if (
-                !empty(Hipay_Helper::getPostData('woocommerce_hipayenterprise_account_sandbox_username'))
+            if (!empty(Hipay_Helper::getPostData('woocommerce_hipayenterprise_account_sandbox_username'))
                 && empty(Hipay_Helper::getPostData('woocommerce_hipayenterprise_account_sandbox_password'))
             ) {
                 $this->addError(
@@ -66,8 +65,7 @@ class Hipay_Settings_Handler
                 "sandbox_mode" => sanitize_title(Hipay_Helper::getPostData('woocommerce_hipayenterprise_sandbox'))
             );
 
-            if (
-                !empty(Hipay_Helper::getPostData('woocommerce_hipayenterprise_account_sandbox_tokenjs_username'))
+            if (!empty(Hipay_Helper::getPostData('woocommerce_hipayenterprise_account_sandbox_tokenjs_username'))
                 && empty(Hipay_Helper::getPostData('woocommerce_hipayenterprise_account_sandbox_password_publickey'))
             ) {
                 $this->addError(
@@ -78,8 +76,7 @@ class Hipay_Settings_Handler
                 );
             }
 
-            if (
-                !empty(Hipay_Helper::getPostData('woocommerce_hipayenterprise_account_production_username'))
+            if (!empty(Hipay_Helper::getPostData('woocommerce_hipayenterprise_account_production_username'))
                 && empty(Hipay_Helper::getPostData('woocommerce_hipayenterprise_account_production_password'))
             ) {
                 $this->addError(
@@ -87,8 +84,7 @@ class Hipay_Settings_Handler
                 );
             }
 
-            if (
-                !empty(Hipay_Helper::getPostData('woocommerce_hipayenterprise_account_production_tokenjs_username'))
+            if (!empty(Hipay_Helper::getPostData('woocommerce_hipayenterprise_account_production_tokenjs_username'))
                 && empty(Hipay_Helper::getPostData('woocommerce_hipayenterprise_account_production_password_publickey'))
             ) {
                 $this->addError(
@@ -226,9 +222,7 @@ class Hipay_Settings_Handler
         $this->plugin->logs->logInfos("# SaveFraudSettings");
 
         try {
-
-            if (
-                !empty(Hipay_Helper::getPostData('woocommerce_hipayenterprise_fraud_copy_to'))
+            if (!empty(Hipay_Helper::getPostData('woocommerce_hipayenterprise_fraud_copy_to'))
                 && empty(sanitize_email(Hipay_Helper::getPostData('woocommerce_hipayenterprise_fraud_copy_to')))
             ) {
                 $this->addError(__('Email should be valid', "hipayenterprise"));
@@ -313,7 +307,9 @@ class Hipay_Settings_Handler
                 "countries",
                 "minAmount",
                 "maxAmount",
-                "displayName"
+                "displayName",
+                "orderExpirationTime",
+                "merchantPromotion"
             );
 
             $settings = $this->plugin->confHelper->getLocalPayments();
@@ -332,7 +328,6 @@ class Hipay_Settings_Handler
                     } else {
                         $settings[$methods][$key] = $value;
                     }
-
                 }
             }
 

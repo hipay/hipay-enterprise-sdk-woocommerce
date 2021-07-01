@@ -38,8 +38,7 @@ manageComposerForData
 
 if [ "$1" = 'init' ] && [ "$2" = '' ]; then
      docker-compose -f docker-compose.dev.yml rm -sfv
-     rm -R wordpress/
-     rm -Rf data/ src/woocommerce_hipayenterprise/vendor/ src/woocommerce_hipayenterprise/composer.lock
+     rm -Rf wordpress/core/ data/ src/woocommerce_hipayenterprise/vendor/ src/woocommerce_hipayenterprise/composer.lock
      docker-compose -f docker-compose.dev.yml build
      docker-compose -f docker-compose.dev.yml up -d
 fi
@@ -51,8 +50,7 @@ fi
 
 if [ "$1" = 'kill' ]; then
      docker-compose -f docker-compose.dev.yml rm -sfv
-     rm -R wordpress/
-     rm -Rf data/ src/woocommerce_hipayenterprise/vendor/ src/woocommerce_hipayenterprise/composer.lock
+     rm -Rf wordpress/core/ data/ src/woocommerce_hipayenterprise/vendor/ src/woocommerce_hipayenterprise/composer.lock
 fi
 
 if [ "$1" = 'l' ]; then

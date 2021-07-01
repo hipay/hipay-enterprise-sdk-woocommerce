@@ -16,7 +16,8 @@
       "displayName",
       "minAmount",
       "maxAmount",
-      "countries"
+      "countries",
+      "merchantPromotion"
     ],
     "countrySelectorReadOnly": 1,
     "currencySelectorReadOnly": 1,
@@ -27,6 +28,7 @@
     "maxAmount": {
       "EUR": false
     },
+    "merchantPromotion": false,
     "logo": "3xcb.png"
   }
 }

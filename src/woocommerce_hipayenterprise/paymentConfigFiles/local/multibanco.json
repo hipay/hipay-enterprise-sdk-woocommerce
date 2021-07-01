@@ -6,14 +6,15 @@
       "fr": "Multibanco",
       "en": "Multibanco"
     },
-    "frontPosition": 27,
+    "frontPosition": 31,
     "activated": 0,
     "currencies": ["EUR"],
     "displayConfigurationFields": [
       "displayName",
       "minAmount",
       "maxAmount",
-      "countries"
+      "countries",
+      "orderExpirationTime"
     ],
     "countrySelectorReadOnly": 1,
     "currencySelectorReadOnly": 1,
@@ -24,6 +25,7 @@
     "maxAmount": {
       "EUR": false
     },
+    "orderExpirationTime": 3,
     "logo": "multibanco.png"
   }
 }

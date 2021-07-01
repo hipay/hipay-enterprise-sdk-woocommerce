@@ -103,6 +103,7 @@ if [ ! -f /var/www/html/wp-content/plugins/woocommerce/woocommerce.php ]; then
     printf "\n${COLOR_SUCCESS}           SET PERMISSION                ${NC}\n"
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     chown -R www-data:www-data /var/www/html/
+    chmod -R g+w /var/www/html/
 
     #==========================================
     # Install XDebug
