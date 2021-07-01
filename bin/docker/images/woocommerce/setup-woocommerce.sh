@@ -8,21 +8,20 @@ ENV_PROD="production"
 # wait until MySQL is really available
 maxcounter=45
 counter=1
-while ! mysql --protocol TCP -h $WORDPRESS_DB_HOST -u $WORDPRESS_DB_USER -p$WORDPRESS_DB_PASSWORD -e "show databases;" > /dev/null 2>&1; do
+while ! mysql --protocol TCP -h $WORDPRESS_DB_HOST -u $WORDPRESS_DB_USER -p$WORDPRESS_DB_PASSWORD -e "show databases;" >/dev/null 2>&1; do
     sleep 5
-    counter=`expr $counter + 1`
+    counter=$(expr $counter + 1)
     if [ $counter -gt $maxcounter ]; then
-        >&2 echo "We have been waiting for MySQL too long already; failing."
+        echo >&2 "We have been waiting for MySQL too long already; failing."
         exit 1
-    fi;
+    fi
 done
-
 
 sleep 10
 /bin/bash /tmp/docker-entrypoint.sh "apache2-foreground"
 sleep 20
 
- if [ ! -f /var/www/html/wp-content/plugins/woocommerce/woocommerce.php  ]; then
+if [ ! -f /var/www/html/wp-content/plugins/woocommerce/woocommerce.php ]; then
 
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     printf "\n${COLOR_SUCCESS}            INSTALL WOOCOMMERCE           ${NC}\n"
@@ -45,7 +44,7 @@ sleep 20
     cd /var/www/html/wp-content/plugins/woocommerce_hipayenterprise/
 
     cp composer.json composer.json.bak
-    cat composer.json.bak | python -c "import sys, json; composerObj=json.load(sys.stdin); composerObj['scripts'] = {'post-install-cmd': ['@managePiDataURLDev'], 'post-update-cmd': ['@managePiDataURLDev'], 'managePiDataURLDev': [\"sed -i 's@https://stage-data.hipay.com@"$PI_DATA_URL"@g' vendor/hipay/hipay-fullservice-sdk-php/lib/HiPay/Fullservice/HTTP/Configuration/Configuration.php\", \"sed -i 's@https://data.hipay.com@"$PI_DATA_URL"@g' vendor/hipay/hipay-fullservice-sdk-php/lib/HiPay/Fullservice/HTTP/Configuration/Configuration.php\"]}; print json.dumps(composerObj, False, True, True, True, None, 2);" > composer.json
+    cat composer.json.bak | python -c "import sys, json; composerObj=json.load(sys.stdin); composerObj['scripts'] = {'post-install-cmd': ['@managePiDataURLDev'], 'post-update-cmd': ['@managePiDataURLDev'], 'managePiDataURLDev': [\"sed -i 's@https://stage-data.hipay.com@"$PI_DATA_URL"@g' vendor/hipay/hipay-fullservice-sdk-php/lib/HiPay/Fullservice/HTTP/Configuration/Configuration.php\", \"sed -i 's@https://data.hipay.com@"$PI_DATA_URL"@g' vendor/hipay/hipay-fullservice-sdk-php/lib/HiPay/Fullservice/HTTP/Configuration/Configuration.php\"]}; print json.dumps(composerObj, False, True, True, True, None, 2);" >composer.json
     rm composer.json.bak
 
     composer install --no-dev
@@ -83,7 +82,7 @@ sleep 20
     CONFIG=${CONFIG/'"api_tokenjs_password_publickey_sandbox":""'/'"api_tokenjs_password_publickey_sandbox":"'$HIPAY_TOKENJS_PUBLICKEY_TEST'"'}
     CONFIG=${CONFIG/'"api_secret_passphrase_sandbox":""'/'"api_secret_passphrase_sandbox":"'$HIPAY_SECRET_PASSPHRASE_TEST'"'}
 
-    if [ "$ENVIRONMENT" != "$ENV_PROD" ];then
+    if [ "$ENVIRONMENT" != "$ENV_PROD" ]; then
         CONFIG=${CONFIG/'"send_url_notification":1'/'"send_url_notification":0'}
     fi
 
@@ -95,7 +94,7 @@ sleep 20
     printf "\n${COLOR_SUCCESS}     INSTALL PLUGIN EXTERNAL             ${NC}\n"
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     wp plugin install wp-mail-logging --allow-root --activate --path="/var/www/html"
-
+    wp plugin install loco-translate --allow-root --activate --path="/var/www/html"
 
     #==========================================
     # Set permissions
@@ -104,24 +103,33 @@ sleep 20
     printf "\n${COLOR_SUCCESS}           SET PERMISSION                ${NC}\n"
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     chown -R www-data:www-data /var/www/html/
+    chmod -R g+w /var/www/html/
 
     #==========================================
     # Install XDebug
     #==========================================
     if [ "$XDEBUG_ENABLED" = "1" ]; then
-        printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
-        printf "\n${COLOR_SUCCESS}     INSTALLATION XDEBUG $ENVIRONMENT    ${NC}\n"
-        printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+        if ! pecl list | grep xdebug >/dev/null 2>&1; then
+            printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+            printf "\n${COLOR_SUCCESS}            INSTALLATION XDEBUG          ${NC}\n"
+            printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
 
-        echo '' && pecl install xdebug
-        echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini
-        echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini
-        echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini
+            echo '' | pecl install xdebug
+        fi
+
+        xdebugFile=/usr/local/etc/php/conf.d/xdebug.ini
+        echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" >$xdebugFile
+
+        echo "xdebug.mode=debug" >>$xdebugFile
+        echo "xdebug.idekey=PHPSTORM" >>$xdebugFile
+
+        echo "xdebug.remote_enable=on" >>$xdebugFile
+        echo "xdebug.remote_autostart=off" >>$xdebugFile
     fi
 
-    echo "define( 'WP_DEBUG_DISPLAY', true );" >> /var/www/html/wp-config.php
-    echo "define( 'WP_DEBUG', true );" >> /var/www/html/wp-config.php
-    echo "define( 'WP_DEBUG_LOG', true );" >> /var/www/html/wp-config.php
+    echo "define( 'WP_DEBUG_DISPLAY', true );" >>/var/www/html/wp-config.php
+    echo "define( 'WP_DEBUG', true );" >>/var/www/html/wp-config.php
+    echo "define( 'WP_DEBUG_LOG', true );" >>/var/www/html/wp-config.php
 fi
 
 #===================================#
@@ -132,19 +140,18 @@ printf "${COLOR_SUCCESS}    |===================================================
 printf "${COLOR_SUCCESS}    |                                                                      ${NC}\n"
 printf "${COLOR_SUCCESS}    |               DOCKER WOOCOMMERCE TO HIPAY $ENVIRONMENT IS UP         ${NC}\n"
 printf "${COLOR_SUCCESS}    |                                                                      ${NC}\n"
-printf "${COLOR_SUCCESS}    |   URL FRONT       : http://$WORDPRESS_URL                            ${NC}\n"
-printf "${COLOR_SUCCESS}    |   URL BACK        : http://$WORDPRESS_URL/wp-admin                   ${NC}\n"
+printf "${COLOR_SUCCESS}    |   URL FRONT       : $WORDPRESS_URL                                   ${NC}\n"
+printf "${COLOR_SUCCESS}    |   URL BACK        : $WORDPRESS_URL/wp-admin                          ${NC}\n"
 printf "${COLOR_SUCCESS}    |                                                                      ${NC}\n"
 printf "${COLOR_SUCCESS}    |   PHP VERSION     : $PHP_VERSION                                     ${NC}\n"
 printf "${COLOR_SUCCESS}    |======================================================================${NC}\n"
-
 
 printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
 printf "\n${COLOR_SUCCESS}           HOSTS CONGIGURATION           ${NC}\n"
 printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
 cp /etc/hosts ~/hosts.bak
 sed -i 's/^127\.0\.0\.1.*/127.0.0.1    localhost    data.hipay.com    stage-data.hipay.com/g' ~/hosts.bak
-cp  ~/hosts.bak /etc/hosts
+cp ~/hosts.bak /etc/hosts
 
 #==========================================
 # APACHE RUNNING

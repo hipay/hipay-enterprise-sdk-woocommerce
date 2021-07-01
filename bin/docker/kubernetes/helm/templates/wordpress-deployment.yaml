@@ -1,0 +1,122 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress-service-{{ .Release.Name }}
+  namespace: default
+  labels:
+    cd-hipay: cron-delete
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      name: web
+      targetPort: 80
+  selector:
+    app: wordpress-{{ .Release.Name }}
+    tier: frontend-{{ .Release.Name }}
+  type: NodePort
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroute-tls-{{ .Release.Name }}
+  namespace: default
+  labels:
+    cd-hipay: cron-delete
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`{{ .Values.wordpress_url  }}`)
+      kind: Rule
+      priority: 1
+      services:
+        - name: wordpress-service-{{ .Release.Name }}
+          port: 80
+  tls:
+    certResolver: default
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroute-{{ .Release.Name }}
+  namespace: default
+  labels:
+    cd-hipay: cron-delete
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`{{ .Values.wordpress_url  }}`)
+      kind: Rule
+      priority: 1
+      services:
+        - name: wordpress-service-{{ .Release.Name }}
+          port: 80
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: wp-pv-claim-{{ .Release.Name }}
+  labels:
+    app: wordpress-{{ .Release.Name }}
+    cd-hipay: cron-delete
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress-{{ .Release.Name }}
+  labels:
+    app: wordpress-{{ .Release.Name }}
+    cd-hipay: cron-delete
+spec:
+  selector:
+    matchLabels:
+      app: wordpress-{{ .Release.Name }}
+      tier: frontend-{{ .Release.Name }}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: wordpress-{{ .Release.Name }}
+        tier: frontend-{{ .Release.Name }}
+        cd-hipay: cron-delete
+    spec:
+      containers:
+      - image: {{ .Values.wordpress_image }}:{{ .Values.wordpress_tag }}
+        imagePullPolicy: Always
+        name: wordpress-{{ .Release.Name }}
+        resources:
+          requests:
+            memory: "256M"
+            cpu: "500m"
+          limits:
+            memory: "512M"
+            cpu: "1000m"
+        envFrom:
+          - configMapRef:
+              name: wordpress-configmap-{{ .Release.Name }}
+        ports:
+          - containerPort: 80
+            name: wordpress
+        volumeMounts:
+          - name: wordpress-persistent-storage-{{ .Release.Name }}
+            mountPath: /var/www/html
+      volumes:
+      - name: wordpress-persistent-storage-{{ .Release.Name }}
+        persistentVolumeClaim:
+          claimName: wp-pv-claim-{{ .Release.Name }}
+      nodeSelector:
+        node_type: default
+      tolerations:
+        - key: "cd_service"
+          operator: "Equal"
+          value: "only"
+          effect: "NoExecute"

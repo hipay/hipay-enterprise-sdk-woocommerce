@@ -1,13 +1,14 @@
 {
-  "name": "yandex",
+  "name": "mbway",
   "config": {
-    "displayNameBO": "Yandex Money",
+    "displayNameBO": "MB WAY",
     "displayName": {
-      "fr": "Yandex Money",
-      "en": "Yandex Money"
+      "fr": "MB WAY",
+      "en": "MB WAY"
     },
-    "frontPosition": 30,
+    "frontPosition": 34,
     "activated": 0,
+    "currencies": ["EUR"],
     "displayConfigurationFields": [
       "displayName",
       "minAmount",
@@ -23,6 +24,6 @@
     "maxAmount": {
       "EUR": false
     },
-    "logo": "yandex-money.png"
+    "logo": "mbway.png"
   }
 }

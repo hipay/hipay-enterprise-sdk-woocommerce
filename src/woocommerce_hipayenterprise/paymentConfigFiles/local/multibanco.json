@@ -1,34 +1,31 @@
 {
-  "name": "3xcb",
+  "name": "multibanco",
   "config": {
-    "group": {
-      "code": "oney",
-      "label": "Oney"
-    },
-    "displayNameBO": "3x Carte Bancaire - Oney",
+    "displayNameBO": "Multibanco",
     "displayName": {
-      "fr": "3x Carte Bancaire - Oney",
-      "en": "3x Credit Card - Oney"
+      "fr": "Multibanco",
+      "en": "Multibanco"
     },
-    "frontPosition": 3,
+    "frontPosition": 31,
     "activated": 0,
+    "currencies": ["EUR"],
     "displayConfigurationFields": [
       "displayName",
       "minAmount",
       "maxAmount",
       "countries",
-      "merchantPromotion"
+      "orderExpirationTime"
     ],
     "countrySelectorReadOnly": 1,
     "currencySelectorReadOnly": 1,
-    "forceBasket": 1,
+    "forceBasket": 0,
     "minAmount": {
       "EUR": 0
     },
     "maxAmount": {
       "EUR": false
     },
-    "merchantPromotion": false,
-    "logo": "3xcb.png"
+    "orderExpirationTime": 3,
+    "logo": "multibanco.png"
   }
 }

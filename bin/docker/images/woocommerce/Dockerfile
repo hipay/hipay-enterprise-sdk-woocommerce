@@ -1,13 +1,14 @@
 FROM wordpress:latest
 
-MAINTAINER Pi-ecommerce <pi-ecommerce@hipay.com>
+LABEL maintainer="PI-Ecommerce"
+LABEL maintainer_email="pi-ecommerce@hipay.com"
 
 ENV APACHE_RUN_USER=www-data \
-     APACHE_RUN_GROUP=www-data \
-     APACHE_PID_FILE=/var/run/apache2/apache2.pid \
-     APACHE_RUN_DIR=/var/run/apache2 \
-     APACHE_LOCK_DIR=/var/lock/apache2 \
-     APACHE_LOG_DIR=/var/log/apache2
+    APACHE_RUN_GROUP=www-data \
+    APACHE_PID_FILE=/var/run/apache2/apache2.pid \
+    APACHE_RUN_DIR=/var/run/apache2 \
+    APACHE_LOCK_DIR=/var/lock/apache2 \
+    APACHE_LOG_DIR=/var/log/apache2
 
 RUN apt-get update \
     && apt-get install -y python default-mysql-client \

@@ -2,6 +2,7 @@
 # IDE#
 ##############################
 .idea
+.vscode
 *.sublime-project
 hipay\.enterprise\.woocommerce\.sdk\.sublime-workspace
 
@@ -25,3 +26,8 @@ bin/tests/.npmrc
 # Env vars #
 ############
 *.env
+
+############
+#  Source  #
+############
+src/woocommerce_hipayenterprise/composer.lock

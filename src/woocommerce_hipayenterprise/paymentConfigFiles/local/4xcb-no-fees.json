@@ -16,7 +16,8 @@
       "displayName",
       "minAmount",
       "maxAmount",
-      "countries"
+      "countries",
+      "merchantPromotion"
     ],
     "countrySelectorReadOnly": 1,
     "currencySelectorReadOnly": 1,
@@ -27,6 +28,7 @@
     "maxAmount": {
       "EUR": false
     },
-    "logo": "oney.png"
+    "merchantPromotion": false,
+    "logo": "4xcb-no-fees.png"
   }
 }
