@@ -3,10 +3,10 @@ msgstr ""
 "Project-Id-Version: WooCommerce HiPay Enterprise\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-10-18 15:57+0000\n"
-"PO-Revision-Date: 2021-06-30 13:21+0000\n"
+"PO-Revision-Date: 2021-07-01 13:03+0000\n"
 "Last-Translator: admin <admin-wordpress@hipay.com>\n"
 "Language-Team: French (France)\n"
-"Language: fr-FR\n"
+"Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,34 +32,46 @@ msgstr "%1$s %2$s (expire %3$s/%4$s)"
 msgid "%s data"
 msgstr "%s données"
 
+#: includes/admin/template/admin-paymentlocal-settings.php:36
+msgid "3 days"
+msgstr "3 jours"
+
+#: includes/admin/template/admin-paymentlocal-settings.php:37
+msgid "30 days"
+msgstr "30 jours"
+
 #: includes/gateways/local/class-hipay-bnpp3x.php:36
 msgid "3x Carte Bancaire - BNP Personal Finance"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-oney-3xcb.php:33 
+#: includes/gateways/local/class-hipay-oney-3xcb.php:33
 #: includes/gateways/local/class-hipay-oney-3xcb.php:34
 msgid "3x Carte Bancaire - Oney"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-oney-3xcb-no-fees.php:33 
+#: includes/gateways/local/class-hipay-oney-3xcb-no-fees.php:33
 #: includes/gateways/local/class-hipay-oney-3xcb-no-fees.php:34
 msgid "3x Carte Bancaire sans frais - Oney"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-bnpp4x.php:36 
+#: includes/gateways/local/class-hipay-bnpp4x.php:36
 #: includes/gateways/local/class-hipay-bnpp4x.php:37
 msgid "4x Carte Bancaire - BNP Personal Finance"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-oney-4xcb.php:33 
+#: includes/gateways/local/class-hipay-oney-4xcb.php:33
 #: includes/gateways/local/class-hipay-oney-4xcb.php:34
 msgid "4x Carte Bancaire - Oney"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-oney-4xcb-no-fees.php:33 
+#: includes/gateways/local/class-hipay-oney-4xcb-no-fees.php:33
 #: includes/gateways/local/class-hipay-oney-4xcb-no-fees.php:34
 msgid "4x Carte Bancaire sans frais - Oney"
 msgstr ""
+
+#: includes/admin/template/admin-paymentlocal-settings.php:38
+msgid "90 days"
+msgstr "90 jours"
 
 #: includes/helper/class-hipay-helper.php:182
 #, php-format
@@ -106,13 +118,13 @@ msgstr ""
 msgid "Amount already captured"
 msgstr "Montant déjà capturé"
 
-#: includes/admin/class-hipay-mapping-category-controller.php:94 
+#: includes/admin/class-hipay-mapping-category-controller.php:94
 #: includes/admin/class-hipay-mapping-delivery-controller.php:113
 msgid "An error occured during while saving the mapping. "
 msgstr "Une erreur s'est produite lors de l'enregistrement du mapping."
 
-#: includes/helper/class-hipay-api-request-handler.php:263 
-#: includes/helper/class-hipay-api-request-handler.php:295 
+#: includes/helper/class-hipay-api-request-handler.php:263
+#: includes/helper/class-hipay-api-request-handler.php:295
 #: includes/helper/class-hipay-api-request-handler.php:301
 msgid "An error occured, process has been cancelled."
 msgstr "Une erreur s'est produite, le processus à été annulé."
@@ -131,8 +143,8 @@ msgstr ""
 "\n"
 "Êtes-vous sûr de capturer ces éléments?"
 
-#: includes/gateways/local/class-hipay-aura.php:33 
-#: includes/gateways/local/class-hipay-aura.php:34 
+#: includes/gateways/local/class-hipay-aura.php:33
+#: includes/gateways/local/class-hipay-aura.php:34
 #: includes/gateways/local/class-hipay-astropay-aura.php:33
 msgid "Aura"
 msgstr ""
@@ -141,12 +153,12 @@ msgstr ""
 msgid "Aura  - Astropay"
 msgstr ""
 
-#: includes/helper/class-hipay-notification.php:159 
+#: includes/helper/class-hipay-notification.php:159
 #: includes/helper/class-hipay-notification.php:168
 msgid "Authorization cancelled. Order was cancelled with transaction:"
 msgstr "Authorization annulée. La commande a été annulée avec la transaction:"
 
-#: includes/helper/class-hipay-notification.php:178 
+#: includes/helper/class-hipay-notification.php:178
 #: includes/helper/class-hipay-notification.php:182
 msgid "Authorization successful for transaction."
 msgstr "Demande d'authorization en succès pour la transaction"
@@ -167,8 +179,8 @@ msgstr "Automatique: toutes les transactions seront capturées automatiquement."
 msgid "Available countries"
 msgstr "Pays disponibles"
 
-#: includes/gateways/local/class-hipay-astropay-banamex.php:33 
-#: includes/gateways/local/class-hipay-banamex.php:33 
+#: includes/gateways/local/class-hipay-astropay-banamex.php:33
+#: includes/gateways/local/class-hipay-banamex.php:33
 #: includes/gateways/local/class-hipay-banamex.php:34
 msgid "Banamex"
 msgstr ""
@@ -177,8 +189,8 @@ msgstr ""
 msgid "Banamex - Astropay"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-banco-do-brasil.php:33 
-#: includes/gateways/local/class-hipay-banco-do-brasil.php:34 
+#: includes/gateways/local/class-hipay-banco-do-brasil.php:33
+#: includes/gateways/local/class-hipay-banco-do-brasil.php:34
 #: includes/gateways/local/class-hipay-astropay-banco-do-brasil.php:33
 msgid "Banco do brazil"
 msgstr ""
@@ -187,8 +199,8 @@ msgstr ""
 msgid "Banco do brazil - Astropay"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-bbva-bancomer.php:33 
-#: includes/gateways/local/class-hipay-bbva-bancomer.php:34 
+#: includes/gateways/local/class-hipay-bbva-bancomer.php:33
+#: includes/gateways/local/class-hipay-bbva-bancomer.php:34
 #: includes/gateways/local/class-hipay-astropay-bbva-bancomer.php:33
 msgid "BBVA Bancomer"
 msgstr ""
@@ -197,20 +209,20 @@ msgstr ""
 msgid "BBVA Bancomer - Astropay"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-belfius.php:33 
+#: includes/gateways/local/class-hipay-belfius.php:33
 #: includes/gateways/local/class-hipay-belfius.php:34
 msgid "Belfius"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-boleto-bancario.php:33 
-#: includes/gateways/local/class-hipay-boleto-bancario.php:34 
-#: includes/gateways/local/class-hipay-astropay-boleto-bancario.php:33 
+#: includes/gateways/local/class-hipay-boleto-bancario.php:33
+#: includes/gateways/local/class-hipay-boleto-bancario.php:34
+#: includes/gateways/local/class-hipay-astropay-boleto-bancario.php:33
 #: includes/gateways/local/class-hipay-astropay-boleto-bancario.php:34
 msgid "Boleto bancario"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-bradesco.php:33 
-#: includes/gateways/local/class-hipay-bradesco.php:34 
+#: includes/gateways/local/class-hipay-bradesco.php:33
+#: includes/gateways/local/class-hipay-bradesco.php:34
 #: includes/gateways/local/class-hipay-astropay-bradesco.php:33
 msgid "Bradesco"
 msgstr ""
@@ -220,13 +232,13 @@ msgid "Bradesco - Astropay"
 msgstr ""
 
 #. refund amount
-#: includes/admin/template/html-order-additional.php:72 
+#: includes/admin/template/html-order-additional.php:72
 #: includes/admin/template/admin-faq-settings.php:111
 msgid "Cancel"
 msgstr ""
 
-#: includes/admin/template/html-order-additional.php:18 
-#: includes/admin/template/admin-global-settings.php:184 
+#: includes/admin/template/html-order-additional.php:18
+#: includes/admin/template/admin-global-settings.php:184
 #: includes/admin/template/admin-faq-settings.php:93
 msgid "Capture"
 msgstr ""
@@ -262,7 +274,7 @@ msgstr "Montant de la capture"
 msgid "Captured"
 msgstr "Capturé"
 
-#: includes/admin/template/html-order-item.php:27 
+#: includes/admin/template/html-order-item.php:27
 #: includes/admin/template/html-order-shipping.php:26
 msgid "Captured with HiPay"
 msgstr "Capturé avec HiPay"
@@ -283,8 +295,8 @@ msgstr "Carte mises à jour avec sucés. "
 msgid "Caret color"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-astropay-caixa.php:33 
-#: includes/gateways/local/class-hipay-caixa.php:33 
+#: includes/gateways/local/class-hipay-astropay-caixa.php:33
+#: includes/gateways/local/class-hipay-caixa.php:33
 #: includes/gateways/local/class-hipay-caixa.php:34
 msgid "Caïxa"
 msgstr ""
@@ -342,8 +354,8 @@ msgstr ""
 msgid "Color"
 msgstr "Couleur"
 
-#: includes/admin/template/admin-creditcard-settings.php:137 
-#: includes/admin/template/admin-paymentlocal-settings.php:63
+#: includes/admin/template/admin-creditcard-settings.php:137
+#: includes/admin/template/admin-paymentlocal-settings.php:79
 msgid "Countries"
 msgstr "Pays"
 
@@ -371,8 +383,8 @@ msgstr "cURL Extension"
 msgid "cURL Extension is correcly installed."
 msgstr "cURL Extension est bien installée."
 
-#: includes/admin/template/admin-creditcard-settings.php:111 
-#: includes/admin/template/admin-paymentlocal-settings.php:36
+#: includes/admin/template/admin-creditcard-settings.php:111
+#: includes/admin/template/admin-paymentlocal-settings.php:54
 msgid "Currencies"
 msgstr "Devises"
 
@@ -380,7 +392,7 @@ msgstr "Devises"
 msgid "Customer's cart sending"
 msgstr "Envoyer les informations du panier client"
 
-#: includes/frontend/template/hosted-fields.php:34 
+#: includes/frontend/template/hosted-fields.php:34
 #: includes/frontend/template/force-cvv-oc.php:23
 msgid "CVC"
 msgstr ""
@@ -417,7 +429,7 @@ msgstr "Afficher le sélecteur de carte"
 msgid "Display Hosted Page"
 msgstr "Affiche une page hébergé"
 
-#: includes/admin/template/admin-creditcard-settings.php:10 
+#: includes/admin/template/admin-creditcard-settings.php:10
 #: includes/admin/template/admin-paymentlocal-settings.php:3
 msgid "Display name"
 msgstr "Nom d'affichage"
@@ -426,7 +438,7 @@ msgstr "Nom d'affichage"
 msgid "E-mail"
 msgstr ""
 
-#: includes/helper/class-hipay-settings-handler.php:234
+#: includes/helper/class-hipay-settings-handler.php:228
 msgid "Email should be valid"
 msgstr "L'e-mail doit être valide"
 
@@ -489,7 +501,7 @@ msgstr ""
 msgid "Force for all transactions"
 msgstr "Forcer pour tous les transactions"
 
-#: includes/admin/template/admin-general-settings.php:127 
+#: includes/admin/template/admin-general-settings.php:127
 #: includes/admin/template/admin-fraud-settings.php:3
 msgid "Fraud"
 msgstr "Fraude"
@@ -515,7 +527,7 @@ msgstr "Get transaction details with public credentials"
 msgid "Get transaction informations"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-giropay.php:33 
+#: includes/gateways/local/class-hipay-giropay.php:33
 #: includes/gateways/local/class-hipay-giropay.php:34
 msgid "Giropay"
 msgstr ""
@@ -536,8 +548,8 @@ msgstr ""
 msgid "HiPay"
 msgstr ""
 
-#: includes/admin/class-hipay-admin-post-types.php:116 
-#: includes/admin/class-hipay-admin-post-types.php:117 
+#: includes/admin/class-hipay-admin-post-types.php:116
+#: includes/admin/class-hipay-admin-post-types.php:117
 #: includes/admin/class-hipay-admin-post-types.php:119
 msgid "HiPay Delivery Mapping"
 msgstr "Mapping des transporteurs"
@@ -550,7 +562,7 @@ msgstr "Méthode de livraison"
 msgid "HiPay delivery mode"
 msgstr "Mode de livraison"
 
-#: includes/admin/class-hipay-admin-menus.php:43 
+#: includes/admin/class-hipay-admin-menus.php:43
 #: includes/admin/class-hipay-admin-menus.php:44
 msgid "HiPay Enterprise"
 msgstr ""
@@ -571,22 +583,22 @@ msgstr ""
 msgid "HiPay Enterprise 4x Carte Bancaire sans frais - Oney"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-aura.php:32 
+#: includes/gateways/local/class-hipay-aura.php:32
 #: includes/gateways/local/class-hipay-astropay-aura.php:32
 msgid "HiPay Enterprise Aura"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-astropay-banamex.php:32 
+#: includes/gateways/local/class-hipay-astropay-banamex.php:32
 #: includes/gateways/local/class-hipay-banamex.php:32
 msgid "HiPay Enterprise Banamex"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-banco-do-brasil.php:32 
+#: includes/gateways/local/class-hipay-banco-do-brasil.php:32
 #: includes/gateways/local/class-hipay-astropay-banco-do-brasil.php:32
 msgid "HiPay Enterprise Banco do brazil"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-bbva-bancomer.php:32 
+#: includes/gateways/local/class-hipay-bbva-bancomer.php:32
 #: includes/gateways/local/class-hipay-astropay-bbva-bancomer.php:32
 msgid "HiPay Enterprise BBVA Bancomer"
 msgstr ""
@@ -603,17 +615,17 @@ msgstr ""
 msgid "HiPay Enterprise Bnppf-4xcb"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-boleto-bancario.php:32 
+#: includes/gateways/local/class-hipay-boleto-bancario.php:32
 #: includes/gateways/local/class-hipay-astropay-boleto-bancario.php:32
 msgid "HiPay Enterprise Boleto bancario"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-bradesco.php:32 
+#: includes/gateways/local/class-hipay-bradesco.php:32
 #: includes/gateways/local/class-hipay-astropay-bradesco.php:32
 msgid "HiPay Enterprise Bradesco"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-astropay-caixa.php:32 
+#: includes/gateways/local/class-hipay-astropay-caixa.php:32
 #: includes/gateways/local/class-hipay-caixa.php:32
 msgid "HiPay Enterprise Caïxa"
 msgstr ""
@@ -634,7 +646,7 @@ msgstr ""
 msgid "HiPay Enterprise ING Home' pay"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-itau.php:32 
+#: includes/gateways/local/class-hipay-itau.php:32
 #: includes/gateways/local/class-hipay-astropay-itau.php:32
 msgid "HiPay Enterprise Itau"
 msgstr ""
@@ -655,7 +667,7 @@ msgstr ""
 msgid "HiPay Enterprise MyBank"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-oxxo.php:32 
+#: includes/gateways/local/class-hipay-oxxo.php:32
 #: includes/gateways/local/class-hipay-astropay-oxxo.php:32
 msgid "HiPay Enterprise Oxxo"
 msgstr ""
@@ -676,12 +688,12 @@ msgstr ""
 msgid "HiPay Enterprise Przelewy24"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-santander-cash.php:32 
+#: includes/gateways/local/class-hipay-santander-cash.php:32
 #: includes/gateways/local/class-hipay-astropay-santander-cash.php:32
 msgid "HiPay Enterprise Santander Cash"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-santander-home-banking.php:32 
+#: includes/gateways/local/class-hipay-santander-home-banking.php:32
 #: includes/gateways/local/class-hipay-astropay-santander-home-banking.php:32
 msgid "HiPay Enterprise Santander HomeBanking"
 msgstr ""
@@ -706,14 +718,14 @@ msgstr ""
 msgid "HiPay Enterprise Yandex Money"
 msgstr ""
 
-#: includes/admin/class-hipay-admin-post-types.php:96 
-#: includes/admin/class-hipay-admin-post-types.php:97 
+#: includes/admin/class-hipay-admin-post-types.php:96
+#: includes/admin/class-hipay-admin-post-types.php:97
 #: includes/admin/class-hipay-admin-post-types.php:99
 msgid "HiPay Mapping Categories"
 msgstr "Mapping des catégories"
 
-#: includes/admin/class-hipay-admin-post-types.php:159 
-#: includes/admin/class-hipay-admin-post-types.php:160 
+#: includes/admin/class-hipay-admin-post-types.php:159
+#: includes/admin/class-hipay-admin-post-types.php:160
 #: includes/admin/class-hipay-admin-post-types.php:162
 msgid "HiPay Operations"
 msgstr "Operations HiPay"
@@ -722,13 +734,13 @@ msgstr "Operations HiPay"
 msgid "HiPay Product Category"
 msgstr "Catégorie de produit HiPay"
 
-#: includes/helper/class-hipay-api-request-handler.php:152 
+#: includes/helper/class-hipay-api-request-handler.php:152
 #: includes/helper/class-hipay-helper.php:259
 msgid "HiPay status: "
 msgstr "Satus HiPay"
 
-#: includes/admin/class-hipay-admin-post-types.php:137 
-#: includes/admin/class-hipay-admin-post-types.php:138 
+#: includes/admin/class-hipay-admin-post-types.php:137
+#: includes/admin/class-hipay-admin-post-types.php:138
 #: includes/admin/class-hipay-admin-post-types.php:140
 msgid "HiPay Transactions"
 msgstr "Transactions HiPay"
@@ -797,7 +809,7 @@ msgstr "Couleur d'icône"
 msgid "ID: %d"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-ideal.php:33 
+#: includes/gateways/local/class-hipay-ideal.php:33
 #: includes/gateways/local/class-hipay-ideal.php:34
 msgid "IDEAL"
 msgstr ""
@@ -808,24 +820,24 @@ msgstr ""
 "Si des notifications sont envoyées, il peut y avoir une erreur dans le "
 "plugin."
 
-#: includes/helper/class-hipay-settings-handler.php:95
+#: includes/helper/class-hipay-settings-handler.php:91
 msgid ""
 "If production api TokenJS username is filled production api TokenJS password "
 "is mandatory"
 msgstr ""
 
-#: includes/helper/class-hipay-settings-handler.php:86
+#: includes/helper/class-hipay-settings-handler.php:83
 msgid ""
 "If production api username is filled production api password is mandatory"
 msgstr ""
 
-#: includes/helper/class-hipay-settings-handler.php:74
+#: includes/helper/class-hipay-settings-handler.php:72
 msgid ""
 "If sandbox api TokenJS username is filled sandbox api TokenJS password is "
 "mandatory"
 msgstr ""
 
-#: includes/helper/class-hipay-settings-handler.php:61
+#: includes/helper/class-hipay-settings-handler.php:60
 msgid "If sandbox api username is filled sandbox api password is mandatory"
 msgstr ""
 
@@ -886,7 +898,7 @@ msgstr ""
 "Détermine si les commandes doivent passer par le statut En attente lors "
 "d'une capture automatique."
 
-#: includes/gateways/local/class-hipay-ing-homepay.php:33 
+#: includes/gateways/local/class-hipay-ing-homepay.php:33
 #: includes/gateways/local/class-hipay-ing-homepay.php:34
 msgid "ING Home' pay"
 msgstr ""
@@ -916,8 +928,8 @@ msgstr "Commande invalide"
 msgid "Invoice &ndash; %s"
 msgstr "Facture &ndash; %s"
 
-#: includes/gateways/local/class-hipay-itau.php:33 
-#: includes/gateways/local/class-hipay-itau.php:34 
+#: includes/gateways/local/class-hipay-itau.php:33
+#: includes/gateways/local/class-hipay-itau.php:34
 #: includes/gateways/local/class-hipay-astropay-itau.php:33
 msgid "Itau"
 msgstr ""
@@ -926,7 +938,7 @@ msgstr ""
 msgid "Itau - Astropay"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-klarna.php:33 
+#: includes/gateways/local/class-hipay-klarna.php:33
 #: includes/gateways/local/class-hipay-klarna.php:34
 msgid "Klarna"
 msgstr ""
@@ -982,12 +994,12 @@ msgstr "Mapping  %s"
 msgid "Mapping Category"
 msgstr "Mapping catégorie"
 
-#: includes/admin/class-hipay-admin-menus.php:54 
+#: includes/admin/class-hipay-admin-menus.php:54
 #: includes/admin/class-hipay-admin-menus.php:55
 msgid "Mapping category"
 msgstr "Mapping des catégories"
 
-#: includes/admin/class-hipay-admin-menus.php:64 
+#: includes/admin/class-hipay-admin-menus.php:64
 #: includes/admin/class-hipay-admin-menus.php:65
 msgid "Mapping delivery method"
 msgstr "Mapping des transporteurs"
@@ -1008,23 +1020,27 @@ msgstr ""
 "Le mapping des modes de livraison est obligatoire pour les modes de paiement "
 "Oney ou si vous activez l'option \"Envoyer le panier\".\n"
 
-#: includes/admin/template/admin-creditcard-settings.php:96 
-#: includes/admin/template/admin-paymentlocal-settings.php:25
+#: includes/admin/template/admin-creditcard-settings.php:96
+#: includes/admin/template/admin-paymentlocal-settings.php:22
 msgid "Maximum order amount"
 msgstr "Montant maximum de la commande"
 
-#: includes/gateways/local/class-hipay-mbway.php:33 
+#: includes/gateways/local/class-hipay-mbway.php:33
 #: includes/gateways/local/class-hipay-mbway.php:34
 msgid "MB WAY"
 msgstr ""
 
-#: includes/helper/class-hipay-api-request-handler.php:142 
+#: includes/admin/template/admin-paymentlocal-settings.php:45
+msgid "Merchant Promotion"
+msgstr "Promotion marchand"
+
+#: includes/helper/class-hipay-api-request-handler.php:142
 #: includes/helper/class-hipay-order-handler.php:237
 msgid "Message was : "
 msgstr "Le message est : "
 
-#: includes/admin/template/admin-creditcard-settings.php:81 
-#: includes/admin/template/admin-paymentlocal-settings.php:14
+#: includes/admin/template/admin-creditcard-settings.php:81
+#: includes/admin/template/admin-paymentlocal-settings.php:13
 msgid "Minimum order amount"
 msgstr "Montant minimum de la commande"
 
@@ -1032,12 +1048,12 @@ msgstr "Montant minimum de la commande"
 msgid "Module update"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-multibanco.php:33 
+#: includes/gateways/local/class-hipay-multibanco.php:33
 #: includes/gateways/local/class-hipay-multibanco.php:34
 msgid "Multibanco"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-mybank.php:33 
+#: includes/gateways/local/class-hipay-mybank.php:33
 #: includes/gateways/local/class-hipay-mybank.php:34
 msgid "MyBank"
 msgstr ""
@@ -1065,16 +1081,20 @@ msgstr "Mode de fonctionnement"
 msgid "Operations  %s"
 msgstr "Operations  %s"
 
-#: includes/admin/template/admin-faq-settings.php:58 
+#: includes/admin/template/admin-faq-settings.php:58
 #: includes/admin/template/admin-faq-settings.php:158
 msgid "Order"
 msgstr "Commande"
 
-#: includes/admin/post/class-hipay-order-capture.php:79 
+#: includes/admin/post/class-hipay-order-capture.php:79
 #: includes/admin/data-stores/class-hipay-order-capture-data-store-cpt.php:129
 msgctxt "Order date parsed by strftime"
 msgid "%b %d, %Y @ %I:%M %p"
 msgstr ""
+
+#: includes/admin/template/admin-paymentlocal-settings.php:32
+msgid "Order expiration date"
+msgstr "Date d'expiration de la commande"
 
 #: includes/admin/template/admin-mapping-delivery-settings.php:20
 msgid "Order preparation estimated time"
@@ -1094,8 +1114,8 @@ msgstr "Partiellement remboursé (HiPay)"
 msgid "Order total amount :"
 msgstr "Montal total:"
 
-#: includes/gateways/local/class-hipay-oxxo.php:33 
-#: includes/gateways/local/class-hipay-oxxo.php:34 
+#: includes/gateways/local/class-hipay-oxxo.php:33
+#: includes/gateways/local/class-hipay-oxxo.php:34
 #: includes/gateways/local/class-hipay-astropay-oxxo.php:33
 msgid "Oxxo"
 msgstr ""
@@ -1104,9 +1124,9 @@ msgstr ""
 msgid "Oxxo - Astropay"
 msgstr ""
 
-#: includes/admin/template/admin-account-settings.php:44 
-#: includes/admin/template/admin-account-settings.php:76 
-#: includes/admin/template/admin-account-settings.php:105 
+#: includes/admin/template/admin-account-settings.php:44
+#: includes/admin/template/admin-account-settings.php:76
+#: includes/admin/template/admin-account-settings.php:105
 #: includes/admin/template/admin-account-settings.php:132
 msgid "Password"
 msgstr "Mot de passe"
@@ -1119,7 +1139,7 @@ msgstr "Gateway de paiement"
 msgid "Payment Methods"
 msgstr "Méthode de paiement"
 
-#: includes/helper/class-hipay-notification.php:191 
+#: includes/helper/class-hipay-notification.php:191
 #: includes/helper/class-hipay-notification.php:210
 msgid "Payment partially captured, amount:"
 msgstr "Paiement partiellement capturé, montant:"
@@ -1128,7 +1148,7 @@ msgstr "Paiement partiellement capturé, montant:"
 msgid "Payment partially refunded, amount:"
 msgstr "Paiement partiellement remboursé, montant:"
 
-#: includes/gateways/local/class-hipay-paypal.php:36 
+#: includes/gateways/local/class-hipay-paypal.php:36
 #: includes/gateways/local/class-hipay-paypal.php:37
 msgid "Paypal"
 msgstr ""
@@ -1161,12 +1181,12 @@ msgstr "Paramétrage"
 msgid "Plugin Version"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-postfinance-card.php:33 
+#: includes/gateways/local/class-hipay-postfinance-card.php:33
 #: includes/gateways/local/class-hipay-postfinance-card.php:34
 msgid "PostFinance Card"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-postfinance-efinance.php:33 
+#: includes/gateways/local/class-hipay-postfinance-efinance.php:33
 #: includes/gateways/local/class-hipay-postfinance-efinance.php:34
 msgid "PostFinance E-Finance"
 msgstr ""
@@ -1187,7 +1207,7 @@ msgstr ""
 msgid "Production configuration"
 msgstr "Configuration production"
 
-#: includes/gateways/local/class-hipay-przelewy24.php:33 
+#: includes/gateways/local/class-hipay-przelewy24.php:33
 #: includes/gateways/local/class-hipay-przelewy24.php:34
 msgid "Przelewy24"
 msgstr ""
@@ -1240,8 +1260,8 @@ msgstr ""
 msgid "Sandbox configuration"
 msgstr "Configuration sandbox"
 
-#: includes/gateways/local/class-hipay-santander-cash.php:33 
-#: includes/gateways/local/class-hipay-santander-cash.php:34 
+#: includes/gateways/local/class-hipay-santander-cash.php:33
+#: includes/gateways/local/class-hipay-santander-cash.php:34
 #: includes/gateways/local/class-hipay-astropay-santander-cash.php:33
 msgid "Santander Cash"
 msgstr ""
@@ -1250,8 +1270,8 @@ msgstr ""
 msgid "Santander Cash - Astropay"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-santander-home-banking.php:33 
-#: includes/gateways/local/class-hipay-santander-home-banking.php:34 
+#: includes/gateways/local/class-hipay-santander-home-banking.php:33
+#: includes/gateways/local/class-hipay-santander-home-banking.php:34
 #: includes/gateways/local/class-hipay-astropay-santander-home-banking.php:33
 msgid "Santander HomeBanking"
 msgstr ""
@@ -1260,7 +1280,7 @@ msgstr ""
 msgid "Santander HomeBanking - Astropay"
 msgstr ""
 
-#: includes/admin/template/admin-mapping-delivery-settings.php:87 
+#: includes/admin/template/admin-mapping-delivery-settings.php:87
 #: includes/admin/template/admin-mapping-category-settings.php:55
 msgid "Save changes"
 msgstr "Sauvegarder"
@@ -1273,7 +1293,7 @@ msgstr "Faites défiler jusqu'à \"IdentifiantsApi\"."
 msgid "SDK js url"
 msgstr ""
 
-#: includes/admin/template/admin-account-settings.php:54 
+#: includes/admin/template/admin-account-settings.php:54
 #: includes/admin/template/admin-account-settings.php:114
 msgid "Secret passphrase"
 msgstr ""
@@ -1286,7 +1306,7 @@ msgstr "Sélectionnez une catégorie"
 msgid "Send url Notification"
 msgstr "Envoyer l'url de notification"
 
-#: includes/gateways/local/class-hipay-sdd.php:33 
+#: includes/gateways/local/class-hipay-sdd.php:33
 #: includes/gateways/local/class-hipay-sdd.php:34
 msgid "SEPA Direct Debit"
 msgstr ""
@@ -1299,7 +1319,7 @@ msgstr ""
 msgid "SimpleXML Extension is correcly installed."
 msgstr "SimpleXML Extension is bien installée."
 
-#: includes/gateways/local/class-hipay-sisal.php:33 
+#: includes/gateways/local/class-hipay-sisal.php:33
 #: includes/gateways/local/class-hipay-sisal.php:34
 msgid "Sisal"
 msgstr ""
@@ -1308,7 +1328,7 @@ msgstr ""
 msgid "Skip on-hold status"
 msgstr "Passer le statut En attente"
 
-#: includes/gateways/local/class-hipay-sofort-uberweisung.php:33 
+#: includes/gateways/local/class-hipay-sofort-uberweisung.php:33
 #: includes/gateways/local/class-hipay-sofort-uberweisung.php:34
 msgid "Sofort Überweisung"
 msgstr ""
@@ -1364,8 +1384,8 @@ msgstr ""
 "href='%s'>Voir les détails de la version %s</a> ou <a href='/wp-admin/update-"
 "core.php'>mettre à jour</a>."
 
-#: includes/helper/class-hipay-api-request-handler.php:130 
-#: includes/helper/class-hipay-api-request-handler.php:139 
+#: includes/helper/class-hipay-api-request-handler.php:130
+#: includes/helper/class-hipay-api-request-handler.php:139
 #: includes/helper/class-hipay-order-handler.php:234
 msgid ""
 "There was an error on the cancellation of the HiPay transaction. You can see "
@@ -1420,7 +1440,7 @@ msgstr ""
 msgid "Tokenization"
 msgstr ""
 
-#: includes/admin/template/admin-account-settings.php:66 
+#: includes/admin/template/admin-account-settings.php:66
 #: includes/admin/template/admin-account-settings.php:123
 msgid "Tokenization (Public)"
 msgstr ""
@@ -1445,8 +1465,8 @@ msgstr "Annulation de la transaction demandée"
 msgid "Transaction cancelled"
 msgstr "Transaction annulée"
 
-#: includes/helper/class-hipay-api-request-handler.php:151 
-#: includes/helper/class-hipay-helper.php:258 
+#: includes/helper/class-hipay-api-request-handler.php:151
+#: includes/helper/class-hipay-helper.php:258
 #: includes/helper/class-hipay-order-handler.php:239
 msgid "Transaction ID: "
 msgstr "Transaction ID:"
@@ -1476,7 +1496,7 @@ msgstr ""
 msgid "Use Oneclick"
 msgstr "Utiliser le paiement One-click"
 
-#: includes/admin/template/admin-account-settings.php:35 
+#: includes/admin/template/admin-account-settings.php:35
 #: includes/admin/template/admin-account-settings.php:96
 msgid "Username"
 msgstr "Nom d'utilisateur"
@@ -1489,7 +1509,7 @@ msgstr ""
 "Nous avons reçu le paiement de votre commande. Nous traiterons la commande "
 "dès que nous aurons reçu la confirmation de paiement."
 
-#: includes/gateways/local/class-hipay-webmoney-transfer.php:33 
+#: includes/gateways/local/class-hipay-webmoney-transfer.php:33
 #: includes/gateways/local/class-hipay-webmoney-transfer.php:34
 msgid "WebMoney Transfer"
 msgstr ""
@@ -1546,7 +1566,7 @@ msgstr ""
 "Mauvais format de numéro de téléphone, Oney nécessite un numéro de téléphone "
 "français valide (0123465789|+33123465789)"
 
-#: includes/gateways/local/class-hipay-yandex.php:33 
+#: includes/gateways/local/class-hipay-yandex.php:33
 #: includes/gateways/local/class-hipay-yandex.php:34
 msgid "Yandex Money"
 msgstr ""
@@ -1592,7 +1612,7 @@ msgstr ""
 "Vous allez être redirigé vers une page de paiement externe. Veuillez ne pas "
 "actualiser la page pendant le processus."
 
-#: includes/admin/template/admin-faq-settings.php:49 
+#: includes/admin/template/admin-faq-settings.php:49
 #: includes/admin/template/admin-faq-settings.php:133
 msgid "Your credentials must be granted to"
 msgstr "Vous identifiants doivent être configuré pour"
