@@ -100,7 +100,7 @@ class Hipay_Api_Request_Handler
      */
     public function handleLocalPayment($params)
     {
-        return $this->handleDirectOrder($params);
+        return $this->handleDirectOrder($params,false);
     }
 
     /**
@@ -247,9 +247,11 @@ class Hipay_Api_Request_Handler
      * @return string
      * @throws Hipay_Payment_Exception
      */
-    private function handleDirectOrder($params, $cc = false)
+    private function handleDirectOrder($params,$cc)
     {
         $order = wc_get_order($params["order_id"]);
+        $apiResponse = array();
+
         $this->initParamsDirectPost($params);
         $params["paymentMethod"] = $this->getPaymentMethod($params, $cc);
 
@@ -302,7 +304,10 @@ class Hipay_Api_Request_Handler
                 );
         }
 
-        return $redirectUrl;
+        $apiResponse['redirectUrl'] = $redirectUrl;
+        $apiResponse['additional_data'] = $response;
+
+        return $apiResponse;
     }
 
     /**

@@ -196,7 +196,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
             } elseif ($paymentGlobal['operating_mode'] == OperatingMode::HOSTED_PAGE) {
 
                 $this->process_template(
-                    'hosted-page.php',
+                    'hosted-pagesss.php',
                     'frontend',
                     array()
                 );
@@ -428,11 +428,11 @@ if (!class_exists('WC_Gateway_Hipay')) {
                         Hipay_Helper::getPostData('wc-' . self::GATEWAY_CREDIT_CARD_ID . '-new-payment-method');
                 }
 
-                $redirect = $this->apiRequestHandler->handleCreditCard($params);
+                $response = $this->apiRequestHandler->handleCreditCard($params);
 
                 return array(
                     'result' => 'success',
-                    'redirect' => $redirect,
+                    'redirect' => $response["redirectUrl"],
                 );
             } catch (Hipay_Payment_Exception $e) {
                 return $this->handlePaymentError($e);
