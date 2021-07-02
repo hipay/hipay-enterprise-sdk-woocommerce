@@ -110,7 +110,7 @@ class Hipay_Multibanco extends Hipay_Gateway_Local_Abstract
             $order->update_meta_data(self::HIPAY_MULTIBANCO_AMOUNT, $referenceToPay["amount"]);
             $order->update_meta_data(self::HIPAY_MULTIBANCO_EXPIRATION_DATE, $referenceToPay["expirationDate"]);
             $order->save();
-            $orderNote = __('Entity:', "hipayenterprise") . " " . $response[entity] . " " . __('Reference:', "hipayenterprise") . " " . $response[reference] . " " . __('Amount:', "hipayenterprise") . " " . $response[amount] . " " . __('Epiration Date:', "hipayenterprise") . " " . $response[expirationDate] . " ";
+            $orderNote = __('Entity:', "hipayenterprise") . " " . $response[entity] . " " . __('Reference:', "hipayenterprise") . " " . $response[reference] . " " . __('Amount:', "hipayenterprise") . " " . $response[amount] . " " . __('Expiration Date:', "hipayenterprise") . " " . $response[expirationDate] . " ";
             $order->add_order_note($orderNote);
 
             return array(
