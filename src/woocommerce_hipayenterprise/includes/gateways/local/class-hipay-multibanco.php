@@ -22,7 +22,8 @@ if (!defined('ABSPATH')) {
  * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
  */
-class Hipay_Multibanco extends Hipay_Gateway_Local_Abstract {
+class Hipay_Multibanco extends Hipay_Gateway_Local_Abstract
+{
 
     /**
      *
@@ -53,7 +54,8 @@ class Hipay_Multibanco extends Hipay_Gateway_Local_Abstract {
     private $amount;
     private $expirationDate;
 
-    public function __construct() {
+    public function __construct()
+    {
 
         $this->id = 'hipayenterprise_multibanco';
         $this->paymentProduct = 'multibanco';
@@ -63,61 +65,33 @@ class Hipay_Multibanco extends Hipay_Gateway_Local_Abstract {
 
         parent::__construct();
 
-        add_action('woocommerce_thankyou_hipayenterprise_multibanco', array($this, 'thanks_page'));
+        add_action("woocommerce_thankyou_$this->id", array($this, 'thanks_page'));
         add_action('woocommerce_email_before_order_table', array($this, 'email_instructions'), 9, 3);
         add_action('woocommerce_view_order', array($this, 'thanks_page'));
-
-		wp_enqueue_script(
-                'hipay-multibanco-js',
-                plugins_url('assets/js/frontend/multibanco.js', WC_HIPAYENTERPRISE_BASE_FILE),
-                array(),
-                WC_HIPAYENTERPRISE_VERSION,
-                true
-        );
-	
     }
 
     /**
      * multibanco details for email template
-     * 
-     * @param WC_Order 	$order_
-     * @param bool 		$sent_to_admin
-     * @param bool 		$plain_text
+     *
+     * @param WC_Order  $order_
+     * @param bool      $sent_to_admin
+     * @param bool      $plain_text
      */
-    function email_instructions($order, $sent_to_admin, $plain_text = false) {
-
-        global $woocommerce;
-
-        $order = new WC_Order($order->id);
-
-        $this->entity = $order->get_meta(self::HIPAY_MULTIBANCO_ENTITY);
-        $this->reference = $order->get_meta(self::HIPAY_MULTIBANCO_REFERENCE);
-        $this->amount = $order->get_meta(self::HIPAY_MULTIBANCO_AMOUNT);
-        $this->expirationDate = $order->get_meta(self::HIPAY_MULTIBANCO_EXPIRATION_DATE);
-
-        $this->process_template(
-                'multibanco.php',
-                'frontend',
-                array(
-                    'entity' => $this->entity,
-                    'reference' => $this->reference,
-                    'amount' => $this->amount,
-                    'expirationDate' => $this->expirationDate,
-                    'logo' => $this->getMultibancoIconUrl(),
-                )
-        );
+    public function email_instructions($order, $sent_to_admin, $plain_text = false)
+    {
+        $this->makeMultibancoTemplate($order);
     }
 
     /**
      * @param int $order_id
      * @return array
      */
-    public function process_payment($order_id) {
+    public function process_payment($order_id)
+    {
         try {
-
             $order = new WC_Order($order_id);
 
-            $this->logs->logInfos(" # Process Payment for  " . $order_id);
+            $this->logs->logInfos("# Process Payment for $order_id");
 
             $method = $this->confHelper->getLocalPayment($this->paymentProduct);
 
@@ -135,7 +109,7 @@ class Hipay_Multibanco extends Hipay_Gateway_Local_Abstract {
             $order->update_meta_data(self::HIPAY_MULTIBANCO_REFERENCE, $referenceToPay["reference"]);
             $order->update_meta_data(self::HIPAY_MULTIBANCO_AMOUNT, $referenceToPay["amount"]);
             $order->update_meta_data(self::HIPAY_MULTIBANCO_EXPIRATION_DATE, $referenceToPay["expirationDate"]);
-			$order->save();
+            $order->save();
             $orderNote = __('Entity:', "hipayenterprise") . " " . $response[entity] . " " . __('Reference:', "hipayenterprise") . " " . $response[reference] . " " . __('Amount:', "hipayenterprise") . " " . $response[amount] . " " . __('Epiration Date:', "hipayenterprise") . " " . $response[expirationDate] . " ";
             $order->add_order_note($orderNote);
 
@@ -150,24 +124,36 @@ class Hipay_Multibanco extends Hipay_Gateway_Local_Abstract {
 
     /**
      * Multibanco details display template
-     * 
+     *
      * @param int $order_id
      */
-    function thanks_page($order_id) {
+    public function thanks_page($order_id)
+    {
 
         global $woocommerce;
 
         $order = new WC_Order($order_id);
 
+        $this->makeMultibancoTemplate($order);
+
+        $woocommerce->cart->empty_cart();
+    }
+
+    /**
+     * Make Multibanco template for order details
+     * @param WC_Order $order
+     */
+    private function makeMultibancoTemplate($order)
+    {
         $this->entity = $order->get_meta(self::HIPAY_MULTIBANCO_ENTITY);
         $this->reference = $order->get_meta(self::HIPAY_MULTIBANCO_REFERENCE);
         $this->amount = $order->get_meta(self::HIPAY_MULTIBANCO_AMOUNT);
         $this->expirationDate = $order->get_meta(self::HIPAY_MULTIBANCO_EXPIRATION_DATE);
 
         $this->process_template(
-                'multibanco.php',
-                'frontend',
-                array(
+            'multibanco.php',
+            'frontend',
+            array(
                     'entity' => $this->entity,
                     'reference' => $this->reference,
                     'amount' => $this->amount,
@@ -175,22 +161,14 @@ class Hipay_Multibanco extends Hipay_Gateway_Local_Abstract {
                     'logo' => $this->getMultibancoIconUrl(),
                 )
         );
-
-        $woocommerce->cart->empty_cart();
     }
 
     /**
+     * Return Multibanco logo URL
      * @return url
      */
-    private function getMultibancoIconUrl() {
+    private function getMultibancoIconUrl()
+    {
         return WC_HIPAYENTERPRISE_URL_ASSETS . 'local_payments_images/multibanco.png';
     }
-
-    /**
-     * @return url
-     */
-    private function getMultibancoLogoUrl() {
-        return WC_HIPAYENTERPRISE_URL_ASSETS . 'local_payments_images/multibanco.jpg';
-    }
-
 }
