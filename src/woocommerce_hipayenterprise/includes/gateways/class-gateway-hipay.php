@@ -196,7 +196,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
             } elseif ($paymentGlobal['operating_mode'] == OperatingMode::HOSTED_PAGE) {
 
                 $this->process_template(
-                    'hosted-pagesss.php',
+                    'hosted-page.php',
                     'frontend',
                     array()
                 );
