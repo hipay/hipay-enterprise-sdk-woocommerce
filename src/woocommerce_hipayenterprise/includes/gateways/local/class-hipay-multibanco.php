@@ -66,7 +66,7 @@ class Hipay_Multibanco extends Hipay_Gateway_Local_Abstract
         parent::__construct();
 
         add_action("woocommerce_thankyou_$this->id", array($this, 'thanks_page'));
-        add_action('woocommerce_email_before_order_table', array($this, 'email_instructions'), 9, 3);
+        add_action('woocommerce_email_before_order_table', array($this, 'email_instructions'), 10, 3);
         add_action('woocommerce_view_order', array($this, 'thanks_page'));
     }
 
@@ -79,7 +79,9 @@ class Hipay_Multibanco extends Hipay_Gateway_Local_Abstract
      */
     public function email_instructions($order, $sent_to_admin, $plain_text = false)
     {
-        $this->makeMultibancoTemplate($order);
+        if ($order->get_payment_method() === $this->id) {
+            $this->makeMultibancoTemplate($order);
+        }
     }
 
     /**
