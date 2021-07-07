@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce HiPay Enterprise\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-02 14:03+0000\n"
+"POT-Creation-Date: 2021-07-07 10:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -111,7 +111,7 @@ msgstr ""
 msgid "Amount already captured"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-multibanco.php:113
+#: includes/gateways/local/class-hipay-multibanco.php:115
 msgid "Amount:"
 msgstr ""
 
@@ -435,7 +435,7 @@ msgstr ""
 msgid "Enter the corresponding username, password and secret passphrase."
 msgstr ""
 
-#: includes/gateways/local/class-hipay-multibanco.php:113
+#: includes/gateways/local/class-hipay-multibanco.php:115
 msgid "Entity:"
 msgstr ""
 
@@ -443,7 +443,7 @@ msgstr ""
 msgid "Error processing capture. Please try again."
 msgstr ""
 
-#: includes/gateways/local/class-hipay-multibanco.php:113
+#: includes/gateways/local/class-hipay-multibanco.php:115
 msgid "Expiration Date:"
 msgstr ""
 
@@ -1168,7 +1168,7 @@ msgstr ""
 msgid "Redirect"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-multibanco.php:113
+#: includes/gateways/local/class-hipay-multibanco.php:115
 msgid "Reference:"
 msgstr ""
 
@@ -1471,12 +1471,6 @@ msgstr ""
 msgid "Woocommerce REST API"
 msgstr ""
 
-#: includes/formatter/info/class-hipay-customer-billing-info-formatter.php:95
-msgid ""
-"Wrong phone number format, Oney payment method require a valid french phone "
-"number (0123465789|+33123465789)."
-msgstr ""
-
 #: includes/gateways/local/class-hipay-yandex.php:33
 #: includes/gateways/local/class-hipay-yandex.php:34
 msgid "Yandex Money"
@@ -1522,4 +1516,16 @@ msgstr ""
 #: includes/admin/template/admin-faq-settings.php:49
 #: includes/admin/template/admin-faq-settings.php:133
 msgid "Your credentials must be granted to"
+msgstr ""
+
+msgid "The format of the phone number must match a French phone."
+msgstr ""
+
+msgid "The format of the phone number must match an Italian phone."
+msgstr ""
+
+msgid "The format of the phone number must match a Belgian phone."
+msgstr ""
+
+msgid "The format of the phone number must match a Portuguese phone."
 msgstr ""

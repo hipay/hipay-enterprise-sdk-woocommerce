@@ -15,6 +15,10 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+use libphonenumber\NumberParseException;
+use libphonenumber\PhoneNumberFormat;
+use libphonenumber\PhoneNumberUtil;
+
 /**
  *
  * @author      HiPay <support.tpp@hipay.com>
@@ -29,6 +33,8 @@ class Hipay_Customer_Billing_Info_Formatter implements Hipay_Api_Formatter
 
     protected $order;
 
+    private $logs;
+
     /**
      * Hipay_Customer_Billing_Info_Formatter constructor.
      * @param $order
@@ -38,6 +44,7 @@ class Hipay_Customer_Billing_Info_Formatter implements Hipay_Api_Formatter
     {
         $this->order = $order;
         $this->payment_product = $payment_product;
+        $this->logs = new Hipay_Log($this);
     }
 
     /**
@@ -83,22 +90,71 @@ class Hipay_Customer_Billing_Info_Formatter implements Hipay_Api_Formatter
             $customerBillingInfo->birthdate = '19700101';
         }
 
-        if ($this->payment_product == 'bnpp-3xcb' || $this->payment_product == 'bnpp-4xcb') {
-            $customerBillingInfo->phone = preg_replace('/^(\+33)|(33)/', '0', $customerBillingInfo->phone);
+        $country = $customerBillingInfo->country;
+        $phoneExceptionMessage = 'The format of the phone number must match %s phone.';
+        
+        // Check phone by country
+        switch ($this->payment_product) {
+            case 'bnpp-3xcb':
+            case 'bnpp-4xcb':
+                $country = 'FR';
+                $phoneExceptionMessage = sprintf($phoneExceptionMessage, 'a French');
+                break;
+            case '3xcb':
+            case '3xcb-no-fees':
+            case '4xcb':
+            case '4xcb-no-fees':
+                switch ($customerBillingInfo->country) {
+                    case 'FR':
+                        $phoneExceptionMessage = sprintf($phoneExceptionMessage, 'a French');
+                        break;
+                    case 'IT':
+                        $phoneExceptionMessage = sprintf($phoneExceptionMessage, 'an Italian');
+                        break;
+                    case 'BE':
+                        $phoneExceptionMessage = sprintf($phoneExceptionMessage, 'a Belgian');
+                        break;
+                    case 'PT':
+                        $phoneExceptionMessage = sprintf($phoneExceptionMessage, 'a Portuguese');
+                        break;
+                }
+                break;
+            case 'credit-long':
+                switch ($customerBillingInfo->country) {
+                    case 'FR':
+                        $phoneExceptionMessage = sprintf($phoneExceptionMessage, 'a French');
+                        break;
+                    case 'IT':
+                        $phoneExceptionMessage = sprintf($phoneExceptionMessage, 'an Italian');
+                        break;
+                    case 'PT':
+                        $phoneExceptionMessage = sprintf($phoneExceptionMessage, 'a Portuguese');
+                        break;
+                }
+                break;
         }
 
-        if (
-            preg_match('/^[0-9]{1}xcb(.*)/', $this->payment_product) &&
-            !preg_match('"(0|\\+33|0033)[1-9][0-9]{8}"', $customerBillingInfo->phone)
-        ) {
-            throw new Hipay_Payment_Exception(
-                __(
-                    "Wrong phone number format, Oney payment method require a valid french phone number (0123465789|+33123465789).",
-                    "hipayenterprise"
-                ),
-                '',
-                "fail"
-            );
+        $localizedException = new Hipay_Payment_Exception(
+            __($phoneExceptionMessage, 'hipayenterprise'),
+            '',
+            "fail"
+        );
+
+        try {
+            $phoneNumberUtil = PhoneNumberUtil::getInstance();
+            $phoneNumber = $phoneNumberUtil->parse($customerBillingInfo->phone, $country);
+
+            if (!$phoneNumberUtil->isValidNumber($phoneNumber)) {
+                throw $localizedException;
+            }
+
+            $customerBillingInfo->phone = $phoneNumberUtil->format($phoneNumber, PhoneNumberFormat::E164);
+        } catch (NumberParseException $e) {
+            $this->logs->logErrors($e->getMessage());
+            throw $localizedException;
+        } catch (Exception $e) {
+            $this->logs->logErrors($e->getMessage());
+            throw $localizedException;
         }
     }
 }

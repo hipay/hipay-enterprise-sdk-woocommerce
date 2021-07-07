@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WooCommerce HiPay Enterprise\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-10-18 15:57+0000\n"
-"PO-Revision-Date: 2021-07-02 14:07+0000\n"
+"PO-Revision-Date: 2021-07-07 12:18+0000\n"
 "Last-Translator: admin <admin-wordpress@hipay.com>\n"
 "Language-Team: French (France)\n"
 "Language: fr_FR\n"
@@ -118,7 +118,7 @@ msgstr ""
 msgid "Amount already captured"
 msgstr "Montant déjà capturé"
 
-#: includes/gateways/local/class-hipay-multibanco.php:113
+#: includes/gateways/local/class-hipay-multibanco.php:115
 msgid "Amount:"
 msgstr "Montant:"
 
@@ -460,7 +460,7 @@ msgstr ""
 "Entrez le nom d'utilisateur, le mot de passe et la phrase secrète "
 "correspondants."
 
-#: includes/gateways/local/class-hipay-multibanco.php:113
+#: includes/gateways/local/class-hipay-multibanco.php:115
 msgid "Entity:"
 msgstr "Entité:"
 
@@ -468,7 +468,7 @@ msgstr "Entité:"
 msgid "Error processing capture. Please try again."
 msgstr "Une erreur est survenue pendant la capture, veuillez réessayer"
 
-#: includes/gateways/local/class-hipay-multibanco.php:113
+#: includes/gateways/local/class-hipay-multibanco.php:115
 msgid "Expiration Date:"
 msgstr "Date d'expiration:"
 
@@ -1240,7 +1240,7 @@ msgstr ""
 msgid "Redirect"
 msgstr "Redirection"
 
-#: includes/gateways/local/class-hipay-multibanco.php:113
+#: includes/gateways/local/class-hipay-multibanco.php:115
 msgid "Reference:"
 msgstr "Référence:"
 
@@ -1364,6 +1364,21 @@ msgstr ""
 #: includes/admin/template/admin-general-settings.php:74
 msgid "SSL Certificate"
 msgstr "Certificat SSL"
+
+msgid "The format of the phone number must match a Belgian phone."
+msgstr "Le format du numéro de téléphone doit correspondre à un numéro Belge."
+
+msgid "The format of the phone number must match a French phone."
+msgstr ""
+"Le format du numéro de téléphone doit correspondre à un numéro Français."
+
+msgid "The format of the phone number must match a Portuguese phone."
+msgstr ""
+"Le format du numéro de téléphone doit correspondre à un numéro Portugais."
+
+msgid "The format of the phone number must match an Italian phone."
+msgstr ""
+"Le format du numéro de téléphone doit correspondre à un numéro Italien."
 
 #: includes/helper/class-hipay-api-request-handler.php:119
 msgid ""
@@ -1573,14 +1588,6 @@ msgstr "Catégorie de produit Woocommerce"
 #: includes/admin/template/admin-general-settings.php:88
 msgid "Woocommerce REST API"
 msgstr "Woocommerce REST API"
-
-#: includes/formatter/info/class-hipay-customer-billing-info-formatter.php:95
-msgid ""
-"Wrong phone number format, Oney payment method require a valid french phone "
-"number (0123465789|+33123465789)."
-msgstr ""
-"Mauvais format de numéro de téléphone, Oney nécessite un numéro de téléphone "
-"français valide (0123465789|+33123465789)"
 
 #: includes/gateways/local/class-hipay-yandex.php:33
 #: includes/gateways/local/class-hipay-yandex.php:34
