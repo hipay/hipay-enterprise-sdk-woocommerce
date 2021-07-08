@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 1.8.1
+
+- **Fix**: Fixed phone check
+
 ## Version 1.8.0
 
 - **Add**: Added custom redirection after order for Multibanco payment method
