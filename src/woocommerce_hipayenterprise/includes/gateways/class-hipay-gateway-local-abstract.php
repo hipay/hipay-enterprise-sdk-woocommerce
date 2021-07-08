@@ -145,11 +145,11 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
                 }
             }
 
-            $redirectUrl = $this->apiRequestHandler->handleLocalPayment($params);
+            $response = $this->apiRequestHandler->handleLocalPayment($params);
 
             return array(
                 'result' => 'success',
-                'redirect' => $redirectUrl,
+                'redirect' => $response["redirectUrl"],
             );
         } catch (Hipay_Payment_Exception $e) {
             return $this->handlePaymentError($e);

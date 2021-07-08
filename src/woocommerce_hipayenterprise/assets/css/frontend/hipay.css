@@ -1,161 +1,164 @@
 [data-hipay-id='hipay-help-cvc-oneclick'].hipay-visible {
-    display: block;
+  display: block;
 }
 
 [data-hipay-id='hipay-help-cvc-oneclick'] {
-    font-size: 14px;
-    padding: 0.75rem 1.25rem;
-    border-radius: 0.25rem;
-    color: #856404;
-    background-color: #fff3cd;
-    border: solid 1px #ffeeba;
-    display: none;
+  font-size: 14px;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.25rem;
+  color: #856404;
+  background-color: #fff3cd;
+  border: solid 1px #ffeeba;
+  display: none;
 }
 
 .hipay-container-oneclick-cvv {
-    margin: 0 10px 0 0 !important;
-    max-width: 120px;
+  margin: 0 10px 0 0 !important;
+  max-width: 120px;
 }
 
 .hipay-token-force-cvv {
-    margin-left: 26px;
-    margin-top: 16px;
+  margin-left: 26px;
+  margin-top: 16px;
 }
 
 .hipay-token-force-cvv > p {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 .hipay-token-update {
-    height: 36px;
-    outline: none;
-    border-style: none;
-    color: white;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 16px;
-    align-self: flex-end;
+  height: 36px;
+  outline: none;
+  border-style: none;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16px;
+  align-self: flex-end;
 }
 
 .hipay-cvv-oneclick::placeholder {
-    color: #bfbfbf;
+  color: #bfbfbf;
 }
 
 .hipay-cvv-oneclick {
-    padding: 0 !important;
-    background-color: transparent !important;
-    box-shadow: none !important;
-    outline: none !important;
-    width: 100% !important;
-
+  padding: 0 !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+  width: 100% !important;
 }
 
 .hipay-container-oneclick {
-    justify-content: space-between;
+  justify-content: space-between;
 }
 
 @media (max-width: 768px) {
-    .hipay-container-oneclick {
-        justify-content: flex-start;
-    }
+  .hipay-container-oneclick {
+    justify-content: flex-start;
+  }
 }
 
 .hipay-field-oneclick {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .hipay-field-oneclick:focus + .hipay-field-baseline {
-    border-color: #00ade9;
+  border-color: #00ade9;
 }
 
 .hipay-form-no-field {
-    font-size: 16px !important;
-    padding-left: 30px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    margin: 0;
+  font-size: 16px !important;
+  padding-left: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin: 0;
 }
 
 .msg-local-payment {
-    margin-top: 15px;
+  margin-top: 15px;
 }
 
 .sdd {
-    width: 100%
+  width: 100%;
 }
 
 #wc-hipayenterprise_credit_card-new-payment-method {
-    margin-left: 10px;
+  margin-left: 10px;
 }
 
 .hosted-page {
-    padding-left: 30px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+  padding-left: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .woocommerce-hipay-error {
-    background-color: #e2401c;
-    list-style: none;
-    padding: 1em 1.618em;
-    margin-bottom: 2.617924em;
-    margin-left: 0;
-    border-radius: 2px;
-    color: #fff;
-    clear: both;
-    border-left: .6180469716em solid rgba(0, 0, 0, .15);
+  background-color: #e2401c;
+  list-style: none;
+  padding: 1em 1.618em;
+  margin-bottom: 2.617924em;
+  margin-left: 0;
+  border-radius: 2px;
+  color: #fff;
+  clear: both;
+  border-left: 0.6180469716em solid rgba(0, 0, 0, 0.15);
 }
 
 .woocommerce-hipay-success {
-    background-color: #0f834d;
-    list-style: none;
-    padding: 1em 1.618em;
-    margin-top: 0.617924em;
-    margin-left: 0;
-    border-radius: 2px;
-    color: #fff;
-    clear: both;
-    border-left: .6180469716em solid rgba(0, 0, 0, .15);
+  background-color: #0f834d;
+  list-style: none;
+  padding: 1em 1.618em;
+  margin-top: 0.617924em;
+  margin-left: 0;
+  border-radius: 2px;
+  color: #fff;
+  clear: both;
+  border-left: 0.6180469716em solid rgba(0, 0, 0, 0.15);
 }
 
 .wc_hipay_iframe_container {
-    position: relative;
-    padding-bottom: 56.25%;
-    padding-top: 35px;
-    height: 0;
-    overflow: hidden;
+  position: relative;
+  padding-bottom: 56.25%;
+  padding-top: 35px;
+  height: 0;
+  overflow: hidden;
 }
 
 .wc_hipay_iframe_container iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 #saveTokenHipay {
-    float: left;
+  float: left;
 }
 
 #hipayPaymentInformationsTitle {
-    font-weight: bold;
-    margin-bottom: 15px;
+  font-weight: bold;
+  margin-bottom: 15px;
 }
 
 #hipayPaymentInformationsInfo {
-    font-weight: normal;
-    margin-bottom: 10px;
+  font-weight: normal;
+  margin-bottom: 10px;
 }
 
 #hiPay_error_message {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .error-text-hp {
-    font-weight: bold;
-    color: #ff4c4c;
-    font-size: 12px;
+  font-weight: bold;
+  color: #ff4c4c;
+  font-size: 12px;
+}
+
+.payment_box.payment_method_hipayenterprise_multibanco {
+  display: none !important;
 }

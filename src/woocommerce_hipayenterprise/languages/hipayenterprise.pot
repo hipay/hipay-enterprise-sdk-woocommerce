@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WooCommerce HiPay Enterprise\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-01 13:00+0000\n"
+"POT-Creation-Date: 2021-07-07 10:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -111,18 +111,22 @@ msgstr ""
 msgid "Amount already captured"
 msgstr ""
 
+#: includes/gateways/local/class-hipay-multibanco.php:115
+msgid "Amount:"
+msgstr ""
+
 #: includes/admin/class-hipay-mapping-category-controller.php:94
 #: includes/admin/class-hipay-mapping-delivery-controller.php:113
 msgid "An error occured during while saving the mapping. "
 msgstr ""
 
-#: includes/helper/class-hipay-api-request-handler.php:263
-#: includes/helper/class-hipay-api-request-handler.php:295
-#: includes/helper/class-hipay-api-request-handler.php:301
+#: includes/helper/class-hipay-api-request-handler.php:271
+#: includes/helper/class-hipay-api-request-handler.php:303
+#: includes/helper/class-hipay-api-request-handler.php:309
 msgid "An error occured, process has been cancelled."
 msgstr ""
 
-#: includes/helper/class-hipay-api-request-handler.php:227
+#: includes/helper/class-hipay-api-request-handler.php:233
 msgid "An error occured, process has been cancelled.."
 msgstr ""
 
@@ -154,7 +158,7 @@ msgstr ""
 msgid "Authorization successful for transaction."
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:365
+#: includes/gateways/class-gateway-hipay.php:361
 msgid "Authorized countries"
 msgstr ""
 
@@ -166,7 +170,7 @@ msgstr ""
 msgid "Automatic: if all transactions will be captured automatically."
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:364
+#: includes/gateways/class-gateway-hipay.php:360
 msgid "Available countries"
 msgstr ""
 
@@ -278,7 +282,7 @@ msgstr ""
 msgid "Card Number"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:390
+#: includes/gateways/class-gateway-hipay.php:386
 msgid "Card updated with success"
 msgstr ""
 
@@ -376,15 +380,15 @@ msgstr ""
 msgid "CVC"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:393
+#: includes/gateways/class-gateway-hipay.php:389
 msgid "CVC is invalid."
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:391
+#: includes/gateways/class-gateway-hipay.php:387
 msgid "CVC is missing."
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:392
+#: includes/gateways/class-gateway-hipay.php:388
 msgid "cvc must be numeric."
 msgstr ""
 
@@ -431,8 +435,16 @@ msgstr ""
 msgid "Enter the corresponding username, password and secret passphrase."
 msgstr ""
 
+#: includes/gateways/local/class-hipay-multibanco.php:115
+msgid "Entity:"
+msgstr ""
+
 #: includes/admin/class-hipay-admin-capture.php:146
 msgid "Error processing capture. Please try again."
+msgstr ""
+
+#: includes/gateways/local/class-hipay-multibanco.php:115
+msgid "Expiration Date:"
 msgstr ""
 
 #: includes/frontend/template/hosted-fields.php:26
@@ -626,7 +638,7 @@ msgstr ""
 msgid "HiPay Enterprise MB WAY"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-multibanco.php:32
+#: includes/gateways/local/class-hipay-multibanco.php:62
 msgid "HiPay Enterprise Multibanco"
 msgstr ""
 
@@ -701,7 +713,7 @@ msgstr ""
 msgid "HiPay Product Category"
 msgstr ""
 
-#: includes/helper/class-hipay-api-request-handler.php:152
+#: includes/helper/class-hipay-api-request-handler.php:158
 #: includes/helper/class-hipay-helper.php:259
 msgid "HiPay status: "
 msgstr ""
@@ -900,7 +912,7 @@ msgstr ""
 msgid "Maintenance"
 msgstr ""
 
-#: includes/helper/class-hipay-api-request-handler.php:172
+#: includes/helper/class-hipay-api-request-handler.php:178
 msgid "Maintenance operation is not allowed according to the order status."
 msgstr ""
 
@@ -965,7 +977,7 @@ msgstr ""
 msgid "Merchant Promotion"
 msgstr ""
 
-#: includes/helper/class-hipay-api-request-handler.php:142
+#: includes/helper/class-hipay-api-request-handler.php:148
 #: includes/helper/class-hipay-order-handler.php:237
 msgid "Message was : "
 msgstr ""
@@ -979,8 +991,8 @@ msgstr ""
 msgid "Module update"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-multibanco.php:33
-#: includes/gateways/local/class-hipay-multibanco.php:34
+#: includes/gateways/local/class-hipay-multibanco.php:63
+#: includes/gateways/local/class-hipay-multibanco.php:64
 msgid "Multibanco"
 msgstr ""
 
@@ -998,7 +1010,7 @@ msgstr ""
 msgid "Notifications"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:448
+#: includes/gateways/class-gateway-hipay.php:443
 msgid "One click not activated"
 msgstr ""
 
@@ -1156,6 +1168,10 @@ msgstr ""
 msgid "Redirect"
 msgstr ""
 
+#: includes/gateways/local/class-hipay-multibanco.php:115
+msgid "Reference:"
+msgstr ""
+
 #: includes/admin/template/admin-faq-settings.php:99
 msgid "Refund"
 msgstr ""
@@ -1261,11 +1277,11 @@ msgstr ""
 msgid "Sofort Überweisung"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:545
+#: includes/gateways/class-gateway-hipay.php:538
 msgid "Sorry, we cannot process your payment.. Please try again."
 msgstr ""
 
-#: includes/helper/class-hipay-api-request-handler.php:283
+#: includes/helper/class-hipay-api-request-handler.php:291
 msgid ""
 "Sorry, your payment has been declined. Please try again with an other means "
 "of payment."
@@ -1302,23 +1318,23 @@ msgid ""
 "update now</a>."
 msgstr ""
 
-#: includes/helper/class-hipay-api-request-handler.php:130
-#: includes/helper/class-hipay-api-request-handler.php:139
+#: includes/helper/class-hipay-api-request-handler.php:132
+#: includes/helper/class-hipay-api-request-handler.php:143
 #: includes/helper/class-hipay-order-handler.php:234
 msgid ""
 "There was an error on the cancellation of the HiPay transaction. You can see "
 "and cancel the transaction directly from HiPay's BackOffice"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:459
+#: includes/gateways/class-gateway-hipay.php:454
 msgid "This card type doesn't exist"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:467
+#: includes/gateways/class-gateway-hipay.php:462
 msgid "This card type doesn't support one click"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:385
+#: includes/gateways/class-gateway-hipay.php:381
 msgid ""
 "This credit card type or the order currency is not supported. \n"
 "                    Please choose an other payment method."
@@ -1370,7 +1386,7 @@ msgstr ""
 msgid "Transaction cancelled"
 msgstr ""
 
-#: includes/helper/class-hipay-api-request-handler.php:151
+#: includes/helper/class-hipay-api-request-handler.php:157
 #: includes/helper/class-hipay-helper.php:258
 #: includes/helper/class-hipay-order-handler.php:239
 msgid "Transaction ID: "
@@ -1404,7 +1420,7 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:556
+#: includes/gateways/class-gateway-hipay.php:549
 msgid ""
 "We have received your order payment. We will process the order as soon as we "
 "get the payment confirmation."
@@ -1455,12 +1471,6 @@ msgstr ""
 msgid "Woocommerce REST API"
 msgstr ""
 
-#: includes/formatter/info/class-hipay-customer-billing-info-formatter.php:95
-msgid ""
-"Wrong phone number format, Oney payment method require a valid french phone "
-"number (0123465789|+33123465789)."
-msgstr ""
-
 #: includes/gateways/local/class-hipay-yandex.php:33
 #: includes/gateways/local/class-hipay-yandex.php:34
 msgid "Yandex Money"
@@ -1506,4 +1516,16 @@ msgstr ""
 #: includes/admin/template/admin-faq-settings.php:49
 #: includes/admin/template/admin-faq-settings.php:133
 msgid "Your credentials must be granted to"
+msgstr ""
+
+msgid "The format of the phone number must match a French phone."
+msgstr ""
+
+msgid "The format of the phone number must match an Italian phone."
+msgstr ""
+
+msgid "The format of the phone number must match a Belgian phone."
+msgstr ""
+
+msgid "The format of the phone number must match a Portuguese phone."
 msgstr ""
