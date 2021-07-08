@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version 1.8.0
+
+- **Add**: Added custom redirection after order for Multibanco payment method
+- **Add**: Added phone controls using **Google libphonenumber** library
+
 ## Version 1.7.0
 
 - **Add**: Added MBWay and Multibanco payment methods

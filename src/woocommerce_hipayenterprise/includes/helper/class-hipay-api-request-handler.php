@@ -88,7 +88,7 @@ class Hipay_Api_Request_Handler
 
         if ($mode == OperatingMode::HOSTED_FIELDS) {
             return $this->handleDirectOrder($params, true);
-        } else if ($mode == OperatingMode::HOSTED_PAGE) {
+        } elseif ($mode == OperatingMode::HOSTED_PAGE) {
             return $this->handleHostedPayment($params);
         }
     }
@@ -116,8 +116,10 @@ class Hipay_Api_Request_Handler
         $orderHandler = new Hipay_Order_Handler($order, $this->plugin);
 
         if ($params['transaction_reference'] === false || empty($params['transaction_reference'])) {
-            $displayMsg = __("The HiPay transaction was not canceled because no transaction reference exists. You can see and cancel the transaction directly from HiPay's BackOffice",
-                "hipayenterprise");
+            $displayMsg = __(
+                "The HiPay transaction was not canceled because no transaction reference exists. You can see and cancel the transaction directly from HiPay's BackOffice",
+                "hipayenterprise"
+            );
             $displayMsg .= " (https://merchant.hipay-tpp.com/default/auth/login)";
         } else {
             // If current transaction status is cancelled, it means we are currently handling the 115 notification from HiPay,
@@ -127,8 +129,10 @@ class Hipay_Api_Request_Handler
                     $result = $this->api->requestMaintenance($params);
 
                     if (!in_array($result->getStatus(), array(TransactionStatus::AUTHORIZATION_CANCELLATION_REQUESTED, TransactionStatus::CANCELLED))) {
-                        $displayMsg = __("There was an error on the cancellation of the HiPay transaction. You can see and cancel the transaction directly from HiPay's BackOffice",
-                            "hipayenterprise");
+                        $displayMsg = __(
+                            "There was an error on the cancellation of the HiPay transaction. You can see and cancel the transaction directly from HiPay's BackOffice",
+                            "hipayenterprise"
+                        );
                         $displayMsg .= " (https://merchant.hipay-tpp.com/default/auth/login)";
                         $status = $result->getStatus();
                         $transactionRef = $result->getTransactionReference();
@@ -136,8 +140,10 @@ class Hipay_Api_Request_Handler
                         $orderHandler->addNote(Hipay_Helper::formatOrderData($result));
                     }
                 } catch (Exception $e) {
-                    $displayMsg = __("There was an error on the cancellation of the HiPay transaction. You can see and cancel the transaction directly from HiPay's BackOffice",
-                        "hipayenterprise");
+                    $displayMsg = __(
+                        "There was an error on the cancellation of the HiPay transaction. You can see and cancel the transaction directly from HiPay's BackOffice",
+                        "hipayenterprise"
+                    );
                     $displayMsg .= " (https://merchant.hipay-tpp.com/default/auth/login)\n";
                     $displayMsg .= __("Message was : ", "hipayenterprise") . '[' . preg_replace("/\r|\n/", "", $e->getMessage()) . ']';
 
@@ -250,6 +256,8 @@ class Hipay_Api_Request_Handler
     private function handleDirectOrder($params, $cc = false)
     {
         $order = wc_get_order($params["order_id"]);
+        $apiResponse = array();
+
         $this->initParamsDirectPost($params);
         $params["paymentMethod"] = $this->getPaymentMethod($params, $cc);
 
@@ -302,7 +310,10 @@ class Hipay_Api_Request_Handler
                 );
         }
 
-        return $redirectUrl;
+        $apiResponse['redirectUrl'] = $redirectUrl;
+        $apiResponse['additional_data'] = $response;
+
+        return $apiResponse;
     }
 
     /**

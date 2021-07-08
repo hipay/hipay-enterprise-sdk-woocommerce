@@ -10,6 +10,7 @@
   "license": "Apache 2.0",
   "name": "hipay/hipay-enterprise-woocommerce",
   "require": {
+    "giggsey/libphonenumber-for-php": "^8.12",
     "hipay/hipay-fullservice-sdk-php": "^2.8.3",
     "michelf/php-markdown": "1.8.0"
   },
