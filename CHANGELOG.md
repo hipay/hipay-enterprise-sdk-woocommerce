@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Version 1.8.2
+
+- **Fix**: Merchant Promotion for Oney
+- **Fix**: Fee product category for Oney
+- **Fix**: Mbway Phone 
+
 ## Version 1.8.1
 
 - **Fix**: Fixed phone check

@@ -227,7 +227,7 @@ class Hipay_Cart_Formatter implements Hipay_Api_Formatter
         );
 
         // forced category
-        $item->setProductCategory(1);
+        $item->setProductCategory(11);
 
         return $item;
     }

@@ -10,7 +10,7 @@ stages:
 variables:
   DOCKER_HOST: tcp://localhost:2375/
   DOCKER_DRIVER: overlay2
-  DOCKER_TLS_CERTDIR: ""
+  DOCKER_TLS_CERTDIR: ''
   RELEASE_NAME: ${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}
 
 services:
@@ -51,6 +51,7 @@ services:
     when: always
   except:
     variables:
+      - $ACCESS_TOKEN
       - $CI_COMMIT_MESSAGE =~ /skip-tests/
 
 #########################
@@ -62,6 +63,9 @@ build-test:
   script:
     - docker-compose -f docker-compose.test.yml build
     - docker-compose -f docker-compose.test.yml push
+  except:
+    variables:
+      - $ACCESS_TOKEN
   tags:
     - gcp-default-runner-prod
 
@@ -94,13 +98,19 @@ package:
   artifacts:
     paths:
       - ./bin/package
+  except:
+    variables:
+      - $ACCESS_TOKEN
   tags:
     - gcp-default-runner-prod
 
 build:
   stage: build
   image: $REGISTRY_CI/gitlab-ci-base:deployment
-  when: manual
+  rules:
+    - if: $ACCESS_TOKEN
+      when: on_success
+    - when: manual
   script:
     - docker build -f bin/docker/images/woocommerce/Dockerfile . -t ${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web:${CI_COMMIT_REF_SLUG}
     - /tools/auth-as-end-user.sh
@@ -113,7 +123,7 @@ deploy2recette:
   stage: deploy
   image: $REGISTRY_CI/gitlab-ci-base:deployment
   variables:
-    GPC_ACCOUNT : ""
+    GPC_ACCOUNT: ''
   script:
     - echo $RELEASE_NAME
     - /tools/auth-to-cd-cluster.sh
@@ -132,13 +142,14 @@ deploy2recette:
   allow_failure: true
   tags:
     - gcp-default-runner-prod
-  when: manual
+  rules:
+    - if: $ACCESS_TOKEN
+      when: on_success
+    - when: manual
   environment:
     name: review/${CI_COMMIT_REF_SLUG}
     url: https://${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}.${URL_CD}
     on_stop: stop_review
-  only:
-    - branches
 
 stop_review:
   stage: deploy
@@ -149,7 +160,10 @@ stop_review:
     - /tools/auth-to-cd-cluster.sh
     - helm uninstall $RELEASE_NAME
     - /tools/logout-end-user.sh
-  when: manual
+  rules:
+    - if: $ACCESS_TOKEN
+      when: on_success
+    - when: manual
   environment:
     name: review/${CI_COMMIT_REF_SLUG}
     action: stop

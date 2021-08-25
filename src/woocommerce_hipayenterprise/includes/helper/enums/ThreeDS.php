@@ -28,9 +28,6 @@ class ThreeDS
 
     const THREE_D_S_TRY_ENABLE_ALL = 1;
 
-    const THREE_D_S_TRY_ENABLE_RULES = 2;
+    const THREE_D_S_FORCE_ENABLE_ALL = 2;
 
-    const THREE_D_S_FORCE_ENABLE_ALL = 3;
-
-    const THREE_D_S_FORCE_ENABLE_RULES = 4;
 }

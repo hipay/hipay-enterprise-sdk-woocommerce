@@ -35,15 +35,19 @@ class Hipay_Customer_Billing_Info_Formatter implements Hipay_Api_Formatter
 
     private $logs;
 
+    private $params;
+
     /**
      * Hipay_Customer_Billing_Info_Formatter constructor.
      * @param $order
      * @param $payment_product
+     * @param $params
      */
-    public function __construct($order, $payment_product)
+    public function __construct($order, $payment_product, $params)
     {
         $this->order = $order;
         $this->payment_product = $payment_product;
+        $this->params = $params;
         $this->logs = new Hipay_Log($this);
     }
 
@@ -93,6 +97,15 @@ class Hipay_Customer_Billing_Info_Formatter implements Hipay_Api_Formatter
         // Check phone by country according to payment method
         $phoneExceptionMessage = 'The format of the phone number must match %s phone.';
         switch ($this->payment_product) {
+            case 'mbway':
+                $customerBillingInfo->phone = isset($this->params['phone']) ? $this->params['phone']: null;
+                $this->checkPhone(
+                    $customerBillingInfo,
+                    'PT',
+                    sprintf($phoneExceptionMessage, 'a Portuguese'),
+                    false
+                );
+                break;
             case 'bnpp-3xcb':
             case 'bnpp-4xcb':
                 $this->checkPhone($customerBillingInfo, 'FR', sprintf($phoneExceptionMessage, 'a French'));
@@ -164,8 +177,9 @@ class Hipay_Customer_Billing_Info_Formatter implements Hipay_Api_Formatter
      * @param CustomerBillingInfoRequest $customerBillingInfo
      * @param string $country
      * @param string $exceptionMessage
+     * @param string $applyFormat Apply phone format
      */
-    private function checkPhone(&$customerBillingInfo, $country, $exceptionMessage)
+    private function checkPhone(&$customerBillingInfo, $country, $exceptionMessage, $applyFormat = true)
     {
         $localizedException = new Hipay_Payment_Exception(
             __($exceptionMessage, 'hipayenterprise'),
@@ -180,8 +194,10 @@ class Hipay_Customer_Billing_Info_Formatter implements Hipay_Api_Formatter
             if (!$phoneNumberUtil->isValidNumber($phoneNumber)) {
                 throw $localizedException;
             }
-    
-            $customerBillingInfo->phone = $phoneNumberUtil->format($phoneNumber, PhoneNumberFormat::E164);
+
+            if ($applyFormat) {
+                $customerBillingInfo->phone = $phoneNumberUtil->format($phoneNumber, PhoneNumberFormat::E164);
+            }
         } catch (NumberParseException $e) {
             $this->logs->logErrors($e->getMessage());
             throw $localizedException;
