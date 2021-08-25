@@ -136,7 +136,8 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
                 "order_id" => $order_id,
                 "paymentProduct" => $this->paymentProduct,
                 "forceSalesMode" => $this->forceSalesMode(),
-                "deviceFingerprint" => Hipay_Helper::getPostData($this->paymentProduct.'-device_fingerprint')
+                "deviceFingerprint" => Hipay_Helper::getPostData($this->paymentProduct.'-device_fingerprint'),
+                "phone" => json_decode(Hipay_Helper::getPostData($this->paymentProduct.'-phone'))
             );
 
             if (is_array($method["additionalFields"]["formFields"])) {

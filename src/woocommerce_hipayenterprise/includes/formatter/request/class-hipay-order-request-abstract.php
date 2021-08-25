@@ -113,7 +113,7 @@ abstract class Hipay_Order_Request_Abstract extends Hipay_Api_Formatter_Abstact
         if (isset($confProduct['merchantPromotion'])) {
             $orderRequest->payment_product_parameters = json_encode(
                 array(
-                    "merchantPromotion" => !empty($confProduct['merchantPromotion']) ?
+                    "merchant_promotion" => !empty($confProduct['merchantPromotion']) ?
                     $confProduct['merchantPromotion'] :
                     \HiPay\Fullservice\Helper\MerchantPromotionCalculator::calculate(
                         $product,
@@ -216,8 +216,9 @@ abstract class Hipay_Order_Request_Abstract extends Hipay_Api_Formatter_Abstact
 
         $billingInfo = new Hipay_Customer_Billing_Info_Formatter(
             $this->order,
-            (isset($this->params["paymentProduct"])) ? $this->params["paymentProduct"] : 0
-        );
+            (isset($this->params["paymentProduct"])) ? $this->params["paymentProduct"] : 0,
+            $this->params
+    );
 
         return $billingInfo->generate();
     }
