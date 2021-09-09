@@ -13,8 +13,11 @@ variables:
 #  DOCKER_TLS_CERTDIR: ""
   RELEASE_NAME: ${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}
 
-#services:
-#  - docker:19.03.1-dind
+# Cache modules in between jobs
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - ./bin/package
 
 #########################
 ####  TEMPLATE      ####
