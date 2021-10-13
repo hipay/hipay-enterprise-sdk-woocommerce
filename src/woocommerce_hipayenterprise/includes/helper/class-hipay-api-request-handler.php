@@ -244,7 +244,10 @@ class Hipay_Api_Request_Handler
             $redirect = esc_url_raw($response);
         }
 
-        return $redirect;
+        $apiResponse = array();
+        $apiResponse['redirectUrl'] = $redirect;
+
+        return $apiResponse;
     }
 
     /**
