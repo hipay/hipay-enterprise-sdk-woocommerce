@@ -129,6 +129,7 @@ deploy2recette:
     - /tools/auth-to-cd-cluster.sh
     - >
       helm install $RELEASE_NAME ./bin/docker/kubernetes/helm/
+      --namespace default
       --set wordpress_image="${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web"
       --set wordpress_tag="${CI_COMMIT_REF_SLUG}"
       --set wordpress_url="${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}.${URL_CD}"
