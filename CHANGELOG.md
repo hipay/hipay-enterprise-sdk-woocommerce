@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## Version 1.8.3
+
+- **Fix**: DSP2 mandatory parameters
+
+## Version 1.8.3
+
+- **Fix**: Hosted Page V2 redirection
+- **Fix**: DSP required paramaters
+
 ## Version 1.8.2
 
 - **Fix**: Merchant Promotion for Oney
