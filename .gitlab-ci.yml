@@ -25,6 +25,28 @@ services:
   tags:
     - small
   allow_failure: false
+  variables:
+    HIPAY_API_MOTO_USER_TEST: $HIPAY_API_USER_TEST
+    HIPAY_API_MOTO_PASSWORD_TEST: $HIPAY_API_PASSWORD_TEST
+    HIPAY_MOTO_SECRET_PASSPHRASE_TEST: $HIPAY_SECRET_PASSPHRASE_TEST
+    PI_CI_DATA_URL: $PI_CI_DATA_URL
+    ADMIN_MAIL: "demo@hipay.com"
+    ADMIN_PASSWD: "hipay123"
+    PS_ERASE_DB: 1
+    PS_INSTALL_DB: 1
+    PS_LANGUAGE: "fr"
+    PS_COUNTRY: "fr"
+    PS_INSTALL_AUTO: 1
+    PS_DEV_MODE: 1
+    PS_FOLDER_ADMIN: "admin-hipay"
+    PS_FOLDER_INSTALL: "installOLD"
+    PS_HANDLE_DYNAMIC_DOMAIN: 0
+    PS_ALL_LANGUAGES: 0
+    DB_SERVER: "database"
+    DB_USER: "root"
+    DB_PASSWD: "admin"
+    MYSQL_HOST: "database"
+    MYSQL_ROOT_PASSWORD: "admin"
   services:
     - name: $CI_REGISTRY/test-jobs-${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
       alias: woocommerce
@@ -32,9 +54,8 @@ services:
       alias: database
   artifacts:
     paths:
-      - bin/tests/errors
-      - bin/tests/test-cypress/cypress/videos
-      - bin/tests/test-cypress/cypress/screenshots
+      - bin/tests/cypress/videos
+      - bin/tests/cypress/screenshots
     when: always
   except:
     variables:
