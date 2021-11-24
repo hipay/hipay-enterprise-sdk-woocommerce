@@ -60,14 +60,19 @@ services:
 
 build-test:
   stage: build-test
+  image:
+    name: grc.io/kaniko-project/executor:v1.6.0-debug
   script:
-    - docker-compose -f docker-compose.test.yml build
-    - docker-compose -f docker-compose.test.yml push
+    - /kaniko/executor
+          --cache=true
+          --context "dir://${CI_PROJECT_DIR}"
+          --dockerfile "./bin/docker/images/woocommerce/Dockerfile"
+          --destination "$CI_REGISTRY/test-jobs-${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}"
   except:
     variables:
       - $ACCESS_TOKEN
   tags:
-    - gcp-default-runner-prod
+    - small
 
 test-cypress-1:
   <<: *test_definition
