@@ -38,6 +38,4 @@ COPY src/woocommerce_hipayenterprise /tmp/woocommerce_hipayenterprise
 
 WORKDIR /var/www/html
 
-#ENTRYPOINT ["/tmp/setup-woocommerce.sh"]
-
-CMD ./tmp/setup-woocommerce.sh
+ENTRYPOINT ["/tmp/setup-woocommerce.sh"]

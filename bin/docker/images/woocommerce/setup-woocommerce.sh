@@ -5,8 +5,6 @@ ENV_DEVELOPMENT="development"
 ENV_STAGE="stage"
 ENV_PROD="production"
 
-echo "Running setup-woocommerce.sh"
-
 # wait until MySQL is really available
 maxcounter=45
 counter=1
