@@ -40,4 +40,4 @@ WORKDIR /var/www/html
 
 #ENTRYPOINT ["/tmp/setup-woocommerce.sh"]
 
-RUN ./tmp/setup-woocommerce.sh
+CMD ./tmp/setup-woocommerce.sh
