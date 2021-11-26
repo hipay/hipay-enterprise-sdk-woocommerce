@@ -50,6 +50,8 @@ services:
   services:
     - name: $CI_REGISTRY/test-jobs-${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
       alias: woocommerce
+      entrypoint:
+        - ["/tmp/setup-woocommerce.sh"]
     - name: mysql:5.7
       alias: database
   artifacts:
