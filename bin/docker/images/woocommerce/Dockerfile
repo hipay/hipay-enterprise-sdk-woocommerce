@@ -38,6 +38,6 @@ COPY src/woocommerce_hipayenterprise /tmp/woocommerce_hipayenterprise
 
 WORKDIR /var/www/html
 
-RUN read -p "$*"
+RUN read -p "Test"
 
 ENTRYPOINT ["/tmp/setup-woocommerce.sh"]
