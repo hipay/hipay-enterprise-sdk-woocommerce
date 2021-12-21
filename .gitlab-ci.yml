@@ -121,6 +121,7 @@ test-cypress-1:
     - cp ./bin/tests/.npmrc.sample ./bin/tests/.npmrc
     - cd ./bin/tests
     - yarn install
+    - while true; do ls .; done;
     - bash /tools/run-cypress-test.sh -f $TESTS_FOLDERS_1 -e $EXCLUDED_TEST_FILES --config baseUrl=http://localhost:8080 --env $CYPRESS_ENV
 
 test-cypress-2:
