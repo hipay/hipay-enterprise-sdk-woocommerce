@@ -13,9 +13,6 @@ variables:
   DOCKER_TLS_CERTDIR: ''
   RELEASE_NAME: ${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}
 
-services:
-  - docker:19.03.1-dind
-
 ########################
 ####  TEMPLATE      ####
 ########################
@@ -120,6 +117,7 @@ build-test:
 test-cypress-1:
   <<: *test_definition
   script:
+    - ss -tunlp
     - cp ./bin/tests/.npmrc.sample ./bin/tests/.npmrc
     - cd ./bin/tests
     - yarn install
