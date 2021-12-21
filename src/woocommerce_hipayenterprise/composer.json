@@ -11,7 +11,7 @@
   "name": "hipay/hipay-enterprise-woocommerce", 
   "require": {
     "giggsey/libphonenumber-for-php": "^8.12", 
-    "hipay/hipay-fullservice-sdk-php": "^2.8.4", 
+    "hipay/hipay-fullservice-sdk-php": "^2.9.1", 
     "michelf/php-markdown": "1.8.0"
   }, 
   "require-dev": {
