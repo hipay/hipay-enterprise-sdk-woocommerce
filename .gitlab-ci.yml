@@ -47,7 +47,6 @@ variables:
   services:
     - name: $CI_REGISTRY/test-jobs-${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
       alias: woocommerce
-      command: ["echo", "$HIPAY_API_MOTO_USER_TEST"]
     - name: mysql:5.7
       alias: database
   artifacts:
@@ -121,8 +120,8 @@ test-cypress-1:
     - cp ./bin/tests/.npmrc.sample ./bin/tests/.npmrc
     - cd ./bin/tests
     - yarn install
-    - while true; do ls .; done;
-    - bash /tools/run-cypress-test.sh -f $TESTS_FOLDERS_1 -e $EXCLUDED_TEST_FILES --config baseUrl=http://localhost:8080 --env $CYPRESS_ENV
+    - sleep 10m
+    - bash /tools/run-cypress-test.sh -f $TESTS_FOLDERS_1 -e $EXCLUDED_TEST_FILES --config baseUrl=woocommerce:8080 --env $CYPRESS_ENV
 
 test-cypress-2:
   <<: *test_definition
