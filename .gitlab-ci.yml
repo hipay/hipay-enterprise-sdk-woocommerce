@@ -27,23 +27,19 @@ variables:
     HIPAY_API_MOTO_PASSWORD_TEST: $HIPAY_API_PASSWORD_TEST
     HIPAY_MOTO_SECRET_PASSPHRASE_TEST: $HIPAY_SECRET_PASSPHRASE_TEST
     PI_CI_DATA_URL: $PI_CI_DATA_URL
-    ADMIN_MAIL: "demo@hipay.com"
-    ADMIN_PASSWD: "hipay123"
-    PS_ERASE_DB: 1
-    PS_INSTALL_DB: 1
-    PS_LANGUAGE: "fr"
-    PS_COUNTRY: "fr"
-    PS_INSTALL_AUTO: 1
-    PS_DEV_MODE: 1
-    PS_FOLDER_ADMIN: "admin-hipay"
-    PS_FOLDER_INSTALL: "installOLD"
-    PS_HANDLE_DYNAMIC_DOMAIN: 0
-    PS_ALL_LANGUAGES: 0
-    DB_SERVER: "database"
-    DB_USER: "root"
-    DB_PASSWD: "admin"
-    MYSQL_HOST: "database"
-    MYSQL_ROOT_PASSWORD: "admin"
+    WOOCOMMERCE_VERSION: 3.8.1
+    ADMIN_USERNAME: admin
+    ADMIN_EMAIL: admin-wordpress@hipay.com
+    ADMIN_PASSWORD: hipay
+    WORDPRESS_URL: http://localhost:8080
+    WORDPRESS_DB_HOST: database
+    WORDPRESS_DB_USER: wordpress
+    WORDPRESS_DB_PASSWORD: wordpress
+    MYSQL_ROOT_PASSWORD: somewordpress
+    MYSQL_DATABASE: wordpress
+    MYSQL_USER: wordpress
+    MYSQL_PASSWORD: wordpress
+
   services:
     - name: $CI_REGISTRY/test-jobs-${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
       alias: woocommerce
