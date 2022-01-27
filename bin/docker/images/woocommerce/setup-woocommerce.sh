@@ -8,7 +8,7 @@ ENV_PROD="production"
 # wait until MySQL is really available
 maxcounter=45
 counter=1
-while ! mysql --protocol TCP -h $WORDPRESS_DB_HOST -u $WORDPRESS_DB_USER -p$WORDPRESS_DB_PASSWORD -e "show databases; " >/dev/null 2>&1; do
+while ! mysql --protocol TCP -h $WORDPRESS_DB_HOST -u $WORDPRESS_DB_USER -p$WORDPRESS_DB_PASSWORD -e "show databases;" >/dev/null 2>&1; do
     sleep 5
     counter=$(expr $counter + 1)
     if [ $counter -gt $maxcounter ]; then
