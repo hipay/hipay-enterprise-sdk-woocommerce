@@ -38,6 +38,4 @@ COPY src/woocommerce_hipayenterprise /tmp/woocommerce_hipayenterprise
 
 WORKDIR /var/www/html
 
-EXPOSE 8080
-
 ENTRYPOINT ["/tmp/setup-woocommerce.sh"]
