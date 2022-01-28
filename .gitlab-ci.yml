@@ -117,7 +117,7 @@ test-cypress-1:
     - cd ./bin/tests
     - yarn install
     - sleep 10m
-    - bash /tools/run-cypress-test.sh -f $TESTS_FOLDERS_1 -e $EXCLUDED_TEST_FILES --config baseUrl=http://localhost:8080 --env $CYPRESS_ENV
+    - bash /tools/run-cypress-test.sh -f $TESTS_FOLDERS_1 -e $EXCLUDED_TEST_FILES --config baseUrl=http://woocommerce:8080 --env $CYPRESS_ENV
 
 test-cypress-2:
   <<: *test_definition
