@@ -31,7 +31,7 @@ variables:
     ADMIN_USERNAME: admin
     ADMIN_EMAIL: admin-wordpress@hipay.com
     ADMIN_PASSWORD: hipay
-    WORDPRESS_URL: http://localhost:8080
+    WORDPRESS_URL: http://localhost
     WORDPRESS_DB_HOST: database
     WORDPRESS_DB_USER: wordpress
     WORDPRESS_DB_PASSWORD: wordpress
