@@ -85,8 +85,7 @@ test-cypress-1:
     - cp ./bin/tests/.npmrc.sample ./bin/tests/.npmrc
     - cd ./bin/tests
     - yarn install
-    - retry=0
-    - until ($(curl --output /dev/null --silent --head --fail http://woocommerce) || retry == 10); do printf "Waiting for Wordpress. Retry $retry/10"; ((retry++)); sleep 5; done
+    - retry=0; until ($(curl --output /dev/null --silent --head --fail http://woocommerce) || retry == 10); do printf "Waiting for Wordpress. Retry $retry/10"; ((retry++)); sleep 5; done
     - bash /tools/run-cypress-test.sh -f $TESTS_FOLDERS_1 -e $EXCLUDED_TEST_FILES --config baseUrl=http://woocommerce --env $CYPRESS_ENV
 
 test-cypress-2:
@@ -95,8 +94,7 @@ test-cypress-2:
     - cp ./bin/tests/.npmrc.sample ./bin/tests/.npmrc
     - cd ./bin/tests
     - yarn install
-    - retry=0
-    - until ($(curl --output /dev/null --silent --head --fail http://woocommerce) || retry == 10); do printf "Waiting for Wordpress. Retry $retry/10"; ((retry++)); sleep 5; done
+    - retry=0; until ($(curl --output /dev/null --silent --head --fail http://woocommerce) || retry == 10); do printf "Waiting for Wordpress. Retry $retry/10"; ((retry++)); sleep 5; done
     - bash /tools/run-cypress-test.sh -f $TESTS_FOLDERS_2 -e $EXCLUDED_TEST_FILES --config baseUrl=http://woocommerce --env $CYPRESS_ENV
 
 package:
