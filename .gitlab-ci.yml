@@ -23,11 +23,11 @@ variables:
     - small
   allow_failure: false
   variables:
-    #    HIPAY_API_USER_TEST: $HIPAY_API_USER_TEST
-    #    HIPAY_API_PASSWORD_TEST: $HIPAY_API_PASSWORD_TEST
-    #    HIPAY_TOKENJS_PUBLICKEY_TEST: $HIPAY_TOKENJS_PUBLICKEY_TEST
-    #    HIPAY_TOKENJS_USERNAME_TEST: $HIPAY_TOKENJS_USERNAME_TEST
-    #    HIPAY_SECRET_PASSPHRASE_TEST: $HIPAY_SECRET_PASSPHRASE_TEST
+    HIPAY_API_USER_TEST: $HIPAY_API_USER_TEST
+    HIPAY_API_PASSWORD_TEST: $HIPAY_API_PASSWORD_TEST
+    HIPAY_TOKENJS_PUBLICKEY_TEST: $HIPAY_TOKENJS_PUBLICKEY_TEST
+    HIPAY_TOKENJS_USERNAME_TEST: $HIPAY_TOKENJS_USERNAME_TEST
+    HIPAY_SECRET_PASSPHRASE_TEST: $HIPAY_SECRET_PASSPHRASE_TEST
     HIPAY_API_MOTO_USER_TEST: $HIPAY_API_USER_TEST
     HIPAY_API_MOTO_PASSWORD_TEST: $HIPAY_API_PASSWORD_TEST
     HIPAY_MOTO_SECRET_PASSPHRASE_TEST: $HIPAY_SECRET_PASSPHRASE_TEST
@@ -85,9 +85,11 @@ test-cypress-1:
     - cp ./bin/tests/.npmrc.sample ./bin/tests/.npmrc
     - cd ./bin/tests
     - yarn install
-    - sleep 10m
+    - until $(curl --output /dev/null --silent --head --fail http://myhost:myport); do \
+      printf 'Waiting for Wordpress' \
+      sleep 5 \
+      done
     - bash /tools/run-cypress-test.sh -f $TESTS_FOLDERS_1 -e $EXCLUDED_TEST_FILES --config baseUrl=http://woocommerce --env $CYPRESS_ENV
-
 
 test-cypress-2:
   <<: *test_definition
@@ -95,6 +97,10 @@ test-cypress-2:
     - cp ./bin/tests/.npmrc.sample ./bin/tests/.npmrc
     - cd ./bin/tests
     - yarn install
+    - until $(curl --output /dev/null --silent --head --fail http://myhost:myport); do \
+      printf 'Waiting for Wordpress' \
+      sleep 5 \
+      done
     - bash /tools/run-cypress-test.sh -f $TESTS_FOLDERS_2 -e $EXCLUDED_TEST_FILES --config baseUrl=http://woocommerce --env $CYPRESS_ENV
 
 package:
