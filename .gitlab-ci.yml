@@ -97,7 +97,7 @@ test-cypress-2:
     - cp ./bin/tests/.npmrc.sample ./bin/tests/.npmrc
     - cd ./bin/tests
     - yarn install
-      - bash /tools/run-cypress-test.sh -f $TESTS_FOLDERS_1 -e $EXCLUDED_TEST_FILES --config baseUrl=http://woocommerce --env $CYPRESS_ENV
+    - bash /tools/run-cypress-test.sh -f $TESTS_FOLDERS_1 -e $EXCLUDED_TEST_FILES --config baseUrl=http://woocommerce --env $CYPRESS_ENV
     - docker logs wordpress_web 2> tmperror2.log 1> /dev/null
     - sed -i 's/, referer:.*$//g' tmperror2.log
     - if [ "$(grep -i "^\[.*hipay" tmperror2.log)" != "" ]; then grep -i "^\[.*hipay" tmperror2.log; exit 1; fi
