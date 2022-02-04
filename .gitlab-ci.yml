@@ -85,7 +85,7 @@ test-cypress-1:
     - cp ./bin/tests/.npmrc.sample ./bin/tests/.npmrc
     - cd ./bin/tests
     - yarn install
-    - curl --retry 10 --retry-delay 5 http://woocommerce
+    - curl --retry 10 --retry-delay 5 --retry-all-errors http://woocommerce
     - bash /tools/run-cypress-test.sh -f $TESTS_FOLDERS_1 -e $EXCLUDED_TEST_FILES --config baseUrl=http://woocommerce --env $CYPRESS_ENV
 
 test-cypress-2:
@@ -94,7 +94,7 @@ test-cypress-2:
     - cp ./bin/tests/.npmrc.sample ./bin/tests/.npmrc
     - cd ./bin/tests
     - yarn install
-    - curl --retry 10 --retry-delay 5 http://woocommerce
+    - curl --retry 10 --retry-delay 5 --retry-all-errors http://woocommerce
     - bash /tools/run-cypress-test.sh -f $TESTS_FOLDERS_2 -e $EXCLUDED_TEST_FILES --config baseUrl=http://woocommerce --env $CYPRESS_ENV
 
 package:
