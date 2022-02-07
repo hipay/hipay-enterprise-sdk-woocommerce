@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 1.8.4
+
+- **Fix**: Order cancel on other gateway
+
 ## Version 1.8.3
 
 - **Fix**: DSP2 mandatory parameters

@@ -122,9 +122,14 @@ class WC_HipayEnterprise
      */
     public function handleStatusChange($orderId, $statusFrom, $statusTo, $order)
     {
-        $gateway = new Hipay_Gateway_Abstract();
-        $orderHandler = new Hipay_Order_Handler($order, $gateway);
-        $orderHandler->handleStatusChange($statusTo, $statusFrom);
+        $payment_method = $order->get_payment_method();
+
+        // Cancel payment transaction if HiPay gateway is used by order
+        if (preg_match("/^hipayenterprise/", $payment_method)) {
+            $gateway = new Hipay_Gateway_Abstract();
+            $orderHandler = new Hipay_Order_Handler($order, $gateway);
+            $orderHandler->handleStatusChange($statusTo, $statusFrom);
+        }
     }
 
     public static function get_instance()
