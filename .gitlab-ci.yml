@@ -58,6 +58,25 @@ variables:
   except:
     variables:
       - $ACCESS_TOKEN
+      - $CI_COMMIT_MESSAGE =~ /skip-tests/
+
+.login_to_registry: &login-to-registry
+  before_script:
+    - "mkdir /tmp"
+    - "touch /tmp/credentials.json"
+    - "echo ${SA_REGISTRY_CD} > /tmp/credentials.json"
+    - "export GOOGLE_APPLICATION_CREDENTIALS=/tmp/credentials.json"
+
+.login_to_cd: &login-to-cd
+  before_script:
+    # Connect GCP with deploy service account
+    - mkdir -p /tmp
+    - touch /tmp/credentials.json
+    - echo ${SA_DEPLOY_CD} > /tmp/credentials.json
+    - gcloud auth activate-service-account "${SA_DEPLOY_NAME}" --key-file="/tmp/credentials.json"
+    - gcloud config set project "${GCP_CD_PROJECT_ID}"
+    - gcloud config set compute/zone "${GCP_CD_CLUSTER_REGION}"
+    - gcloud container clusters get-credentials "${GCP_CD_CLUSTER_NAME}"
 
 #########################
 ####  JOBS          ####
@@ -114,31 +133,34 @@ package:
     variables:
       - $ACCESS_TOKEN
   tags:
-    - gcp-default-runner-prod
+    - small
 
 build:
+  <<: *login-to-registry
   stage: build
-  image: $REGISTRY_CI/gitlab-ci-base:deployment
+  image:
+    name: gcr.io/kaniko-project/executor:v1.6.0-debug
   rules:
     - if: $ACCESS_TOKEN
       when: on_success
     - when: manual
   script:
-    - docker build -f bin/docker/images/woocommerce/Dockerfile . -t ${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web:${CI_COMMIT_REF_SLUG}
-    - /tools/auth-as-end-user.sh
-    - docker push ${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web:${CI_COMMIT_REF_SLUG}
-    - /tools/logout-end-user.sh
+    - /kaniko/executor
+      --cache=true
+      --context "dir://${CI_PROJECT_DIR}"
+      --dockerfile "./bin/docker/images/woocommerce/Dockerfile"
+      --destination "${REGISTRY_CD}/${DOCKER_STACK}-${DOCKER_SERVICE}-web:${CI_COMMIT_REF_SLUG}"
   tags:
-    - gcp-default-runner-prod
+    - small
 
 deploy2recette:
+  <<: *login-to-cd
   stage: deploy
   image: $REGISTRY_CI/gitlab-ci-base:deployment
   variables:
     GPC_ACCOUNT: ''
   script:
     - echo $RELEASE_NAME
-    - /tools/auth-to-cd-cluster.sh
     - >
       helm install $RELEASE_NAME ./bin/docker/kubernetes/helm/
       --namespace default
@@ -151,10 +173,9 @@ deploy2recette:
       --set hipay_tokenjs_publickey_test="$HIPAY_TOKENJS_PUBLICKEY_RE7"
       --set hipay_secret_passphrase_test="$HIPAY_SECRET_PASSPHRASE_RE7"
       --set pi_data_url="$PI_CI_DATA_URL"
-    - /tools/logout-end-user.sh
   allow_failure: true
   tags:
-    - gcp-default-runner-prod
+    - small
   rules:
     - if: $ACCESS_TOKEN
       when: on_success
@@ -165,14 +186,13 @@ deploy2recette:
     on_stop: stop_review
 
 stop_review:
+  <<: *login-to-cd
   stage: deploy
   image: $REGISTRY_CI/gitlab-ci-base:deployment
   variables:
     GIT_STRATEGY: none
   script:
-    - /tools/auth-to-cd-cluster.sh
-    - helm uninstall $RELEASE_NAME
-    - /tools/logout-end-user.sh
+    - helm uninstall $RELEASE_NAME --namespace=default
   rules:
     - if: $ACCESS_TOKEN
       when: on_success
@@ -181,4 +201,4 @@ stop_review:
     name: review/${CI_COMMIT_REF_SLUG}
     action: stop
   tags:
-    - gcp-default-runner-prod
+    - small
