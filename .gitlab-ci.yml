@@ -65,7 +65,7 @@ variables:
     - "touch /tmp/credentials.json"
     - "echo ${SA_REGISTRY_CD} > /tmp/credentials.json"
     - "export GOOGLE_APPLICATION_CREDENTIALS=/tmp/credentials.json"
-    -
+
 .login_to_cd: &login-to-cd
   before_script:
     # Connect GCP with deploy service account
