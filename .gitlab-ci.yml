@@ -57,7 +57,7 @@ variables:
     when: always
   except:
     variables:
-      - $ACCESS_TOKEN
+      - $ONLY_DEPLOY
       - $CI_COMMIT_MESSAGE =~ /skip-tests/
 
 .login_to_registry: &login-to-registry
@@ -94,7 +94,7 @@ build-test:
           --destination "$CI_REGISTRY/test-jobs-${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}"
   except:
     variables:
-      - $ACCESS_TOKEN
+      - $ONLY_DEPLOY
   tags:
     - small
 
@@ -131,7 +131,7 @@ package:
       - ./bin/package
   except:
     variables:
-      - $ACCESS_TOKEN
+      - $ONLY_DEPLOY
   tags:
     - small
 
@@ -141,7 +141,7 @@ build:
   image:
     name: gcr.io/kaniko-project/executor:v1.6.0-debug
   rules:
-    - if: $ACCESS_TOKEN
+    - if: $ONLY_DEPLOY
       when: on_success
     - when: manual
   script:
@@ -177,7 +177,7 @@ deploy2recette:
   tags:
     - small
   rules:
-    - if: $ACCESS_TOKEN
+    - if: $ONLY_DEPLOY
       when: on_success
     - when: manual
   environment:
@@ -194,7 +194,7 @@ stop_review:
   script:
     - helm uninstall $RELEASE_NAME --namespace=default
   rules:
-    - if: $ACCESS_TOKEN
+    - if: $ONLY_DEPLOY
       when: on_success
     - when: manual
   environment:
