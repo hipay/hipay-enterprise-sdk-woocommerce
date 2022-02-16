@@ -191,7 +191,7 @@ stop_review:
   variables:
     GIT_STRATEGY: none
   script:
-    - helm uninstall $RELEASE_NAME
+    - helm uninstall $RELEASE_NAME --namespace=default
   rules:
     - if: $ACCESS_TOKEN
       when: on_success
