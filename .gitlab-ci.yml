@@ -193,10 +193,7 @@ stop_review:
     GIT_STRATEGY: none
   script:
     - helm uninstall $RELEASE_NAME --namespace=default
-  rules:
-    - if: $ONLY_DEPLOY
-      when: on_success
-    - when: manual
+  when: manual
   environment:
     name: review/${CI_COMMIT_REF_SLUG}
     action: stop
