@@ -134,6 +134,19 @@ class Hipay_Order_Handler
         WC()->cart->empty_cart();
     }
 
+    /**
+     * Expire order and add note.
+     *
+     * @param  string $reason Reason why the payment is Expired.
+     */
+    public function paymentExpired($reason = '')
+    {
+        $this->plugin->logs->logInfos("### paymentExpired change status: ".$this->order->get_id());
+
+        $this->order->update_status('expired', $reason);
+        WC()->cart->empty_cart();
+    }
+
 
     /**
      * Refund order and add note.
