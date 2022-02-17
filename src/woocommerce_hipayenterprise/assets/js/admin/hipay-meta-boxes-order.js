@@ -15,7 +15,7 @@ jQuery(function ($) {
                 .on( 'change keyup', '#capture_amount', this.amount_changed );
 
             $('#order_line_items .refund input.refund_order_item_qty').each(function (index, item) {
-                // Set all items quantities to max and trigger change event to update other values (tax, total...)
+                // Set all items quantities to max capturable and trigger change event to update other values (tax, total...)
 
                 var order_item_id = $(item.closest('tr')).attr('data-order_item_id');
                 var amountCaptured = $('.hipay-captured[data-order_item_id = ' + order_item_id + ']')
