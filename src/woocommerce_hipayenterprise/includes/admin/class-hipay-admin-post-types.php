@@ -66,7 +66,8 @@ class Hipay_Admin_Post_Types
         return array_merge(
             array(
                 "partial-captured",
-                "partial-refunded"
+                "partial-refunded",
+                "expired"
             ),
             $order_statuses);
     }
@@ -81,6 +82,7 @@ class Hipay_Admin_Post_Types
     {
         $order_statuses['wc-partial-captured'] = _x('Partially captured (HiPay)', 'Order status', 'hipayenterprise');
         $order_statuses['wc-partial-refunded'] = _x('Partially refunded (HiPay)', 'Order status', 'hipayenterprise');
+        $order_statuses['wc-expired'] = _x('Payment expired (HiPay)', 'Order status', 'hipayenterprise');
         return $order_statuses;
     }
 
@@ -215,7 +217,17 @@ class Hipay_Admin_Post_Types
                 'exclude_from_search' => false,
                 'show_in_admin_all_list' => true,
                 'show_in_admin_status_list' => true,
-                'label_count' => _n_noop('Partially refunded  <span class="count">(%s)</span>', 'Partially captured  <span class="count">(%s)</span>')
+                'label_count' => _n_noop('Partially refunded  <span class="count">(%s)</span>', 'Partially refunded  <span class="count">(%s)</span>')
+            )
+        );
+        register_post_status('wc-expired',
+            array(
+                'label' => 'Payment expired (HiPay)',
+                'public' => true,
+                'exclude_from_search' => false,
+                'show_in_admin_all_list' => true,
+                'show_in_admin_status_list' => true,
+                'label_count' => _n_noop('Payment expired  <span class="count">(%s)</span>', 'Payment expired  <span class="count">(%s)</span>')
             )
         );
     }

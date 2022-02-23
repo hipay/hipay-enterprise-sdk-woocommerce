@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Version 1.9.0
+
+- **Add**: Improve capture form default quantities
+- **Add**: Add Payment Expired status
+
 ## Version 1.8.4
 
 - **Fix**: Order cancel on other gateway

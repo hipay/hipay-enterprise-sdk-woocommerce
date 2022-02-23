@@ -12,7 +12,23 @@ jQuery(function ($) {
                 .on('click', 'button.capture-items', this.capture_items)
                 .on('click', 'button.do-api-capture', this.do_capture)
                 .on( 'change', '.refund input.refund_line_total, .refund input.refund_line_tax', this.input_changed )
-                .on( 'change keyup', '#capture_amount', this.amount_changed )
+                .on( 'change keyup', '#capture_amount', this.amount_changed );
+
+            $('#order_line_items .refund input.refund_order_item_qty').each(function (index, item) {
+                // Set all items quantities to max capturable and trigger change event to update other values (tax, total...)
+
+                var order_item_id = $(item.closest('tr')).attr('data-order_item_id');
+                var amountCaptured = $('.hipay-captured[data-order_item_id = ' + order_item_id + ']')
+                                        .find('.quantity .view .captured')[0]
+                                        .innerText;
+
+                var capturable = item.max - amountCaptured;
+
+                $(item)
+                  .val(capturable)
+                  .attr('max', capturable)
+                  .change();
+            });
         },
 
         amount_changed: function() {
