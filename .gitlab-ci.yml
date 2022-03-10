@@ -33,9 +33,9 @@ variables:
     HIPAY_MOTO_SECRET_PASSPHRASE_TEST: $HIPAY_SECRET_PASSPHRASE_TEST
     PI_CI_DATA_URL: $PI_CI_DATA_URL
     WOOCOMMERCE_VERSION: 3.8.1
-    ADMIN_USERNAME: admin
-    ADMIN_EMAIL: admin-wordpress@hipay.com
-    ADMIN_PASSWORD: hipay
+    ADMIN_USERNAME: demo@hipay.com
+    ADMIN_EMAIL: demo@hipay.com
+    ADMIN_PASSWORD: hipay123
     WORDPRESS_URL: http://woocommerce
     WORDPRESS_DB_HOST: database
     WORDPRESS_DB_USER: wordpress

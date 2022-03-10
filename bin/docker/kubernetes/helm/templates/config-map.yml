@@ -6,9 +6,9 @@ metadata:
     cd-hipay: cron-delete
 data:
   # Wordpress and MySQL env var
-  ADMIN_USERNAME: admin
-  ADMIN_EMAIL: admin-wordpress@hipay.com
-  ADMIN_PASSWORD: hipay
+  ADMIN_USERNAME: demo@hipay.com
+  ADMIN_EMAIL: demo@hipay.com
+  ADMIN_PASSWORD: hipay123
   WOOCOMMERCE_VERSION: {{ .Values.woocommerce_version  }}
   WORDPRESS_DB_USER: wordpress
   WORDPRESS_DB_HOST: wordpress-mysql-{{ .Release.Name }}
