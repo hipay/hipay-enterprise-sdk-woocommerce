@@ -122,11 +122,11 @@ if (!class_exists('WC_Gateway_Hipay')) {
         {
             $transactionReference = Hipay_Helper::getPostData('$1', '');
 
-            if (!Hipay_Helper::checkSignature($this)) {
+            /*if (!Hipay_Helper::checkSignature($this)) {
                 $this->logs->logErrors("Notify : Signature is wrong for Transaction $transactionReference.");
                 header('HTTP/1.1 403 Forbidden');
                 die('Bad Callback initiated - signature');
-            }
+            }*/
 
             try {
                 $notification = new Hipay_Notification($this, $_POST);
