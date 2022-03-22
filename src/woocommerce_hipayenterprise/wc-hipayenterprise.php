@@ -3,7 +3,7 @@
 Plugin Name: WooCommerce HiPay Enterprise
 Plugin URI: https://hipay.com/en/
 Description: WooCommerce Plugin for Hipay Enterprise.
-Version: 1.8.1
+Version: 1.9.0
 Text Domain: hipayenterprise
 Author: HiPay
 Author URI: https://www.hipay.com
