@@ -131,14 +131,16 @@ class Hipay_Multibanco extends Hipay_Gateway_Local_Abstract
      */
     public function thanks_page($order_id)
     {
-
         global $woocommerce;
 
         $order = new WC_Order($order_id);
 
-        $this->makeMultibancoTemplate($order);
+        if ($order->get_payment_method() === $this->id) {
 
-        $woocommerce->cart->empty_cart();
+            $this->makeMultibancoTemplate($order);
+
+            $woocommerce->cart->empty_cart();
+        }
     }
 
     /**
