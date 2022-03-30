@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 1.9.1
+
+- **Fix**: Default to english if no translation is found
+
 ## Version 1.9.0
 
 - **Add**: Improve capture form default quantities
