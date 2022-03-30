@@ -12,11 +12,18 @@
                         "hipayenterprise"
                     ); ?></label>
                 <div class="col-lg-8">
+                    <?php
+                        if (isset($paymentCommon["ccDisplayName"][substr(get_locale(), 0, 2)])) {
+                            $displayName = $paymentCommon["ccDisplayName"][substr(get_locale(), 0, 2)];
+                        } else {
+                            $displayName = $paymentCommon["ccDisplayName"]['en'];
+                        }
+                    ?>
                     <input class="form-control" type="text"
                            name="ccDisplayName[<?php echo substr(get_locale(), 0, 2); ?>]"
                            id="woocommerce_hipayenterprise_ccDisplayName"
                            style=""
-                           value="<?php echo $paymentCommon["ccDisplayName"][substr(get_locale(), 0, 2)] ?>"
+                           value="<?php echo $displayName; ?>"
                            placeholder="">
                 </div>
             </div>
