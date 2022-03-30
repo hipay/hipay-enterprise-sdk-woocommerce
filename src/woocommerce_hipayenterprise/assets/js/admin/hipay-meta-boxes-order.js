@@ -20,14 +20,18 @@ jQuery(function ($) {
                 var order_item_id = $(item.closest('tr')).attr('data-order_item_id');
                 var amountCaptured = $('.hipay-captured[data-order_item_id = ' + order_item_id + ']')
                                         .find('.quantity .view .captured')[0]
-                                        .innerText;
+                                        ?.innerText;
+
+                amountCaptured = amountCaptured ? amountCaptured : 0;
 
                 var capturable = item.max - amountCaptured;
 
-                $(item)
-                  .val(capturable)
-                  .attr('max', capturable)
-                  .change();
+                if(capturable) {
+                  $(item)
+                    .val(capturable)
+                    .attr('max', capturable)
+                    .change();
+                }
             });
         },
 
