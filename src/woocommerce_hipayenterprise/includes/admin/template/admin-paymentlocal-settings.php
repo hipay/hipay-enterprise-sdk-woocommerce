@@ -2,10 +2,17 @@
     <div class="form-group">
         <label class="control-label col-lg-2"><?php _e('Display name', "hipayenterprise"); ?></label>
         <div class="col-lg-8">
+            <?php
+            if (isset($configurationPaymentMethod["displayName"][substr(get_locale(), 0, 2)])) {
+                $displayName = $configurationPaymentMethod["displayName"][substr(get_locale(), 0, 2)];
+            } else {
+                $displayName = $configurationPaymentMethod["displayName"]['en'];
+            }
+            ?>
             <input class="form-control" type="text"
                 name="woocommerce_hipayenterprise_methods_displayName_<?php echo $method; ?>[<?php echo substr(get_locale(), 0, 2); ?>]"
                 id="woocommerce_hipayenterprise_methods_displayName<?php echo $method; ?>" style=""
-                value="<?php echo $configurationPaymentMethod["displayName"][substr(get_locale(), 0, 2)] ?>"
+                value="<?php echo $displayName; ?>"
                 placeholder="">
         </div>
     </div>
