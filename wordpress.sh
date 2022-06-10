@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-CONTAINER=hipay-enterprise-sdk-woocommerce_wordpress_1
+CONTAINER=hipay-enterprise-sdk-woocommerce-wordpress-1
 
 manageComposerForData() {
      COMPOSER_JSON_FILE="src/woocommerce_hipayenterprise/composer.json"
