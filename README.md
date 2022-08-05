@@ -5,6 +5,8 @@
 
 The **HiPay Enterprise module for Woocommerce** is a PHP module which allows you to accept payments in your Woocommerce online store, offering innovative features to reduce shopping cart abandonment rates, optimize success rates and enhance the purchasing process on merchants’ sites to significantly increase business volumes without additional investments in the solution CMS e-commerce Woocommerce.
 
+> **WARNING** Starting from version 2.0.0, the Hosted Page feature is migrated to Hosted Page v2. Please contact your Account Manager for more information.
+
 ## Getting started
 
 Read the **[project documentation][doc-home]** for comprehensive information about the requirements, general workflow and installation procedure.

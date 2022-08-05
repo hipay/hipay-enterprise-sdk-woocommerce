@@ -196,7 +196,8 @@ class Hipay_Api
                 'apiPassword' => $password,
                 'apiEnv' => $env,
                 'apiHTTPHeaderAccept' => 'application/json',
-                'proxy' => $proxy
+                'proxy' => $proxy,
+                'hostedPageV2' => true
             )
         );
 

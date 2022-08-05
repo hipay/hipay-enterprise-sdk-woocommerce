@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 2.0.0
+
+- **Add**: Switch HostedPage to HPayment v2
+
 ## Version 1.9.1
 
 - **Fix**: Default to english if no translation is found
