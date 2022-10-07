@@ -13,7 +13,7 @@ manageComposerForData() {
      echo "if [ $? -eq 0 ]" >>.git/hooks/pre-commit
      echo "then" >>.git/hooks/pre-commit
      echo "    cp \$COMPOSER_JSON_FILE \$COMPOSER_JSON_FILE.bak" >>.git/hooks/pre-commit
-     echo "    cat \$COMPOSER_JSON_FILE.bak | python -c \"import sys, json; composerObj=json.load(sys.stdin); composerObj['scripts'] = None; del composerObj['scripts']; print( json.dumps(composerObj, sort_keys=True, indent=2));\" > \$COMPOSER_JSON_FILE" >>.git/hooks/pre-commit
+     echo "    cat \$COMPOSER_JSON_FILE.bak | python3 -c \"import sys, json; composerObj=json.load(sys.stdin); composerObj['scripts'] = None; del composerObj['scripts']; print( json.dumps(composerObj, sort_keys=True, indent=2));\" > \$COMPOSER_JSON_FILE" >>.git/hooks/pre-commit
      echo "    git add \$COMPOSER_JSON_FILE" >>.git/hooks/pre-commit
      echo "fi" >>.git/hooks/pre-commit
      echo "exit 0" >>.git/hooks/pre-commit
@@ -37,19 +37,19 @@ manageComposerForData() {
 manageComposerForData
 
 if [ "$1" = 'init' ] && [ "$2" = '' ]; then
-     docker-compose -f docker-compose.dev.yml rm -sfv
+     docker compose -f docker-compose.dev.yml rm -sfv
      rm -Rf wordpress/core/ data/ src/woocommerce_hipayenterprise/vendor/ src/woocommerce_hipayenterprise/composer.lock
-     docker-compose -f docker-compose.dev.yml build
-     docker-compose -f docker-compose.dev.yml up -d
+     docker compose -f docker-compose.dev.yml build
+     docker compose -f docker-compose.dev.yml up -d
 fi
 
 if [ "$1" = 'restart' ]; then
-     docker-compose -f docker-compose.dev.yml stop
-     docker-compose -f docker-compose.dev.yml up -d
+     docker compose -f docker-compose.dev.yml stop
+     docker compose -f docker-compose.dev.yml up -d
 fi
 
 if [ "$1" = 'kill' ]; then
-     docker-compose -f docker-compose.dev.yml rm -sfv
+     docker compose -f docker-compose.dev.yml rm -sfv
      rm -Rf wordpress/core/ data/ src/woocommerce_hipayenterprise/vendor/ src/woocommerce_hipayenterprise/composer.lock
 fi
 
