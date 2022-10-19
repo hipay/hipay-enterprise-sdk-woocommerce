@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Version 2.0.1
+
+- **Fix**: Fixed PHP Compatibility problem
+
 ## Version 2.0.0
 
 - **Add**: Switch HostedPage to HPayment v2
@@ -30,7 +34,7 @@
 
 - **Fix**: Merchant Promotion for Oney
 - **Fix**: Fee product category for Oney
-- **Fix**: Mbway Phone 
+- **Fix**: Mbway Phone
 
 ## Version 1.8.1
 
