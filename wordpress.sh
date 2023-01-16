@@ -38,9 +38,8 @@ manageComposerForData
 
 if [ "$1" = 'init' ] && [ "$2" = '' ]; then
      docker compose -f docker-compose.dev.yml rm -sfv
-     rm -Rf wordpress/core/ data/ src/woocommerce_hipayenterprise/vendor/ src/woocommerce_hipayenterprise/composer.lock
-     docker compose -f docker-compose.dev.yml build
-     docker compose -f docker-compose.dev.yml up -d
+     sudo rm -Rf wordpress/core/ data/ src/woocommerce_hipayenterprise/vendor/ src/woocommerce_hipayenterprise/composer.lock
+     docker compose -f docker-compose.dev.yml up -d --build
 fi
 
 if [ "$1" = 'restart' ]; then

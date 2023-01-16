@@ -8,9 +8,6 @@ stages:
   - deploy
 
 variables:
-  DOCKER_HOST: tcp://localhost:2375/
-  DOCKER_DRIVER: overlay2
-  DOCKER_TLS_CERTDIR: ''
   RELEASE_NAME: ${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}
 
 ########################
@@ -62,10 +59,10 @@ variables:
 
 .login_to_registry: &login-to-registry
   before_script:
-    - "mkdir /tmp"
-    - "touch /tmp/credentials.json"
-    - "echo ${SA_REGISTRY_CD} > /tmp/credentials.json"
-    - "export GOOGLE_APPLICATION_CREDENTIALS=/tmp/credentials.json"
+    - 'mkdir /tmp'
+    - 'touch /tmp/credentials.json'
+    - 'echo ${SA_REGISTRY_CD} > /tmp/credentials.json'
+    - 'export GOOGLE_APPLICATION_CREDENTIALS=/tmp/credentials.json'
 
 .login_to_cd: &login-to-cd
   before_script:
@@ -88,17 +85,17 @@ build-test:
     name: gcr.io/kaniko-project/executor:v1.6.0-debug
   script:
     - /kaniko/executor
-          --cache=true
-          --context "dir://${CI_PROJECT_DIR}"
-          --dockerfile "./bin/docker/images/woocommerce/Dockerfile"
-          --destination "$CI_REGISTRY/test-jobs-${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}"
+      --cache=true
+      --context "dir://${CI_PROJECT_DIR}"
+      --dockerfile "./bin/docker/images/woocommerce/Dockerfile"
+      --destination "$CI_REGISTRY/test-jobs-${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}"
   except:
     variables:
       - $ONLY_DEPLOY
   tags:
     - small
 
-test-cypress-1:
+.test-cypress-1:
   <<: *test_definition
   script:
     - cp ./bin/tests/.npmrc.sample ./bin/tests/.npmrc
@@ -107,7 +104,7 @@ test-cypress-1:
     - curl --retry 10 --retry-delay 5 --retry-connrefused --output /dev/null http://woocommerce
     - bash /tools/run-cypress-test.sh -f $TESTS_FOLDERS_1 -e $EXCLUDED_TEST_FILES --config baseUrl=http://woocommerce --env $CYPRESS_ENV
 
-test-cypress-2:
+.test-cypress-2:
   <<: *test_definition
   script:
     - cp ./bin/tests/.npmrc.sample ./bin/tests/.npmrc
@@ -143,7 +140,8 @@ build:
   rules:
     - if: $ONLY_DEPLOY
       when: on_success
-    - when: manual
+    - if: $CI_PIPELINE_SOURCE == "push"
+      when: manual
   script:
     - /kaniko/executor
       --cache=true
@@ -179,7 +177,8 @@ deploy2recette:
   rules:
     - if: $ONLY_DEPLOY
       when: on_success
-    - when: manual
+    - if: $CI_PIPELINE_SOURCE == "push"
+      when: manual
   environment:
     name: review/${CI_COMMIT_REF_SLUG}
     url: https://${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}.${URL_CD}
