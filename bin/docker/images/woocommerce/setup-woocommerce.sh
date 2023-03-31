@@ -48,6 +48,12 @@ if [ ! -f /var/www/html/wp-content/plugins/woocommerce/woocommerce.php ]; then
 
     composer install --no-dev
 
+    #==========================================
+    # Fix Woocommerce activation
+    #==========================================
+    wp plugin deactivate woocommerce --allow-root
+    wp plugin activate woocommerce --allow-root
+
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     printf "\n${COLOR_SUCCESS}    INSTALL HIPAY WOOCOMMERCE MODULE     ${NC}\n"
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
