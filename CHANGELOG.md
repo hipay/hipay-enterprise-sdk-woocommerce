@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Unreleased
+
+- **Fix**: Fixed PHP issues about short PHP open tags, thanks to [khypsos](https://github.com/khypsos) for issue [#2](https://github.com/hipay/hipay-enterprise-sdk-woocommerce/issues/2)
+
 ## Version 2.0.1
 
 - **Fix**: Fixed PHP Compatibility problem
