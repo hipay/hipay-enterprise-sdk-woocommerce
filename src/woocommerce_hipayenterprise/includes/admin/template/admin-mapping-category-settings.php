@@ -41,7 +41,7 @@
                                                 selected
                                             <?php endif; ?>
                                         ><?php echo $category->getLocal('fr'); ?></option>
-                                    <? endforeach; ?>
+                                    <?php endforeach; ?>
                                 </select>
                             </td>
                         </tr>
