@@ -60,7 +60,7 @@
                                                 selected
                                             <?php endif; ?>
                                         ><?php echo $mode->getDisplayName("fr") ?></option>
-                                    <? endforeach; ?>
+                                    <?php endforeach; ?>
                                 </select>
                             </td>
                             <td>
@@ -73,7 +73,7 @@
                                                 selected
                                             <?php endif; ?>
                                                 value="<?php echo $shipping->getCode(); ?>"><?php echo $shipping->getDisplayName("fr") ?></option>
-                                    <? endforeach; ?>
+                                    <?php endforeach; ?>
                                 </select>
                             </td>
                         </tr>

@@ -379,7 +379,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 'hipay_config_i18n',
                 array(
                     "activated_card_error" => __(
-                        'This credit card type or the order currency is not supported. 
+                        'This credit card type or the order currency is not supported.
                     Please choose an other payment method.',
                         'hipayenterprise'
                     ),
@@ -560,9 +560,9 @@ if (!class_exists('WC_Gateway_Hipay')) {
         private function generate_iframe_page($paymentUrl)
         {
             echo '<div id="wc_hipay_iframe_container">
-                    <iframe id="wc_hipay_iframe" name="wc_hipay_iframe" width="100%" height="475" style="border: 0;" src="' .
+                    <iframe id="wc_hipay_iframe" name="wc_hipay_iframe" width="100%" height="475" title="Hosted Page" src="' .
                 esc_html($paymentUrl) .
-                '" allowfullscreen="" frameborder="0"></iframe>
+                '" sandbox="allow-modals allow-top-navigation allow-same-origin allow-scripts allow-forms"></iframe>
                   </div>';
         }
     }

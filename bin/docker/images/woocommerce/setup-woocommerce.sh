@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+
+set -e
+
 COLOR_SUCCESS='\033[0;32m'
 NC='\033[0m'
 ENV_DEVELOPMENT="development"
@@ -45,6 +48,12 @@ if [ ! -f /var/www/html/wp-content/plugins/woocommerce/woocommerce.php ]; then
 
     composer install --no-dev
 
+    #==========================================
+    # Fix Woocommerce activation
+    #==========================================
+    wp plugin deactivate woocommerce --allow-root
+    wp plugin activate woocommerce --allow-root
+
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     printf "\n${COLOR_SUCCESS}    INSTALL HIPAY WOOCOMMERCE MODULE     ${NC}\n"
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
@@ -65,11 +74,11 @@ if [ ! -f /var/www/html/wp-content/plugins/woocommerce/woocommerce.php ]; then
     wp option update 'woocommerce_calc_taxes' 'yes' --allow-root
     wp option update 'woocommerce_tax_display_shop' 'incl' --allow-root
     wp option update 'woocommerce_tax_display_cart' 'incl' --allow-root
-    wp wc tax create --country="FR" --rate="20" --name="TVA" --allow-root --user=admin-wordpress@hipay.com
-    SHIPPING_ZONE=$(wp wc shipping_zone create --allow-root --name="FR" --user=admin-wordpress@hipay.com --porcelain)
-    wp wc --allow-root shipping_zone_method create $SHIPPING_ZONE --method_id="flat_rate" --user=admin-wordpress@hipay.com
-    wp wc --allow-root shop_coupon create --code=test --amount=12.25 --discount_type=percent --user=admin-wordpress@hipay.com
-    wp wc --allow-root customer create --email='d.denis@hipay.com' --user=1 --password='password123'
+    wp wc tax create --country="FR" --rate="20" --name="TVA" --allow-root --user=$ADMIN_EMAIL
+    SHIPPING_ZONE=$(wp wc shipping_zone create --allow-root --name="FR" --user=$ADMIN_EMAIL --porcelain)
+    wp wc --allow-root shipping_zone_method create $SHIPPING_ZONE --method_id="flat_rate" --user=$ADMIN_EMAIL
+    wp wc --allow-root shop_coupon create --code=test --amount=12.25 --discount_type=percent --user=$ADMIN_EMAIL
+    wp wc --allow-root customer create --email='test@gmail.com' --user=1 --password='hipay123'
 
     CONFIG=$(wp option --allow-root get hipay_enterprise --format=json)
     CONFIG=${CONFIG/'"api_username_sandbox":""'/'"api_username_sandbox":"'$HIPAY_API_USER_TEST'"'}
