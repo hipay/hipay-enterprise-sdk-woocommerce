@@ -58,6 +58,6 @@ The **HiPay Enterprise module for Woocommerce** is available under the **Apache 
 [hipay-help]: http://help.hipay.com
 
 [project-issues]: https://github.com/hipay/hipay-enterprise-sdk-woocommerce/issues
-[project-license]: LICENSE.md
+[project-license]: LICENCE.md
 [project-changelog]: CHANGELOG.md
 [project-contributing]: CONTRIBUTING.md
