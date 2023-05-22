@@ -25,77 +25,83 @@ if (!defined('ABSPATH')) {
 class Hipay_Autoloader
 {
 
-    public static $classArray = array(
-        WC_HIPAYENTERPRISE_PATH . 'vendor/autoload.php',
-        WC_HIPAYENTERPRISE_PATH . 'class-wc-hipay-enterprise.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/admin/data-stores/class-hipay-order-capture-data-store-cpt.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/admin/post/class-hipay-mapping-category.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/admin/post/class-hipay-mapping-delivery.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/admin/post/class-hipay-order-capture.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-mapping-abstract.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-mapping-category-controller.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-mapping-delivery-controller.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-admin-post-types.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-admin-menus.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-admin-capture.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-admin-plugin-update.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-upgrade-helper.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/gateways/class-hipay-gateway-abstract.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/gateways/class-hipay-gateway-local-abstract.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/gateways/class-gateway-hipay.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-log.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-notification.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-order-handler.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-payment-token-cc-hipay.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-order-helper.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-token-helper.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-admin-assets.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-config.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-settings-handler.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-helper.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-transactions.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-operations.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-api.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-helper-mapping.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-threeds-helper.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/ThreeDS.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/OperatingMode.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/CaptureMode.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/CardPaymentProduct.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/SettingsField.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/formatter/interface-hipay-api-formatter.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/formatter/class-hipay-api-formatter-abstract.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/formatter/cart/class-hipay-cart-formatter.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/formatter/cart/class-hipay-delivery-formatter.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-order-request-abstract.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-maintenance-formatter-abstract.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-hosted-payment-formatter.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-direct-post-formatter.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/formatter/info/class-hipay-customer-billing-info-formatter.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/formatter/info/class-hipay-customer-shipping-info-formatter.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/formatter/threeds/class-hipay-browser-info-formatter.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/formatter/threeds/class-hipay-previous-auth-info-formatter.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/formatter/threeds/class-hipay-merchant-risk-formatter.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/formatter/threeds/class-hipay-account-info-formatter.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/formatter/payment-method/class-hipay-card-token-formatter.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/formatter/payment-method/class-hipay-generic-payment-method-formatter.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-api-request-handler.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/helper/exceptions/class-hipay-payment-exception.php',
-        WC_HIPAYENTERPRISE_PATH . 'includes/helper/exceptions/class-hipay-settings-exception.php'
+    public static $staticClasses = array(
+	    'WC_HipayEnterprise' => WC_HIPAYENTERPRISE_PATH . 'class-wc-hipay-enterprise.php',
+        'WC_Order_Capture_Data_Store_CPT' => WC_HIPAYENTERPRISE_PATH . 'includes/admin/data-stores/class-hipay-order-capture-data-store-cpt.php',
+	    'Hipay_Mapping_Category' => WC_HIPAYENTERPRISE_PATH . 'includes/admin/post/class-hipay-mapping-category.php',
+	    'Hipay_Mapping_Delivery' => WC_HIPAYENTERPRISE_PATH . 'includes/admin/post/class-hipay-mapping-delivery.php',
+	    'Hipay_Order_Capture' => WC_HIPAYENTERPRISE_PATH . 'includes/admin/post/class-hipay-order-capture.php',
+	    'Wc_Hipay_Admin_Assets' => WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-admin-assets.php',
+	    'Hipay_Admin_Capture' => WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-admin-capture.php',
+	    'Hipay_Admin_Menus' => WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-admin-menus.php',
+//	    'Hipay_Admin_Meta_Boxes' => WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-admin-meta-boxes.php',
+	    'Hipay_Admin_Plugin_Update_Handler' => WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-admin-plugin-update.php',
+	    'Hipay_Admin_Post_Types' => WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-admin-post-types.php',
+        'Hipay_Mapping_Abstract' => WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-mapping-abstract.php',
+        'Hipay_Mapping_Category_Controller' => WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-mapping-category-controller.php',
+        'Hipay_Mapping_Delivery_Controller' => WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-mapping-delivery-controller.php',
+
+	    'Hipay_Cart_Formatter' => WC_HIPAYENTERPRISE_PATH . 'includes/formatter/cart/class-hipay-cart-formatter.php',
+	    'Hipay_Delivery_Formatter' => WC_HIPAYENTERPRISE_PATH . 'includes/formatter/cart/class-hipay-delivery-formatter.php',
+	    'Hipay_Customer_Billing_Info_Formatter' => WC_HIPAYENTERPRISE_PATH . 'includes/formatter/info/class-hipay-customer-billing-info-formatter.php',
+	    'Hipay_Customer_Shipping_Info_Formatter' => WC_HIPAYENTERPRISE_PATH . 'includes/formatter/info/class-hipay-customer-shipping-info-formatter.php',
+	    'Hipay_Card_Token_Formatter' => WC_HIPAYENTERPRISE_PATH . 'includes/formatter/payment-method/class-hipay-card-token-formatter.php',
+	    'Hipay_Generic_Payment_Method_Formatter' => WC_HIPAYENTERPRISE_PATH . 'includes/formatter/payment-method/class-hipay-generic-payment-method-formatter.php',
+	    'Hipay_Direct_Post_Formatter' => WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-direct-post-formatter.php',
+	    'Hipay_Hosted_Payment_Formatter' => WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-hosted-payment-formatter.php',
+	    'Hipay_Maintenance_Formatter' => WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-maintenance-formatter-abstract.php',
+	    'Hipay_Order_Request_Abstract' => WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-order-request-abstract.php',
+	    'Hipay_Account_Info_Formatter' => WC_HIPAYENTERPRISE_PATH . 'includes/formatter/threeds/class-hipay-account-info-formatter.php',
+	    'Hipay_Browser_Info_Formatter' => WC_HIPAYENTERPRISE_PATH . 'includes/formatter/threeds/class-hipay-browser-info-formatter.php',
+	    'Hipay_Merchant_Risk_Formatter' => WC_HIPAYENTERPRISE_PATH . 'includes/formatter/threeds/class-hipay-merchant-risk-formatter.php',
+	    'Hipay_Previous_Auth_Info_Formatter' => WC_HIPAYENTERPRISE_PATH . 'includes/formatter/threeds/class-hipay-previous-auth-info-formatter.php',
+	    'Hipay_Api_Formatter_Abstact' => WC_HIPAYENTERPRISE_PATH . 'includes/formatter/class-hipay-api-formatter-abstract.php',
+	    'Hipay_Api_Formatter' => WC_HIPAYENTERPRISE_PATH . 'includes/formatter/interface-hipay-api-formatter.php',
+
+	    'Gateway_Hipay' => WC_HIPAYENTERPRISE_PATH . 'includes/gateways/class-gateway-hipay.php',
+	    'Hipay_Gateway_Abstract' => WC_HIPAYENTERPRISE_PATH . 'includes/gateways/class-hipay-gateway-abstract.php',
+	    'Hipay_Gateway_Local_Abstract' => WC_HIPAYENTERPRISE_PATH . 'includes/gateways/class-hipay-gateway-local-abstract.php',
+
+	    'CaptureMode' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/CaptureMode.php',
+	    'CardPaymentProduct' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/CardPaymentProduct.php',
+	    'OperatingMode' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/OperatingMode.php',
+	    'SettingsField' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/SettingsField.php',
+	    'ThreeDS' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/ThreeDS.php',
+	    'Hipay_Payment_Exception' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/exceptions/class-hipay-payment-exception.php',
+	    'Hipay_Settings_Exception' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/exceptions/class-hipay-settings-exception.php',
+
+	    'Hipay_Api' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-api.php',
+	    'Hipay_Api_Request_Handler' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-api-request-handler.php',
+	    'Hipay_Config' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-config.php',
+	    'Hipay_Helper' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-helper.php',
+	    'Hipay_Helper_Mapping' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-helper-mapping.php',
+	    'Hipay_Log' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-log.php',
+	    'Hipay_Notification' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-notification.php',
+	    'Hipay_Operations_Helper' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-operations.php',
+	    'Hipay_Order_Handler' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-order-handler.php',
+	    'Hipay_Order_Helper' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-order-helper.php',
+	    'WC_Payment_Token_CC_HiPay' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-payment-token-cc-hipay.php',
+	    'Hipay_Settings_Handler' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-settings-handler.php',
+	    'Hipay_Threeds_Helper' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-threeds-helper.php',
+	    'Hipay_Token_Helper' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-token-helper.php',
+	    'Hipay_Transactions_Helper' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-transactions.php',
+	    'Hipay_Upgrade_Helper' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-upgrade-helper.php'
     );
 
-    /**
+	public static $localMethodClasses;
+
+
+	/**
      * Load all needed classes
      */
-    public static function loader()
+    public static function loader($class)
     {
-        foreach (Hipay_Autoloader::$classArray as $class) {
-            require_once($class);
-        }
+		if(!empty(Hipay_Autoloader::$staticClasses[$class])) {
+			require_once( Hipay_Autoloader::$staticClasses[ $class ] );
+		} else if(!empty(Hipay_Autoloader::$localMethodClasses[$class])) {
+			require_once( Hipay_Autoloader::$localMethodClasses[ $class ] );
+		}
 
-        foreach (Hipay_Autoloader::getLocalMethodsFiles() as $file) {
-            require_once($file);
-        }
     }
 
     /**
@@ -105,13 +111,9 @@ class Hipay_Autoloader
      */
     public static function getLocalMethodsNames()
     {
-        $methods = array();
-
-        foreach (Hipay_Autoloader::getLocalMethodsFiles() as $file) {
-            $methods[] = Hipay_Autoloader::getClassNameFromFile($file);
-        }
-
-        return $methods;
+		$methodNames = array_keys(Hipay_Autoloader::$localMethodClasses);
+		sort($methodNames);
+        return $methodNames;
     }
 
     /**
@@ -119,7 +121,7 @@ class Hipay_Autoloader
      *
      * @return array
      */
-    private static function getLocalMethodsFiles()
+    public static function getLocalMethodsClasses()
     {
         $filePaths = array();
 
@@ -128,11 +130,12 @@ class Hipay_Autoloader
         foreach ($iterator as $file) {
             $fileName = $file->getFilename();
             if (preg_match('%^class-[a-z|1-9|-]*\.php%', $fileName)) {
-                $filePaths[] = $file->getPathname();
+                $filePath = $file->getPathname();
+				$className = Hipay_Autoloader::getClassNameFromFile($filePath);
+                $filePaths[$className] = $filePath;
             }
         }
 
-        sort($filePaths);
         return $filePaths;
     }
 
@@ -169,6 +172,11 @@ class Hipay_Autoloader
 
         return $class;
     }
+}
+
+require_once(WC_HIPAYENTERPRISE_PATH . 'vendor/autoload.php');
+if(empty(Hipay_Autoloader::$localMethodClasses)){
+	Hipay_Autoloader::$localMethodClasses = Hipay_Autoloader::getLocalMethodsClasses();
 }
 
 // autoload loader
