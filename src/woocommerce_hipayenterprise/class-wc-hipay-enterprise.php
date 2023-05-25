@@ -64,7 +64,28 @@ class WC_HipayEnterprise
         add_filter('woocommerce_payment_gateways', array($this, 'addGateway'));
         add_action('woocommerce_order_status_changed', array($this, 'handleStatusChange'), 10, 4);
 
-        // Init Plugin Update handling
+	    add_filter(
+		    'woocommerce_payment_methods_list_item',
+		    array('WC_Payment_Token_CC_HiPay', 'wc_get_account_saved_payment_methods_list_item_cc_hipay'),
+		    10,
+		    2
+	    );
+
+	    add_filter(
+		    'woocommerce_payment_gateway_get_saved_payment_method_option_html',
+		    array('WC_Payment_Token_CC_HiPay', 'wc_get_get_saved_payment_method_option_html_hipay'),
+		    10,
+		    2
+	    );
+
+	    add_filter(
+		    'wc_payment_gateway_form_saved_payment_methods_html',
+		    array('WC_Payment_Token_CC_HiPay', 'wc_get_form_saved_payment_methods_html_hipay'),
+		    10,
+		    2
+	    );
+
+	    // Init Plugin Update handling
         new Hipay_Admin_Plugin_Update_Handler($currentPluginVersion, WC_HIPAYENTERPRISE_PLUGIN_NAME);
     }
 
