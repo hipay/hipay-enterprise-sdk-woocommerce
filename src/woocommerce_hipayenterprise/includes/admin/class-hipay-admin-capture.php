@@ -20,7 +20,7 @@ defined('ABSPATH') || exit;
  * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
  */
-class Hipay_Admin_Capture
+class Hipay_Admin_Capture extends Hipay_Admin_Page
 {
 
     private static $instance;
@@ -30,6 +30,8 @@ class Hipay_Admin_Capture
      */
     public function __construct()
     {
+	    parent::__construct();
+
         add_action('woocommerce_order_item_add_action_buttons', array($this, 'add_action_buttons'));
         add_action('woocommerce_admin_order_totals_after_total', array($this, 'totals_after_total'));
         add_action('wp_ajax_woocommerce_capture_line_items', array($this, 'capture_line_items'));
