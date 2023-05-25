@@ -35,6 +35,7 @@ class Hipay_Autoloader
 	    'Hipay_Admin_Capture' => WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-admin-capture.php',
 	    'Hipay_Admin_Menus' => WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-admin-menus.php',
 //	    'Hipay_Admin_Meta_Boxes' => WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-admin-meta-boxes.php',
+	    'Hipay_Admin_Page' => WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-admin-page-abstract.php',
 	    'Hipay_Admin_Plugin_Update_Handler' => WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-admin-plugin-update.php',
 	    'Hipay_Admin_Post_Types' => WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-admin-post-types.php',
         'Hipay_Mapping_Abstract' => WC_HIPAYENTERPRISE_PATH . 'includes/admin/class-hipay-mapping-abstract.php',

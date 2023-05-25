@@ -128,5 +128,3 @@ class Wc_Hipay_Admin_Assets
         }
     }
 }
-
-Wc_Hipay_Admin_Assets::get_instance();

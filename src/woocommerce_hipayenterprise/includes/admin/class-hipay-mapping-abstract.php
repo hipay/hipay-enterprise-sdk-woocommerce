@@ -9,7 +9,7 @@ defined('ABSPATH') || exit;
  * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
  */
-class Hipay_Mapping_Abstract
+class Hipay_Mapping_Abstract extends Hipay_Admin_Page
 {
 
 
@@ -48,9 +48,11 @@ class Hipay_Mapping_Abstract
      */
     public function __construct()
     {
-        $this->confHelper = new Hipay_Config();
+	    parent::__construct();
+
+	    $this->confHelper = new Hipay_Config();
         $this->logs = new Hipay_Log($this);
-    }
+	}
 
     /**
      * @return array
