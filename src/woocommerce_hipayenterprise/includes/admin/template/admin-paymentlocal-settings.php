@@ -11,7 +11,7 @@
             ?>
             <input class="form-control" type="text"
                 name="woocommerce_hipayenterprise_methods_displayName_<?php echo $method; ?>[<?php echo substr(get_locale(), 0, 2); ?>]"
-                id="woocommerce_hipayenterprise_methods_displayName<?php echo $method; ?>" style=""
+                id="woocommerce_hipayenterprise_methods_displayName<?php echo $method; ?>"
                 value="<?php echo $displayName; ?>"
                 placeholder="">
         </div>
@@ -21,8 +21,13 @@
         <div class="col-lg-8">
             <input class="form-control" type="text"
                 name="woocommerce_hipayenterprise_methods_minAmount_<?php echo $method; ?>[EUR]"
-                id="woocommerce_hipayenterprise_methods_<?php echo $method; ?>_minAmount" style=""
-                value="<?php echo $configurationPaymentMethod["minAmount"]["EUR"]; ?>" placeholder="">
+                id="woocommerce_hipayenterprise_methods_<?php echo $method; ?>_minAmount"
+                value="<?php echo $configurationPaymentMethod["minAmount"]["EUR"]; ?>" placeholder=""
+                <?php echo $configurationPaymentMethod["minAmount"]["fixed"] ? "readonly" : ""; ?>
+            >
+            <input type="hidden" name="woocommerce_hipayenterprise_methods_minAmount_<?php echo $method; ?>[fixed]"
+                value="<?php echo $configurationPaymentMethod["minAmount"]["fixed"]; ?>"
+            />
         </div>
     </div>
     <div class="form-group">
@@ -30,8 +35,13 @@
         <div class="col-lg-8">
             <input class="form-control" type="text"
                 name="woocommerce_hipayenterprise_methods_maxAmount_<?php echo $method; ?>[EUR]"
-                id="woocommerce_hipayenterprise_methods_<?php echo $method; ?>_maxAmount" style=""
-                value="<?php echo $configurationPaymentMethod["maxAmount"]["EUR"]; ?>" placeholder="">
+                id="woocommerce_hipayenterprise_methods_<?php echo $method; ?>_maxAmount"
+                value="<?php echo $configurationPaymentMethod["maxAmount"]["EUR"]; ?>" placeholder=""
+                <?php echo $configurationPaymentMethod["maxAmount"]["fixed"] ? "readonly" : ""; ?>
+            >
+            <input type="hidden" name="woocommerce_hipayenterprise_methods_maxAmount_<?php echo $method; ?>[fixed]"
+                value="<?php echo $configurationPaymentMethod["maxAmount"]["fixed"]; ?>"
+            />
         </div>
     </div>
     <?php if (isset($configurationPaymentMethod["orderExpirationTime"])) : ?>
@@ -52,7 +62,7 @@
         <label class="control-label col-lg-2"><?php _e('Merchant Promotion', "hipayenterprise"); ?></label>
         <div class="col-lg-8">
             <input name="woocommerce_hipayenterprise_methods_merchantPromotion_<?php echo $method; ?>"
-                id="woocommerce_hipayenterprise_methods_merchantPromotion_<?php echo $method; ?>" style=""
+                id="woocommerce_hipayenterprise_methods_merchantPromotion_<?php echo $method; ?>"
                 value="<?php echo $configurationPaymentMethod["merchantPromotion"]; ?>" placeholder="">
         </div>
     </div>

@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Unreleased
+
+- **Add**: Added support for new payment means:
+  - Alma 3x
+  - Alma 4x
+
 ## Version 2.1.1
 
 - **Fix**: Optimized autoloader
