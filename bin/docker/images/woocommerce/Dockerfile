@@ -15,6 +15,8 @@ RUN apt-get update \
     && curl -sS https://getcomposer.org/installer | php -- --filename=composer -- --install-dir=/usr/local/bin \
     &&  rm -rf /var/lib/apt/lists/*
 
+RUN pecl install xdebug
+
 ##########################################
 ####            ENTRYPOINT      ##########
 ##########################################

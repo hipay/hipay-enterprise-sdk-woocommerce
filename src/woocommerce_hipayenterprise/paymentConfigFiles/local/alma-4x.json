@@ -1,0 +1,33 @@
+{
+  "name": "alma-4x",
+  "config": {
+    "group": {
+      "code": "alma",
+      "label": "Alma"
+    },
+    "displayNameBO": "Alma 4x",
+    "displayName": {
+      "fr": "Alma 4x",
+      "en": "Alma 4x"
+    },
+    "frontPosition": 7,
+    "activated": 0,
+    "displayConfigurationFields": [
+      "displayName",
+      "minAmount",
+      "maxAmount",
+      "countries"
+    ],
+    "countrySelectorReadOnly": 1,
+    "currencySelectorReadOnly": 1,
+    "minAmount": {
+      "fixed": true,
+      "EUR": 50
+    },
+    "maxAmount": {
+      "fixed": true,
+      "EUR": 2000
+    },
+    "logo": "alma-4x.svg"
+  }
+}

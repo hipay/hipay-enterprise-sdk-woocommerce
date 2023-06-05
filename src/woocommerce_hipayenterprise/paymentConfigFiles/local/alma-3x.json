@@ -1,0 +1,33 @@
+{
+  "name": "alma-3x",
+  "config": {
+    "group": {
+      "code": "alma",
+      "label": "Alma"
+    },
+    "displayNameBO": "Alma 3x",
+    "displayName": {
+      "fr": "Alma 3x",
+      "en": "Alma 3x"
+    },
+    "frontPosition": 6,
+    "activated": 0,
+    "displayConfigurationFields": [
+      "displayName",
+      "minAmount",
+      "maxAmount",
+      "countries"
+    ],
+    "countrySelectorReadOnly": 1,
+    "currencySelectorReadOnly": 1,
+    "minAmount": {
+      "fixed": true,
+      "EUR": 50
+    },
+    "maxAmount": {
+      "fixed": true,
+      "EUR": 2000
+    },
+    "logo": "alma-3x.svg"
+  }
+}
