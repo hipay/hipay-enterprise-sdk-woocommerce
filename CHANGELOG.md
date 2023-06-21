@@ -5,6 +5,13 @@
 - **Add**: Added support for new payment means:
   - Alma 3x
   - Alma 4x
+- **Add**: Removed support for some unused payment means:
+  - Astropay payment methods
+  - Belfius Direct Net
+  - ING Home'Pay
+  - Klarna
+  - Yandex Money
+  - WebMoney Transfer
 
 ## Version 2.1.1
 

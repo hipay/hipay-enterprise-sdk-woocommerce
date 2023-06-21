@@ -31,8 +31,7 @@ class WC_HipayEnterprise
 
     public function __construct()
     {
-        if (
-            in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins')))
+        if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins')))
             || in_array('woocommerce/woocommerce.php', array_keys(get_site_option('active_sitewide_plugins')))
         ) {
             add_action('plugins_loaded', array($this, 'initPlugin'), 0);
@@ -49,7 +48,7 @@ class WC_HipayEnterprise
 
         if (!empty($currentPluginVersion) && WC_HIPAYENTERPRISE_VERSION !== $currentPluginVersion) {
             $this->updatePlugin($currentPluginVersion);
-        } else if (empty($currentPluginVersion)) {
+        } elseif (empty($currentPluginVersion)) {
             $this->installPlugin();
         }
 
@@ -64,28 +63,28 @@ class WC_HipayEnterprise
         add_filter('woocommerce_payment_gateways', array($this, 'addGateway'));
         add_action('woocommerce_order_status_changed', array($this, 'handleStatusChange'), 10, 4);
 
-	    add_filter(
-		    'woocommerce_payment_methods_list_item',
-		    array('WC_Payment_Token_CC_HiPay', 'wc_get_account_saved_payment_methods_list_item_cc_hipay'),
-		    10,
-		    2
-	    );
+        add_filter(
+            'woocommerce_payment_methods_list_item',
+            array('WC_Payment_Token_CC_HiPay', 'wc_get_account_saved_payment_methods_list_item_cc_hipay'),
+            10,
+            2
+        );
 
-	    add_filter(
-		    'woocommerce_payment_gateway_get_saved_payment_method_option_html',
-		    array('WC_Payment_Token_CC_HiPay', 'wc_get_get_saved_payment_method_option_html_hipay'),
-		    10,
-		    2
-	    );
+        add_filter(
+            'woocommerce_payment_gateway_get_saved_payment_method_option_html',
+            array('WC_Payment_Token_CC_HiPay', 'wc_get_get_saved_payment_method_option_html_hipay'),
+            10,
+            2
+        );
 
-	    add_filter(
-		    'wc_payment_gateway_form_saved_payment_methods_html',
-		    array('WC_Payment_Token_CC_HiPay', 'wc_get_form_saved_payment_methods_html_hipay'),
-		    10,
-		    2
-	    );
+        add_filter(
+            'wc_payment_gateway_form_saved_payment_methods_html',
+            array('WC_Payment_Token_CC_HiPay', 'wc_get_form_saved_payment_methods_html_hipay'),
+            10,
+            2
+        );
 
-	    // Init Plugin Update handling
+        // Init Plugin Update handling
         new Hipay_Admin_Plugin_Update_Handler($currentPluginVersion, WC_HIPAYENTERPRISE_PLUGIN_NAME);
     }
 
@@ -121,14 +120,6 @@ class WC_HipayEnterprise
         $config = new Hipay_Config();
 
         $localMethod = Hipay_Autoloader::getLocalMethodsNames();
-        if (!$config->getPaymentGlobal()["enableAstropay"]) {
-            $localMethod = array_filter(
-                $localMethod,
-                function ($value) {
-                    return !strpos($value, 'Astropay');
-                }
-            );
-        }
         $methods[] = 'Gateway_Hipay';
         return array_merge($methods, $localMethod);
     }
