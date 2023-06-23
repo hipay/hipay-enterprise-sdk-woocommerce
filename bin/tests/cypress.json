@@ -8,21 +8,6 @@
   "video": false,
   "env": {
     "completeProviderPayment": true,
-    "skipProviderPage": [
-      "belfius",
-      "banamex",
-      "aura",
-      "banco-do-brasil",
-      "bbva-bancomer",
-      "boleto-bancario",
-      "bradesco",
-      "caixa",
-      "itau",
-      "oxxo",
-      "santander-cash",
-      "santander-home-banking",
-      "oney",
-      "mybank"
-    ]
+    "skipProviderPage": ["mybank"]
   }
 }

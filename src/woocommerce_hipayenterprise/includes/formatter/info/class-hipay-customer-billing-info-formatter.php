@@ -87,13 +87,6 @@ class Hipay_Customer_Billing_Info_Formatter implements Hipay_Api_Formatter
         $customerBillingInfo->phone = $this->order->get_billing_phone();
         $customerBillingInfo->gender = 'U';
 
-
-        if ($this->payment_product == 'klarnainvoice') {
-            $customerBillingInfo->gender = 'F';
-            $customerBillingInfo->house_number = 1;
-            $customerBillingInfo->birthdate = '19700101';
-        }
-
         // Check phone by country according to payment method
         $phoneExceptionMessage = 'The format of the phone number must match %s phone.';
         switch ($this->payment_product) {
