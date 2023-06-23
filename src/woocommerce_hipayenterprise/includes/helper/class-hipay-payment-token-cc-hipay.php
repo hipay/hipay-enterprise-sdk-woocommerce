@@ -189,7 +189,7 @@ class WC_Payment_Token_CC_HiPay extends WC_Payment_Token
     }
 
 
-    public function wc_get_get_saved_payment_method_option_html_hipay($html, $token)
+    public static function wc_get_get_saved_payment_method_option_html_hipay($html, $token)
     {
 
         $cvvUpdateForm = "";
