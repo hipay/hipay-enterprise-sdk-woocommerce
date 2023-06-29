@@ -53,6 +53,10 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
             $this->supports[] = "captures";
         }
 
+        if ($methodConf["canManualCapturePartially"]) {
+            $this->supports[] = "partialCaptures";
+        }
+
         if ($methodConf["canRefund"]) {
             $this->supports[] = "refunds";
         }

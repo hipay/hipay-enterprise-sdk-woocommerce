@@ -411,7 +411,6 @@ class Hipay_Admin_Capture extends Hipay_Admin_Page
         ) {
             $payment_gateway = $payment_gateways[$order->get_payment_method()];
 
-
             if (!in_array($order->get_status(), array('completed', 'canceled'), true)
                 && 0 < $order->get_total() - Hipay_Order_Helper::get_total_captured($order)) {
                 Hipay_Helper::process_template(

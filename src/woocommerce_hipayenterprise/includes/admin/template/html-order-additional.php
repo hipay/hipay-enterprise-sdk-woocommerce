@@ -15,7 +15,8 @@ if (!defined('ABSPATH')) {
     exit;
 }
 ?>
-<button type="button" class="button capture-items"><?php esc_html_e('Capture', 'hipayenterprise'); ?></button>
+<button type="button" class="button capture-items <?php if(!$payment_gateway->supports('partialCaptures')) { ?> capture-complete-only <?php } ?>"><?php esc_html_e('Capture', 'hipayenterprise'); ?></button>
+
 
 <!-- MOVED INTO ITEMS AFTER DOM READY       -->
 <div id="order_captures">

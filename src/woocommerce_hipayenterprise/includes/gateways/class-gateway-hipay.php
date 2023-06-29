@@ -44,7 +44,8 @@ if (!class_exists('WC_Gateway_Hipay')) {
             $this->supports = array(
                 'products',
                 'refunds',
-                'captures'
+                'captures',
+	            'partialCaptures'
             );
 
             $this->has_fields = true;
