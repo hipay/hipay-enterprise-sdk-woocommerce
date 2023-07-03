@@ -667,10 +667,6 @@ msgstr ""
 msgid "Local payment"
 msgstr ""
 
-#: includes/admin/template/admin-link-paymentlocal-settings.php:11
-msgid "Activate Astropay methods"
-msgstr ""
-
 #: includes/admin/template/admin-link-paymentlocal-settings.php:21
 msgid "Here are the different methods of local payments proposed by Hipay. To configure them click on:"
 msgstr ""
@@ -895,177 +891,6 @@ msgstr ""
 msgid "We have received your order payment. We will process the order as soon as we get the payment confirmation."
 msgstr ""
 
-#: includes/gateways/local/class-hipay-astropay-aura.php:32
-#: includes/gateways/local/class-hipay-aura.php:32
-msgid "HiPay Enterprise Aura"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-aura.php:33
-#: includes/gateways/local/class-hipay-aura.php:33
-#: includes/gateways/local/class-hipay-aura.php:34
-msgid "Aura"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-aura.php:34
-msgid "Aura  - Astropay"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-banamex.php:32
-#: includes/gateways/local/class-hipay-banamex.php:32
-msgid "HiPay Enterprise Banamex"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-banamex.php:33
-#: includes/gateways/local/class-hipay-banamex.php:33
-#: includes/gateways/local/class-hipay-banamex.php:34
-msgid "Banamex"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-banamex.php:34
-msgid "Banamex - Astropay"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-banco-do-brasil.php:32
-#: includes/gateways/local/class-hipay-banco-do-brasil.php:32
-msgid "HiPay Enterprise Banco do brazil"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-banco-do-brasil.php:33
-#: includes/gateways/local/class-hipay-banco-do-brasil.php:33
-#: includes/gateways/local/class-hipay-banco-do-brasil.php:34
-msgid "Banco do brazil"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-banco-do-brasil.php:34
-msgid "Banco do brazil - Astropay"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-bbva-bancomer.php:32
-#: includes/gateways/local/class-hipay-bbva-bancomer.php:32
-msgid "HiPay Enterprise BBVA Bancomer"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-bbva-bancomer.php:33
-#: includes/gateways/local/class-hipay-bbva-bancomer.php:33
-#: includes/gateways/local/class-hipay-bbva-bancomer.php:34
-msgid "BBVA Bancomer"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-bbva-bancomer.php:34
-msgid "BBVA Bancomer - Astropay"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-boleto-bancario.php:32
-#: includes/gateways/local/class-hipay-boleto-bancario.php:32
-msgid "HiPay Enterprise Boleto bancario"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-boleto-bancario.php:33
-#: includes/gateways/local/class-hipay-astropay-boleto-bancario.php:34
-#: includes/gateways/local/class-hipay-boleto-bancario.php:33
-#: includes/gateways/local/class-hipay-boleto-bancario.php:34
-msgid "Boleto bancario"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-bradesco.php:32
-#: includes/gateways/local/class-hipay-bradesco.php:32
-msgid "HiPay Enterprise Bradesco"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-bradesco.php:33
-#: includes/gateways/local/class-hipay-bradesco.php:33
-#: includes/gateways/local/class-hipay-bradesco.php:34
-msgid "Bradesco"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-bradesco.php:34
-msgid "Bradesco - Astropay"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-caixa.php:32
-#: includes/gateways/local/class-hipay-caixa.php:32
-msgid "HiPay Enterprise Caïxa"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-caixa.php:33
-#: includes/gateways/local/class-hipay-caixa.php:33
-#: includes/gateways/local/class-hipay-caixa.php:34
-msgid "Caïxa"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-caixa.php:34
-msgid "Caïxa - Astropay"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-itau.php:32
-#: includes/gateways/local/class-hipay-itau.php:32
-msgid "HiPay Enterprise Itau"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-itau.php:33
-#: includes/gateways/local/class-hipay-itau.php:33
-#: includes/gateways/local/class-hipay-itau.php:34
-msgid "Itau"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-itau.php:34
-msgid "Itau - Astropay"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-oxxo.php:32
-#: includes/gateways/local/class-hipay-oxxo.php:32
-msgid "HiPay Enterprise Oxxo"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-oxxo.php:33
-#: includes/gateways/local/class-hipay-oxxo.php:33
-#: includes/gateways/local/class-hipay-oxxo.php:34
-msgid "Oxxo"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-oxxo.php:34
-msgid "Oxxo - Astropay"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-santander-cash.php:32
-#: includes/gateways/local/class-hipay-santander-cash.php:32
-msgid "HiPay Enterprise Santander Cash"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-santander-cash.php:33
-#: includes/gateways/local/class-hipay-santander-cash.php:33
-#: includes/gateways/local/class-hipay-santander-cash.php:34
-msgid "Santander Cash"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-santander-cash.php:34
-msgid "Santander Cash - Astropay"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-santander-home-banking.php:32
-#: includes/gateways/local/class-hipay-santander-home-banking.php:32
-msgid "HiPay Enterprise Santander HomeBanking"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-santander-home-banking.php:33
-#: includes/gateways/local/class-hipay-santander-home-banking.php:33
-#: includes/gateways/local/class-hipay-santander-home-banking.php:34
-msgid "Santander HomeBanking"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-astropay-santander-home-banking.php:34
-msgid "Santander HomeBanking - Astropay"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-belfius.php:32
-msgid "HiPay Enterprise Belfius"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-belfius.php:33
-#: includes/gateways/local/class-hipay-belfius.php:34
-msgid "Belfius"
-msgstr ""
-
 #: includes/gateways/local/class-hipay-bnpp3x.php:35
 msgid "HiPay Enterprise Bnppf-3xcb"
 msgstr ""
@@ -1099,24 +924,6 @@ msgstr ""
 #: includes/gateways/local/class-hipay-ideal.php:33
 #: includes/gateways/local/class-hipay-ideal.php:34
 msgid "IDEAL"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-ing-homepay.php:32
-msgid "HiPay Enterprise ING Home' pay"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-ing-homepay.php:33
-#: includes/gateways/local/class-hipay-ing-homepay.php:34
-msgid "ING Home' pay"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-klarna.php:32
-msgid "HiPay Enterprise Klarna"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-klarna.php:33
-#: includes/gateways/local/class-hipay-klarna.php:34
-msgid "Klarna"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-mbway.php:32
@@ -1259,24 +1066,6 @@ msgstr ""
 #: includes/gateways/local/class-hipay-sofort-uberweisung.php:33
 #: includes/gateways/local/class-hipay-sofort-uberweisung.php:34
 msgid "Sofort Überweisung"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-webmoney-transfer.php:32
-msgid "HiPay Enterprise WebMoney Transfer"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-webmoney-transfer.php:33
-#: includes/gateways/local/class-hipay-webmoney-transfer.php:34
-msgid "WebMoney Transfer"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-yandex.php:32
-msgid "HiPay Enterprise Yandex Money"
-msgstr ""
-
-#: includes/gateways/local/class-hipay-yandex.php:33
-#: includes/gateways/local/class-hipay-yandex.php:34
-msgid "Yandex Money"
 msgstr ""
 
 #: includes/helper/class-hipay-api-request-handler.php:119

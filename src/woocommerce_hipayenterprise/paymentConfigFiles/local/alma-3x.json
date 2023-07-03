@@ -1,16 +1,16 @@
 {
-  "name": "banco-do-brasil",
+  "name": "alma-3x",
   "config": {
     "group": {
-      "code": "astropay",
-      "label": "Astropay"
+      "code": "alma",
+      "label": "Alma"
     },
-    "displayNameBO": "Banco do brazil",
+    "displayNameBO": "Alma 3x",
     "displayName": {
-      "fr": "Banco do brazil",
-      "en": "Banco do brazil"
+      "fr": "Alma 3x",
+      "en": "Alma 3x"
     },
-    "frontPosition": 8,
+    "frontPosition": 6,
     "activated": 0,
     "displayConfigurationFields": [
       "displayName",
@@ -20,13 +20,14 @@
     ],
     "countrySelectorReadOnly": 1,
     "currencySelectorReadOnly": 1,
-    "forceBasket": 0,
     "minAmount": {
-      "EUR": 0
+      "fixed": true,
+      "EUR": 50
     },
     "maxAmount": {
-      "EUR": false
+      "fixed": true,
+      "EUR": 2000
     },
-    "logo": "banco-do-brasil.png"
+    "logo": "alma-3x.svg"
   }
 }

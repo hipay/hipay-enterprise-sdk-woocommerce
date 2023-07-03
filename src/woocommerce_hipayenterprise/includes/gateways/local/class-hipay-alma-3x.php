@@ -22,16 +22,16 @@ if (!defined('ABSPATH')) {
  * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
  */
-class Hipay_Astropay_Banco_Do_Brasil extends Hipay_Gateway_Local_Abstract
+class Hipay_Alma_3x extends Hipay_Gateway_Local_Abstract
 {
 
     public function __construct()
     {
-        $this->id = 'hipayenterprise_banco_do_brasil';
-        $this->paymentProduct = 'banco-do-brasil';
-        $this->method_title = __('HiPay Enterprise Banco do brazil', "hipayenterprise");
-        $this->title = __('Banco do brazil', "hipayenterprise");
-        $this->method_description = __('Banco do brazil - Astropay', "hipayenterprise");
+        $this->id = 'hipayenterprise_alma_3x';
+        $this->paymentProduct = 'alma-3x';
+        $this->method_title = __('HiPay Enterprise Alma 3x', "hipayenterprise");
+        $this->title = __('Alma 3x', "hipayenterprise");
+        $this->method_description = __('Alma 3x', "hipayenterprise");
 
         parent::__construct();
     }

@@ -7,16 +7,6 @@
     </div>
     <div class="panel-body">
         <div class="col-md-12">
-            <div class="form-group">
-                <label class="control-label col-lg-2"><?php _e('Activate Astropay methods', "hipayenterprise"); ?></label>
-                <div class="col-lg-8">
-                    <input class="form-control" type="checkbox" name="enableAstropay"
-                           id="enableAstropay" style=""
-                           value="1" <?php if ($paymentCommon["enableAstropay"]) {
-                        echo 'checked="checked"';
-                    } ?>>
-                </div>
-            </div>
             <div class="col-md-12">
                 <?php _e(
                     'Here are the different methods of local payments proposed by Hipay. To configure them click on:',
@@ -25,10 +15,10 @@
             </div>
             <div class="col-md-12">
                 <ul class="hipay-local-payment-list">
-                    <?php foreach ($availableHipayGateways as $gateway => $title): ?>
+                    <?php foreach ($availableHipayGateways as $gateway => $title) : ?>
                         <li><a title="Open configuration 2" target="_blank" href="<?php echo admin_url(
-                                'admin.php?page=wc-settings&tab=checkout&section=' . $gateway
-                            ) ?>">
+                            'admin.php?page=wc-settings&tab=checkout&section=' . $gateway
+                        ) ?>">
                                 <?php echo $title ?></a></li>
                     <?php endforeach; ?>
                 </ul>
@@ -36,6 +26,3 @@
         </div>
     </div>
 </div>
-
-
-

@@ -85,7 +85,7 @@ class Hipay_Config
         $configFields["payment"]["local_payment"] = $this->insertPaymentsConfig("local/");
 
         update_option(self::OPTION_KEY, $configFields);
-        update_option( 'hipay_enterprise_version', WC_HIPAYENTERPRISE_VERSION );
+        update_option('hipay_enterprise_version', WC_HIPAYENTERPRISE_VERSION);
     }
 
     /**
@@ -169,7 +169,6 @@ class Hipay_Config
                     SettingsField::PAYMENT_GLOBAL_LOGS_INFOS => 1,
                     "send_url_notification" => 1,
                     "ccDisplayName" => array("fr" => "Carte de crédit", "en" => "Credit card"),
-                    "enableAstropay" => 0,
                     "skip_onhold" => 0
                 ),
                 "credit_card" => array(),
@@ -241,7 +240,8 @@ class Hipay_Config
     /**
      * @return mixed
      */
-    public function getHostedFieldsStyle() {
+    public function getHostedFieldsStyle()
+    {
         return $this->getPaymentGlobal()["hosted_fields_style"]["base"];
     }
 
@@ -342,7 +342,7 @@ class Hipay_Config
 
             $sdkConfig = \HiPay\Fullservice\Data\PaymentProduct\Collection::getItem($json["name"]);
 
-            if($sdkConfig !== null) {
+            if ($sdkConfig !== null) {
                 // Array merge gives priority to the last array over the first when keys are in both tables
                 $creditCard[$json["name"]] = array_merge($sdkConfig->toArray(), $json["config"]);
             }
@@ -371,6 +371,5 @@ class Hipay_Config
                 $notifications[] = __('You need to map your carriers.', "hipayenterprise");
             }
         }
-
     }
 }

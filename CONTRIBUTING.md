@@ -4,8 +4,6 @@
 
 Contributions to the HiPay Enterprise module for Woocommerce should be made via GitHub [pull requests][pull-requests] and discussed using GitHub [issues][issues].
 
-This repository is a mirror of a private repository for this plugin, so we are not able to merge your PRs directly in GitHub. Any open PRs will be added to the main repository and closed in GitHub. Any contributor will be credited in the plugin's changelog.
-
 ## Before you start
 
 If you would like to make a significant change, please open an issue to discuss it, in order to minimize duplication of effort.
@@ -45,7 +43,7 @@ You can now test the HiPay Enterprise module in a browser with this following UR
 
 To connect to the back office, go to this URL: <http://localhost:8000/wp-admin>
 
-The login and password are demo@hipay.com / hipay123.
+The login and password are <demo@hipay.com> / hipay123.
 You can test the module with your account configuration.
 
 ### Making the request

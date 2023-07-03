@@ -95,6 +95,12 @@ jQuery(function ($) {
             $('div.wc-order-totals-items').slideUp();
             $('#woocommerce-order-items').find('div.refund').show();
             $('.wc-order-edit-line-item .wc-order-edit-line-item-actions').hide();
+
+            if($(this).hasClass('capture-complete-only')) {
+                $('#woocommerce-order-items').find('div.refund input').prop('readonly', 'readonly');
+                $('#capture_amount').prop('readonly', 'readonly');
+            }
+
             return false;
         },
 

@@ -22,16 +22,16 @@ if (!defined('ABSPATH')) {
  * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
  */
-class Hipay_Banamex extends Hipay_Gateway_Local_Abstract
+class Hipay_Alma_4x extends Hipay_Gateway_Local_Abstract
 {
 
     public function __construct()
     {
-        $this->id = 'hipayenterprise_banamex';
-        $this->paymentProduct = 'banamex';
-        $this->method_title = __('HiPay Enterprise Banamex', "hipayenterprise");
-        $this->title = __('Banamex', "hipayenterprise");
-        $this->method_description = __('Banamex', "hipayenterprise");
+        $this->id = 'hipayenterprise_alma_4x';
+        $this->paymentProduct = 'alma-4x';
+        $this->method_title = __('HiPay Enterprise Alma 4x', "hipayenterprise");
+        $this->title = __('Alma 4x', "hipayenterprise");
+        $this->method_description = __('Alma 4x', "hipayenterprise");
 
         parent::__construct();
     }

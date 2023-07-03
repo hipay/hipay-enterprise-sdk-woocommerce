@@ -114,13 +114,9 @@ if [ ! -f /var/www/html/wp-content/plugins/woocommerce/woocommerce.php ]; then
     # Install XDebug
     #==========================================
     if [ "$XDEBUG_ENABLED" = "1" ]; then
-        if ! pecl list | grep xdebug >/dev/null 2>&1; then
-            printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
-            printf "\n${COLOR_SUCCESS}            INSTALLATION XDEBUG          ${NC}\n"
-            printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
-
-            echo '' | pecl install xdebug
-        fi
+        printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+        printf "\n${COLOR_SUCCESS}     ENABLE XDEBUG $ENVIRONMENT          ${NC}\n"
+        printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
 
         xdebugFile=/usr/local/etc/php/conf.d/xdebug.ini
         echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" >$xdebugFile
