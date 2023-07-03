@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## Unreleased
+## 2.2.0
 
 - **Add**: Added support for new payment means:
   - Alma 3x
