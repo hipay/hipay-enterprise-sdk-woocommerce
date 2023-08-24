@@ -149,6 +149,7 @@ class Hipay_Config
                     "iframe_hosted_page_template" => "basic-js",
                     "display_card_selector" => 0,
                     "display_hosted_page" => "redirect",
+                    "display_cancel_button" => 0,
                     "hosted_fields_style" => array(
                         "base" => array(
                             "color" => "#000000",

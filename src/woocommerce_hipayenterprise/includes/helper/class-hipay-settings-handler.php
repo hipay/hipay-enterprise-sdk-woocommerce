@@ -176,6 +176,7 @@ class Hipay_Settings_Handler
                 'activate_basket' => sanitize_title(Hipay_Helper::getPostData('activate_basket')),
                 'css_url' => esc_url_raw(Hipay_Helper::getPostData('css_url')),
                 'display_hosted_page' => sanitize_title(Hipay_Helper::getPostData('display_hosted_page')),
+                'display_cancel_button' => sanitize_title(Hipay_Helper::getPostData('display_cancel_button')),
                 'display_card_selector' => sanitize_title(Hipay_Helper::getPostData('display_card_selector')),
                 'send_url_notification' => sanitize_title(Hipay_Helper::getPostData('send_url_notification')),
                 'skip_onhold' => sanitize_title(Hipay_Helper::getPostData('skip_onhold')),

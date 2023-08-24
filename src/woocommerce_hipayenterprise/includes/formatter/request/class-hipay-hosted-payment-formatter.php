@@ -77,5 +77,6 @@ class Hipay_Hosted_Payment_Formatter extends Hipay_Order_Request_Abstract
         $orderRequest->payment_product_list = $this->productList;
         $orderRequest->payment_product_category_list = '';
         $orderRequest->multi_use = isset($this->params["createOneClick"]) && $this->params["createOneClick"];
+        $orderRequest->display_cancel_button = $this->plugin->confHelper->getPaymentGlobal()["display_cancel_button"];
     }
 }

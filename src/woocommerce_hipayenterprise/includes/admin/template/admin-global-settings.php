@@ -302,5 +302,21 @@
             </select>
         </div>
     </div>
+    <div class="form-group">
+            <label class="control-label col-lg-2"><?php _e('Display cancel button', "hipayenterprise"); ?></label>
+            <div class="col-lg-8">
+                <select class="select form-control" name="display_cancel_button"
+                        id="display_cancel_button" style="">
+                    <option
+                            value="1" <?php if ($paymentCommon["display_cancel_button"] == "1") {
+                        echo " SELECTED";
+                    } ?>><?php _e('Yes', "hipayenterprise"); ?></option>
+                    <option
+                            value="0" <?php if ($paymentCommon["display_cancel_button"] == "0") {
+                        echo " SELECTED";
+                    } ?>><?php _e('No', "hipayenterprise"); ?></option>
+                </select>
+            </div>
+        </div>
 </div>
 
