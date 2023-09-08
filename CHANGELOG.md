@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.3.0
+
+- **Add**: Add cancel button option for hosted page
+
 ## 2.2.0
 
 - **Add**: Added support for new payment means:
