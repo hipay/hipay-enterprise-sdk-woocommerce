@@ -178,11 +178,11 @@ class Hipay_Merchant_Risk_Formatter extends Hipay_Api_Formatter_Abstact
             return ShippingIndicator::DIGITAL_GOODS;
         }
 
-        if (!Hipay_Threeds_Helper::areDifferentAddresses($this->order->get_shipping_address_1(), $this->order->get_billing_address_1())) {
+        if (!Hipay_Threeds_Helper::areDifferentAddresses($this->order->get_address(), $this->order->get_address('billing'))) {
             return ShippingIndicator::SHIP_TO_CARDHOLDER_BILLING_ADDRESS;
         } elseif (!is_user_logged_in()) {
             return ShippingIndicator::SHIP_TO_DIFFERENT_ADDRESS;
-        } elseif (get_current_user_id() > 0 && Hipay_Threeds_Helper::isVerifiedAddress($this->order->get_shipping_address_1())) {
+        } elseif (get_current_user_id() > 0 && Hipay_Threeds_Helper::isVerifiedAddress($this->order->get_address())) {
             return ShippingIndicator::SHIP_TO_VERIFIED_ADDRESS;
         }
 
