@@ -31,10 +31,10 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
         const GATEWAY_CREDIT_CARD_ID = 'hipayenterprise_credit_card';
 
-        protected $account ;
-        protected $fraud ;
-        protected $methods ;
-        protected $faqs ;
+        protected $account;
+        protected $fraud;
+        protected $methods;
+        protected $faqs;
 
 
         /**
