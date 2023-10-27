@@ -3,6 +3,7 @@
 ## 2.3.1 - UNRELEASED
 
 - **Fix**: Fixed multibanco details display after order processing
+- **Fix**: Fixed moment where checked are made for insertion of HiPay SDK
 
 ## 2.3.0
 
