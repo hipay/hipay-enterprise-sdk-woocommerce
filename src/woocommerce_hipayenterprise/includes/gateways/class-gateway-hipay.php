@@ -31,6 +31,12 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
         const GATEWAY_CREDIT_CARD_ID = 'hipayenterprise_credit_card';
 
+        protected $account ;
+        protected $fraud ;
+        protected $methods ;
+        protected $faqs ;
+
+
         /**
          * Gateway_Hipay constructor.
          */
@@ -75,18 +81,6 @@ if (!class_exists('WC_Gateway_Hipay')) {
             if ($this->confHelper->getPaymentGlobal()["card_token"]) {
                 $this->supports[] = 'tokenization';
             }
-
-            if ($this->isAvailable()
-                && is_page()
-                && (is_checkout() || is_add_payment_method_page())
-                && !is_order_received_page()) {
-                wp_enqueue_style(
-                    'hipayenterprise-style',
-                    plugins_url('/assets/css/frontend/hipay.css', WC_HIPAYENTERPRISE_BASE_FILE),
-                    array(),
-                    'all'
-                );
-            }
         }
 
         public function isAvailable()
@@ -103,13 +97,10 @@ if (!class_exists('WC_Gateway_Hipay')) {
             add_action('woocommerce_api_wc_hipayenterprise', array($this, 'check_callback_response'));
             add_action('woocommerce_receipt_' . $this->id, array($this, 'receipt_page'));
 
-            if ($this->isAvailable() &&
-                is_page() &&
-                (is_checkout() || is_add_payment_method_page()) &&
-                !is_order_received_page()
-            ) {
+            if ($this->isAvailable()) {
                 add_action('wp_print_scripts', array($this, 'localize_scripts'), 5);
             }
+
             if (is_admin()) {
                 add_action('wp_print_scripts', array($this, 'localize_scripts_admin'), 5);
             }
@@ -279,7 +270,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 'admin-creditcard-settings.php',
                 'admin',
                 array(
-                    'configurationPaymentMethod' => $this->confHelper->getLocalPayment(),
+                    'configurationPaymentMethod' => $this->confHelper->getLocalPayment(null),
                     'methods' => 'local'
                 )
             );
@@ -366,6 +357,16 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
         public function localize_scripts()
         {
+            if(is_page() &&
+            (is_checkout() || is_add_payment_method_page()) &&
+            !is_order_received_page()){
+            wp_enqueue_style(
+                'hipayenterprise-style',
+                plugins_url('/assets/css/frontend/hipay.css', WC_HIPAYENTERPRISE_BASE_FILE),
+                array(),
+                'all'
+            );
+            
             wp_localize_script(
                 'hipay-js-front',
                 'hipay_config_card',
@@ -390,6 +391,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
                     "card_cvc_invalid_error" => __("CVC is invalid.", 'hipayenterprise'),
                 )
             );
+        }
         }
 
         /**
