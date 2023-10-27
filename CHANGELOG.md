@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.3.1 - UNRELEASED
+
+- **Fix**: Fixed multibanco details display after order processing
+
 ## 2.3.0
 
 - **Add**: Add cancel button option for hosted page
