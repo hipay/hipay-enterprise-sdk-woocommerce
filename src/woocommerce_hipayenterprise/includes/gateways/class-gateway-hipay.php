@@ -51,7 +51,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
                 'products',
                 'refunds',
                 'captures',
-	            'partialCaptures'
+                'partialCaptures'
             );
 
             $this->has_fields = true;
@@ -357,29 +357,29 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
         public function localize_scripts()
         {
-            if(is_page() &&
+            if (is_page() &&
             (is_checkout() || is_add_payment_method_page()) &&
-            !is_order_received_page()){
-            wp_enqueue_style(
-                'hipayenterprise-style',
-                plugins_url('/assets/css/frontend/hipay.css', WC_HIPAYENTERPRISE_BASE_FILE),
-                array(),
-                'all'
-            );
+            !is_order_received_page()) {
+                wp_enqueue_style(
+                    'hipayenterprise-style',
+                    plugins_url('/assets/css/frontend/hipay.css', WC_HIPAYENTERPRISE_BASE_FILE),
+                    array(),
+                    'all'
+                );
             
-            wp_localize_script(
-                'hipay-js-front',
-                'hipay_config_card',
-                array(
+                wp_localize_script(
+                    'hipay-js-front',
+                    'hipay_config_card',
+                    array(
                     "operating_mode" => $this->confHelper->getPaymentGlobal()["operating_mode"],
                     "oneClick" => $this->confHelper->getPaymentGlobal()["card_token"],
-                )
-            );
+                    )
+                );
 
-            wp_localize_script(
-                'hipay-js-front',
-                'hipay_config_i18n',
-                array(
+                wp_localize_script(
+                    'hipay-js-front',
+                    'hipay_config_i18n',
+                    array(
                     "activated_card_error" => __(
                         'This credit card type or the order currency is not supported.
                     Please choose an other payment method.',
@@ -389,9 +389,9 @@ if (!class_exists('WC_Gateway_Hipay')) {
                     "card_cvc_missing" => __("CVC is missing.", 'hipayenterprise'),
                     "card_cvc_numeric_error" => __("cvc must be numeric.", 'hipayenterprise'),
                     "card_cvc_invalid_error" => __("CVC is invalid.", 'hipayenterprise'),
-                )
-            );
-        }
+                    )
+                );
+            }
         }
 
         /**
