@@ -105,7 +105,7 @@ class Hipay_Multibanco extends Hipay_Gateway_Local_Abstract
             );
 
             $response = $this->apiRequestHandler->handleLocalPayment($params, true);
-            $referenceToPay = $response["additional_data"]->getReferenceToPay();
+            $referenceToPay = json_decode($response["additional_data"]->getReferenceToPay(), true);
 
             $order->update_meta_data(self::HIPAY_MULTIBANCO_ENTITY, $referenceToPay["entity"]);
             $order->update_meta_data(self::HIPAY_MULTIBANCO_REFERENCE, $referenceToPay["reference"]);
