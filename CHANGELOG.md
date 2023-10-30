@@ -1,7 +1,8 @@
 # CHANGELOG
 
-## 2.3.1 - UNRELEASED
+## 2.3.1
 
+- **Fix**: Fixed 3DS v2 merchant risk information builder
 - **Fix**: Fixed multibanco details display after order processing
 - **Fix**: Fixed moment where checked are made for insertion of HiPay SDK
 
