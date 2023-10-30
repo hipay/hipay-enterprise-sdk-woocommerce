@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2.3.1
+
+- **Fix**: Fixed 3DS v2 merchant risk information builder
+- **Fix**: Fixed multibanco details display after order processing
+- **Fix**: Fixed moment where checked are made for insertion of HiPay SDK
+
 ## 2.3.0
 
 - **Add**: Add cancel button option for hosted page
