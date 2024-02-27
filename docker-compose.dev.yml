@@ -17,7 +17,7 @@ services:
       - bin/docker/conf/development/wordpress.env.sample
 
   database:
-    image: mysql:5.7
+    image: mysql:8
     ports:
       - '3309:3306'
     env_file:
