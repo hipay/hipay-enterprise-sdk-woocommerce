@@ -1,6 +1,6 @@
 <?php
 
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 
 /**
  *
@@ -11,9 +11,8 @@ defined( 'ABSPATH' ) || exit;
  */
 class Hipay_Mapping_Category_Controller extends Hipay_Mapping_Abstract
 {
-
-    /*
-     *@var string
+    /**
+     * @var string
      */
     const ID_WC_CATEGORY = "idWcCategory";
 
@@ -21,7 +20,6 @@ class Hipay_Mapping_Category_Controller extends Hipay_Mapping_Abstract
      * @var string
      */
     const ID_HIPAY_CATEGORY = "idHipayCategory";
-
 
     /**
      * Hipay_Mapping_Category_Helper constructor.
@@ -32,12 +30,11 @@ class Hipay_Mapping_Category_Controller extends Hipay_Mapping_Abstract
         $this->postType = "hipay_mapping_cat";
     }
 
-
-
     /**
      * Handles output
      */
-    public function output() {
+    public function output()
+    {
         if (! empty($_POST)) {
             $this->saveMappingCategories();
         }
@@ -55,11 +52,12 @@ class Hipay_Mapping_Category_Controller extends Hipay_Mapping_Abstract
     }
 
     /**
-     *  Save mapping categories
+     * Save mapping categories
      *
      * @return void
      */
-    public function saveMappingCategories() {
+    public function saveMappingCategories()
+    {
         $this->logs->logInfos("# SaveMappingCategories ");
         try {
             $wcCategories = Hipay_Helper_Mapping::getWcCategories();
@@ -75,12 +73,11 @@ class Hipay_Mapping_Category_Controller extends Hipay_Mapping_Abstract
 
                     if (isset($idPost) && !empty($idPost)) {
                         $this->logs->logInfos("# UpdateMappingCategory " . print_r($mapping, true));
-                        $this->updateMapping($mapping,$idPost);
+                        $this->updateMapping($idPost, $mapping);
                     } else {
                         $this->logs->logInfos("# createMappingCategory " . print_r($mapping, true));
                         $this->createMapping($mapping);
                     }
-
                 } else {
                     $this->logs->logInfos("# Mapping is empty " . $category->term_id);
                 }
@@ -89,15 +86,12 @@ class Hipay_Mapping_Category_Controller extends Hipay_Mapping_Abstract
 
             self::add_message("Your settings have been saved.");
         } catch (Exception $e) {
-            $this->logs->logException( $e);
+            $this->logs->logException($e);
             self::add_error(
-                __("An error occured during while saving the mapping. ","hipayenterprise")
+                __("An error occured during while saving the mapping. ", "hipayenterprise")
             );
         }
-
     }
-
-
 
     /**
      * @return array
@@ -117,7 +111,7 @@ class Hipay_Mapping_Category_Controller extends Hipay_Mapping_Abstract
     {
         $posts = $this->getPosts();
         $mappings = array ();
-        foreach ( $posts as $post ) {
+        foreach ($posts as $post) {
             $mappingCategory = new Hipay_Mapping_Category($post);
             $mappings[$mappingCategory->idWcCategory] = array(
                 "idPost" => $mappingCategory->id,
@@ -126,7 +120,4 @@ class Hipay_Mapping_Category_Controller extends Hipay_Mapping_Abstract
         }
         return $mappings;
     }
-
 }
-
-
