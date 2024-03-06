@@ -8,7 +8,7 @@ Contributions to the HiPay Enterprise module for Woocommerce should be made via 
 
 If you would like to make a significant change, please open an issue to discuss it, in order to minimize duplication of effort.
 
-## Development
+## Install
 
 Installation with Docker for testing
 
@@ -45,6 +45,29 @@ To connect to the back office, go to this URL: <http://localhost:8000/wp-admin>
 
 The login and password are <demo@hipay.com> / hipay123.
 You can test the module with your account configuration.
+
+### Debug
+
+If you want to debug locally our CMS module, here are the steps :
+
+- Verify the value of `XDEBUG_CONFIG.client_host` in your `hipay.env` file you have copied in last step.
+  - For Linux users, it should be `172.17.0.1` (value by default)
+  - For MacOS users, replace it by `host.docker.internal`
+- Then, create a Xdebug launch according to your IDE (here is for VSCode) :
+
+  ```json
+  {
+    "name": "Woocommerce",
+    "type": "php",
+    "request": "launch",
+    "hostname": "172.17.0.1", // Only for Linux users
+    "port": 9003,
+    "pathMappings": {
+        "/var/www/html/wp-content/plugins/woocommerce_hipayenterprise": "${workspaceFolder}/src/woocommerce_hipayenterprise",
+        "/var/www/html": "${workspaceFolder}/wordpress/core"
+    }
+  }
+  ```
 
 ### Making the request
 
