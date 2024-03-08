@@ -95,8 +95,6 @@ class Hipay_Multibanco extends Hipay_Gateway_Local_Abstract
 
             $this->logs->logInfos("# Process Payment for $order_id");
 
-            $method = $this->confHelper->getLocalPayment($this->paymentProduct);
-
             $params = array(
                 "order_id" => $order_id,
                 "paymentProduct" => $this->paymentProduct,
@@ -164,18 +162,8 @@ class Hipay_Multibanco extends Hipay_Gateway_Local_Abstract
                 'reference' => $this->reference,
                 'amount' => $this->amount,
                 'expirationDate' => $this->expirationDate,
-                'logo' => $this->getMultibancoIconUrl(),
                 'sdkJsUrl' => $this->confHelper->getPaymentGlobal()["sdk_js_url"]
             )
         );
-    }
-
-    /**
-     * Return Multibanco logo URL
-     * @return url
-     */
-    private function getMultibancoIconUrl()
-    {
-        return WC_HIPAYENTERPRISE_URL_ASSETS . 'local_payments_images/multibanco.png';
     }
 }

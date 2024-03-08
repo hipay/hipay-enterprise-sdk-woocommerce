@@ -2,16 +2,16 @@
     <div id="referenceToPay"></div>
     <script src='<?php echo $sdkJsUrl ?>'></script>
     <script type="text/javascript">
-        var hipaySdk = new HiPay({
-            username: 'hosted',
-            password: 'hosted',
-            environment: 'production',
-            lang: '<?php substr(get_locale(), 0, 2) ?>'
-        });
-        hipaySdk.createReference('sisal', {
-            selector: 'referenceToPay',
-            reference: '<?php echo $reference ?>',
-            barCode: '<?php echo $barCode ?>',
-        });
+    var hipaySdk = new HiPay({
+        username: 'hosted',
+        password: 'hosted',
+        environment: 'production',
+        lang: '<?php substr(get_locale(), 0, 2) ?>'
+    });
+    hipaySdk.createReference('sisal', {
+        selector: 'referenceToPay',
+        reference: '<?php echo $reference ?>',
+        barCode: '<?php echo $barCode ?>',
+    });
     </script>
 </div>
