@@ -160,12 +160,13 @@ class Hipay_Multibanco extends Hipay_Gateway_Local_Abstract
             'multibanco.php',
             'frontend',
             array(
-                    'entity' => $this->entity,
-                    'reference' => $this->reference,
-                    'amount' => $this->amount,
-                    'expirationDate' => $this->expirationDate,
-                    'logo' => $this->getMultibancoIconUrl(),
-                )
+                'entity' => $this->entity,
+                'reference' => $this->reference,
+                'amount' => $this->amount,
+                'expirationDate' => $this->expirationDate,
+                'logo' => $this->getMultibancoIconUrl(),
+                'sdkJsUrl' => $this->confHelper->getPaymentGlobal()["sdk_js_url"]
+            )
         );
     }
 

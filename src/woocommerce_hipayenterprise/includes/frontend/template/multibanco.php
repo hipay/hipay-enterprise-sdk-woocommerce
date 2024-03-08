@@ -1,31 +1,19 @@
-<table class="woocommerce-table woocommerce-table-hipay-multibanco" style="margin: 0 0 1.41575em;">
-    <thead>
-        <tr>
-            <th colspan="3" class="woocommerce-table-hipay-title">
-                <?php _e("Pay the reference at an ATM or with your Homebanking account.")?>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <th colspan="3" class="woocommerce-table-hipay-field"><img style="max-width: 200px;align-content: center"
-                    id="multibanco-hipay" alt="multibanco" src="<?php echo $logo;?>" /></th>
-        </tr>
-        <tr>
-            <th class="woocommerce-table-hipay-field"><?php _e("ENTITY")?>:</th>
-            <th class="third-column"><?php echo $entity;?></th>
-        </tr>
-        <tr>
-            <th class="woocommerce-table-hipay-field"><?php _e("REFERENCE")?>:</th>
-            <th class="woocommerce-table-hipay-field-value"><?php echo $reference;?></th>
-        </tr>
-        <tr>
-            <th class="woocommerce-table-hipay-field"><?php _e("AMOUNT")?>:</th>
-            <th class="woocommerce-table-hipay-field-value"><?php echo $amount;?> &euro;</th>
-        </tr>
-        <tr>
-            <th class="woocommerce-table-hipay-field"><?php _e("EXPIRATION DATE")?>:</th>
-            <th class="woocommerce-table-hipay-field-value"><?php echo $expirationDate;?></th>
-        </tr>
-    </tbody>
-</table>
+<div style="background-color: #f8f8f8; padding:24px; margin-bottom: 24px">
+    <div id="referenceToPay"></div>
+    <script src='<?php echo $sdkJsUrl ?>'></script>
+    <script type="text/javascript">
+    var hipaySdk = new HiPay({
+        username: 'hosted',
+        password: 'hosted',
+        environment: 'production',
+        lang: '<?php substr(get_locale(), 0, 2) ?>'
+    });
+    hipaySdk.createReference('multibanco', {
+        selector: 'referenceToPay',
+        reference: '<?php echo $reference ?>',
+        entity: '<?php echo $entity ?>',
+        amount: '<?php echo $amount ?>',
+        expirationDate: '<?php echo $expirationDate ?>',
+    });
+    </script>
+</div>
