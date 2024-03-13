@@ -6,7 +6,7 @@
         username: 'hosted',
         password: 'hosted',
         environment: 'production',
-        lang: '<?php substr(get_locale(), 0, 2) ?>'
+        lang: '<?php echo substr(get_locale(), 0, 2) ?>'
     });
     hipaySdk.createReference('multibanco', {
         selector: 'referenceToPay',
