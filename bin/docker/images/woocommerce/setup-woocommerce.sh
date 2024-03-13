@@ -81,11 +81,11 @@ if [ ! -f /var/www/html/wp-content/plugins/woocommerce/woocommerce.php ]; then
     wp wc --allow-root customer create --email='test@gmail.com' --user=1 --password='hipay123'
 
     CONFIG=$(wp option --allow-root get hipay_enterprise --format=json)
-    CONFIG=${CONFIG/'"api_username_sandbox":""'/'"api_username_sandbox":"'$HIPAY_API_USER_TEST'"'}
-    CONFIG=${CONFIG/'"api_password_sandbox":""'/'"api_password_sandbox":"'$HIPAY_API_PASSWORD_TEST'"'}
-    CONFIG=${CONFIG/'"api_tokenjs_username_sandbox":""'/'"api_tokenjs_username_sandbox":"'$HIPAY_TOKENJS_USERNAME_TEST'"'}
-    CONFIG=${CONFIG/'"api_tokenjs_password_publickey_sandbox":""'/'"api_tokenjs_password_publickey_sandbox":"'$HIPAY_TOKENJS_PUBLICKEY_TEST'"'}
-    CONFIG=${CONFIG/'"api_secret_passphrase_sandbox":""'/'"api_secret_passphrase_sandbox":"'$HIPAY_SECRET_PASSPHRASE_TEST'"'}
+    CONFIG=${CONFIG/'"api_username_sandbox":""'/'"api_username_sandbox":"'"$HIPAY_API_USER_TEST"'"'}
+    CONFIG=${CONFIG/'"api_password_sandbox":""'/'"api_password_sandbox":"'"$HIPAY_API_PASSWORD_TEST"'"'}
+    CONFIG=${CONFIG/'"api_tokenjs_username_sandbox":""'/'"api_tokenjs_username_sandbox":"'"$HIPAY_TOKENJS_USERNAME_TEST"'"'}
+    CONFIG=${CONFIG/'"api_tokenjs_password_publickey_sandbox":""'/'"api_tokenjs_password_publickey_sandbox":"'"$HIPAY_TOKENJS_PUBLICKEY_TEST"'"'}
+    CONFIG=${CONFIG/'"api_secret_passphrase_sandbox":""'/'"api_secret_passphrase_sandbox":"'"$HIPAY_SECRET_PASSPHRASE_TEST"'"'}
 
     if [ "$ENVIRONMENT" != "$ENV_PROD" ]; then
         CONFIG=${CONFIG/'"send_url_notification":1'/'"send_url_notification":0'}
