@@ -8,12 +8,10 @@
         environment: 'production',
         lang: '<?php echo substr(get_locale(), 0, 2) ?>'
     });
-    hipaySdk.createReference('multibanco', {
+    hipaySdk.createReference('sisal', {
         selector: 'referenceToPay',
         reference: '<?php echo $reference ?>',
-        entity: '<?php echo $entity ?>',
-        amount: '<?php echo $amount ?>',
-        expirationDate: '<?php echo $expirationDate ?>',
+        barCode: '<?php echo $barCode ?>',
     });
     </script>
 </div>

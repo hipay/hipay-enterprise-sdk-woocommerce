@@ -59,11 +59,10 @@ class Hipay_Order_Handler
     {
         $this->plugin->logs->logInfos("### paymentComplete : ".$txnId." ".$this->order->get_id());
 
-        if (
-            !in_array($this->order->get_status(), array('completed', 'refunded'), true)
+        if (!in_array($this->order->get_status(), array('completed', 'refunded'), true)
             && (int)$this->order->get_total_refunded() === 0
         ) {
-            if (in_array($this->order->get_status(),array('partial-captured', 'partial-refunded'))) {
+            if (in_array($this->order->get_status(), array('partial-captured', 'partial-refunded'))) {
                 $this->order->update_status('on-hold');
             }
 
@@ -170,7 +169,7 @@ class Hipay_Order_Handler
      */
     public function paymentPartiallyCaptured($transaction, $reason = '')
     {
-        if ( $transaction->getCapturedAmount() > 0) {
+        if ($transaction->getCapturedAmount() > 0) {
             $this->paymentUpdateStatus('partial-captured', $reason);
 
             // Test if capture is from HiPay BO
@@ -213,7 +212,6 @@ class Hipay_Order_Handler
                 wc_create_refund($refund);
                 WC()->cart->empty_cart();
             }
-
         }
     }
 
@@ -228,8 +226,9 @@ class Hipay_Order_Handler
     }
 
 
-    public function handleStatusChange($statusTo, $statusFrom){
-        switch($statusTo){
+    public function handleStatusChange($statusTo, $statusFrom)
+    {
+        switch ($statusTo) {
             case "cancelled":
                 $this->handleCancel($statusFrom);
                 break;
@@ -238,28 +237,39 @@ class Hipay_Order_Handler
         }
     }
 
-    private function handleCancel($statusFrom){
-        if($statusFrom == "pending" ||
+    /**
+     * Save transaction id for an order
+     * @param String $trxId
+     */
+    public function saveTransactionId($trxId)
+    {
+        $this->order->set_transaction_id($trxId);
+        $this->order->save();
+    }
+
+    private function handleCancel($statusFrom)
+    {
+        if ($statusFrom == "pending" ||
             $statusFrom == "on-hold") {
             try {
                 $this->plugin->process_cancel($this->order->get_id());
             } catch (Exception $e) {
-                $displayMsg = __("There was an error on the cancellation of the HiPay transaction. You can see and cancel the transaction directly from HiPay's BackOffice",
-                    "hipayenterprise");
+                $displayMsg = __(
+                    "There was an error on the cancellation of the HiPay transaction. You can see and cancel the transaction directly from HiPay's BackOffice",
+                    "hipayenterprise"
+                );
                 $displayMsg .= " (https://merchant.hipay-tpp.com/default/auth/login)\n";
                 $displayMsg .= __("Message was : ", "hipayenterprise") . $e->getMessage();
                 $displayMsg .= "\n";
                 $displayMsg .= __('Transaction ID: ', "hipayenterprise") . $this->order->get_transaction_id() . "\n";
-
             }
         } else {
             $displayMsg = __("The HiPay transaction was not canceled because it's status doesn't allow cancellation. You can see and cancel the transaction directly from HiPay's BackOffice");
             $displayMsg .= " (https://merchant.hipay-tpp.com/default/auth/login)";
         }
 
-        if(!empty($displayMsg)){
+        if (!empty($displayMsg)) {
             $this->addNote($displayMsg);
         }
-
     }
 }

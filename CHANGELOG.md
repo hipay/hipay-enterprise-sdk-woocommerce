@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2.4.0
+
+- **Add** : Added Mooney reference without redirection
+- **Fix** : Fixed PHP 8 issue
+
 ## 2.3.1
 
 - **Fix**: Fixed 3DS v2 merchant risk information builder
@@ -52,10 +57,6 @@
 ## Version 1.8.4
 
 - **Fix**: Order cancel on other gateway
-
-## Version 1.8.3
-
-- **Fix**: DSP2 mandatory parameters
 
 ## Version 1.8.3
 

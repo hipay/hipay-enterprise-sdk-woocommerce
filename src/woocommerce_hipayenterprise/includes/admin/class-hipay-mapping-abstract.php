@@ -11,8 +11,6 @@ defined('ABSPATH') || exit;
  */
 class Hipay_Mapping_Abstract extends Hipay_Admin_Page
 {
-
-
     /**
      * @var Hipay_Log
      */
@@ -48,11 +46,11 @@ class Hipay_Mapping_Abstract extends Hipay_Admin_Page
      */
     public function __construct()
     {
-	    parent::__construct();
+        parent::__construct();
 
-	    $this->confHelper = new Hipay_Config();
+        $this->confHelper = new Hipay_Config();
         $this->logs = new Hipay_Log($this);
-	}
+    }
 
     /**
      * @return array
@@ -64,12 +62,13 @@ class Hipay_Mapping_Abstract extends Hipay_Admin_Page
 
 
     /**
-     *  Update meta data for an POST Mapping
+     * Update meta data for an POST Mapping
      *
+     * @param int $post_id
      * @param array $args
      * @return int|WP_Error
      */
-    public function updateMapping($args = array(), $post_id)
+    public function updateMapping($post_id, $args = array())
     {
         $args = wp_parse_args($args, $this->getDefaultArgs());
         foreach ($args as $arg => $value) {
@@ -94,7 +93,7 @@ class Hipay_Mapping_Abstract extends Hipay_Admin_Page
 
 
     /**
-     *  Create an mapping
+     * Create an mapping
      *
      * @param array $args
      * @return int|WP_Error
@@ -103,8 +102,10 @@ class Hipay_Mapping_Abstract extends Hipay_Admin_Page
     {
         $args = wp_parse_args($args, $this->getDefaultArgs());
         $post_args = array(
-            'post_title' => sprintf(__('Mapping  %s', 'hipayenterprise'),
-                strftime('%b %d %Y @ %H %M %S', time())),
+            'post_title' => sprintf(
+                __('Mapping  %s', 'hipayenterprise'),
+                strftime('%b %d %Y @ %H %M %S', time())
+            ),
             'post_type' => $this->postType,
             'post_status' => 'publish',
             'post_author' => 0
@@ -115,7 +116,6 @@ class Hipay_Mapping_Abstract extends Hipay_Admin_Page
         }
         return $post_id;
     }
-
 
     /**
      * Add a message.
@@ -152,5 +152,4 @@ class Hipay_Mapping_Abstract extends Hipay_Admin_Page
             }
         }
     }
-
 }

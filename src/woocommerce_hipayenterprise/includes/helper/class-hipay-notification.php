@@ -108,6 +108,7 @@ class Hipay_Notification
                 $this->transaction->getStatus()
             );
 
+            $this->orderHandler->saveTransactionId($this->transaction->getTransactionReference());
             update_post_meta(
                 $this->order->get_id(),
                 '_transaction_id',
@@ -172,8 +173,8 @@ class Hipay_Notification
                     );
                     break;
                 case TransactionStatus::AUTHORIZED: //116
-                    if($this->confHelper->getPaymentGlobal()['skip_onhold'] &&
-                        $this->confHelper->getPaymentGlobal()['capture_mode'] == "automatic"){
+                    if ($this->confHelper->getPaymentGlobal()['skip_onhold'] &&
+                        $this->confHelper->getPaymentGlobal()['capture_mode'] == "automatic") {
                         $this->orderHandler->addNote(
                             __("Authorization successful for transaction.", "hipayenterprise")
                         );
@@ -241,11 +242,10 @@ class Hipay_Notification
                     break;
             }
 
-            if($this->transaction->getStatus() == TransactionStatus::AUTHORIZED ||
-                $this->transaction->getStatus() == TransactionStatus::CAPTURED){
+            if ($this->transaction->getStatus() == TransactionStatus::AUTHORIZED ||
+                $this->transaction->getStatus() == TransactionStatus::CAPTURED) {
                 $customData = $this->transaction->getCustomData();
-                if (
-                    (isset($customData["createOneClick"])
+                if ((isset($customData["createOneClick"])
                         && $customData["createOneClick"])
                     || (isset($customData["forceCvv"])
                         && $customData["forceCvv"])

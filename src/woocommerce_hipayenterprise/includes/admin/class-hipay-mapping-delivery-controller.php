@@ -26,7 +26,7 @@ class Hipay_Mapping_Delivery_Controller extends Hipay_Mapping_Abstract
      */
     const DELIVERY_ESTIMATED = "deliveryEstimated";
 
-    /*
+    /**
      * @var string
      */
     const MODE = "mode";
@@ -36,7 +36,6 @@ class Hipay_Mapping_Delivery_Controller extends Hipay_Mapping_Abstract
      */
     const SHIPPING = "shipping";
 
-
     /**
      * Hipay_Mapping_Category_Helper constructor.
      */
@@ -45,7 +44,6 @@ class Hipay_Mapping_Delivery_Controller extends Hipay_Mapping_Abstract
         parent::__construct();
         $this->postType = Hipay_Admin_Post_Types::POST_TYPE_MAPPING_DELIVERY;
     }
-
 
     /**
      * Handles output
@@ -69,7 +67,7 @@ class Hipay_Mapping_Delivery_Controller extends Hipay_Mapping_Abstract
     }
 
     /**
-     *  Save delivery method mapping
+     * Save delivery method mapping
      */
     public function saveDeliveryMapping()
     {
@@ -77,7 +75,6 @@ class Hipay_Mapping_Delivery_Controller extends Hipay_Mapping_Abstract
         try {
             $wcDeliveryMethods = Hipay_Helper_Mapping::getWcDeliveryMethods();
             foreach ($wcDeliveryMethods as $deliveryMethod) {
-
                 $idPost = $_POST['wc_map_' . $deliveryMethod->id];
                 $orderPreparation = $_POST['mapping_order_preparation_' . $deliveryMethod->id];
                 $deliveryEstimated = $_POST['mapping_delivery_estimated_' . $deliveryMethod->id];
@@ -95,12 +92,11 @@ class Hipay_Mapping_Delivery_Controller extends Hipay_Mapping_Abstract
 
                     if (isset($idPost) && !empty($idPost)) {
                         $this->logs->logInfos("# updateMapping " . print_r($mapping, true));
-                        $this->updateMapping($mapping,$idPost);
+                        $this->updateMapping($idPost, $mapping);
                     } else {
                         $this->logs->logInfos("# createDeliveryMapping " . print_r($mapping, true));
                         $this->createMapping($mapping);
                     }
-
                 } else {
                     $this->logs->logInfos("# Mapping is empty " . $deliveryMethod->id);
                 }
