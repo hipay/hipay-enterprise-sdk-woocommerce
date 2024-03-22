@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## Unreleased
+## 2.4.0
 
 - **Add** : Added Mooney reference without redirection
 - **Fix** : Fixed PHP 8 issue
