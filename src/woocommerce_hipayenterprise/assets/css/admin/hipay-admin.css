@@ -1,16 +1,16 @@
 .bg-primary-hipay {
-    background-color: #28a1c5;
+    background-color: #2c0a64;
     color: #FFFFFF;
 }
 
 .panel-primary-hipay {
-    border-color: #28a1c5!important;
+    border-color: #2c0a64!important;
 }
 
 .panel-primary-hipay > .panel-heading {
     color: #fff!important;
-    background-color: #28a1c5!important;
-    border-color: #28a1c5!important;
+    background-color: #2c0a64!important;
+    border-color: #2c0a64!important;
 }
 
 #version-plugin {
@@ -55,7 +55,7 @@
 
 .tab .nav-tabs {
     border: none;
-    border-bottom: 2px solid #079fc9;
+    border-bottom: 2px solid #2c0a64;
     margin: 0;
 }
 
@@ -77,8 +77,8 @@
 .tab .nav-tabs li a:hover,
 .tab .nav-tabs li.active a {
     background: #fff;
-    color: #079fc9;
-    border: 2px solid #079fc9;
+    color: #2c0a64;
+    border: 2px solid #2c0a64;
     border-bottom-color: transparent;
 }
 
