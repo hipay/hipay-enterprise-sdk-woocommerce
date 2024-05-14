@@ -35,4 +35,20 @@ jQuery(function ($) {
         non_selected_header: hipay_config_i18n.available_countries,
         selected_header: hipay_config_i18n.authorized_countries
     });
+
+    $(document).ready(function() {
+        $('#woocommerce_hipayenterprise_methods_merchantIdpaypal').on('input', function() {
+            var merchantId = $(this).val();
+            [
+                'buttonColor',
+                'buttonShape',
+                'buttonLabel',
+                'buttonHeight',
+                'bnpl'
+            ].forEach(function(field) {
+                $('#woocommerce_hipayenterprise_methods_' + field + 'paypal').prop('disabled', merchantId === '');
+            });
+        });
+    });
+
 });
