@@ -64,6 +64,21 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
     protected $paymentProduct;
 
     /**
+     * @var
+     */
+    protected $username;
+
+    /**
+     * @var
+     */
+    protected $password;
+
+    /**
+     * @var
+     */
+    protected $sandbox;
+
+    /**
      * Hipay_Gateway_Abstract constructor.
      */
     public function __construct()
@@ -110,20 +125,21 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
             true
         );
 
-        $sandbox = $this->confHelper->getAccount()["global"]["sandbox_mode"];
-        $username = ($sandbox) ? $this->confHelper->getAccount()["sandbox"]["api_tokenjs_username_sandbox"]
+        $this->sandbox = $this->confHelper->getAccount()["global"]["sandbox_mode"];
+        $this->username = ($this->sandbox) ? $this->confHelper->getAccount()["sandbox"]["api_tokenjs_username_sandbox"]
             : $this->confHelper->getAccount()["production"]["api_tokenjs_username_production"];
-        $password = ($sandbox) ? $this->confHelper->getAccount()["sandbox"]["api_tokenjs_password_publickey_sandbox"]
+        $this->password = ($this->sandbox) ? $this->confHelper->getAccount()["sandbox"]["api_tokenjs_password_publickey_sandbox"]
             : $this->confHelper->getAccount()["production"]["api_tokenjs_password_publickey_production"];
+
 
         wp_localize_script(
             'hipay-js-front',
             'hipay_config',
             array(
-                "apiUsernameTokenJs" => $username,
-                "apiPasswordTokenJs" => $password,
+                "apiUsernameTokenJs" => $this->username,
+                "apiPasswordTokenJs" => $this->password,
                 "lang" => substr(get_locale(), 0, 2),
-                "environment" => $sandbox ? "stage" : "production",
+                "environment" => $this->sandbox ? "stage" : "production",
                 "fontFamily" => $this->confHelper->getHostedFieldsStyle()["fontFamily"],
                 "color" => $this->confHelper->getHostedFieldsStyle()["color"],
                 "fontSize" => $this->confHelper->getHostedFieldsStyle()["fontSize"],
@@ -131,6 +147,7 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
                 "placeholderColor" => $this->confHelper->getHostedFieldsStyle()["placeholderColor"],
                 "caretColor" => $this->confHelper->getHostedFieldsStyle()["caretColor"],
                 "iconColor" => $this->confHelper->getHostedFieldsStyle()["iconColor"],
+                "merchantId" => $this->confHelper->getLocalPayment($this->paymentProduct)["merchantId"]
             )
         );
     }

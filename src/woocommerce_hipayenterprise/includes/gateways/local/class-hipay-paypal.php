@@ -24,18 +24,206 @@ if (!defined('ABSPATH')) {
  */
 class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
 {
+    /**
+     * Payment product code.
+     *
+     * @var string
+     */
+    protected $paymentProduct = 'paypal';
 
     /**
-     * Hipay_Giropay constructor.
+     * Constructor.
      */
     public function __construct()
     {
         $this->id = 'hipayenterprise_paypal';
-        $this->paymentProduct = 'paypal';
-        $this->method_title = __('HiPay Enterprise Paypal', "hipayenterprise");
-        $this->title = __('Paypal', "hipayenterprise");
-        $this->method_description = __('Paypal', "hipayenterprise");
+        $this->method_title = __('HiPay Enterprise Paypal', 'hipayenterprise');
+        $this->title = __('Paypal', 'hipayenterprise');
+        $this->method_description = __('Paypal', 'hipayenterprise');
 
         parent::__construct();
+
+        $paymentProductConfig = $this->confHelper->getLocalPayment($this->paymentProduct);
+
+        if ($this->isPaypalV2($paymentProductConfig)) {
+            $this->enqueuePaypalScripts($paymentProductConfig);
+        }
+    }
+
+    /**
+     * Enqueue PayPal scripts and localize required data.
+     *
+     * @param array $paymentProductConfig
+     */
+    protected function enqueuePaypalScripts(array $paymentProductConfig)
+    {
+        wp_enqueue_script(
+            'hipay-js-front-paypal',
+            plugins_url('/assets/js/frontend/local-payment-paypal.js', WC_HIPAYENTERPRISE_BASE_FILE),
+            [],
+            'all',
+            true
+        );
+
+        wp_localize_script(
+            'hipay-js-front-paypal',
+            'hipay_config',
+            $this->getPaypalScriptData($paymentProductConfig)
+        );
+    }
+
+    /**
+     * Get PayPal script data.
+     *
+     * @param array $paymentProductConfig
+     * @return array
+     */
+    protected function getPaypalScriptData(array $paymentProductConfig)
+    {
+        return [
+            'apiUsernameTokenJs' => $this->username,
+            'apiPasswordTokenJs' => $this->password,
+            'lang' => substr(get_locale(), 0, 2),
+            'environment' => $this->sandbox ? 'stage' : 'production',
+            'fontFamily' => $this->confHelper->getHostedFieldsStyle()['fontFamily'],
+            'color' => $this->confHelper->getHostedFieldsStyle()['color'],
+            'fontSize' => $this->confHelper->getHostedFieldsStyle()['fontSize'],
+            'fontWeight' => $this->confHelper->getHostedFieldsStyle()['fontWeight'],
+            'placeholderColor' => $this->confHelper->getHostedFieldsStyle()['placeholderColor'],
+            'caretColor' => $this->confHelper->getHostedFieldsStyle()['caretColor'],
+            'iconColor' => $this->confHelper->getHostedFieldsStyle()['iconColor'],
+            'merchantId' => $paymentProductConfig['merchantId'],
+            'buttonShape' => $paymentProductConfig['buttonShape'],
+            'buttonColor' => $paymentProductConfig['buttonColor'],
+            'buttonLabel' => $paymentProductConfig['buttonLabel'],
+            'buttonHeight' => $paymentProductConfig['buttonHeight'],
+            'bnpl' => $paymentProductConfig['bnpl'],
+            'amount' => WC()->cart->total,
+            'currency' => get_woocommerce_currency(),
+            'locale' => get_locale(),
+        ];
+    }
+
+    /**
+     * Payment fields.
+     */
+    public function payment_fields()
+    {
+        $template = $this->getLocalPaymentMethodTemplate($this->confHelper->getLocalPayment($this->paymentProduct));
+        $this->process_template(
+            $template,
+            'frontend',
+            [
+                'localPaymentName' => $this->paymentProduct,
+                'additionalFields' => $this->confHelper->getLocalPayment($this->paymentProduct)['additionalFields'],
+            ]
+        );
+    }
+
+    /**
+     * Get local payment method template.
+     *
+     * @param array $configLocalPayment
+     * @return string
+     */
+    private function getLocalPaymentMethodTemplate(array $configLocalPayment)
+    {
+        return $this->isPaypalV2($configLocalPayment) ? 'local-paypal.php' : 'local-payment.php';
+    }
+
+    /**
+     * Check if it's PayPal v2.
+     *
+     * @param array $configLocalPayment
+     * @return bool
+     */
+    private function isPaypalV2(array $configLocalPayment)
+    {
+        return !empty($configLocalPayment['merchantId']) && $configLocalPayment['productCode'] == 'paypal';
+    }
+
+    /**
+     * Process payment.
+     *
+     * @param int $order_id
+     * @return array
+     */
+    public function process_payment($order_id)
+    {
+        $configLocalPayment = $this->confHelper->getLocalPayment($this->paymentProduct);
+
+        if ($this->isPaypalV2($configLocalPayment)) {
+            return $this->processPaypalV2Payment($order_id, $configLocalPayment);
+        }
+
+        return parent::process_payment($order_id);
+    }
+
+    /**
+     * Process PayPal v2 payment.
+     *
+     * @param int $order_id
+     * @param array $configLocalPayment
+     * @return array
+     */
+    protected function processPaypalV2Payment($order_id, array $configLocalPayment)
+    {
+        try {
+            $this->logs->logInfos(" # Process Payment for  " . $order_id);
+
+            $providerData = [
+                'paypal_id' => (string) Hipay_Helper::getPostData('paypalOrderId'),
+            ];
+
+            $params = [
+                'order_id' => $order_id,
+                'paymentProduct' => $this->paymentProduct,
+                'forceSalesMode' => $this->forceSalesMode($configLocalPayment),
+                'deviceFingerprint' => Hipay_Helper::getPostData($this->paymentProduct . '-device_fingerprint'),
+                'phone' => json_decode(Hipay_Helper::getPostData($this->paymentProduct . '-phone')),
+                'provider_data' => (string) json_encode($providerData),
+            ];
+
+            if (is_array($configLocalPayment['additionalFields']['formFields'])) {
+                $params = array_merge($params, $this->getAdditionalFields($configLocalPayment));
+            }
+
+            $response = $this->apiRequestHandler->handleLocalPayment($params);
+
+            return [
+                'result' => 'success',
+                'redirect' => $response['redirectUrl'],
+            ];
+        } catch (Hipay_Payment_Exception $e) {
+            return $this->handlePaymentError($e);
+        }
+    }
+
+    /**
+     * Get additional fields from the configuration.
+     *
+     * @param array $configLocalPayment
+     * @return array
+     */
+    protected function getAdditionalFields(array $configLocalPayment)
+    {
+        $additionalFields = [];
+
+        foreach ($configLocalPayment['additionalFields']['formFields'] as $name => $field) {
+            $additionalFields[$name] = Hipay_Helper::getPostData($this->paymentProduct . '-' . $name);
+        }
+
+        return $additionalFields;
+    }
+
+    /**
+     * Check if force sales mode is enabled.
+     *
+     * @param array $configLocalPayment
+     * @return bool
+     */
+    private function forceSalesMode(array $configLocalPayment)
+    {
+        return !$configLocalPayment['canManualCapture'];
     }
 }
