@@ -142,10 +142,16 @@
                        id="woocommerce_hipayenterprise_methods_merchantId<?php echo $method; ?>"
                        value="<?php echo $merchantId; ?>"
                        placeholder="">
+                <?php if (empty($merchantId)) : ?>
+                    <p class="alert-info"><?php _e('Please provide your Merchant PayPal ID to enable PayPal V2 integration.'
+                            ,"hipayenterprise")?></p>
+                <?php endif;?>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-lg-2"><?php _e('Button Shape', "hipayenterprise"); ?></label>
+            <label class="control-label col-lg-2">
+                <?php _e('Button Shape', "hipayenterprise"); ?>
+            </label>
             <div class="col-lg-8">
                 <?php
                 $buttonShape = $configurationPaymentMethod["buttonShape"]??'';
@@ -247,6 +253,9 @@
                        value="1" <?php if ($bnpl) {
                     echo 'checked="checked"';
                 } ?> >
+                <p class="alert-info">
+                    <?php _e('The "Buy now, Pay later" feature is only available if the store currency is euros and if the basket amount is between 30 and 2000.',"hipayenterprise"); ?>
+                </p>
             </div>
         </div>
     <?php } ?>

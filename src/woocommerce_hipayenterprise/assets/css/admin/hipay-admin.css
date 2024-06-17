@@ -118,4 +118,7 @@
     padding: 0 !important;
 }
 
-
+select.readonly {
+    background-color: #e9ecef; /* Light gray background to indicate readonly state */
+    cursor: not-allowed;
+}

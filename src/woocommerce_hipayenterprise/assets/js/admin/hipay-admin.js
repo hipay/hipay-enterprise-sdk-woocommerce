@@ -37,8 +37,8 @@ jQuery(function ($) {
     });
 
     $(document).ready(function() {
-        $('#woocommerce_hipayenterprise_methods_merchantIdpaypal').on('input', function() {
-            var merchantId = $(this).val();
+        function toggleFields() {
+            var merchantId = $('#woocommerce_hipayenterprise_methods_merchantIdpaypal').val();
             [
                 'buttonColor',
                 'buttonShape',
@@ -46,9 +46,25 @@ jQuery(function ($) {
                 'buttonHeight',
                 'bnpl'
             ].forEach(function(field) {
-                $('#woocommerce_hipayenterprise_methods_' + field + 'paypal').prop('disabled', merchantId === '');
+                var fieldElement = $('#woocommerce_hipayenterprise_methods_' + field + 'paypal');
+                if (merchantId === '') {
+                    fieldElement.addClass('readonly').on('mousedown', preventInteraction);
+                } else {
+                    fieldElement.removeClass('readonly').off('mousedown', preventInteraction);
+                }
             });
-        });
+        }
+
+        function preventInteraction(event) {
+            event.preventDefault();
+        }
+
+        // Run the function when the page loads
+        toggleFields();
+
+        // Attach the function to the input event
+        $('#woocommerce_hipayenterprise_methods_merchantIdpaypal').on('input', toggleFields);
     });
+
 
 });

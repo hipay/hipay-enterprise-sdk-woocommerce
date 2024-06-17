@@ -1,7 +1,5 @@
+'use strict';
 jQuery(document).ready(($) => {
-
-    'use strict';
-
     // Separation of Concerns and Modularization
     const checkoutUtils = (() => {
         const cacheSelectors = () => ({

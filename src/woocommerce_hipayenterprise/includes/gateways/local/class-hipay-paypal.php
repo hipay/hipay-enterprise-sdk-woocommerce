@@ -57,19 +57,21 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
      */
     protected function enqueuePaypalScripts(array $paymentProductConfig)
     {
-        wp_enqueue_script(
-            'hipay-js-front-paypal',
-            plugins_url('/assets/js/frontend/local-payment-paypal.js', WC_HIPAYENTERPRISE_BASE_FILE),
-            [],
-            'all',
-            true
-        );
+        if (!is_admin()) { // Check if not in the admin area
+            wp_enqueue_script(
+                'hipay-js-front-paypal',
+                plugins_url('/assets/js/frontend/local-payment-paypal.js', WC_HIPAYENTERPRISE_BASE_FILE),
+                [],
+                'all',
+                true
+            );
 
-        wp_localize_script(
-            'hipay-js-front-paypal',
-            'hipay_config',
-            $this->getPaypalScriptData($paymentProductConfig)
-        );
+            wp_localize_script(
+                'hipay-js-front-paypal',
+                'hipay_config',
+                $this->getPaypalScriptData($paymentProductConfig)
+            );
+        }
     }
 
     /**
