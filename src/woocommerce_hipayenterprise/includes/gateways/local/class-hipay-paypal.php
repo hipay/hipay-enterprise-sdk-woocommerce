@@ -141,7 +141,17 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
      */
     private function isPaypalV2(array $configLocalPayment)
     {
-        return !empty($configLocalPayment['merchantId']) && $configLocalPayment['productCode'] == 'paypal';
+        return !empty($configLocalPayment['merchantId']) && $configLocalPayment['productCode'] === 'paypal';
+    }
+
+    /**
+     * Check if paypal order id exists
+     *
+     * @return bool
+     */
+    private function hasPaypalOrderId()
+    {
+        return $this->paymentProduct === 'paypal' && !(empty(Hipay_Helper::getPostData('paypalOrderId')));
     }
 
     /**
@@ -152,9 +162,8 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
      */
     public function process_payment($order_id)
     {
-        $configLocalPayment = $this->confHelper->getLocalPayment($this->paymentProduct);
-
-        if ($this->isPaypalV2($configLocalPayment)) {
+        if ($this->hasPaypalOrderId()) {
+            $configLocalPayment = $this->confHelper->getLocalPayment($this->paymentProduct);
             return $this->processPaypalV2Payment($order_id, $configLocalPayment);
         }
 
