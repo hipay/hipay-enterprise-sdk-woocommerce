@@ -119,6 +119,6 @@
 }
 
 select.readonly {
-    background-color: #e9ecef; /* Light gray background to indicate readonly state */
-    cursor: not-allowed;
+    background-color: #e9ecef;
+    pointer-events:none;
 }
