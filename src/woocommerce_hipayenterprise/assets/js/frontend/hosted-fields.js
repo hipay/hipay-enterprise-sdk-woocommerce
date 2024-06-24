@@ -314,6 +314,10 @@ jQuery(function ($) {
   }
 
   function createHostedFieldsInstance(method) {
+    if( isPayPalV2()) {
+      return  false;
+    }
+
     if (
       !isHiPayMethod() ||
       (isCreditCardSelected() && !isHostedFields() && !isAddPaymentPage())
@@ -489,6 +493,11 @@ jQuery(function ($) {
     return hipay_config_current_cart.activatedCreditCard.includes(
       result.payment_product
     );
+  }
+
+  function isPayPalV2()
+  {
+    return hipay_config.merchantId != null && getSelectedMethod === 'paypal';
   }
 
   $(document.body).on('updated_checkout', function () {

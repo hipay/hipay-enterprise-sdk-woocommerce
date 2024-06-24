@@ -129,4 +129,134 @@
             <?php endif; ?>
         </div>
     </div>
+    <?php if ( array_key_exists("merchantId", $configurationPaymentMethod)) { ?>
+
+        <div class="form-group">
+            <label class="control-label col-lg-2"><?php _e('Merchant Id', "hipayenterprise"); ?></label>
+            <div class="col-lg-8">
+                <?php
+                    $merchantId = $configurationPaymentMethod["merchantId"]??'';
+                ?>
+                <input class="form-control" type="text"
+                       name="woocommerce_hipayenterprise_methods_merchantId_<?php echo $method; ?>"
+                       id="woocommerce_hipayenterprise_methods_merchantId<?php echo $method; ?>"
+                       value="<?php echo $merchantId; ?>"
+                       placeholder="">
+                <?php if (empty($merchantId)) : ?>
+                    <p class="alert-info"><?php _e('Please provide your Merchant PayPal ID to enable PayPal V2 integration.'
+                            ,"hipayenterprise")?></p>
+                <?php endif;?>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-2">
+                <?php _e('Button Shape', "hipayenterprise"); ?>
+            </label>
+            <div class="col-lg-8">
+                <?php
+                $buttonShape = $configurationPaymentMethod["buttonShape"]??'';
+                ?>
+                <select class="form-control" name="woocommerce_hipayenterprise_methods_buttonShape_<?php echo $method; ?>"
+                id="woocommerce_hipayenterprise_methods_buttonShape<?php echo $method; ?>"
+                >
+                    <option value="rect" <?php if($buttonShape == "rect"){ echo "selected"; } ?>>
+                    <?php _e('Rectangular', "hipayenterprise"); ?>
+                    </option>
+                    <option value="pill" <?php if($buttonShape == "pill"){ echo "selected"; } ?>>
+                    <?php _e('Rounded', "hipayenterprise"); ?>
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-2"><?php _e('Button Label', "hipayenterprise"); ?></label>
+            <div class="col-lg-8">
+                <?php
+                $buttonLabel = $configurationPaymentMethod["buttonLabel"]??'';
+                ?>
+                <select class="form-control" name="woocommerce_hipayenterprise_methods_buttonLabel_<?php echo $method; ?>"
+                        id="woocommerce_hipayenterprise_methods_buttonLabel<?php echo $method; ?>"
+                >
+                    <option value="paypal" <?php if($buttonLabel == "paypal"){ echo "selected"; } ?>>
+                    <?php _e('Paypal', "hipayenterprise"); ?>
+                    </option>
+                    <option value="pay" <?php if($buttonLabel == "pay"){ echo "selected"; } ?>>
+                    <?php _e('Pay', "hipayenterprise"); ?>
+                    </option>
+                    <option value="subscribe" <?php if($buttonLabel == "subscribe"){ echo "selected"; } ?>>
+                    <?php _e('Subscribe', "hipayenterprise"); ?>
+                    </option>
+                    <option value="checkout" <?php if($buttonLabel == "checkout"){ echo "selected"; } ?>>
+                    <?php _e('Checkout', "hipayenterprise"); ?>
+                    </option>
+                    <option value="buynow" <?php if($buttonLabel == "buynow"){ echo "selected"; } ?>>
+                    <?php _e('Buy Now', "hipayenterprise"); ?>
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-2"><?php _e('Button Color', "hipayenterprise"); ?></label>
+            <div class="col-lg-8">
+                <?php
+                $buttonColor = $configurationPaymentMethod["buttonColor"]??'';
+                ?>
+                <select class="form-control" name="woocommerce_hipayenterprise_methods_buttonColor_<?php echo $method; ?>"
+                        id="woocommerce_hipayenterprise_methods_buttonColor<?php echo $method; ?>"
+                >
+                    <option value="gold" <?php if($buttonColor == "gold"){ echo "selected"; } ?>>
+                    <?php _e('Gold', "hipayenterprise"); ?>
+                    </option>
+                    <option value="blue" <?php if($buttonColor == "blue"){ echo "selected"; } ?>>
+                    <?php _e('Blue', "hipayenterprise"); ?>
+                    </option>
+                    <option value="black" <?php if($buttonColor == "black"){ echo "selected"; } ?>>
+                    <?php _e('Black', "hipayenterprise"); ?>
+                    </option>
+                    <option value="silver" <?php if($buttonColor == "silver"){ echo "selected"; } ?>>
+                    <?php _e('Silver', "hipayenterprise"); ?>
+                    </option>
+                    <option value="white" <?php if($buttonColor == "white"){ echo "selected"; } ?>>
+                    <?php _e('White', "hipayenterprise"); ?>
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-lg-2"><?php _e('Button height', "hipayenterprise"); ?></label>
+            <div class="col-lg-8">
+
+                <?php
+                $buttonHeight = $configurationPaymentMethod["buttonHeight"]??'';
+                ?>
+                <input class="form-control" type="number"
+                       name="woocommerce_hipayenterprise_methods_buttonHeight_<?php echo $method; ?>"
+                       id="woocommerce_hipayenterprise_methods_buttonHeight<?php echo $method; ?>"
+                       value="<?php echo $buttonHeight; ?>"
+                       placeholder="" min="25" max="55">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-2"><?php _e(
+                    'Pay Later Button',
+                    "hipayenterprise"
+                ); ?></label>
+            <div class="col-lg-8">
+                <?php
+                $bnpl = $configurationPaymentMethod["bnpl"] ?? false;
+                ?>
+                <input class="form-control" type="checkbox"
+                       name="woocommerce_hipayenterprise_methods_bnpl_<?php echo $method; ?>"
+                       id="woocommerce_hipayenterprise_methods_bnpl<?php echo $method; ?>"
+                       style=""
+                       value="1" <?php if ($bnpl) {
+                    echo 'checked="checked"';
+                } ?> >
+                <p class="alert-info">
+                    <?php _e('The "Buy now, Pay later" feature is only available if the store currency is euros and if the basket amount is between 30 and 2000.',"hipayenterprise"); ?>
+                </p>
+            </div>
+        </div>
+    <?php } ?>
 </div>

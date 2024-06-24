@@ -12,11 +12,22 @@
       "displayName",
       "minAmount",
       "maxAmount",
-      "countries"
+      "countries",
+      "merchantId",
+      "buttonShape",
+      "buttonColor",
+      "buttonHeight",
+      "bnpl"
     ],
     "countrySelectorReadOnly": 0,
     "currencySelectorReadOnly": 0,
     "forceBasket": 0,
+    "buttonShape": "rect",
+    "buttonColor": "white",
+    "buttonHeight": "40",
+    "buttonLabel" : "pay",
+    "merchantId": "",
+    "bnpl": true,
     "minAmount": {
       "EUR": 0
     },
