@@ -1,9 +1,16 @@
 version: '3.3'
 
+networks:
+  wordpress:
+    driver: bridge
+
 services:
   wordpress:
+    networks:
+      - wordpress
     depends_on:
       - database
+      - smtp
     build:
       context: .
       dockerfile: bin/docker/images/woocommerce/Dockerfile
@@ -18,7 +25,17 @@ services:
 
   database:
     image: mysql:8
+    networks:
+      - wordpress
     ports:
       - '3309:3306'
     env_file:
       - bin/docker/conf/development/wordpress.env.sample
+
+  smtp:
+    image: schickling/mailcatcher
+    networks:
+      - wordpress
+    ports:
+      - "1017:1080"
+    mem_limit: 256M
