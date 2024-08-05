@@ -118,4 +118,60 @@
     padding: 0 !important;
 }
 
+.nav-pills>li.active>a {
+    background-color: #2c0a64 !important;
+}
+
+#hipay-container-admin input[type=checkbox] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    line-height: 19px;
+    border: 2px solid #2c0a64;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top:6px;
+}
+
+#hipay-container-admin input[type=checkbox]:checked {
+    background-color: #2c0a64;
+    position: relative;
+}
+
+#hipay-container-admin input[type=checkbox]:checked::before {
+    content: '\2714';
+    font-size: 16px;
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 64%;
+    transform: translate(-50%, -50%);
+}
+
+#hipay-container-admin input[type=checkbox]:hover {
+    border-color: #2980b9;
+}
+
+#hipay-container-admin input[type=checkbox]:checked:hover {
+    background-color: #2980b9;
+}
+
+#hipay-container-admin input[type=checkbox] + label {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #333;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+#hipay-container-admin .panel-default .form-control {
+    margin-top: 7px;
+}
+
+#woocommerce_hipayenterprise_ccDisplayName {
+    margin-top: 0 !important;
+}
 

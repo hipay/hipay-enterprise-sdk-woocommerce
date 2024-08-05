@@ -8,7 +8,9 @@
 
 <div class="form-horizontal">
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Operating mode', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="operating_mode">
+            <?php _e('Operating mode', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
             <select class="select form-control" name="operating_mode"
                     id="operating_mode" style="">
@@ -44,7 +46,9 @@
         <div class="col-lg-2"></div>
         <div class="col-lg-8">
             <div class="form-group">
-                <label class="control-label col-lg-2"><?php _e('Color', "hipayenterprise"); ?></label>
+                <label class="control-label col-lg-2" for="color">
+                    <?php _e('Color', "hipayenterprise"); ?>
+                </label>
                 <div class="col-lg-8">
                     <input class="form-control" type="text"
                            name="color"
@@ -55,7 +59,9 @@
             </div>
 
             <div class="form-group">
-                <label class="control-label col-lg-2"><?php _e('Font Family', "hipayenterprise"); ?></label>
+                <label class="control-label col-lg-2" for="fontFamily">
+                    <?php _e('Font Family', "hipayenterprise"); ?>
+                </label>
                 <div class="col-lg-8">
                     <input class="form-control" type="text"
                            name="fontFamily"
@@ -68,7 +74,9 @@
             </div>
 
             <div class="form-group">
-                <label class="control-label col-lg-2"><?php _e('Font Size', "hipayenterprise"); ?></label>
+                <label class="control-label col-lg-2" for="fontSize">
+                    <?php _e('Font Size', "hipayenterprise"); ?>
+                </label>
                 <div class="col-lg-8">
                     <input class="form-control" type="text"
                            name="fontSize"
@@ -81,7 +89,9 @@
             </div>
 
             <div class="form-group">
-                <label class="control-label col-lg-2"><?php _e('Font Weight', "hipayenterprise"); ?></label>
+                <label class="control-label col-lg-2" for="fontWeight">
+                    <?php _e('Font Weight', "hipayenterprise"); ?>
+                </label>
                 <div class="col-lg-8">
                     <input class="form-control" type="text"
                            name="fontWeight"
@@ -94,7 +104,9 @@
             </div>
 
             <div class="form-group">
-                <label class="control-label col-lg-2"><?php _e('PlaceHodler color', "hipayenterprise"); ?></label>
+                <label class="control-label col-lg-2" for="placeholderColor">
+                    <?php _e('PlaceHodler color', "hipayenterprise"); ?>
+                </label>
                 <div class="col-lg-8">
                     <input class="form-control" type="text"
                            name="placeholderColor"
@@ -106,7 +118,9 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-lg-2"><?php _e('Caret color', "hipayenterprise"); ?></label>
+                <label class="control-label col-lg-2" for="caretColor">
+                    <?php _e('Caret color', "hipayenterprise"); ?>
+                </label>
                 <div class="col-lg-8">
                     <input class="form-control" type="text"
                            name="caretColor"
@@ -119,7 +133,9 @@
             </div>
 
             <div class="form-group">
-                <label class="control-label col-lg-2"><?php _e('Icon color', "hipayenterprise"); ?></label>
+                <label class="control-label col-lg-2" for="iconColor">
+                    <?php _e('Icon color', "hipayenterprise"); ?>
+                </label>
                 <div class="col-lg-8">
                     <input class="form-control" type="text"
                            name="iconColor"
@@ -136,7 +152,9 @@
         echo "hidden ";
     } ?>hosted_page_config">
         <div class="form-group">
-            <label class="control-label col-lg-2"><?php _e('Display Hosted Page', "hipayenterprise"); ?></label>
+            <label class="control-label col-lg-2" for="display_hosted_page">
+                <?php _e('Display Hosted Page', "hipayenterprise"); ?>
+            </label>
             <div class="col-lg-8">
                 <select class="select form-control" name="display_hosted_page"
                         id="display_hosted_page" style="">
@@ -153,7 +171,9 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-lg-2"><?php _e('Display card selector', "hipayenterprise"); ?></label>
+            <label class="control-label col-lg-2" for="display_card_selector">
+                <?php _e('Display card selector', "hipayenterprise"); ?>
+            </label>
             <div class="col-lg-8">
                 <input class="form-control" type="checkbox" name="display_card_selector"
                        id="display_card_selector" style=""
@@ -164,7 +184,9 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-lg-2"><?php _e('CSS url', "hipayenterprise"); ?></label>
+            <label class="control-label col-lg-2" for="css_url">
+                <?php _e('CSS url', "hipayenterprise"); ?>
+            </label>
             <div class="col-lg-8">
                 <input class="form-control" type="text"
                        name="css_url"
@@ -181,7 +203,9 @@
     </div>
 
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Capture', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="capture_mode">
+            <?php _e('Capture', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
             <select class="select form-control" name="capture_mode"
                     id="capture_mode" style="">
@@ -213,7 +237,9 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Skip on-hold status', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="skip_onhold">
+            <?php _e('Skip on-hold status', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
             <input class="form-control" type="checkbox" name="skip_onhold"
                    id="skip_onhold" style=""
@@ -233,7 +259,9 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Use Oneclick', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="card_token">
+            <?php _e('Use Oneclick', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
             <input class="form-control" type="checkbox" name="card_token"
                    id="card_token" style=""
@@ -244,7 +272,9 @@
     </div>
 
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Customer\'s cart sending', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="activate_basket">
+            <?php _e('Customer\'s cart sending', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
             <input class="form-control" type="checkbox" name="activate_basket"
                    id="activate_basket" style=""
@@ -255,7 +285,9 @@
     </div>
 
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Logs information', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="log_infos">
+            <?php _e('Logs information', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
             <input class="form-control" type="checkbox" name="log_infos"
                    id="log_infos" style=""
@@ -265,7 +297,9 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Send url Notification', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="send_url_notification">
+            <?php _e('Send url Notification', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
             <input class="form-control" type="checkbox" name="send_url_notification"
                    id="send_url_notification" style=""
@@ -275,14 +309,18 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('SDK js url', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="sdk_js_url">
+            <?php _e('SDK js url', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
             <input class="form-control" type="text" name="sdk_js_url"
                    id="sdk_js_url" style=""
                    value="<?php echo $paymentCommon["sdk_js_url"] ?>"/></div>
     </div>
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Activate 3-D Secure', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="activate_3d_secure">
+            <?php _e('Activate 3-D Secure', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
             <select class="select form-control" name="activate_3d_secure"
                     id="activate_3d_secure" style="">
@@ -303,7 +341,9 @@
         </div>
     </div>
     <div class="form-group">
-            <label class="control-label col-lg-2"><?php _e('Display cancel button', "hipayenterprise"); ?></label>
+            <label class="control-label col-lg-2" for="display_cancel_button">
+                <?php _e('Display cancel button', "hipayenterprise"); ?>
+            </label>
             <div class="col-lg-8">
                 <select class="select form-control" name="display_cancel_button"
                         id="display_cancel_button" style="">
