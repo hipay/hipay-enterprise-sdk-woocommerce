@@ -1,6 +1,8 @@
-<div class="form-horizontal">
+<div class="form-horizontal" id="hipay-container-admin">
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Display name', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_methods_displayName<?php echo $method; ?>">
+            <?php _e('Display name', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
             <?php
             if (isset($configurationPaymentMethod["displayName"][substr(get_locale(), 0, 2)])) {
@@ -17,9 +19,11 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Minimum order amount', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_methods_<?php echo $method; ?>_minAmount">
+            <?php _e('Minimum order amount', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
-            <input class="form-control" type="text"
+            <input class="form-control" type="number"
                 name="woocommerce_hipayenterprise_methods_minAmount_<?php echo $method; ?>[EUR]"
                 id="woocommerce_hipayenterprise_methods_<?php echo $method; ?>_minAmount"
                 value="<?php echo $configurationPaymentMethod["minAmount"]["EUR"]; ?>" placeholder=""
@@ -31,9 +35,11 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Maximum order amount', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_methods_<?php echo $method; ?>_maxAmount">
+            <?php _e('Maximum order amount', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
-            <input class="form-control" type="text"
+            <input class="form-control" type="number"
                 name="woocommerce_hipayenterprise_methods_maxAmount_<?php echo $method; ?>[EUR]"
                 id="woocommerce_hipayenterprise_methods_<?php echo $method; ?>_maxAmount"
                 value="<?php echo $configurationPaymentMethod["maxAmount"]["EUR"]; ?>" placeholder=""
@@ -58,8 +64,10 @@
     </div>
     <?php endif; ?>
     <?php if (isset($configurationPaymentMethod["merchantPromotion"])) : ?>
-    <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Merchant Promotion', "hipayenterprise"); ?></label>
+    <div class="form-group" for="woocommerce_hipayenterprise_methods_merchantPromotion_<?php echo $method; ?>">
+        <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_methods_merchantPromotion_<?php echo $method; ?>">
+            <?php _e('Merchant Promotion', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
             <input name="woocommerce_hipayenterprise_methods_merchantPromotion_<?php echo $method; ?>"
                 id="woocommerce_hipayenterprise_methods_merchantPromotion_<?php echo $method; ?>"
@@ -68,7 +76,9 @@
     </div>
     <?php endif; ?>
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Currencies', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_methods_currencies__currencies">
+            <?php _e('Currencies', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
             <?php if ($configurationPaymentMethod["currencySelectorReadOnly"]) : ?>
                 <?php foreach ($configurationPaymentMethod["currencies"] as $currency) : ?>
@@ -79,7 +89,7 @@
             <?php else : ?>
                 <?php
                 $activatedCurrencies = get_woocommerce_currency();
-                echo '<input class="form-control" type="checkbox" name="woocommerce_hipayenterprise_methods_currencies_' .
+                echo '<input style="float:left" class="form-control" type="checkbox" name="woocommerce_hipayenterprise_methods_currencies_' .
                     $method . '[]" id="woocommerce_hipayenterprise_methods_currencies_' . '_currencies" style="" value="' .
                     $activatedCurrencies .
                     '"';
@@ -87,13 +97,15 @@
                     array_search($activatedCurrencies, $configurationPaymentMethod["currencies"]) !== false) {
                     echo ' checked="checked"';
                 }
-                echo "><span style='padding-right:18px;'>" . $activatedCurrencies . "</span>";
+                echo "><span style='padding:7px 10px;float:left'>" . $activatedCurrencies . "</span>";
                 ?>
             <?php endif; ?>
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Countries', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_methods<?php echo $method; ?>countries">
+            <?php _e('Countries', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
             <?php if ($configurationPaymentMethod["countrySelectorReadOnly"]) : ?>
                 <?php foreach ($configurationPaymentMethod["countries"] as $country) : ?>

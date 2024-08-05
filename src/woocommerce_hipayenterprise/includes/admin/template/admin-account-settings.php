@@ -5,7 +5,9 @@
 
 <div class="form-horizontal">
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Sandbox', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_sandbox">
+            <?php _e('Sandbox', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
             <input class="form-control" type="checkbox"
                    name="woocommerce_hipayenterprise_sandbox"
@@ -32,7 +34,9 @@
 
     <div class="form-horizontal">
         <div class="form-group">
-            <label class="control-label col-lg-2"><?php _e('Username', "hipayenterprise"); ?></label>
+            <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_account_production_username">
+                <?php _e('Username', "hipayenterprise"); ?>
+            </label>
             <div class="col-lg-8">
                 <input class="form-control" type="text"
                        name="woocommerce_hipayenterprise_account_production_username"
@@ -41,7 +45,9 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-lg-2"><?php _e('Password', "hipayenterprise"); ?></label>
+            <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_account_production_password">
+                <?php _e('Password', "hipayenterprise"); ?>
+            </label>
             <div class="col-lg-8">
                 <input class="form-control" type="password"
                        name="woocommerce_hipayenterprise_account_production_password"
@@ -51,7 +57,9 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-lg-2"><?php _e('Secret passphrase', "hipayenterprise"); ?></label>
+            <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_account_production_secret_passphrase">
+                <?php _e('Secret passphrase', "hipayenterprise"); ?>
+            </label>
             <div class="col-lg-8">
                 <div class="uk-inline">
                     <input class="form-control" type="password"
@@ -63,7 +71,9 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-lg-2"><?php _e('Tokenization (Public)', "hipayenterprise"); ?></label>
+            <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_account_production_tokenjs_username">
+                <?php _e('Tokenization (Public)', "hipayenterprise"); ?>
+            </label>
             <div class="col-lg-8">
                 <input class="form-control" type="text"
                        name="woocommerce_hipayenterprise_account_production_tokenjs_username"
@@ -73,7 +83,9 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-lg-2"><?php _e('Password', "hipayenterprise"); ?></label>
+            <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_account_production_password_publickey">
+                <?php _e('Password', "hipayenterprise"); ?>
+            </label>
             <div class="col-lg-8">
                 <input class="form-control" type="text"
                        name="woocommerce_hipayenterprise_account_production_password_publickey"
@@ -93,7 +105,9 @@
 
 <div class="form-horizontal">
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Username', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_account_sandbox_username">
+            <?php _e('Username', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
             <input class="form-control" type="text"
                    name="woocommerce_hipayenterprise_account_sandbox_username"
@@ -102,7 +116,9 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Password', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_account_sandbox_password">
+            <?php _e('Password', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
             <input class="form-control" type="password"
                    name="woocommerce_hipayenterprise_account_sandbox_password"
@@ -111,7 +127,9 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Secret passphrase', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_account_sandbox_secret_passphrase">
+            <?php _e('Secret passphrase', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
             <input class="form-control" type="password"
                    name="woocommerce_hipayenterprise_account_sandbox_secret_passphrase"
@@ -120,7 +138,9 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Tokenization (Public)', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_account_sandbox_tokenjs_username">
+            <?php _e('Tokenization (Public)', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
             <input class="form-control" type="text"
                    name="woocommerce_hipayenterprise_account_sandbox_tokenjs_username"
@@ -129,7 +149,9 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Password', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_account_sandbox_password_publickey">
+            <?php _e('Password', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
             <input class="form-control" type="text"
                    name="woocommerce_hipayenterprise_account_sandbox_password_publickey"
