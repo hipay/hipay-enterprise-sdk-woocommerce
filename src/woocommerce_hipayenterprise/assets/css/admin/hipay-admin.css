@@ -1,132 +1,177 @@
 .bg-primary-hipay {
-  background-color: #28a1c5;
-  color: #ffffff;
+    background-color: #2c0a64;
+    color: #FFFFFF;
 }
 
 .panel-primary-hipay {
-  border-color: #28a1c5 !important;
+    border-color: #2c0a64!important;
 }
 
 .panel-primary-hipay > .panel-heading {
-  color: #fff !important;
-  background-color: #28a1c5 !important;
-  border-color: #28a1c5 !important;
+    color: #fff!important;
+    background-color: #2c0a64!important;
+    border-color: #2c0a64!important;
 }
 
 #version-plugin {
-  padding: 15px;
+    padding: 15px;
 }
 
 #hipay-container-admin {
-  margin-top: 20px;
+    margin-top: 20px;
 }
 
 #hipay-container-admin ul {
-  list-style: inherit;
+    list-style: inherit;
 }
 
 #hipay-container-admin #accordion-faq ul {
-  list-style: none;
+    list-style: none;
 }
 
 #hipay-container-admin ul.hipay-local-payment-list {
-  margin: 20px;
+    margin: 20px;
 }
 
 #hipay-container-admin .help-block {
-  font-style: italic;
-  padding: 10px;
+    font-style: italic;
+    padding: 10px;
 }
 
 .is_pointer {
-  cursor: pointer;
+    cursor: pointer;
 }
 
-.woocommerce_hipayenterprise_methods_cc_countries,
-.woocommerce_hipayenterprise_methods_cc_countries_available,
-.woocommerce_hipayenterprise_methods_lp_countries,
-.woocommerce_hipayenterprise_methods_lp_countries_available {
-  min-width: 180px !important;
-  min-height: 120px;
+.woocommerce_hipayenterprise_methods_cc_countries, .woocommerce_hipayenterprise_methods_cc_countries_available, .woocommerce_hipayenterprise_methods_lp_countries, .woocommerce_hipayenterprise_methods_lp_countries_available {
+    min-width: 180px !important;
+    min-height: 120px;
 }
 
-.tab .nav-tabs a:hover,
-.tab .nav-tabs a:focus {
-  text-decoration: none;
-  outline: none;
-  background-color: inherit;
+.tab .nav-tabs a:hover, .tab .nav-tabs a:focus {
+    text-decoration: none;
+    outline: none;
+    background-color: inherit;
 }
 
 .tab .nav-tabs {
-  border: none;
-  border-bottom: 2px solid #079fc9;
-  margin: 0;
+    border: none;
+    border-bottom: 2px solid #2c0a64;
+    margin: 0;
 }
 
 .tab .nav-tabs li a {
-  padding: 10px 20px;
-  margin: 0 10px -1px 0;
-  font-size: 17px;
-  font-weight: 600;
-  color: #293241;
-  text-transform: uppercase;
-  border: 2px solid #e6e5e1;
-  border-bottom: none;
-  border-radius: 5px 5px 0 0;
-  z-index: 1;
-  position: relative;
-  transition: all 0.3s ease 0s;
+    padding: 10px 20px;
+    margin: 0 10px -1px 0;
+    font-size: 17px;
+    font-weight: 600;
+    color: #293241;
+    text-transform: uppercase;
+    border: 2px solid #e6e5e1;
+    border-bottom: none;
+    border-radius: 5px 5px 0 0;
+    z-index: 1;
+    position: relative;
+    transition: all 0.3s ease 0s;
 }
 
 .tab .nav-tabs li a:hover,
 .tab .nav-tabs li.active a {
-  background: #fff;
-  color: #079fc9;
-  border: 2px solid #079fc9;
-  border-bottom-color: transparent;
+    background: #fff;
+    color: #2c0a64;
+    border: 2px solid #2c0a64;
+    border-bottom-color: transparent;
 }
 
 .tab .nav-tabs li a:before {
-  content: '';
-  display: block;
-  height: 2px;
-  background: #fff;
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  right: 0;
-  transform: scaleX(0);
-  transition: all 0.3s ease-in-out 0s;
+    content: "";
+    display: block;
+    height: 2px;
+    background: #fff;
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    transform: scaleX(0);
+    transition: all 0.3s ease-in-out 0s;
 }
 
 .tab .nav-tabs li.active a:before,
 .tab .nav-tabs li a:hover:before {
-  transform: scaleX(1);
+    transform: scaleX(1);
 }
 
 .tab .tab-content {
-  padding: 10px;
-  position: relative;
+    padding: 10px;
+    position: relative;
 }
 
 /* ORDER STYLES */
-#woocommerce-order-items
-  .woocommerce_order_items_wrapper
-  table.woocommerce_order_items
-  small.captured {
-  display: block;
-  color: #17aa00;
-  white-space: nowrap;
-  margin-top: 0.5em;
-  text-align: center;
+#woocommerce-order-items .woocommerce_order_items_wrapper table.woocommerce_order_items small.captured {
+    display: block;
+    color: #17aa00;
+    white-space: nowrap;
+    margin-top: .5em;
+    text-align: center;
 }
 
 #woocommerce-order-items tr.hipay-captured td {
-  padding: 0 !important;
+    padding: 0 !important;
 }
 
-select.readonly,
-input.readonly {
-  background-color: #f0f0f1;
-  pointer-events: none;
+.nav-pills>li.active>a {
+    background-color: #2c0a64 !important;
 }
+
+#hipay-container-admin input[type=checkbox] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    line-height: 19px;
+    border: 2px solid #2c0a64;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top:6px;
+}
+
+#hipay-container-admin input[type=checkbox]:checked {
+    background-color: #2c0a64;
+    position: relative;
+}
+
+#hipay-container-admin input[type=checkbox]:checked::before {
+    content: '\2714';
+    font-size: 16px;
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 64%;
+    transform: translate(-50%, -50%);
+}
+
+#hipay-container-admin input[type=checkbox]:hover {
+    border-color: #2980b9;
+}
+
+#hipay-container-admin input[type=checkbox]:checked:hover {
+    background-color: #2980b9;
+}
+
+#hipay-container-admin input[type=checkbox] + label {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #333;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+#hipay-container-admin .panel-default .form-control {
+    margin-top: 7px;
+}
+
+#woocommerce_hipayenterprise_ccDisplayName {
+    margin-top: 0 !important;
+}
+
