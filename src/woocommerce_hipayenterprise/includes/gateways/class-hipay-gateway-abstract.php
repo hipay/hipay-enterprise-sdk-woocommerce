@@ -147,7 +147,7 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
                 "placeholderColor" => $this->confHelper->getHostedFieldsStyle()["placeholderColor"],
                 "caretColor" => $this->confHelper->getHostedFieldsStyle()["caretColor"],
                 "iconColor" => $this->confHelper->getHostedFieldsStyle()["iconColor"],
-                "merchantId" => $this->confHelper->getLocalPayment($this->paymentProduct)["merchantId"]
+                "merchantId" => $this->confHelper->getLocalPayment($this->paymentProduct)["merchantId"] ?? null
             )
         );
     }
