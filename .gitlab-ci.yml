@@ -135,6 +135,7 @@ package:
 build:
   <<: *login-to-registry
   stage: build
+  needs: []
   image:
     name: gcr.io/kaniko-project/executor:v1.6.0-debug
   rules:
