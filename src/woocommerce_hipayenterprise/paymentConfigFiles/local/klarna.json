@@ -12,8 +12,7 @@
       "displayName",
       "minAmount",
       "maxAmount",
-      "countries",
-      "merchantPromotion"
+      "countries"
     ],
     "countrySelectorReadOnly": 1,
     "currencySelectorReadOnly": 1,
@@ -24,7 +23,6 @@
     "maxAmount": {
       "EUR": false
     },
-    "merchantPromotion": false,
     "logo": "klarna.png"
   }
 }

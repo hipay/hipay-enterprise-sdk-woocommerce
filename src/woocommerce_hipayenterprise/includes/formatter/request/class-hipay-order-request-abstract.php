@@ -192,6 +192,7 @@ abstract class Hipay_Order_Request_Abstract extends Hipay_Api_Formatter_Abstact
         $description = ''; // Initialize to blank
         $products = $this->order->get_items();
         foreach ($products as $product) {
+            var_dump($product ['product_id']);
             $description .= 'ref_' . $product ['product_id'] . ', ';
         }
 
