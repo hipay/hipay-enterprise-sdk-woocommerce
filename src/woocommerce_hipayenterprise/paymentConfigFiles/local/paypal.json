@@ -13,7 +13,6 @@
       "minAmount",
       "maxAmount",
       "countries",
-      "merchantId",
       "buttonShape",
       "buttonColor",
       "buttonHeight",
@@ -26,7 +25,6 @@
     "buttonColor": "white",
     "buttonHeight": "40",
     "buttonLabel" : "pay",
-    "merchantId": "",
     "bnpl": true,
     "minAmount": {
       "EUR": 0
