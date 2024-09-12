@@ -175,3 +175,37 @@
     margin-top: 0 !important;
 }
 
+.readonly {
+    opacity: 0.7;
+    pointer-events: none;
+    user-select: none;
+    background-color: #f0f0f1 !important;
+}
+
+.paypalv2.alert-info {
+    background-color: #e1f5fe;
+    border-left: 4px solid #03a9f4;
+    color: #0277bd;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+.paypalv2.alert-info b {
+    color: #01579b;
+    font-size: 1.1em;
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+.paypalv2.alert-info b:first-child {
+    background-color: #03a9f4;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 0.9em;
+    margin-right: 10px;
+}

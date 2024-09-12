@@ -60,6 +60,9 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
         if ($methodConf["canRefund"]) {
             $this->supports[] = "refunds";
         }
+        if (isset($_GET['section']) && preg_match("/^hipayenterprise_paypal/", $_GET['section'])) {
+            $this->availablePayment = new Hipay_Available_Payment($this->confHelper);
+        }
     }
 
     public function isAvailable()
@@ -118,6 +121,8 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
             'admin',
             array(
                 'configurationPaymentMethod' => $this->confHelper->getLocalPayment($this->paymentProduct),
+                'isPayPalV2' => $this->availablePayment
+                    ? $this->availablePayment->getAvailablePaymentProducts('paypal') : null,
                 'method' => $this->paymentProduct
             )
         );

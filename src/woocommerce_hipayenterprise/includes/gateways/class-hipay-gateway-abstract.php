@@ -79,6 +79,11 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
     protected $sandbox;
 
     /**
+     * @var Hipay_Available_Payment
+     */
+    protected $availablePayment;
+
+    /**
      * Hipay_Gateway_Abstract constructor.
      */
     public function __construct()
