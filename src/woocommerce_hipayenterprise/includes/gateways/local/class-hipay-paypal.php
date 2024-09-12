@@ -45,7 +45,7 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
 
         $paymentProductConfig = $this->confHelper->getLocalPayment($this->paymentProduct);
 
-        if ($this->isPaypalV2($paymentProductConfig)) {
+        if ($this->isPaypalV2()) {
             $this->enqueuePaypalScripts($paymentProductConfig);
         }
     }
@@ -94,7 +94,6 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
             'placeholderColor' => $this->confHelper->getHostedFieldsStyle()['placeholderColor'],
             'caretColor' => $this->confHelper->getHostedFieldsStyle()['caretColor'],
             'iconColor' => $this->confHelper->getHostedFieldsStyle()['iconColor'],
-            'merchantId' => $paymentProductConfig['merchantId'],
             'buttonShape' => $paymentProductConfig['buttonShape'],
             'buttonColor' => $paymentProductConfig['buttonColor'],
             'buttonLabel' => $paymentProductConfig['buttonLabel'],
@@ -125,23 +124,27 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
     /**
      * Get local payment method template.
      *
-     * @param array $configLocalPayment
      * @return string
+     * @throws Exception
      */
-    private function getLocalPaymentMethodTemplate(array $configLocalPayment)
+    private function getLocalPaymentMethodTemplate()
     {
-        return $this->isPaypalV2($configLocalPayment) ? 'local-paypal.php' : 'local-payment.php';
+        return $this->isPaypalV2() ? 'local-paypal.php' : 'local-payment.php';
     }
 
     /**
      * Check if it's PayPal v2.
      *
-     * @param array $configLocalPayment
      * @return bool
+     * @throws Exception
      */
-    private function isPaypalV2(array $configLocalPayment)
+    private function isPaypalV2()
     {
-        return !empty($configLocalPayment['merchantId']) && $configLocalPayment['productCode'] === 'paypal';
+        $paypalOptions = Hipay_Available_Payment::getInstance($this->confHelper)
+            ->getAvailablePaymentProducts('paypal')[0]['options'] ?? [];
+
+        return !empty($paypalOptions['provider_architecture_version'])
+            && !empty($paypalOptions['payer_id']);
     }
 
     /**

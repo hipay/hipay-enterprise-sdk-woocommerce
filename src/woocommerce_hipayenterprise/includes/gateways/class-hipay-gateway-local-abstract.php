@@ -60,8 +60,9 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
         if ($methodConf["canRefund"]) {
             $this->supports[] = "refunds";
         }
+
         if (isset($_GET['section']) && preg_match("/^hipayenterprise_paypal/", $_GET['section'])) {
-            $this->availablePayment = new Hipay_Available_Payment($this->confHelper);
+            $this->availablePayment = Hipay_Available_Payment::getInstance($this->confHelper);
         }
     }
 

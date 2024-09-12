@@ -20,13 +20,12 @@ jQuery(document).ready(($) => {
             const { submitButton } = selectors;
             const placeOrderButton = $('#payment .place-order .button');
 
-            if (method === 'paypal' && hipay_config.merchantId) {
+            if (method === 'paypal') {
                 placeOrderButton.remove();
             } else if (!placeOrderButton.length) {
                 $('#payment .place-order').append(submitButton);
             }
         };
-
         const destroyMethods = (methodsInstance) => {
             Object.values(methodsInstance).forEach((method) => {
                 if (method) {
@@ -53,7 +52,7 @@ jQuery(document).ready(($) => {
             const method = checkoutUtils.getSelectedMethod();
             checkoutUtils.handleSubmitButton(method, selectors);
 
-            if (method === 'paypal' && hipay_config.merchantId) {
+            if (method === 'paypal') {
                 methodsInstance[method] = createPaypalInstance(method);
                 handlePaypalEvents(methodsInstance[method], selectors.checkoutForm);
             }
@@ -81,7 +80,6 @@ jQuery(document).ready(($) => {
                     label: hipay_config.buttonLabel
                 },
                 selector: 'paypal-field',
-                merchantPaypalId: hipay_config.merchantId,
                 canPayLater: Boolean(hipay_config.bnpl)
             };
 
@@ -119,15 +117,7 @@ jQuery(document).ready(($) => {
 
     const checkoutEventHandlers = (() => {
         let pageLoaded = false;
-        const selectedMethod = checkoutUtils.getSelectedMethod();
         const selectors = checkoutUtils.cacheSelectors();
-
-        const handlePaymentMethodChange = () => {
-            if (selectedMethod !== 'paypal') {
-                paypalIntegration.updateMethods(selectors);
-            }
-            pageLoaded = true;
-        };
 
         const handleOrderReviewUpdate = () => {
             paypalIntegration.updateMethods(selectors);
@@ -136,16 +126,6 @@ jQuery(document).ready(($) => {
         };
 
         const bindEvents = () => {
-            $(document.body).on('payment_method_selected', () => {
-                if (pageLoaded) {
-                    paypalIntegration.updateMethods(selectors);
-                }
-            });
-
-            $(document).ready(() => {
-                $(document.body).on('payment_method_selected', handlePaymentMethodChange);
-            });
-
             $(document).ajaxComplete((event, xhr, settings) => {
                 if (settings.url.includes('update_order_review')) {
                     handleOrderReviewUpdate();
