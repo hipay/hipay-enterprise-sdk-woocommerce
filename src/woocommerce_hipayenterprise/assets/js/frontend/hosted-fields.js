@@ -497,7 +497,7 @@ jQuery(function ($) {
 
   function isPayPalV2()
   {
-    return hipay_config.merchantId != null && getSelectedMethod === 'paypal';
+    return (paypal_version.v2 !== null && getSelectedMethod() === 'paypal');
   }
 
   $(document.body).on('updated_checkout', function () {

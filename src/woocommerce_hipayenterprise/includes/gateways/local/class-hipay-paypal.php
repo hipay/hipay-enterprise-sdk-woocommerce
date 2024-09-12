@@ -71,6 +71,13 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
                 'hipay_config',
                 $this->getPaypalScriptData($paymentProductConfig)
             );
+
+            wp_localize_script(
+                'hipay-js-front-paypal',
+                'paypal_version',
+                ['v2' => $this->isPaypalV2()]
+            );
+
         }
     }
 
@@ -110,7 +117,7 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
      */
     public function payment_fields()
     {
-        $template = $this->getLocalPaymentMethodTemplate($this->confHelper->getLocalPayment($this->paymentProduct));
+        $template = $this->getLocalPaymentMethodTemplate();
         $this->process_template(
             $template,
             'frontend',

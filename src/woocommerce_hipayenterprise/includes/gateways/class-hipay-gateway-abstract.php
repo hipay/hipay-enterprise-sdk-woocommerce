@@ -137,6 +137,7 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
             : $this->confHelper->getAccount()["production"]["api_tokenjs_password_publickey_production"];
 
 
+
         wp_localize_script(
             'hipay-js-front',
             'hipay_config',
@@ -151,9 +152,18 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
                 "fontWeight" => $this->confHelper->getHostedFieldsStyle()["fontWeight"],
                 "placeholderColor" => $this->confHelper->getHostedFieldsStyle()["placeholderColor"],
                 "caretColor" => $this->confHelper->getHostedFieldsStyle()["caretColor"],
-                "iconColor" => $this->confHelper->getHostedFieldsStyle()["iconColor"],
-                "merchantId" => $this->confHelper->getLocalPayment($this->paymentProduct)["merchantId"]
+                "iconColor" => $this->confHelper->getHostedFieldsStyle()["iconColor"]
             )
+        );
+
+        $paypalOptions = Hipay_Available_Payment::getInstance($this->confHelper)
+            ->getAvailablePaymentProducts('paypal')[0]['options'] ?? [];
+
+        wp_localize_script(
+            'hipay-js-front',
+            'paypal_version',
+            ['v2' => !empty($paypalOptions['provider_architecture_version'])
+                && !empty($paypalOptions['payer_id'])]
         );
     }
 
