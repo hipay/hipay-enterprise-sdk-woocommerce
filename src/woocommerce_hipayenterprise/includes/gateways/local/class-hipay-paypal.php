@@ -117,9 +117,8 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
      */
     public function payment_fields()
     {
-        $template = $this->getLocalPaymentMethodTemplate();
         $this->process_template(
-            $template,
+            $this->getLocalPaymentMethodTemplate(),
             'frontend',
             [
                 'localPaymentName' => $this->paymentProduct,
@@ -137,21 +136,6 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
     private function getLocalPaymentMethodTemplate()
     {
         return $this->isPaypalV2() ? 'local-paypal.php' : 'local-payment.php';
-    }
-
-    /**
-     * Check if it's PayPal v2.
-     *
-     * @return bool
-     * @throws Exception
-     */
-    private function isPaypalV2()
-    {
-        $paypalOptions = Hipay_Available_Payment::getInstance($this->confHelper)
-            ->getAvailablePaymentProducts('paypal')[0]['options'] ?? [];
-
-        return !empty($paypalOptions['provider_architecture_version'])
-            && !empty($paypalOptions['payer_id']);
     }
 
     /**
@@ -237,14 +221,4 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
         return $additionalFields;
     }
 
-    /**
-     * Check if force sales mode is enabled.
-     *
-     * @param array $configLocalPayment
-     * @return bool
-     */
-    private function forceSalesMode(array $configLocalPayment)
-    {
-        return !$configLocalPayment['canManualCapture'];
-    }
 }

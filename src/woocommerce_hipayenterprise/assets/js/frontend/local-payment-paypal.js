@@ -141,12 +141,8 @@ jQuery(document).ready(($) => {
                 }
             });
 
-            $(document).ready(() => {
-                $(document.body).on('payment_method_selected', handlePaymentMethodChange);
-            });
-
             $(document).ajaxComplete((event, xhr, settings) => {
-                if (settings.url.includes('update_order_review')) {
+                if (settings.url?.includes('update_order_review')) {
                     handleOrderReviewUpdate();
                 }
             });
