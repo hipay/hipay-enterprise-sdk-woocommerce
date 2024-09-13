@@ -497,7 +497,7 @@ jQuery(function ($) {
 
   function isPayPalV2()
   {
-    return (paypal_version.v2 !== null && getSelectedMethod() === 'paypal');
+    return (paypal_version.v2 === '1' && getSelectedMethod() === 'paypal');
   }
 
   $(document.body).on('updated_checkout', function () {

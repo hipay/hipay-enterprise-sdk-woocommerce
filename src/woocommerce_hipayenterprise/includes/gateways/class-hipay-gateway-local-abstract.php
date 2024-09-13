@@ -116,18 +116,13 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
      */
     public function generate_methods_local_payments_settings_html()
     {
-        $paypalOptions = $this->availablePayment->getAvailablePaymentProducts('paypal')[0]['options'] ?? [];
-
-        $isPayPalV2 = !empty($paypalOptions['provider_architecture_version'])
-            && !empty($paypalOptions['payer_id']);
-
         ob_start();
         $this->process_template(
             'admin-paymentlocal-settings.php',
             'admin',
             [
                 'configurationPaymentMethod' => $this->confHelper->getLocalPayment($this->paymentProduct),
-                'isPayPalV2' => $isPayPalV2,
+                'isPayPalV2' => $this->isPaypalV2(),
                 'method' => $this->paymentProduct
             ]
         );
@@ -171,8 +166,29 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
         }
     }
 
-    private function forceSalesMode()
+    protected function forceSalesMode()
     {
         return !$this->confHelper->getLocalPayment($this->paymentProduct)["canManualCapture"];
+    }
+
+    /**
+     * Check if it's PayPal v2.
+     *
+     * @return bool
+     * @throws Exception
+     */
+    protected function isPaypalV2()
+    {
+        $paypalOptions = Hipay_Available_Payment::getInstance($this->confHelper)
+            ->getAvailablePaymentProducts('paypal')[0]['options'] ?? [];
+
+        return !empty($paypalOptions['provider_architecture_version'])
+            && !empty($paypalOptions['payer_id'])
+            && $this->getOperatingMode() == OperatingMode::HOSTED_FIELDS;
+    }
+
+    protected function getOperatingMode()
+    {
+        return $this->confHelper->getPaymentGlobal()['operating_mode'];
     }
 }
