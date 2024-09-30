@@ -34,5 +34,5 @@ jQuery(function ($) {
     enable_search: false,
     non_selected_header: hipay_config_i18n.available_countries,
     selected_header: hipay_config_i18n.authorized_countries
-  });git
+  });
 });
