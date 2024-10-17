@@ -158,6 +158,8 @@ deploy2recette:
   image: $REGISTRY_CI/gitlab-ci-base:deployment
   variables:
     GPC_ACCOUNT: ""
+  needs:
+    - build
   script:
     - echo $RELEASE_NAME
     - >
@@ -191,9 +193,16 @@ stop_review:
   image: $REGISTRY_CI/gitlab-ci-base:deployment
   variables:
     GIT_STRATEGY: none
+  needs:
+    - deploy2recette
   script:
     - helm uninstall $RELEASE_NAME --namespace=default
   when: manual
+  rules:
+    - if: $ONLY_DEPLOY
+      when: on_success
+    - if: $CI_PIPELINE_SOURCE == "push"
+      when: manual
   environment:
     name: review/${CI_COMMIT_REF_SLUG}
     action: stop
