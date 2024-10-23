@@ -60,6 +60,10 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
         if ($methodConf["canRefund"]) {
             $this->supports[] = "refunds";
         }
+
+        if (isset($_GET['section']) && preg_match("/^hipayenterprise_paypal/", $_GET['section'])) {
+            $this->availablePayment = Hipay_Available_Payment::getInstance($this->confHelper);
+        }
     }
 
     public function isAvailable()
@@ -116,10 +120,11 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
         $this->process_template(
             'admin-paymentlocal-settings.php',
             'admin',
-            array(
+            [
                 'configurationPaymentMethod' => $this->confHelper->getLocalPayment($this->paymentProduct),
+                'isPayPalV2' => $this->isPaypalV2(),
                 'method' => $this->paymentProduct
-            )
+            ]
         );
 
         return ob_get_clean();
@@ -161,8 +166,30 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
         }
     }
 
-    private function forceSalesMode()
+    protected function forceSalesMode()
     {
         return !$this->confHelper->getLocalPayment($this->paymentProduct)["canManualCapture"];
+    }
+
+    /**
+     * Check if it's PayPal v2.
+     *
+     * @return bool
+     * @throws Exception
+     */
+    protected function isPaypalV2()
+    {
+        $paypalOptions = Hipay_Available_Payment::getInstance($this->confHelper)
+            ->getAvailablePaymentProducts('paypal')[0]['options'] ?? [];
+
+        return !empty($paypalOptions['provider_architecture_version'])
+            && $paypalOptions['provider_architecture_version'] === 'v1'
+            && !empty($paypalOptions['payer_id'])
+            && $this->getOperatingMode() == OperatingMode::HOSTED_FIELDS;
+    }
+
+    protected function getOperatingMode()
+    {
+        return $this->confHelper->getPaymentGlobal()['operating_mode'];
     }
 }

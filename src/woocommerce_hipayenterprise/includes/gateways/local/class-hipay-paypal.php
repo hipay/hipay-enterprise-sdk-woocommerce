@@ -45,7 +45,7 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
 
         $paymentProductConfig = $this->confHelper->getLocalPayment($this->paymentProduct);
 
-        if ($this->isPaypalV2($paymentProductConfig)) {
+        if ($this->isPaypalV2()) {
             $this->enqueuePaypalScripts($paymentProductConfig);
         }
     }
@@ -71,6 +71,13 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
                 'hipay_config',
                 $this->getPaypalScriptData($paymentProductConfig)
             );
+
+            wp_localize_script(
+                'hipay-js-front-paypal',
+                'paypal_version',
+                ['v2' => $this->isPaypalV2()]
+            );
+
         }
     }
 
@@ -94,7 +101,6 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
             'placeholderColor' => $this->confHelper->getHostedFieldsStyle()['placeholderColor'],
             'caretColor' => $this->confHelper->getHostedFieldsStyle()['caretColor'],
             'iconColor' => $this->confHelper->getHostedFieldsStyle()['iconColor'],
-            'merchantId' => $paymentProductConfig['merchantId'],
             'buttonShape' => $paymentProductConfig['buttonShape'],
             'buttonColor' => $paymentProductConfig['buttonColor'],
             'buttonLabel' => $paymentProductConfig['buttonLabel'],
@@ -111,9 +117,8 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
      */
     public function payment_fields()
     {
-        $template = $this->getLocalPaymentMethodTemplate($this->confHelper->getLocalPayment($this->paymentProduct));
         $this->process_template(
-            $template,
+            $this->getLocalPaymentMethodTemplate(),
             'frontend',
             [
                 'localPaymentName' => $this->paymentProduct,
@@ -125,23 +130,12 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
     /**
      * Get local payment method template.
      *
-     * @param array $configLocalPayment
      * @return string
+     * @throws Exception
      */
-    private function getLocalPaymentMethodTemplate(array $configLocalPayment)
+    private function getLocalPaymentMethodTemplate()
     {
-        return $this->isPaypalV2($configLocalPayment) ? 'local-paypal.php' : 'local-payment.php';
-    }
-
-    /**
-     * Check if it's PayPal v2.
-     *
-     * @param array $configLocalPayment
-     * @return bool
-     */
-    private function isPaypalV2(array $configLocalPayment)
-    {
-        return !empty($configLocalPayment['merchantId']) && $configLocalPayment['productCode'] === 'paypal';
+        return $this->isPaypalV2() ? 'local-paypal.php' : 'local-payment.php';
     }
 
     /**
@@ -227,14 +221,4 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
         return $additionalFields;
     }
 
-    /**
-     * Check if force sales mode is enabled.
-     *
-     * @param array $configLocalPayment
-     * @return bool
-     */
-    private function forceSalesMode(array $configLocalPayment)
-    {
-        return !$configLocalPayment['canManualCapture'];
-    }
 }
