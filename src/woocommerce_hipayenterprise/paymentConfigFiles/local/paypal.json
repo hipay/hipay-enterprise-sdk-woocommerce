@@ -22,9 +22,9 @@
     "currencySelectorReadOnly": 0,
     "forceBasket": 0,
     "buttonShape": "rect",
-    "buttonColor": "white",
+    "buttonColor": "gold",
     "buttonHeight": "40",
-    "buttonLabel" : "pay",
+    "buttonLabel": "pay",
     "bnpl": true,
     "minAmount": {
       "EUR": 0
