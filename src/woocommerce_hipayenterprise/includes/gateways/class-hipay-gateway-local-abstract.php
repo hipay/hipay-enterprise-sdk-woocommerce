@@ -183,6 +183,7 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
             ->getAvailablePaymentProducts('paypal')[0]['options'] ?? [];
 
         return !empty($paypalOptions['provider_architecture_version'])
+            && $paypalOptions['provider_architecture_version'] === 'v1'
             && !empty($paypalOptions['payer_id'])
             && $this->getOperatingMode() == OperatingMode::HOSTED_FIELDS;
     }
