@@ -40,10 +40,8 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
             $this->title = $methodConf["displayName"]['en'];
         }
 
-        if (isset($methodConf["logo"])) {
-            if (file_exists(WC_HIPAYENTERPRISE_PATH_ASSETS . "/local_payments_images/" . $methodConf["logo"])) {
-                $this->icon = WC_HIPAYENTERPRISE_URL_ASSETS . "/local_payments_images/" . $methodConf["logo"];
-            }
+        if (isset($methodConf["logo"]) && file_exists(WC_HIPAYENTERPRISE_PATH_ASSETS . "local_payments_images/" . $methodConf["logo"])) {
+            $this->icon = WC_HIPAYENTERPRISE_URL_ASSETS . "local_payments_images/" . $methodConf["logo"];
         }
 
         $this->init_form_fields();
@@ -64,7 +62,7 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
 
     public function isAvailable()
     {
-        return ('yes' === $this->enabled);
+        return 'yes' === $this->enabled;
     }
 
     public function payment_fields()

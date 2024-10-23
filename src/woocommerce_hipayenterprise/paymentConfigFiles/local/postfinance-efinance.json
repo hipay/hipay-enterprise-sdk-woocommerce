@@ -12,9 +12,7 @@
     },
     "frontPosition": 22,
     "activated": 0,
-    "currencies": [
-      "EUR"
-    ],
+    "currencies": ["EUR"],
     "displayConfigurationFields": [
       "displayName",
       "minAmount",
@@ -30,6 +28,6 @@
     "maxAmount": {
       "EUR": false
     },
-    "logo": "postfinance-efinance.png"
+    "logo": "postfinance-efinance.svg"
   }
 }
