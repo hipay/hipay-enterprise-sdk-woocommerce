@@ -136,7 +136,7 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
 
             $params = array(
                 "order_id" => $order_id,
-                "paymentProduct" => $this->paymentProduct,
+                "paymentProduct" => Hipay_Helper::getPostData($this->paymentProduct.'-payment_product', $this->paymentProduct),
                 "forceSalesMode" => $this->forceSalesMode(),
                 "deviceFingerprint" => Hipay_Helper::getPostData($this->paymentProduct.'-device_fingerprint'),
                 "phone" => json_decode(Hipay_Helper::getPostData($this->paymentProduct.'-phone'))
