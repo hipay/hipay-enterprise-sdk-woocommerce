@@ -163,6 +163,7 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
             'hipay-js-front',
             'paypal_version',
             ['v2' => !empty($paypalOptions['provider_architecture_version'])
+                && $paypalOptions['provider_architecture_version'] === 'v1'
                 && !empty($paypalOptions['payer_id'])]
         );
     }
