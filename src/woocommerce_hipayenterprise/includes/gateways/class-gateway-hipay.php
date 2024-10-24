@@ -55,7 +55,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
             );
 
             $this->has_fields = true;
-            $this->icon = WC_HIPAYENTERPRISE_URL_ASSETS . '/images/credit_card.png';
+            $this->icon = WC_HIPAYENTERPRISE_URL_ASSETS . 'images/credit_card.png';
             $this->method_title = __('HiPay Enterprise Credit Card', "hipayenterprise");
 
             $this->method_description = __(
@@ -76,7 +76,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
             $this->logs = new Hipay_Log($this);
             $this->apiRequestHandler = new Hipay_Api_Request_Handler($this);
             $this->settingsHandler = new Hipay_Settings_Handler($this);
-            $this->icon = WC_HIPAYENTERPRISE_URL_ASSETS . '/images/credit_card.png';
+            $this->icon = WC_HIPAYENTERPRISE_URL_ASSETS . 'images/credit_card.png';
 
             if ($this->confHelper->getPaymentGlobal()["card_token"]) {
                 $this->supports[] = 'tokenization';
@@ -85,7 +85,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
         public function isAvailable()
         {
-            return ('yes' === $this->enabled);
+            return 'yes' === $this->enabled;
         }
 
         /**

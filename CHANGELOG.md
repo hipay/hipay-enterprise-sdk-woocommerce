@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## UNRELEASE
+
+- **Add** : Added Klarna payment method
+
 ## 2.4.0
 
 - **Add** : Added Mooney reference without redirection
