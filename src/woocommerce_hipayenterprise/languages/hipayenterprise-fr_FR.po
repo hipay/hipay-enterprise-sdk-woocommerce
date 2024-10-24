@@ -3,9 +3,9 @@ msgstr ""
 "Project-Id-Version: WooCommerce HiPay Enterprise\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-10-18 15:57+0000\n"
-"PO-Revision-Date: 2024-09-12 08:07+0000\n"
+"PO-Revision-Date: 2024-10-24 15:46+0000\n"
 "Last-Translator: \n"
-"Language-Team: French (France)\n"
+"Language-Team: Français\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "MIME-Version: 1.0\n"
@@ -83,7 +83,7 @@ msgstr ""
 msgid "Accept/Deny"
 msgstr "Accepter/Refuser"
 
-#: includes/admin/template/admin-global-settings.php:322
+#: includes/admin/template/admin-global-settings.php:293
 msgid "Activate 3-D Secure"
 msgstr "Activer le 3D Secure"
 
@@ -126,8 +126,8 @@ msgstr "Montant déjà capturé"
 msgid "Amount:"
 msgstr "Montant:"
 
-#: includes/admin/class-hipay-mapping-category-controller.php:91
 #: includes/admin/class-hipay-mapping-delivery-controller.php:109
+#: includes/admin/class-hipay-mapping-category-controller.php:91
 msgid "An error occured during while saving the mapping. "
 msgstr "Une erreur s'est produite lors de l'enregistrement du mapping."
 
@@ -152,9 +152,6 @@ msgstr ""
 "Êtes-vous sûr de capturer ces éléments?"
 
 #: includes/admin/template/admin-paymentlocal-settings.php:157
-msgctxt ""
-"at this time, please contact our support or your account manager for more "
-"information."
 msgid ""
 "at this time, please contact our support or your account manager for more "
 "information."
@@ -175,16 +172,15 @@ msgstr "Demande d'authorization en succès pour la transaction"
 msgid "Authorized countries"
 msgstr "Pays authorisés"
 
-#: includes/admin/template/admin-global-settings.php:215
+#: includes/admin/template/admin-global-settings.php:196
 msgid "Automatic"
 msgstr "Automatique"
 
-#: includes/admin/template/admin-global-settings.php:230
+#: includes/admin/template/admin-global-settings.php:210
 msgid "Automatic: if all transactions will be captured automatically."
 msgstr "Automatique: toutes les transactions seront capturées automatiquement."
 
 #: includes/admin/template/admin-paymentlocal-settings.php:153
-msgctxt "Available by"
 msgid "Available by"
 msgstr "Disponible"
 
@@ -230,14 +226,14 @@ msgid "Buy Now"
 msgstr "Acheter maintenant"
 
 #. refund amount
-#: includes/admin/template/admin-faq-settings.php:111
 #: includes/admin/template/html-order-additional.php:73
+#: includes/admin/template/admin-faq-settings.php:111
 msgid "Cancel"
 msgstr "Annuler"
 
-#: includes/admin/template/admin-faq-settings.php:93
+#: includes/admin/template/admin-global-settings.php:190
 #: includes/admin/template/html-order-additional.php:18
-#: includes/admin/template/admin-global-settings.php:207
+#: includes/admin/template/admin-faq-settings.php:93
 msgid "Capture"
 msgstr "Capturer"
 
@@ -272,8 +268,8 @@ msgstr "Montant de la capture"
 msgid "Captured"
 msgstr "Capturé"
 
-#: includes/admin/template/html-order-shipping.php:26
 #: includes/admin/template/html-order-item.php:27
+#: includes/admin/template/html-order-shipping.php:26
 msgid "Captured with HiPay"
 msgstr "Capturé avec HiPay"
 
@@ -289,7 +285,7 @@ msgstr "Numéro de carte"
 msgid "Card updated with success"
 msgstr "Carte mises à jour avec sucés. "
 
-#: includes/admin/template/admin-global-settings.php:122
+#: includes/admin/template/admin-global-settings.php:102
 msgid "Caret color"
 msgstr "Couleur du curseur"
 
@@ -342,12 +338,12 @@ msgstr ""
 "Cliquez sur l'icône d'édition a coté des informations d'identification que "
 "vous souhaitez utiliser."
 
-#: includes/admin/template/admin-global-settings.php:50
+#: includes/admin/template/admin-global-settings.php:47
 msgid "Color"
 msgstr "Couleur"
 
-#: includes/admin/template/admin-paymentlocal-settings.php:107
 #: includes/admin/template/admin-creditcard-settings.php:156
+#: includes/admin/template/admin-paymentlocal-settings.php:107
 msgid "Countries"
 msgstr "Pays"
 
@@ -363,7 +359,7 @@ msgstr "Créer une page de paiement avec des identifiants publiques"
 msgid "Credit card"
 msgstr "Carte de crédit"
 
-#: includes/admin/template/admin-global-settings.php:188
+#: includes/admin/template/admin-global-settings.php:172
 msgid "CSS url"
 msgstr "URL css"
 
@@ -375,17 +371,17 @@ msgstr "cURL Extension"
 msgid "cURL Extension is correcly installed."
 msgstr "cURL Extension est bien installée."
 
-#: includes/admin/template/admin-paymentlocal-settings.php:80
 #: includes/admin/template/admin-creditcard-settings.php:128
+#: includes/admin/template/admin-paymentlocal-settings.php:80
 msgid "Currencies"
 msgstr "Devises"
 
-#: includes/admin/template/admin-global-settings.php:276
+#: includes/admin/template/admin-global-settings.php:252
 msgid "Customer's cart sending"
 msgstr "Envoyer les informations du panier client"
 
-#: includes/frontend/template/force-cvv-oc.php:23
 #: includes/frontend/template/hosted-fields.php:34
+#: includes/frontend/template/force-cvv-oc.php:23
 msgid "CVC"
 msgstr "CVV"
 
@@ -401,7 +397,7 @@ msgstr "Le CVC est manquant."
 msgid "cvc must be numeric."
 msgstr "Le CVC ne doit contenir que des chiffres."
 
-#: includes/admin/template/admin-global-settings.php:330
+#: includes/admin/template/admin-global-settings.php:299
 msgid "Deactivated"
 msgstr "Désactivé"
 
@@ -413,20 +409,20 @@ msgstr "Temps de livraison estimé"
 msgid "Delivery method mapping"
 msgstr "Mapping des modes de livraison"
 
-#: includes/admin/template/admin-global-settings.php:345
+#: includes/admin/template/admin-global-settings.php:156
 msgid "Display cancel button"
 msgstr "Afficher le bouton d'annulation"
 
-#: includes/admin/template/admin-global-settings.php:175
+#: includes/admin/template/admin-global-settings.php:144
 msgid "Display card selector"
 msgstr "Afficher le sélecteur de carte"
 
-#: includes/admin/template/admin-global-settings.php:156
+#: includes/admin/template/admin-global-settings.php:128
 msgid "Display Hosted Page"
 msgstr "Affiche une page hébergé"
 
-#: includes/admin/template/admin-paymentlocal-settings.php:4
 #: includes/admin/template/admin-creditcard-settings.php:11
+#: includes/admin/template/admin-paymentlocal-settings.php:4
 msgid "Display name"
 msgstr "Nom d'affichage"
 
@@ -484,15 +480,15 @@ msgstr ""
 "Tout d’abord, vérifiez si l’URL de notification est correctement saisie dans "
 "votre back-office HiPay Enterprise."
 
-#: includes/admin/template/admin-global-settings.php:63
+#: includes/admin/template/admin-global-settings.php:58
 msgid "Font Family"
 msgstr "Font Family"
 
-#: includes/admin/template/admin-global-settings.php:78
+#: includes/admin/template/admin-global-settings.php:69
 msgid "Font Size"
 msgstr "Font Size"
 
-#: includes/admin/template/admin-global-settings.php:93
+#: includes/admin/template/admin-global-settings.php:80
 msgid "Font Weight"
 msgstr "Font Weight"
 
@@ -501,7 +497,7 @@ msgid "For security reason, your card CVC must be updated."
 msgstr ""
 "Pour des raisons de sécurité, vous devez mettre à jour le CVC de votre carte."
 
-#: includes/admin/template/admin-global-settings.php:339
+#: includes/admin/template/admin-global-settings.php:306
 msgid "Force for all transactions"
 msgstr "Forcer pour tous les transactions"
 
@@ -683,8 +679,8 @@ msgstr "Operations HiPay"
 msgid "HiPay Product Category"
 msgstr "Catégorie de produit HiPay"
 
-#: includes/helper/class-hipay-api-request-handler.php:158
 #: includes/helper/class-hipay-helper.php:259
+#: includes/helper/class-hipay-api-request-handler.php:158
 msgid "HiPay status: "
 msgstr "Satus HiPay"
 
@@ -694,11 +690,11 @@ msgstr "Satus HiPay"
 msgid "HiPay Transactions"
 msgstr "Transactions HiPay"
 
-#: includes/admin/template/admin-global-settings.php:25
+#: includes/admin/template/admin-global-settings.php:22
 msgid "Hosted Fields"
 msgstr "Champs Hébergés"
 
-#: includes/admin/template/admin-global-settings.php:29
+#: includes/admin/template/admin-global-settings.php:26
 msgid ""
 "Hosted Fields: The customer completes his banking information directly on "
 "the merchant's site but the form fields are hosted by HiPay. \n"
@@ -710,11 +706,11 @@ msgstr ""
 "                            Ce mode n'est valable que pour les cartes de "
 "crédit."
 
-#: includes/admin/template/admin-global-settings.php:20
+#: includes/admin/template/admin-global-settings.php:18
 msgid "Hosted page"
 msgstr "Page hébergée"
 
-#: includes/admin/template/admin-global-settings.php:34
+#: includes/admin/template/admin-global-settings.php:31
 msgid ""
 "Hosted Page: The customer is redirected to a secured payment page hosted by "
 "HiPay."
@@ -749,7 +745,7 @@ msgid "I want to be notified for the following transaction statuses: ALL"
 msgstr ""
 "Je souhaite être notifié pour les statuts de transaction suivants : TOUS"
 
-#: includes/admin/template/admin-global-settings.php:137
+#: includes/admin/template/admin-global-settings.php:113
 msgid "Icon color"
 msgstr "Couleur d'icône"
 
@@ -827,7 +823,7 @@ msgstr ""
 "Si votre plugin est en mode test, vous devez spécifier les identifiants de "
 "test. S'il est en mode de production, faites de même avec ceux production."
 
-#: includes/admin/template/admin-global-settings.php:168
+#: includes/admin/template/admin-global-settings.php:137
 msgid "IFrame"
 msgstr "IFrame"
 
@@ -847,7 +843,7 @@ msgstr ""
 "Dans votre back-office HiPay Enterprise, dans la section \"Intégration\", "
 "cliquez sur \"Notifications\"."
 
-#: includes/admin/template/admin-global-settings.php:252
+#: includes/admin/template/admin-global-settings.php:230
 msgid ""
 "Indicates whether a command should go through the on-hold status during an "
 "automatic capture."
@@ -876,7 +872,6 @@ msgid "Invalid order."
 msgstr "Commande invalide"
 
 #: includes/admin/template/admin-paymentlocal-settings.php:155
-msgctxt "invitation only"
 msgid "invitation only"
 msgstr "sur invitation uniquement"
 
@@ -898,7 +893,7 @@ msgstr "Paiements locaux et internationaux avec Hipay Enterprise."
 msgid "Local payment"
 msgstr "Paiements locaux"
 
-#: includes/admin/template/admin-global-settings.php:289
+#: includes/admin/template/admin-global-settings.php:263
 msgid "Logs information"
 msgstr "Logs débug"
 
@@ -920,11 +915,11 @@ msgstr ""
 "Assurez-vous que vos informations d'identifications sont correctement "
 "définies et que le module est dans le mode souhaité (test ou production)."
 
-#: includes/admin/template/admin-global-settings.php:219
+#: includes/admin/template/admin-global-settings.php:199
 msgid "Manual"
 msgstr "Manuel"
 
-#: includes/admin/template/admin-global-settings.php:224
+#: includes/admin/template/admin-global-settings.php:204
 msgid ""
 "Manual: if all transactions will be captured manually either from the Hipay "
 "Back office or from your admin in Woocommerce."
@@ -967,8 +962,8 @@ msgstr ""
 "Le mapping des modes de livraison est obligatoire pour les modes de paiement "
 "Oney ou si vous activez l'option \"Envoyer le panier\".\n"
 
-#: includes/admin/template/admin-paymentlocal-settings.php:39
 #: includes/admin/template/admin-creditcard-settings.php:111
+#: includes/admin/template/admin-paymentlocal-settings.php:39
 msgid "Maximum order amount"
 msgstr "Montant maximum de la commande"
 
@@ -981,13 +976,13 @@ msgstr "MB WAY"
 msgid "Merchant Promotion"
 msgstr "Promotion Marchand"
 
-#: includes/helper/class-hipay-api-request-handler.php:148
 #: includes/helper/class-hipay-order-handler.php:262
+#: includes/helper/class-hipay-api-request-handler.php:148
 msgid "Message was : "
 msgstr "Le message est : "
 
-#: includes/admin/template/admin-paymentlocal-settings.php:23
 #: includes/admin/template/admin-creditcard-settings.php:94
+#: includes/admin/template/admin-paymentlocal-settings.php:23
 msgid "Minimum order amount"
 msgstr "Montant minimum de la commande"
 
@@ -1006,11 +1001,10 @@ msgid "MyBank"
 msgstr "MyBank"
 
 #: includes/admin/template/admin-paymentlocal-settings.php:149
-msgctxt "NEW"
 msgid "NEW"
 msgstr "NOUVEAU"
 
-#: includes/admin/template/admin-global-settings.php:357
+#: includes/admin/template/admin-global-settings.php:165
 msgid "No"
 msgstr "Non"
 
@@ -1042,8 +1036,8 @@ msgstr "Operations  %s"
 msgid "Order"
 msgstr "Commande"
 
-#: includes/admin/data-stores/class-hipay-order-capture-data-store-cpt.php:129
 #: includes/admin/post/class-hipay-order-capture.php:79
+#: includes/admin/data-stores/class-hipay-order-capture-data-store-cpt.php:129
 msgctxt "Order date parsed by strftime"
 msgid "%b %d, %Y @ %I:%M %p"
 msgstr "%b %d, %Y @ %I:%M %p"
@@ -1117,7 +1111,7 @@ msgstr "Paiement partiellement remboursé, montant:"
 msgid "Paypal"
 msgstr "Paypal"
 
-#: includes/admin/template/admin-global-settings.php:108
+#: includes/admin/template/admin-global-settings.php:91
 msgid "PlaceHodler color"
 msgstr "Couleur du nom de porteur de carte"
 
@@ -1192,12 +1186,12 @@ msgstr ""
 msgid "Rectangular"
 msgstr "Rectangulaire"
 
-#: includes/admin/template/admin-global-settings.php:164
+#: includes/admin/template/admin-global-settings.php:134
 msgid "Redirect"
 msgstr "Redirection"
 
-#: includes/gateways/local/class-hipay-sisal.php:96
 #: includes/gateways/local/class-hipay-multibanco.php:116
+#: includes/gateways/local/class-hipay-sisal.php:96
 msgid "Reference:"
 msgstr "Référence:"
 
@@ -1246,7 +1240,7 @@ msgstr "Sauvegarder"
 msgid "Scroll down to \"Api credentials\"."
 msgstr "Faites défiler jusqu'à \"IdentifiantsApi\"."
 
-#: includes/admin/template/admin-global-settings.php:313
+#: includes/admin/template/admin-global-settings.php:284
 msgid "SDK js url"
 msgstr "URL JS du SDK"
 
@@ -1259,7 +1253,7 @@ msgstr "Phrase secrète"
 msgid "Select Category"
 msgstr "Sélectionnez une catégorie"
 
-#: includes/admin/template/admin-global-settings.php:301
+#: includes/admin/template/admin-global-settings.php:273
 msgid "Send url Notification"
 msgstr "Envoyer l'url de notification"
 
@@ -1285,7 +1279,7 @@ msgstr "SimpleXML Extension is bien installée."
 msgid "Sisal"
 msgstr "Sisal"
 
-#: includes/admin/template/admin-global-settings.php:241
+#: includes/admin/template/admin-global-settings.php:221
 msgid "Skip on-hold status"
 msgstr "Passer le statut En attente"
 
@@ -1334,9 +1328,6 @@ msgstr ""
 "depuis le back-office HiPay"
 
 #: includes/admin/template/admin-paymentlocal-settings.php:151
-msgctxt ""
-"The new PayPal integration allows you to pay with PayPal without redirection "
-"and to offer payment with installments."
 msgid ""
 "The new PayPal integration allows you to pay with PayPal without redirection "
 "and to offer payment with installments."
@@ -1369,9 +1360,9 @@ msgstr ""
 "href='%s'>Voir les détails de la version %s</a> ou <a href='/wp-admin/update-"
 "core.php'>mettre à jour</a>."
 
+#: includes/helper/class-hipay-order-handler.php:257
 #: includes/helper/class-hipay-api-request-handler.php:132
 #: includes/helper/class-hipay-api-request-handler.php:143
-#: includes/helper/class-hipay-order-handler.php:257
 msgid ""
 "There was an error on the cancellation of the HiPay transaction. You can see "
 "and cancel the transaction directly from HiPay's BackOffice"
@@ -1454,9 +1445,9 @@ msgstr "Annulation de la transaction demandée"
 msgid "Transaction cancelled"
 msgstr "Transaction annulée"
 
-#: includes/helper/class-hipay-api-request-handler.php:157
-#: includes/helper/class-hipay-helper.php:258
 #: includes/helper/class-hipay-order-handler.php:264
+#: includes/helper/class-hipay-helper.php:258
+#: includes/helper/class-hipay-api-request-handler.php:157
 msgid "Transaction ID: "
 msgstr "Transaction ID:"
 
@@ -1465,7 +1456,7 @@ msgstr "Transaction ID:"
 msgid "Transactions  %s"
 msgstr "Transactions  %s"
 
-#: includes/admin/template/admin-global-settings.php:334
+#: includes/admin/template/admin-global-settings.php:302
 msgid "Try to enable for all transactions"
 msgstr "Essayer d'activer pour toutes les transactions"
 
@@ -1473,7 +1464,7 @@ msgstr "Essayer d'activer pour toutes les transactions"
 msgid "Update"
 msgstr "Mettre à jour"
 
-#: includes/admin/template/admin-global-settings.php:196
+#: includes/admin/template/admin-global-settings.php:177
 msgid ""
 "URL to your CSS (style sheet) to customize your hosted page or iFrame "
 "(Important: the HTTPS protocol is required)."
@@ -1481,7 +1472,7 @@ msgstr ""
 "URL vers votre CSS (feuille de style) pour personnaliser votre page hébergée "
 "ou iFrame (Important: le protocole HTTPS est requis)."
 
-#: includes/admin/template/admin-global-settings.php:263
+#: includes/admin/template/admin-global-settings.php:241
 msgid "Use Oneclick"
 msgstr "Utiliser le paiement One-click"
 
@@ -1546,7 +1537,7 @@ msgstr "Catégorie de produit Woocommerce"
 msgid "Woocommerce REST API"
 msgstr "Woocommerce REST API"
 
-#: includes/admin/template/admin-global-settings.php:353
+#: includes/admin/template/admin-global-settings.php:162
 msgid "Yes"
 msgstr "Oui"
 
