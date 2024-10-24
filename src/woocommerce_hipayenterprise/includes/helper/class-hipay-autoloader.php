@@ -86,7 +86,8 @@ class Hipay_Autoloader
 	    'Hipay_Threeds_Helper' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-threeds-helper.php',
 	    'Hipay_Token_Helper' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-token-helper.php',
 	    'Hipay_Transactions_Helper' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-transactions.php',
-	    'Hipay_Upgrade_Helper' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-upgrade-helper.php'
+	    'Hipay_Upgrade_Helper' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-upgrade-helper.php',
+        'Hipay_Available_Payment' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-available-payment.php',
     );
 
 	public static $localMethodClasses;

@@ -35,37 +35,4 @@ jQuery(function ($) {
     non_selected_header: hipay_config_i18n.available_countries,
     selected_header: hipay_config_i18n.authorized_countries
   });
-
-  $(document).ready(function () {
-    function toggleFields(merchantId) {
-      [
-        'buttonColor',
-        'buttonShape',
-        'buttonLabel',
-        'buttonHeight',
-        'bnpl'
-      ].forEach(function (fieldId) {
-        var field = $(
-          '#woocommerce_hipayenterprise_methods_' + fieldId + 'paypal'
-        );
-        if (merchantId === '') {
-          field.addClass('readonly');
-        } else {
-          field.removeClass('readonly');
-        }
-      });
-    }
-
-    var merchantIdInput = $(
-      '#woocommerce_hipayenterprise_methods_merchantIdpaypal'
-    );
-    if (merchantIdInput.length) {
-      // Call toggleFields initially to set the correct state on page load
-      toggleFields(merchantIdInput.val());
-
-      merchantIdInput.on('input', function (e) {
-        toggleFields(e.target.value);
-      });
-    }
-  });
 });

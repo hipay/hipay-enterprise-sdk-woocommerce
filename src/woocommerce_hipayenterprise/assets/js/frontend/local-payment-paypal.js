@@ -20,7 +20,7 @@ jQuery(document).ready(($) => {
             const { submitButton } = selectors;
             const placeOrderButton = $('#payment .place-order .button');
 
-            if (method === 'paypal' && hipay_config.merchantId) {
+            if (method === 'paypal' && paypal_version?.v2 !== null) {
                 placeOrderButton.remove();
             } else if (!placeOrderButton.length) {
                 $('#payment .place-order').append(submitButton);
@@ -53,7 +53,7 @@ jQuery(document).ready(($) => {
             const method = checkoutUtils.getSelectedMethod();
             checkoutUtils.handleSubmitButton(method, selectors);
 
-            if (method === 'paypal' && hipay_config.merchantId) {
+            if (method === 'paypal' && paypal_version?.v2 !== null) {
                 methodsInstance[method] = createPaypalInstance(method);
                 handlePaypalEvents(methodsInstance[method], selectors.checkoutForm);
             }
@@ -81,7 +81,6 @@ jQuery(document).ready(($) => {
                     label: hipay_config.buttonLabel
                 },
                 selector: 'paypal-field',
-                merchantPaypalId: hipay_config.merchantId,
                 canPayLater: Boolean(hipay_config.bnpl)
             };
 
@@ -142,12 +141,8 @@ jQuery(document).ready(($) => {
                 }
             });
 
-            $(document).ready(() => {
-                $(document.body).on('payment_method_selected', handlePaymentMethodChange);
-            });
-
             $(document).ajaxComplete((event, xhr, settings) => {
-                if (settings.url.includes('update_order_review')) {
+                if (settings.url?.includes('update_order_review')) {
                     handleOrderReviewUpdate();
                 }
             });
