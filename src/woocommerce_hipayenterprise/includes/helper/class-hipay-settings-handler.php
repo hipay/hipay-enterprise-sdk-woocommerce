@@ -309,7 +309,13 @@ class Hipay_Settings_Handler
                 "maxAmount",
                 "displayName",
                 "orderExpirationTime",
-                "merchantPromotion"
+                "merchantPromotion",
+                "merchantId",
+                "buttonShape",
+                "buttonLabel",
+                "buttonColor",
+                "buttonHeight",
+                "bnpl"
             );
 
             $settings = $this->plugin->confHelper->getLocalPayments();

@@ -3,14 +3,14 @@
 Plugin Name: WooCommerce HiPay Enterprise
 Plugin URI: https://hipay.com/en/
 Description: WooCommerce Plugin for Hipay Enterprise.
-Version: 2.4.0
+Version: 2.5.0
 Text Domain: hipayenterprise
 Author: HiPay
 Author URI: https://www.hipay.com
 */
 
 if (!class_exists('WC_HipayEnterprise')) {
-    define('WC_HIPAYENTERPRISE_VERSION', '2.4.0');
+    define('WC_HIPAYENTERPRISE_VERSION', '2.5.0');
     define('WC_HIPAYENTERPRISE_NAME', 'WooCommerce HiPay Enterprise');
     define('WC_HIPAYENTERPRISE_PATH', plugin_dir_path(__FILE__));
     define(

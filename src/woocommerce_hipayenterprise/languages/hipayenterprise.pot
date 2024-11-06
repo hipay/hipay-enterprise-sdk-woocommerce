@@ -11,11 +11,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-08-22 14:00+0000\n"
+"POT-Creation-Date: 2024-10-24 15:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: Loco https://localise.biz/\n"
 "X-Domain: hipayenterprise\n"
-"\n"
 "Language: \n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;"
 
@@ -28,18 +27,20 @@ msgid " - Select carrier shipping - "
 msgstr ""
 
 #: includes/helper/class-hipay-payment-token-cc-hipay.php:43
+#, php-format
 msgid "%1$s %2$s (expires %3$s/%4$s)"
 msgstr ""
 
 #: includes/admin/class-hipay-admin-meta-boxes.php:35
+#, php-format
 msgid "%s data"
 msgstr ""
 
-#: includes/admin/template/admin-paymentlocal-settings.php:53
+#: includes/admin/template/admin-paymentlocal-settings.php:59
 msgid "3 days"
 msgstr ""
 
-#: includes/admin/template/admin-paymentlocal-settings.php:54
+#: includes/admin/template/admin-paymentlocal-settings.php:60
 msgid "30 days"
 msgstr ""
 
@@ -72,11 +73,12 @@ msgstr ""
 msgid "4x Carte Bancaire sans frais - Oney"
 msgstr ""
 
-#: includes/admin/template/admin-paymentlocal-settings.php:55
+#: includes/admin/template/admin-paymentlocal-settings.php:61
 msgid "90 days"
 msgstr ""
 
 #: includes/helper/class-hipay-helper.php:182
+#, php-format
 msgid "A payment transaction is awaiting validation for the order %s"
 msgstr ""
 
@@ -84,11 +86,11 @@ msgstr ""
 msgid "Accept/Deny"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:285
+#: includes/admin/template/admin-global-settings.php:293
 msgid "Activate 3-D Secure"
 msgstr ""
 
-#: includes/admin/template/admin-creditcard-settings.php:72
+#: includes/admin/template/admin-creditcard-settings.php:76
 msgid "Activated"
 msgstr ""
 
@@ -99,6 +101,7 @@ msgid ""
 msgstr ""
 
 #: includes/admin/template/admin-local-settings.php:4
+#, php-format
 msgid ""
 "All other general HiPay settings can be adjusted <a href=\"%s\">here</a>."
 msgstr ""
@@ -117,12 +120,12 @@ msgstr ""
 msgid "Amount already captured"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-multibanco.php:115
+#: includes/gateways/local/class-hipay-multibanco.php:116
 msgid "Amount:"
 msgstr ""
 
-#: includes/admin/class-hipay-mapping-delivery-controller.php:113
-#: includes/admin/class-hipay-mapping-category-controller.php:94
+#: includes/admin/class-hipay-mapping-delivery-controller.php:109
+#: includes/admin/class-hipay-mapping-category-controller.php:91
 msgid "An error occured during while saving the mapping. "
 msgstr ""
 
@@ -144,28 +147,38 @@ msgstr ""
 msgid "Are-you sure to capture these elements ?"
 msgstr ""
 
-#: includes/helper/class-hipay-notification.php:168
+#: includes/admin/template/admin-paymentlocal-settings.php:157
+msgid ""
+"at this time, please contact our support or your account manager for more "
+"information."
+msgstr ""
+
+#: includes/helper/class-hipay-notification.php:169
 msgid "Authorization cancelled. Order was cancelled with transaction:"
 msgstr ""
 
-#: includes/helper/class-hipay-notification.php:178
-#: includes/helper/class-hipay-notification.php:182
+#: includes/helper/class-hipay-notification.php:179
+#: includes/helper/class-hipay-notification.php:183
 msgid "Authorization successful for transaction."
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:362
+#: includes/gateways/class-gateway-hipay.php:353
 msgid "Authorized countries"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:191
+#: includes/admin/template/admin-global-settings.php:196
 msgid "Automatic"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:206
+#: includes/admin/template/admin-global-settings.php:210
 msgid "Automatic: if all transactions will be captured automatically."
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:361
+#: includes/admin/template/admin-paymentlocal-settings.php:153
+msgid "Available by"
+msgstr ""
+
+#: includes/gateways/class-gateway-hipay.php:352
 msgid "Available countries"
 msgstr ""
 
@@ -174,13 +187,45 @@ msgstr ""
 msgid "Bancontact Credit Card / QR code"
 msgstr ""
 
+#: includes/gateways/local/class-hipay-sisal.php:96
+msgid "Bar code:"
+msgstr ""
+
+#: includes/admin/template/admin-paymentlocal-settings.php:227
+msgid "Black"
+msgstr ""
+
+#: includes/admin/template/admin-paymentlocal-settings.php:224
+msgid "Blue"
+msgstr ""
+
+#: includes/admin/template/admin-paymentlocal-settings.php:212
+msgid "Button Color"
+msgstr ""
+
+#: includes/admin/template/admin-paymentlocal-settings.php:240
+msgid "Button height"
+msgstr ""
+
+#: includes/admin/template/admin-paymentlocal-settings.php:185
+msgid "Button Label"
+msgstr ""
+
+#: includes/admin/template/admin-paymentlocal-settings.php:166
+msgid "Button Shape"
+msgstr ""
+
+#: includes/admin/template/admin-paymentlocal-settings.php:206
+msgid "Buy Now"
+msgstr ""
+
 #. refund amount
 #: includes/admin/template/html-order-additional.php:73
 #: includes/admin/template/admin-faq-settings.php:111
 msgid "Cancel"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:184
+#: includes/admin/template/admin-global-settings.php:190
 #: includes/admin/template/html-order-additional.php:18
 #: includes/admin/template/admin-faq-settings.php:93
 msgid "Capture"
@@ -188,20 +233,24 @@ msgstr ""
 
 #. 1: refund id 2: refund date
 #: includes/admin/template/html-order-capture.php:44
+#, php-format
 msgid "Capture #%1$s - %2$s"
 msgstr ""
 
 #. 1: refund id 2: refund date 3: username
 #: includes/admin/template/html-order-capture.php:31
+#, php-format
 msgid "Capture #%1$s - %2$s by %3$s"
 msgstr ""
 
 #: includes/admin/template/html-order-additional.php:68
+#, php-format
 msgid "Capture %1$s via %2$s"
 msgstr ""
 
 #. %s: Order date
 #: includes/admin/data-stores/class-hipay-order-capture-data-store-cpt.php:128
+#, php-format
 msgid "Capture &ndash; %s"
 msgstr ""
 
@@ -226,11 +275,11 @@ msgstr ""
 msgid "Card Number"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:387
+#: includes/gateways/class-gateway-hipay.php:388
 msgid "Card updated with success"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:109
+#: includes/admin/template/admin-global-settings.php:102
 msgid "Caret color"
 msgstr ""
 
@@ -263,6 +312,10 @@ msgid ""
 "version is old."
 msgstr ""
 
+#: includes/admin/template/admin-paymentlocal-settings.php:203
+msgid "Checkout"
+msgstr ""
+
 #: includes/admin/template/admin-faq-settings.php:33
 msgid "Click on the edit icon next to the credentials you want to use."
 msgstr ""
@@ -271,8 +324,8 @@ msgstr ""
 msgid "Color"
 msgstr ""
 
-#: includes/admin/template/admin-creditcard-settings.php:144
-#: includes/admin/template/admin-paymentlocal-settings.php:96
+#: includes/admin/template/admin-creditcard-settings.php:156
+#: includes/admin/template/admin-paymentlocal-settings.php:107
 msgid "Countries"
 msgstr ""
 
@@ -288,7 +341,7 @@ msgstr ""
 msgid "Credit card"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:167
+#: includes/admin/template/admin-global-settings.php:172
 msgid "CSS url"
 msgstr ""
 
@@ -300,12 +353,12 @@ msgstr ""
 msgid "cURL Extension is correcly installed."
 msgstr ""
 
-#: includes/admin/template/admin-creditcard-settings.php:118
-#: includes/admin/template/admin-paymentlocal-settings.php:71
+#: includes/admin/template/admin-creditcard-settings.php:128
+#: includes/admin/template/admin-paymentlocal-settings.php:80
 msgid "Currencies"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:247
+#: includes/admin/template/admin-global-settings.php:252
 msgid "Customer's cart sending"
 msgstr ""
 
@@ -314,19 +367,19 @@ msgstr ""
 msgid "CVC"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:390
+#: includes/gateways/class-gateway-hipay.php:391
 msgid "CVC is invalid."
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:388
+#: includes/gateways/class-gateway-hipay.php:389
 msgid "CVC is missing."
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:389
+#: includes/gateways/class-gateway-hipay.php:390
 msgid "cvc must be numeric."
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:292
+#: includes/admin/template/admin-global-settings.php:299
 msgid "Deactivated"
 msgstr ""
 
@@ -338,24 +391,24 @@ msgstr ""
 msgid "Delivery method mapping"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:306
+#: includes/admin/template/admin-global-settings.php:156
 msgid "Display cancel button"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:156
+#: includes/admin/template/admin-global-settings.php:144
 msgid "Display card selector"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:139
+#: includes/admin/template/admin-global-settings.php:128
 msgid "Display Hosted Page"
 msgstr ""
 
-#: includes/admin/template/admin-creditcard-settings.php:10
-#: includes/admin/template/admin-paymentlocal-settings.php:3
+#: includes/admin/template/admin-creditcard-settings.php:11
+#: includes/admin/template/admin-paymentlocal-settings.php:4
 msgid "Display name"
 msgstr ""
 
-#: includes/admin/template/admin-fraud-settings.php:8
+#: includes/admin/template/admin-fraud-settings.php:9
 msgid "E-mail"
 msgstr ""
 
@@ -363,7 +416,7 @@ msgstr ""
 msgid "Email should be valid"
 msgstr ""
 
-#: includes/admin/template/admin-fraud-settings.php:15
+#: includes/admin/template/admin-fraud-settings.php:17
 msgid ""
 "Enter a valid email, during a transaction challenged an email will be sent "
 "to this address."
@@ -373,7 +426,7 @@ msgstr ""
 msgid "Enter the corresponding username, password and secret passphrase."
 msgstr ""
 
-#: includes/gateways/local/class-hipay-multibanco.php:115
+#: includes/gateways/local/class-hipay-multibanco.php:116
 msgid "Entity:"
 msgstr ""
 
@@ -381,7 +434,7 @@ msgstr ""
 msgid "Error processing capture. Please try again."
 msgstr ""
 
-#: includes/gateways/local/class-hipay-multibanco.php:115
+#: includes/gateways/local/class-hipay-multibanco.php:116
 msgid "Expiration Date:"
 msgstr ""
 
@@ -407,11 +460,11 @@ msgstr ""
 msgid "Font Family"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:71
+#: includes/admin/template/admin-global-settings.php:69
 msgid "Font Size"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:84
+#: includes/admin/template/admin-global-settings.php:80
 msgid "Font Weight"
 msgstr ""
 
@@ -419,7 +472,7 @@ msgstr ""
 msgid "For security reason, your card CVC must be updated."
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:301
+#: includes/admin/template/admin-global-settings.php:306
 msgid "Force for all transactions"
 msgstr ""
 
@@ -453,6 +506,10 @@ msgstr ""
 
 #: includes/admin/template/admin-global-settings.php:6
 msgid "Global settings"
+msgstr ""
+
+#: includes/admin/template/admin-paymentlocal-settings.php:221
+msgid "Gold"
 msgstr ""
 
 #: includes/admin/template/admin-link-paymentlocal-settings.php:11
@@ -520,7 +577,7 @@ msgstr ""
 msgid "HiPay Enterprise Bnppf-4xcb"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:53
+#: includes/gateways/class-gateway-hipay.php:59
 msgid "HiPay Enterprise Credit Card"
 msgstr ""
 
@@ -530,6 +587,10 @@ msgstr ""
 
 #: includes/gateways/local/class-hipay-ideal.php:32
 msgid "HiPay Enterprise IDEAL"
+msgstr ""
+
+#: includes/gateways/local/class-hipay-klarna.php:35
+msgid "HiPay Enterprise Klarna"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-mbway.php:32
@@ -544,7 +605,7 @@ msgstr ""
 msgid "HiPay Enterprise MyBank"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-paypal.php:35
+#: includes/gateways/local/class-hipay-paypal.php:40
 msgid "HiPay Enterprise Paypal"
 msgstr ""
 
@@ -564,7 +625,7 @@ msgstr ""
 msgid "HiPay Enterprise SEPA Direct Debit"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-sisal.php:32
+#: includes/gateways/local/class-hipay-sisal.php:44
 msgid "HiPay Enterprise Sisal"
 msgstr ""
 
@@ -599,11 +660,11 @@ msgstr ""
 msgid "HiPay Transactions"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:23
+#: includes/admin/template/admin-global-settings.php:22
 msgid "Hosted Fields"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:27
+#: includes/admin/template/admin-global-settings.php:26
 msgid ""
 "Hosted Fields: The customer completes his banking information directly on "
 "the merchant's site but the form fields are hosted by HiPay. \n"
@@ -614,7 +675,7 @@ msgstr ""
 msgid "Hosted page"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:32
+#: includes/admin/template/admin-global-settings.php:31
 msgid ""
 "Hosted Page: The customer is redirected to a secured payment page hosted by "
 "HiPay."
@@ -644,7 +705,7 @@ msgstr ""
 msgid "I want to be notified for the following transaction statuses: ALL"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:122
+#: includes/admin/template/admin-global-settings.php:113
 msgid "Icon color"
 msgstr ""
 
@@ -703,7 +764,7 @@ msgid ""
 "it is in Production mode, do the same in the Production area."
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:150
+#: includes/admin/template/admin-global-settings.php:137
 msgid "IFrame"
 msgstr ""
 
@@ -719,7 +780,7 @@ msgid ""
 "on \"Notifications\"."
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:226
+#: includes/admin/template/admin-global-settings.php:230
 msgid ""
 "Indicates whether a command should go through the on-hold status during an "
 "automatic capture."
@@ -745,11 +806,21 @@ msgstr ""
 msgid "Invalid order."
 msgstr ""
 
+#: includes/admin/template/admin-paymentlocal-settings.php:155
+msgid "invitation only"
+msgstr ""
+
 #: includes/admin/post/class-hipay-order-capture.php:79
+#, php-format
 msgid "Invoice &ndash; %s"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:55
+#: includes/gateways/local/class-hipay-klarna.php:36
+#: includes/gateways/local/class-hipay-klarna.php:37
+msgid "Klarna"
+msgstr ""
+
+#: includes/gateways/class-gateway-hipay.php:61
 msgid "Local and international payments using Hipay Enterprise."
 msgstr ""
 
@@ -757,7 +828,7 @@ msgstr ""
 msgid "Local payment"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:258
+#: includes/admin/template/admin-global-settings.php:263
 msgid "Logs information"
 msgstr ""
 
@@ -775,17 +846,18 @@ msgid ""
 "the mode you want (Test or Production)."
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:195
+#: includes/admin/template/admin-global-settings.php:199
 msgid "Manual"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:200
+#: includes/admin/template/admin-global-settings.php:204
 msgid ""
 "Manual: if all transactions will be captured manually either from the Hipay "
 "Back office or from your admin in Woocommerce."
 msgstr ""
 
 #: includes/admin/class-hipay-mapping-abstract.php:106
+#, php-format
 msgid "Mapping  %s"
 msgstr ""
 
@@ -815,8 +887,8 @@ msgid ""
 "enable the 'Send Customer Cart' option."
 msgstr ""
 
-#: includes/admin/template/admin-creditcard-settings.php:103
-#: includes/admin/template/admin-paymentlocal-settings.php:34
+#: includes/admin/template/admin-creditcard-settings.php:111
+#: includes/admin/template/admin-paymentlocal-settings.php:39
 msgid "Maximum order amount"
 msgstr ""
 
@@ -825,17 +897,17 @@ msgstr ""
 msgid "MB WAY"
 msgstr ""
 
-#: includes/admin/template/admin-paymentlocal-settings.php:62
+#: includes/admin/template/admin-paymentlocal-settings.php:69
 msgid "Merchant Promotion"
 msgstr ""
 
-#: includes/helper/class-hipay-order-handler.php:250
+#: includes/helper/class-hipay-order-handler.php:262
 #: includes/helper/class-hipay-api-request-handler.php:148
 msgid "Message was : "
 msgstr ""
 
-#: includes/admin/template/admin-creditcard-settings.php:88
-#: includes/admin/template/admin-paymentlocal-settings.php:20
+#: includes/admin/template/admin-creditcard-settings.php:94
+#: includes/admin/template/admin-paymentlocal-settings.php:23
 msgid "Minimum order amount"
 msgstr ""
 
@@ -853,7 +925,11 @@ msgstr ""
 msgid "MyBank"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:317
+#: includes/admin/template/admin-paymentlocal-settings.php:149
+msgid "NEW"
+msgstr ""
+
+#: includes/admin/template/admin-global-settings.php:165
 msgid "No"
 msgstr ""
 
@@ -866,15 +942,16 @@ msgstr ""
 msgid "Notifications"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:444
+#: includes/gateways/class-gateway-hipay.php:446
 msgid "One click not activated"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:11
+#: includes/admin/template/admin-global-settings.php:12
 msgid "Operating mode"
 msgstr ""
 
 #: includes/helper/class-hipay-operations.php:83
+#, php-format
 msgid "Operations  %s"
 msgstr ""
 
@@ -889,7 +966,7 @@ msgctxt "Order date parsed by strftime"
 msgid "%b %d, %Y @ %I:%M %p"
 msgstr ""
 
-#: includes/admin/template/admin-paymentlocal-settings.php:49
+#: includes/admin/template/admin-paymentlocal-settings.php:55
 msgid "Order expiration date"
 msgstr ""
 
@@ -916,14 +993,22 @@ msgstr ""
 msgid "Order total amount :"
 msgstr ""
 
-#: includes/admin/template/admin-account-settings.php:44
-#: includes/admin/template/admin-account-settings.php:76
-#: includes/admin/template/admin-account-settings.php:105
-#: includes/admin/template/admin-account-settings.php:132
+#: includes/admin/template/admin-account-settings.php:49
+#: includes/admin/template/admin-account-settings.php:87
+#: includes/admin/template/admin-account-settings.php:120
+#: includes/admin/template/admin-account-settings.php:153
 msgid "Password"
 msgstr ""
 
-#: includes/helper/class-hipay-notification.php:159
+#: includes/admin/template/admin-paymentlocal-settings.php:197
+msgid "Pay"
+msgstr ""
+
+#: includes/admin/template/admin-paymentlocal-settings.php:254
+msgid "Pay Later Button"
+msgstr ""
+
+#: includes/helper/class-hipay-notification.php:160
 msgid "Payment expired. Order was cancelled with transaction:"
 msgstr ""
 
@@ -935,21 +1020,22 @@ msgstr ""
 msgid "Payment Methods"
 msgstr ""
 
-#: includes/helper/class-hipay-notification.php:191
-#: includes/helper/class-hipay-notification.php:210
+#: includes/helper/class-hipay-notification.php:192
+#: includes/helper/class-hipay-notification.php:211
 msgid "Payment partially captured, amount:"
 msgstr ""
 
-#: includes/helper/class-hipay-notification.php:230
+#: includes/helper/class-hipay-notification.php:231
 msgid "Payment partially refunded, amount:"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-paypal.php:36
-#: includes/gateways/local/class-hipay-paypal.php:37
+#: includes/admin/template/admin-paymentlocal-settings.php:194
+#: includes/gateways/local/class-hipay-paypal.php:41
+#: includes/gateways/local/class-hipay-paypal.php:42
 msgid "Paypal"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:97
+#: includes/admin/template/admin-global-settings.php:91
 msgid "PlaceHodler color"
 msgstr ""
 
@@ -999,7 +1085,7 @@ msgstr ""
 msgid "Process an order through the API with public credentials"
 msgstr ""
 
-#: includes/admin/template/admin-account-settings.php:30
+#: includes/admin/template/admin-account-settings.php:32
 msgid "Production configuration"
 msgstr ""
 
@@ -1018,11 +1104,16 @@ msgid ""
 "by HiPay."
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:146
+#: includes/admin/template/admin-paymentlocal-settings.php:176
+msgid "Rectangular"
+msgstr ""
+
+#: includes/admin/template/admin-global-settings.php:134
 msgid "Redirect"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-multibanco.php:115
+#: includes/gateways/local/class-hipay-multibanco.php:116
+#: includes/gateways/local/class-hipay-sisal.php:96
 msgid "Reference:"
 msgstr ""
 
@@ -1030,7 +1121,7 @@ msgstr ""
 msgid "Refund"
 msgstr ""
 
-#: includes/helper/class-hipay-notification.php:221
+#: includes/helper/class-hipay-notification.php:222
 msgid "Refund requested"
 msgstr ""
 
@@ -1050,11 +1141,15 @@ msgstr ""
 msgid "Request method: HTTP POST"
 msgstr ""
 
-#: includes/admin/template/admin-account-settings.php:8
+#: includes/admin/template/admin-paymentlocal-settings.php:179
+msgid "Rounded"
+msgstr ""
+
+#: includes/admin/template/admin-account-settings.php:9
 msgid "Sandbox"
 msgstr ""
 
-#: includes/admin/template/admin-account-settings.php:91
+#: includes/admin/template/admin-account-settings.php:103
 msgid "Sandbox configuration"
 msgstr ""
 
@@ -1067,12 +1162,12 @@ msgstr ""
 msgid "Scroll down to \"Api credentials\"."
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:278
+#: includes/admin/template/admin-global-settings.php:284
 msgid "SDK js url"
 msgstr ""
 
-#: includes/admin/template/admin-account-settings.php:54
-#: includes/admin/template/admin-account-settings.php:114
+#: includes/admin/template/admin-account-settings.php:61
+#: includes/admin/template/admin-account-settings.php:131
 msgid "Secret passphrase"
 msgstr ""
 
@@ -1080,13 +1175,17 @@ msgstr ""
 msgid "Select Category"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:268
+#: includes/admin/template/admin-global-settings.php:273
 msgid "Send url Notification"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-sdd.php:33
 #: includes/gateways/local/class-hipay-sdd.php:34
 msgid "SEPA Direct Debit"
+msgstr ""
+
+#: includes/admin/template/admin-paymentlocal-settings.php:230
+msgid "Silver"
 msgstr ""
 
 #: includes/admin/template/admin-general-settings.php:58
@@ -1097,12 +1196,12 @@ msgstr ""
 msgid "SimpleXML Extension is correcly installed."
 msgstr ""
 
-#: includes/gateways/local/class-hipay-sisal.php:33
-#: includes/gateways/local/class-hipay-sisal.php:34
+#: includes/gateways/local/class-hipay-sisal.php:45
+#: includes/gateways/local/class-hipay-sisal.php:46
 msgid "Sisal"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:216
+#: includes/admin/template/admin-global-settings.php:221
 msgid "Skip on-hold status"
 msgstr ""
 
@@ -1111,7 +1210,7 @@ msgstr ""
 msgid "Sofort Überweisung"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:539
+#: includes/gateways/class-gateway-hipay.php:541
 msgid "Sorry, we cannot process your payment.. Please try again."
 msgstr ""
 
@@ -1125,11 +1224,27 @@ msgstr ""
 msgid "SSL Certificate"
 msgstr ""
 
+#: includes/admin/template/admin-paymentlocal-settings.php:200
+msgid "Subscribe"
+msgstr ""
+
+#: includes/admin/template/admin-paymentlocal-settings.php:270
+msgid ""
+"The \"Buy now, Pay later\" feature is only available if the store currency "
+"is euros and if the basket amount is between 30 and 2000."
+msgstr ""
+
 #: includes/helper/class-hipay-api-request-handler.php:119
 msgid ""
 "The HiPay transaction was not canceled because no transaction reference "
 "exists. You can see and cancel the transaction directly from HiPay's "
 "BackOffice"
+msgstr ""
+
+#: includes/admin/template/admin-paymentlocal-settings.php:151
+msgid ""
+"The new PayPal integration allows you to pay with PayPal without redirection "
+"and to offer payment with installments."
 msgstr ""
 
 #: includes/admin/class-hipay-admin-capture.php:366
@@ -1145,13 +1260,14 @@ msgid "Then make a test payment."
 msgstr ""
 
 #: includes/admin/template/admin-general-settings.php:102
+#, php-format
 msgid ""
 "There is a new version of WooCommerce HiPay Enterprise available. <a "
 "href='%s'>View version %s details</a> or <a href='/wp-admin/update-core.php'>"
 "update now</a>."
 msgstr ""
 
-#: includes/helper/class-hipay-order-handler.php:247
+#: includes/helper/class-hipay-order-handler.php:257
 #: includes/helper/class-hipay-api-request-handler.php:132
 #: includes/helper/class-hipay-api-request-handler.php:143
 msgid ""
@@ -1159,15 +1275,15 @@ msgid ""
 "and cancel the transaction directly from HiPay's BackOffice"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:455
+#: includes/gateways/class-gateway-hipay.php:457
 msgid "This card type doesn't exist"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:463
+#: includes/gateways/class-gateway-hipay.php:465
 msgid "This card type doesn't support one click"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:382
+#: includes/gateways/class-gateway-hipay.php:383
 msgid ""
 "This credit card type or the order currency is not supported.\n"
 "                    Please choose an other payment method."
@@ -1194,8 +1310,8 @@ msgstr ""
 msgid "Tokenization"
 msgstr ""
 
-#: includes/admin/template/admin-account-settings.php:66
-#: includes/admin/template/admin-account-settings.php:123
+#: includes/admin/template/admin-account-settings.php:75
+#: includes/admin/template/admin-account-settings.php:142
 msgid "Tokenization (Public)"
 msgstr ""
 
@@ -1207,7 +1323,7 @@ msgstr ""
 msgid "Total available to capture"
 msgstr ""
 
-#: includes/helper/class-hipay-notification.php:142
+#: includes/helper/class-hipay-notification.php:143
 msgid "Transaction  refused. Order was cancelled with transaction:"
 msgstr ""
 
@@ -1219,17 +1335,18 @@ msgstr ""
 msgid "Transaction cancelled"
 msgstr ""
 
-#: includes/helper/class-hipay-order-handler.php:252
+#: includes/helper/class-hipay-order-handler.php:264
 #: includes/helper/class-hipay-helper.php:258
 #: includes/helper/class-hipay-api-request-handler.php:157
 msgid "Transaction ID: "
 msgstr ""
 
 #: includes/helper/class-hipay-transactions.php:125
+#, php-format
 msgid "Transactions  %s"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:296
+#: includes/admin/template/admin-global-settings.php:302
 msgid "Try to enable for all transactions"
 msgstr ""
 
@@ -1237,22 +1354,22 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:174
+#: includes/admin/template/admin-global-settings.php:177
 msgid ""
 "URL to your CSS (style sheet) to customize your hosted page or iFrame "
 "(Important: the HTTPS protocol is required)."
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:236
+#: includes/admin/template/admin-global-settings.php:241
 msgid "Use Oneclick"
 msgstr ""
 
-#: includes/admin/template/admin-account-settings.php:35
-#: includes/admin/template/admin-account-settings.php:96
+#: includes/admin/template/admin-account-settings.php:38
+#: includes/admin/template/admin-account-settings.php:109
 msgid "Username"
 msgstr ""
 
-#: includes/gateways/class-gateway-hipay.php:550
+#: includes/gateways/class-gateway-hipay.php:552
 msgid ""
 "We have received your order payment. We will process the order as soon as we "
 "get the payment confirmation."
@@ -1262,10 +1379,14 @@ msgstr ""
 msgid "What to do when payment errors occur ?"
 msgstr ""
 
-#: includes/admin/template/admin-account-settings.php:17
+#: includes/admin/template/admin-account-settings.php:19
 msgid ""
 "When in test mode, payment cards are not really charged. Enable this option "
 "for testing purposes only."
+msgstr ""
+
+#: includes/admin/template/admin-paymentlocal-settings.php:233
+msgid "White"
 msgstr ""
 
 #: includes/admin/template/admin-faq-settings.php:228
@@ -1298,11 +1419,12 @@ msgstr ""
 msgid "Woocommerce REST API"
 msgstr ""
 
-#: includes/admin/template/admin-global-settings.php:313
+#: includes/admin/template/admin-global-settings.php:162
 msgid "Yes"
 msgstr ""
 
 #: includes/helper/class-hipay-helper.php:198
+#, php-format
 msgid ""
 "You can accept or decline this transaction by visiting the administration of "
 "your store. <a href=\"%s\">here</a>"

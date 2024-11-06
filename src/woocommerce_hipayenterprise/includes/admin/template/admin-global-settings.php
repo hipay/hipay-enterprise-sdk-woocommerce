@@ -8,16 +8,15 @@
 
 <div class="form-horizontal">
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Operating mode', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="operating_mode">
+            <?php _e('Operating mode', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
-            <select class="select form-control" name="operating_mode"
-                    id="operating_mode" style="">
-                <option
-                        value="hosted_page" <?php if ($paymentCommon["operating_mode"] == OperatingMode::HOSTED_PAGE) {
+            <select class="select form-control" name="operating_mode" id="operating_mode" style="">
+                <option value="hosted_page" <?php if ($paymentCommon["operating_mode"] == OperatingMode::HOSTED_PAGE) {
                     echo " SELECTED";
                 } ?>><?php _e('Hosted page', "hipayenterprise"); ?></option>
-                <option
-                        value="hosted_fields" <?php if ($paymentCommon["operating_mode"] ==
+                <option value="hosted_fields" <?php if ($paymentCommon["operating_mode"] ==
                     OperatingMode::HOSTED_FIELDS) {
                     echo " SELECTED";
                 } ?>><?php _e('Hosted Fields', "hipayenterprise"); ?></option>
@@ -44,90 +43,79 @@
         <div class="col-lg-2"></div>
         <div class="col-lg-8">
             <div class="form-group">
-                <label class="control-label col-lg-2"><?php _e('Color', "hipayenterprise"); ?></label>
+                <label class="control-label col-lg-2" for="color">
+                    <?php _e('Color', "hipayenterprise"); ?>
+                </label>
                 <div class="col-lg-8">
-                    <input class="form-control" type="text"
-                           name="color"
-                           id="color" style=""
-                           value="<?php echo esc_textarea($paymentCommon["hosted_fields_style"]["base"]["color"]); ?>"
-                           placeholder="">
+                    <input class="form-control" type="text" name="color" id="color" style=""
+                        value="<?php echo esc_textarea($paymentCommon["hosted_fields_style"]["base"]["color"]); ?>"
+                        placeholder="">
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="control-label col-lg-2"><?php _e('Font Family', "hipayenterprise"); ?></label>
+                <label class="control-label col-lg-2" for="fontFamily">
+                    <?php _e('Font Family', "hipayenterprise"); ?>
+                </label>
                 <div class="col-lg-8">
-                    <input class="form-control" type="text"
-                           name="fontFamily"
-                           id="fontFamily" style=""
-                           value="<?php echo esc_textarea(
+                    <input class="form-control" type="text" name="fontFamily" id="fontFamily" style="" value="<?php echo esc_textarea(
                                $paymentCommon["hosted_fields_style"]["base"]["fontFamily"]
-                           ); ?>"
-                           placeholder="">
+                           ); ?>" placeholder="">
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="control-label col-lg-2"><?php _e('Font Size', "hipayenterprise"); ?></label>
+                <label class="control-label col-lg-2" for="fontSize">
+                    <?php _e('Font Size', "hipayenterprise"); ?>
+                </label>
                 <div class="col-lg-8">
-                    <input class="form-control" type="text"
-                           name="fontSize"
-                           id="fontSize" style=""
-                           value="<?php echo esc_textarea(
+                    <input class="form-control" type="text" name="fontSize" id="fontSize" style="" value="<?php echo esc_textarea(
                                $paymentCommon["hosted_fields_style"]["base"]["fontSize"]
-                           ); ?>"
-                           placeholder="">
+                           ); ?>" placeholder="">
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="control-label col-lg-2"><?php _e('Font Weight', "hipayenterprise"); ?></label>
+                <label class="control-label col-lg-2" for="fontWeight">
+                    <?php _e('Font Weight', "hipayenterprise"); ?>
+                </label>
                 <div class="col-lg-8">
-                    <input class="form-control" type="text"
-                           name="fontWeight"
-                           id="fontWeight" style=""
-                           value="<?php echo esc_textarea(
+                    <input class="form-control" type="text" name="fontWeight" id="fontWeight" style="" value="<?php echo esc_textarea(
                                $paymentCommon["hosted_fields_style"]["base"]["fontWeight"]
-                           ); ?>"
-                           placeholder="">
+                           ); ?>" placeholder="">
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="control-label col-lg-2"><?php _e('PlaceHodler color', "hipayenterprise"); ?></label>
+                <label class="control-label col-lg-2" for="placeholderColor">
+                    <?php _e('PlaceHodler color', "hipayenterprise"); ?>
+                </label>
                 <div class="col-lg-8">
-                    <input class="form-control" type="text"
-                           name="placeholderColor"
-                           id="placeholderColor" style=""
-                           value="<?php echo esc_textarea(
+                    <input class="form-control" type="text" name="placeholderColor" id="placeholderColor" style=""
+                        value="<?php echo esc_textarea(
                                $paymentCommon["hosted_fields_style"]["base"]["placeholderColor"]
-                           ); ?>"
-                           placeholder="">
+                           ); ?>" placeholder="">
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-lg-2"><?php _e('Caret color', "hipayenterprise"); ?></label>
+                <label class="control-label col-lg-2" for="caretColor">
+                    <?php _e('Caret color', "hipayenterprise"); ?>
+                </label>
                 <div class="col-lg-8">
-                    <input class="form-control" type="text"
-                           name="caretColor"
-                           id="caretColor" style=""
-                           value="<?php echo esc_textarea(
+                    <input class="form-control" type="text" name="caretColor" id="caretColor" style="" value="<?php echo esc_textarea(
                                $paymentCommon["hosted_fields_style"]["base"]["caretColor"]
-                           ); ?>"
-                           placeholder="">
+                           ); ?>" placeholder="">
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="control-label col-lg-2"><?php _e('Icon color', "hipayenterprise"); ?></label>
+                <label class="control-label col-lg-2" for="iconColor">
+                    <?php _e('Icon color', "hipayenterprise"); ?>
+                </label>
                 <div class="col-lg-8">
-                    <input class="form-control" type="text"
-                           name="iconColor"
-                           id="iconColor" style=""
-                           value="<?php echo esc_textarea(
+                    <input class="form-control" type="text" name="iconColor" id="iconColor" style="" value="<?php echo esc_textarea(
                                $paymentCommon["hosted_fields_style"]["base"]["iconColor"]
-                           ); ?>"
-                           placeholder="">
+                           ); ?>" placeholder="">
                 </div>
             </div>
         </div>
@@ -136,16 +124,15 @@
         echo "hidden ";
     } ?>hosted_page_config">
         <div class="form-group">
-            <label class="control-label col-lg-2"><?php _e('Display Hosted Page', "hipayenterprise"); ?></label>
+            <label class="control-label col-lg-2" for="display_hosted_page">
+                <?php _e('Display Hosted Page', "hipayenterprise"); ?>
+            </label>
             <div class="col-lg-8">
-                <select class="select form-control" name="display_hosted_page"
-                        id="display_hosted_page" style="">
-                    <option
-                            value="redirect" <?php if ($paymentCommon["display_hosted_page"] == "redirect") {
+                <select class="select form-control" name="display_hosted_page" id="display_hosted_page" style="">
+                    <option value="redirect" <?php if ($paymentCommon["display_hosted_page"] == "redirect") {
                         echo " SELECTED";
                     } ?>><?php _e('Redirect', "hipayenterprise"); ?></option>
-                    <option
-                            value="iframe" <?php if ($paymentCommon["display_hosted_page"] == "iframe") {
+                    <option value="iframe" <?php if ($paymentCommon["display_hosted_page"] == "iframe") {
                         echo " SELECTED";
                     } ?>><?php _e('IFrame', "hipayenterprise"); ?></option>
                 </select>
@@ -153,24 +140,40 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-lg-2"><?php _e('Display card selector', "hipayenterprise"); ?></label>
+            <label class="control-label col-lg-2" for="display_card_selector">
+                <?php _e('Display card selector', "hipayenterprise"); ?>
+            </label>
             <div class="col-lg-8">
-                <input class="form-control" type="checkbox" name="display_card_selector"
-                       id="display_card_selector" style=""
-                       value="1" <?php if ($paymentCommon["display_card_selector"]) {
+                <input class="form-control" type="checkbox" name="display_card_selector" id="display_card_selector"
+                    style="" value="1" <?php if ($paymentCommon["display_card_selector"]) {
                     echo 'checked="checked"';
                 } ?>>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="control-label col-lg-2"><?php _e('CSS url', "hipayenterprise"); ?></label>
+            <label class="control-label col-lg-2" for="display_cancel_button">
+                <?php _e('Display cancel button', "hipayenterprise"); ?>
+            </label>
             <div class="col-lg-8">
-                <input class="form-control" type="text"
-                       name="css_url"
-                       id="css_url" style=""
-                       value="<?php echo esc_textarea($paymentCommon["css_url"]); ?>"
-                       placeholder="">
+                <select class="select form-control" name="display_cancel_button" id="display_cancel_button" style="">
+                    <option value="1" <?php if ($paymentCommon["display_cancel_button"] == "1") {
+                        echo " SELECTED";
+                    } ?>><?php _e('Yes', "hipayenterprise"); ?></option>
+                    <option value="0" <?php if ($paymentCommon["display_cancel_button"] == "0") {
+                        echo " SELECTED";
+                    } ?>><?php _e('No', "hipayenterprise"); ?></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-lg-2" for="css_url">
+                <?php _e('CSS url', "hipayenterprise"); ?>
+            </label>
+            <div class="col-lg-8">
+                <input class="form-control" type="text" name="css_url" id="css_url" style=""
+                    value="<?php echo esc_textarea($paymentCommon["css_url"]); ?>" placeholder="">
                 <div class="help-block"><?php _e(
                         "URL to your CSS (style sheet) to customize your hosted page or iFrame (Important: the HTTPS protocol is required).",
                         "hipayenterprise"
@@ -178,19 +181,20 @@
                 </div>
             </div>
         </div>
+
+
     </div>
 
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Capture', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="capture_mode">
+            <?php _e('Capture', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
-            <select class="select form-control" name="capture_mode"
-                    id="capture_mode" style="">
-                <option
-                        value="automatic" <?php if ($paymentCommon["capture_mode"] == "automatic") {
+            <select class="select form-control" name="capture_mode" id="capture_mode" style="">
+                <option value="automatic" <?php if ($paymentCommon["capture_mode"] == "automatic") {
                     echo " SELECTED";
                 } ?>><?php _e('Automatic', "hipayenterprise"); ?></option>
-                <option
-                        value="manual" <?php if ($paymentCommon["capture_mode"] == "manual") {
+                <option value="manual" <?php if ($paymentCommon["capture_mode"] == "manual") {
                     echo " SELECTED";
                 } ?>><?php _e('Manual', "hipayenterprise"); ?></option>
             </select>
@@ -213,11 +217,11 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Skip on-hold status', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="skip_onhold">
+            <?php _e('Skip on-hold status', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
-            <input class="form-control" type="checkbox" name="skip_onhold"
-                   id="skip_onhold" style=""
-                   value="1" <?php if ($paymentCommon["skip_onhold"]) {
+            <input class="form-control" type="checkbox" name="skip_onhold" id="skip_onhold" style="" value="1" <?php if ($paymentCommon["skip_onhold"]) {
                 echo 'checked="checked"';
             } ?>>
             <div class="help-block">
@@ -233,90 +237,74 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Use Oneclick', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="card_token">
+            <?php _e('Use Oneclick', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
-            <input class="form-control" type="checkbox" name="card_token"
-                   id="card_token" style=""
-                   value="1" <?php if ($paymentCommon["card_token"]) {
+            <input class="form-control" type="checkbox" name="card_token" id="card_token" style="" value="1" <?php if ($paymentCommon["card_token"]) {
                 echo 'checked="checked"';
             } ?>>
         </div>
     </div>
 
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Customer\'s cart sending', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="activate_basket">
+            <?php _e('Customer\'s cart sending', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
-            <input class="form-control" type="checkbox" name="activate_basket"
-                   id="activate_basket" style=""
-                   value="1" <?php if ($paymentCommon["activate_basket"]) {
+            <input class="form-control" type="checkbox" name="activate_basket" id="activate_basket" style="" value="1" <?php if ($paymentCommon["activate_basket"]) {
                 echo 'checked="checked"';
             } ?>>
         </div>
     </div>
 
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Logs information', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="log_infos">
+            <?php _e('Logs information', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
-            <input class="form-control" type="checkbox" name="log_infos"
-                   id="log_infos" style=""
-                   value="1" <?php if ($paymentCommon["log_infos"]) {
+            <input class="form-control" type="checkbox" name="log_infos" id="log_infos" style="" value="1" <?php if ($paymentCommon["log_infos"]) {
                 echo 'checked="checked"';
             } ?>>
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Send url Notification', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="send_url_notification">
+            <?php _e('Send url Notification', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
-            <input class="form-control" type="checkbox" name="send_url_notification"
-                   id="send_url_notification" style=""
-                   value="1" <?php if ($paymentCommon["send_url_notification"]) {
+            <input class="form-control" type="checkbox" name="send_url_notification" id="send_url_notification" style=""
+                value="1" <?php if ($paymentCommon["send_url_notification"]) {
                 echo 'checked="checked"';
         } ?>>
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('SDK js url', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="sdk_js_url">
+            <?php _e('SDK js url', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
-            <input class="form-control" type="text" name="sdk_js_url"
-                   id="sdk_js_url" style=""
-                   value="<?php echo $paymentCommon["sdk_js_url"] ?>"/></div>
+            <input class="form-control" type="text" name="sdk_js_url" id="sdk_js_url" style=""
+                value="<?php echo $paymentCommon["sdk_js_url"] ?>" />
+        </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Activate 3-D Secure', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="activate_3d_secure">
+            <?php _e('Activate 3-D Secure', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
-            <select class="select form-control" name="activate_3d_secure"
-                    id="activate_3d_secure" style="">
-                <option
-                        value="0" <?php if ($paymentCommon["activate_3d_secure"] == ThreeDS::THREE_D_S_DISABLED) {
+            <select class="select form-control" name="activate_3d_secure" id="activate_3d_secure" style="">
+                <option value="0" <?php if ($paymentCommon["activate_3d_secure"] == ThreeDS::THREE_D_S_DISABLED) {
                     echo " SELECTED";
                 } ?>><?php _e('Deactivated', "hipayenterprise"); ?></option>
-                <option
-                        value="1" <?php if ($paymentCommon["activate_3d_secure"] == ThreeDS::THREE_D_S_TRY_ENABLE_ALL) {
+                <option value="1" <?php if ($paymentCommon["activate_3d_secure"] == ThreeDS::THREE_D_S_TRY_ENABLE_ALL) {
                     echo " SELECTED";
                 } ?>><?php _e('Try to enable for all transactions', "hipayenterprise"); ?></option>
-                <option
-                        value="2" <?php if ($paymentCommon["activate_3d_secure"] ==
+                <option value="2" <?php if ($paymentCommon["activate_3d_secure"] ==
                     ThreeDS::THREE_D_S_FORCE_ENABLE_ALL) {
                     echo " SELECTED";
                 } ?>><?php _e('Force for all transactions', "hipayenterprise"); ?></option>
             </select>
         </div>
     </div>
-    <div class="form-group">
-            <label class="control-label col-lg-2"><?php _e('Display cancel button', "hipayenterprise"); ?></label>
-            <div class="col-lg-8">
-                <select class="select form-control" name="display_cancel_button"
-                        id="display_cancel_button" style="">
-                    <option
-                            value="1" <?php if ($paymentCommon["display_cancel_button"] == "1") {
-                        echo " SELECTED";
-                    } ?>><?php _e('Yes', "hipayenterprise"); ?></option>
-                    <option
-                            value="0" <?php if ($paymentCommon["display_cancel_button"] == "0") {
-                        echo " SELECTED";
-                    } ?>><?php _e('No', "hipayenterprise"); ?></option>
-                </select>
-            </div>
-        </div>
 </div>
-

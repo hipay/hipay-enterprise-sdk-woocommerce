@@ -7,10 +7,12 @@
     <div class="panel-body">
         <div class="form-horizontal">
             <div class="form-group">
-                <label class="control-label col-lg-2"><?php _e(
+                <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_ccDisplayName">
+                    <?php _e(
                         'Display name',
                         "hipayenterprise"
-                    ); ?></label>
+                    ); ?>
+                </label>
                 <div class="col-lg-8">
                     <?php
                         if (isset($paymentCommon["ccDisplayName"][substr(get_locale(), 0, 2)])) {
@@ -69,7 +71,9 @@
                         </div>
                         <div class="form-horizontal">
                             <div class="form-group">
-                                <label class="control-label col-lg-2"><?php _e(
+                                <label class="control-label col-lg-2"
+                                       for="woocommerce_hipayenterprise_methods_<?php echo $card; ?>_activated"
+                                ><?php _e(
                                         'Activated',
                                         "hipayenterprise"
                                     ); ?></label>
@@ -85,12 +89,14 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label col-lg-2"><?php _e(
+                                <label class="control-label col-lg-2"
+                                        for="woocommerce_hipayenterprise_methods_<?php echo $card; ?>_minAmount"
+                                ><?php _e(
                                         'Minimum order amount',
                                         "hipayenterprise"
                                     ); ?></label>
                                 <div class="col-lg-8">
-                                    <input class="form-control" type="text"
+                                    <input class="form-control" type="number"
                                            name="woocommerce_hipayenterprise_methods_<?php echo $methods; ?>_minAmount_<?php echo $card; ?>[EUR]"
                                            id="woocommerce_hipayenterprise_methods_<?php echo $card; ?>_minAmount"
                                            style=""
@@ -100,12 +106,14 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label col-lg-2"><?php _e(
+                                <label class="control-label col-lg-2"
+                                       for="woocommerce_hipayenterprise_methods_<?php echo $card; ?>_maxAmount"
+                                ><?php _e(
                                         'Maximum order amount',
                                         "hipayenterprise"
                                     ); ?></label>
                                 <div class="col-lg-8">
-                                    <input class="form-control" type="text"
+                                    <input class="form-control" type="number"
                                            name="woocommerce_hipayenterprise_methods_<?php echo $methods; ?>_maxAmount_<?php echo $card; ?>[EUR]"
                                            id="woocommerce_hipayenterprise_methods_<?php echo $card; ?>_maxAmount"
                                            style=""
@@ -115,14 +123,16 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label col-lg-2"><?php _e(
+                                <label class="control-label col-lg-2"
+                                       for="woocommerce_hipayenterprise_methods_<?php echo $card?>_currencies">
+                                    <?php _e(
                                         'Currencies',
                                         "hipayenterprise"
                                     ); ?></label>
                                 <div class="col-lg-8">
                                     <?php
                                     $activatedCurrencies = get_woocommerce_currency();
-                                    echo '<input class="form-control" type="checkbox" name="woocommerce_hipayenterprise_methods_' .
+                                    echo '<input style="float:left" class="form-control" type="checkbox" name="woocommerce_hipayenterprise_methods_' .
                                         $methods .
                                         '_currencies_' .
                                         $card .
@@ -135,13 +145,15 @@
                                         array_search($activatedCurrencies, $value["currencies"]) !== false) {
                                         echo ' checked="checked"';
                                     }
-                                    echo "><span style='padding-right:18px;'>" . $activatedCurrencies . "</span>";
+                                    echo "><span style='padding:7px 10px;float:left'>" . $activatedCurrencies . "</span>";
                                     ?>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label col-lg-2"><?php _e(
+                                <label class="control-label col-lg-2"
+                                       for="woocommerce_hipayenterprise_methods<?php echo $card; ?>countries[<?php echo $card; ?>]"
+                                ><?php _e(
                                         'Countries',
                                         "hipayenterprise"
                                     ); ?></label>
