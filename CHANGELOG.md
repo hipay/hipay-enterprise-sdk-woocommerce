@@ -1,8 +1,10 @@
 # CHANGELOG
 
-## UNRELEASE
+## 2.5.0
 
 - **Add** : Added Klarna payment method
+- **Add** : Added PayPal v2
+- **Add** : Added new branding colors to HiPay module
 
 ## 2.4.0
 

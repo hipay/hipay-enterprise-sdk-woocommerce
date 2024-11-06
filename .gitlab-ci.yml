@@ -4,6 +4,7 @@ stages:
   - build-test
   - test
   - package
+  - release
   - build
   - deploy
 
@@ -59,10 +60,10 @@ variables:
 
 .login_to_registry: &login-to-registry
   before_script:
-    - "mkdir /tmp"
-    - "touch /tmp/credentials.json"
-    - "echo ${SA_REGISTRY_CD} > /tmp/credentials.json"
-    - "export GOOGLE_APPLICATION_CREDENTIALS=/tmp/credentials.json"
+    - 'mkdir /tmp'
+    - 'touch /tmp/credentials.json'
+    - 'echo ${SA_REGISTRY_CD} > /tmp/credentials.json'
+    - 'export GOOGLE_APPLICATION_CREDENTIALS=/tmp/credentials.json'
 
 .login_to_cd: &login-to-cd
   before_script:
@@ -132,6 +133,101 @@ package:
   tags:
     - small
 
+# Job to get JIRA tickets of the release
+get-jira-tickets:
+  stage: release
+  image: node:latest
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - |
+      node <<EOF
+      (async () => {
+        try {
+          const gitlabResponse = await fetch("${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/merge_requests?state=merged&target_branch=develop&milestone=${CI_COMMIT_TAG}", {
+            method: "GET",
+            headers: {
+              "Private-Token": "$GITLAB_API_TOKEN"
+            }
+          });
+
+          if (!gitlabResponse.ok) {
+            const err = await gitlabResponse.json();
+            throw new Error("Failed to send GitLab request: " + JSON.stringify(err));
+          }
+
+          const mergeRequests = await gitlabResponse.json();
+          const tickets = [];
+
+          mergeRequests.forEach((mr) => {
+            const matches = mr.source_branch.match(/EC-\d+/);
+            if(matches?.length) {
+              tickets.push(matches[0].toUpperCase());
+            }
+          });
+
+          console.log("tickets", tickets);
+
+          const payload = {
+            "event_type": "trigger-artifact-workflow",
+            "client_payload": {
+              "tickets": tickets
+            }
+          };
+
+          console.log("payload", JSON.stringify(payload));
+
+          const githubResponse = await fetch("https://api.github.com/repos/${GITHUB_ORGANIZATION}/${GITHUB_PROJECT}/dispatches", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer ${GITHUB_TOKEN}",
+              "User-Agent": "Node.js"
+            },
+            body: JSON.stringify(payload)
+          });
+
+          if (!githubResponse.ok) {
+            const err = await githubResponse.json();
+            throw new Error("Failed to send GitHub event: " + JSON.stringify(err));
+          }
+        } catch (error) {
+          throw new Error("Request error: " + error.message);
+        }
+      })();
+      EOF
+
+# Release note job
+release-job:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  needs:
+    - get-jira-tickets
+  variables:
+    TEMP_CHANGELOG_FILE: 'release_changelog.txt'
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - |
+      # Extract changelog part according to tag version
+      CHANGELOG=$(awk -v version="## $CI_COMMIT_TAG" '
+        $0 ~ version {printit=1; next}
+        printit && /^## / {exit}
+        printit {print}
+      ' CHANGELOG.md)
+
+      {
+        echo "# CHANGE LOG"
+        echo "$CHANGELOG"
+      } > "$TEMP_CHANGELOG_FILE"
+    - cat "$TEMP_CHANGELOG_FILE"
+  release:
+    tag_name: $CI_COMMIT_TAG
+    name: Version $CI_COMMIT_TAG
+    description: '$TEMP_CHANGELOG_FILE'
+    milestones:
+      - $CI_COMMIT_TAG
+
 build:
   <<: *login-to-registry
   stage: build
@@ -157,7 +253,7 @@ deploy2recette:
   stage: deploy
   image: $REGISTRY_CI/gitlab-ci-base:deployment
   variables:
-    GPC_ACCOUNT: ""
+    GPC_ACCOUNT: ''
   needs:
     - build
   script:
