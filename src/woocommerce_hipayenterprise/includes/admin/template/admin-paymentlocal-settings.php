@@ -141,6 +141,7 @@
             <?php endif; ?>
         </div>
     </div>
+    <?php if ($configurationPaymentMethod["productCode"] === 'paypal') : ?>
     <div class="form-group">
         <label class="control-label col-lg-2"></label>
         <div class="col-lg-8">
@@ -162,7 +163,7 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-lg-2">
+        <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_methods_buttonShape<?php echo $method; ?>">
             <?php _e('Button Shape', "hipayenterprise"); ?>
         </label>
         <div class="col-lg-8">
@@ -182,7 +183,9 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Button Label', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_methods_buttonLabel<?php echo $method; ?>">
+            <?php _e('Button Label', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
             <?php
             $buttonLabel = $configurationPaymentMethod["buttonLabel"]??'';
@@ -209,7 +212,9 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Button Color', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_methods_buttonColor<?php echo $method; ?>">
+            <?php _e('Button Color', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
             <?php
             $buttonColor = $configurationPaymentMethod["buttonColor"]??'';
@@ -237,7 +242,9 @@
     </div>
 
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e('Button height', "hipayenterprise"); ?></label>
+        <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_methods_buttonHeight<?php echo $method; ?>">
+            <?php _e('Button height', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
 
             <?php
@@ -251,10 +258,9 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-lg-2"><?php _e(
-                'Pay Later Button',
-                "hipayenterprise"
-            ); ?></label>
+        <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_methods_bnpl<?php echo $method; ?>">
+            <?php _e('Pay Later Button', "hipayenterprise"); ?>
+        </label>
         <div class="col-lg-8">
             <?php
             $bnpl = $configurationPaymentMethod["bnpl"] ?? false;
@@ -271,4 +277,5 @@
             </p>
         </div>
     </div>
+    <?php endif; ?>
 </div>
