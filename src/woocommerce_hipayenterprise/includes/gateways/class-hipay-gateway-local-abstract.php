@@ -182,8 +182,7 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
 
         return !empty($paypalOptions['provider_architecture_version'])
             && $paypalOptions['provider_architecture_version'] === 'v1'
-            && !empty($paypalOptions['payer_id'])
-            && $this->getOperatingMode() == OperatingMode::HOSTED_FIELDS;
+            && !empty($paypalOptions['payer_id']);
     }
 
     protected function getOperatingMode()
