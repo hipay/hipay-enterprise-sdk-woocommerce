@@ -157,8 +157,8 @@ class Hipay_Config
                             "fontSize" => "15px",
                             "fontWeight" => "400",
                             "placeholderColor" => "",
-                            "caretColor" => "#00ADE9",
-                            "iconColor" => "#00ADE9",
+                            "caretColor" => "#A50979",
+                            "iconColor" => "#A50979",
                         )
                     ),
                     "css_url" => "",
