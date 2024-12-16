@@ -55,7 +55,7 @@ class Hipay_Available_Payment_Product_Formatter extends Hipay_Api_Formatter_Abst
     }
 
     /**
-     * Map order
+     * Map request
      *
      * @param type $paymentProduct
      * @return mixed|void

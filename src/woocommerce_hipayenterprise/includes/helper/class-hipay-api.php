@@ -116,14 +116,13 @@ class Hipay_Api
      * @return \HiPay\Fullservice\Gateway\Model\AvailablePaymentProduct[]
      * @throws Exception
      */
-    function requestAvailablePayment($params)
+    public function requestAvailablePayment($params)
     {
         try {
             $gatewayClient = $this->createGatewayClient();
-
-            //Set data to send to the API
             $availablePaymentProductFormatter = new Hipay_Available_Payment_Product_Formatter($this->plugin, $params);
             $paymentProduct = $availablePaymentProductFormatter->generate();
+
             return $gatewayClient->requestAvailablePaymentProduct($paymentProduct);
         } catch (Exception $e) {
                 $this->plugin->logs->logException($e);

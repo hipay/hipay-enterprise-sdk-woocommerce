@@ -79,11 +79,6 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
     protected $sandbox;
 
     /**
-     * @var Hipay_Available_Payment
-     */
-    protected $availablePayment;
-
-    /**
      * Hipay_Gateway_Abstract constructor.
      */
     public function __construct()
@@ -156,15 +151,24 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
             )
         );
 
-        $paypalOptions = Hipay_Available_Payment::getInstance($this->confHelper)
-            ->getAvailablePaymentProducts('paypal')[0]['options'] ?? [];
+        $paypalOptions = [];
+        $availablePaymentProducts = $this->apiRequestHandler->getApi()->requestAvailablePayment([
+            'payment_product' => 'paypal',
+            'with_options' => true
+        ]);
+
+        foreach ($availablePaymentProducts as $product) {
+            if ($product->getCode() === 'paypal' && !empty($product->getOptions())) {
+                $paypalOptions = $product->getOptions();
+            }
+        }
 
         wp_localize_script(
             'hipay-js-front',
             'paypal_version',
-            ['v2' => !empty($paypalOptions['provider_architecture_version'])
-                && $paypalOptions['provider_architecture_version'] === 'v1'
-                && !empty($paypalOptions['payer_id'])]
+            ['v2' => !empty($paypalOptions['providerArchitectureVersion'])
+                && $paypalOptions['providerArchitectureVersion'] === 'v1'
+                && !empty($paypalOptions['payerId'])]
         );
     }
 

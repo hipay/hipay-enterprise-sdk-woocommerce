@@ -58,10 +58,6 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
         if ($methodConf["canRefund"]) {
             $this->supports[] = "refunds";
         }
-
-        if (isset($_GET['section']) && preg_match("/^hipayenterprise_paypal/", $_GET['section'])) {
-            $this->availablePayment = Hipay_Available_Payment::getInstance($this->confHelper);
-        }
     }
 
     public function isAvailable()
@@ -177,12 +173,19 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
      */
     protected function isPaypalV2()
     {
-        $paypalOptions = Hipay_Available_Payment::getInstance($this->confHelper)
-            ->getAvailablePaymentProducts('paypal')[0]['options'] ?? [];
-
-        return !empty($paypalOptions['provider_architecture_version'])
-            && $paypalOptions['provider_architecture_version'] === 'v1'
-            && !empty($paypalOptions['payer_id']);
+        $availablePaymentProducts = $this->apiRequestHandler->getApi()->requestAvailablePayment([
+            'payment_product' => 'paypal',
+            'with_options' => true
+        ]);
+        foreach ($availablePaymentProducts as $product) {
+            if ($product->getCode() === 'paypal' && !empty($product->getOptions())) {
+                $paypalOptions = $product->getOptions();
+                return !empty($paypalOptions['providerArchitectureVersion'])
+                    && $paypalOptions['providerArchitectureVersion'] === 'v1'
+                    && !empty($paypalOptions['payerId']);
+            }
+        }
+        return false;
     }
 
     protected function getOperatingMode()
