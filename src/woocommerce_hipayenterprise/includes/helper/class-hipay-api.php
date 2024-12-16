@@ -125,8 +125,9 @@ class Hipay_Api
 
             return $gatewayClient->requestAvailablePaymentProduct($paymentProduct);
         } catch (Exception $e) {
-                $this->plugin->logs->logException($e);
-                throw new Exception($e->getMessage());
+            $this->plugin->logs->logException($e);
+
+            return [];
         }
     }
 

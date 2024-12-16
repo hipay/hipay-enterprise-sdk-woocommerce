@@ -63,6 +63,7 @@ class Hipay_Autoloader
 	    'Gateway_Hipay' => WC_HIPAYENTERPRISE_PATH . 'includes/gateways/class-gateway-hipay.php',
 	    'Hipay_Gateway_Abstract' => WC_HIPAYENTERPRISE_PATH . 'includes/gateways/class-hipay-gateway-abstract.php',
 	    'Hipay_Gateway_Local_Abstract' => WC_HIPAYENTERPRISE_PATH . 'includes/gateways/class-hipay-gateway-local-abstract.php',
+        'Hipay_Gateway_Alma_Abstract' => WC_HIPAYENTERPRISE_PATH . 'includes/gateways/class-hipay-gateway-alma-abstract.php',
 
 	    'CaptureMode' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/CaptureMode.php',
 	    'CardPaymentProduct' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/CardPaymentProduct.php',

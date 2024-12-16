@@ -23,15 +23,29 @@
             <?php _e('Minimum order amount', "hipayenterprise"); ?>
         </label>
         <div class="col-lg-8">
-            <input class="form-control" type="number"
-                name="woocommerce_hipayenterprise_methods_minAmount_<?php echo $method; ?>[EUR]"
-                id="woocommerce_hipayenterprise_methods_<?php echo $method; ?>_minAmount"
-                value="<?php echo $configurationPaymentMethod["minAmount"]["EUR"]; ?>" placeholder=""
-                <?php echo $configurationPaymentMethod["minAmount"]["fixed"] ? "readonly" : ""; ?>
-            >
-            <input type="hidden" name="woocommerce_hipayenterprise_methods_minAmount_<?php echo $method; ?>[fixed]"
-                value="<?php echo $configurationPaymentMethod["minAmount"]["fixed"]; ?>"
-            />
+            <?php if (isset($almaProducts) && isset($almaProducts[$method])) : ?>
+                <p class="form-control-static text-info bigger-bolder-text"><?php echo esc_html($almaProducts[$method]['min']); ?> EUR</p>
+                <input type="hidden"
+                       name="woocommerce_hipayenterprise_methods_minAmount_<?php echo $method; ?>[EUR]"
+                       value="<?php echo esc_attr($almaProducts[$method]['min']); ?>"
+                />
+                <input type="hidden"
+                       name="woocommerce_hipayenterprise_methods_minAmount_<?php echo $method; ?>[fixed]"
+                       value="1"
+                />
+            <?php else : ?>
+                <input class="form-control" type="number"
+                       name="woocommerce_hipayenterprise_methods_minAmount_<?php echo $method; ?>[EUR]"
+                       id="woocommerce_hipayenterprise_methods_<?php echo $method; ?>_minAmount"
+                       value="<?php echo $configurationPaymentMethod["minAmount"]["EUR"]; ?>"
+                       placeholder=""
+                    <?php echo $configurationPaymentMethod["minAmount"]["fixed"] ? "readonly" : ""; ?>
+                >
+                <input type="hidden"
+                       name="woocommerce_hipayenterprise_methods_minAmount_<?php echo $method; ?>[fixed]"
+                       value="<?php echo $configurationPaymentMethod["minAmount"]["fixed"]; ?>"
+                />
+            <?php endif; ?>
         </div>
     </div>
     <div class="form-group">
@@ -39,15 +53,30 @@
             <?php _e('Maximum order amount', "hipayenterprise"); ?>
         </label>
         <div class="col-lg-8">
-            <input class="form-control" type="number"
-                name="woocommerce_hipayenterprise_methods_maxAmount_<?php echo $method; ?>[EUR]"
-                id="woocommerce_hipayenterprise_methods_<?php echo $method; ?>_maxAmount"
-                value="<?php echo $configurationPaymentMethod["maxAmount"]["EUR"]; ?>" placeholder=""
-                <?php echo $configurationPaymentMethod["maxAmount"]["fixed"] ? "readonly" : ""; ?>
-            >
-            <input type="hidden" name="woocommerce_hipayenterprise_methods_maxAmount_<?php echo $method; ?>[fixed]"
-                value="<?php echo $configurationPaymentMethod["maxAmount"]["fixed"]; ?>"
-            />
+            <?php if (isset($almaProducts) && isset($almaProducts[$method])) : ?>
+
+                <p class="form-control-static text-info bigger-bolder-text"><?php echo esc_html($almaProducts[$method]['max']); ?> EUR</p>
+                <input type="hidden"
+                       name="woocommerce_hipayenterprise_methods_maxAmount_<?php echo $method; ?>[EUR]"
+                       value="<?php echo esc_attr($almaProducts[$method]['max']); ?>"
+                />
+                <input type="hidden"
+                       name="woocommerce_hipayenterprise_methods_maxAmount_<?php echo $method; ?>[fixed]"
+                       value="1"
+                />
+            <?php else : ?>
+                <input class="form-control" type="number"
+                       name="woocommerce_hipayenterprise_methods_maxAmount_<?php echo $method; ?>[EUR]"
+                       id="woocommerce_hipayenterprise_methods_<?php echo $method; ?>_maxAmount"
+                       value="<?php echo $configurationPaymentMethod["maxAmount"]["EUR"]; ?>"
+                       placeholder=""
+                    <?php echo $configurationPaymentMethod["maxAmount"]["fixed"] ? "readonly" : ""; ?>
+                >
+                <input type="hidden"
+                       name="woocommerce_hipayenterprise_methods_maxAmount_<?php echo $method; ?>[fixed]"
+                       value="<?php echo $configurationPaymentMethod["maxAmount"]["fixed"]; ?>"
+                />
+            <?php endif; ?>
         </div>
     </div>
     <?php if (isset($configurationPaymentMethod["orderExpirationTime"])) : ?>
@@ -240,7 +269,6 @@
             </select>
         </div>
     </div>
-
     <div class="form-group">
         <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_methods_buttonHeight<?php echo $method; ?>">
             <?php _e('Button height', "hipayenterprise"); ?>

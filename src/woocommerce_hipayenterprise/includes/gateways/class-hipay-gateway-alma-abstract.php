@@ -25,6 +25,11 @@ if (!defined('ABSPATH')) {
  */
 class Hipay_Gateway_Alma_Abstract extends Hipay_Gateway_Local_Abstract
 {
+    /**
+     * Default minimum and maximum amounts for Alma payments
+     */
+    private static $ALMA_DEFAULT_MIN_AMOUNT = 50;
+    private static $ALMA_DEFAULT_MAX_AMOUNT = 2000;
 
     public function __construct()
     {
@@ -40,5 +45,77 @@ class Hipay_Gateway_Alma_Abstract extends Hipay_Gateway_Local_Abstract
         $total = WC()->cart ? WC()->cart->total : 0;
 
         return $this->getMinMaxByPaymentProduct($total, $this->paymentProduct);
+    }
+
+    /**
+     * Get Alma payment products min and max amount limits
+     *
+     * @return array
+     */
+    protected function getAlmaMaxMinAmount()
+    {
+        try {
+            // Initialize Alma products with default static values
+            $almaProducts = [
+                'alma-3x' => ['min' => self::$ALMA_DEFAULT_MIN_AMOUNT, 'max' => self::$ALMA_DEFAULT_MAX_AMOUNT],
+                'alma-4x' => ['min' => self::$ALMA_DEFAULT_MIN_AMOUNT, 'max' => self::$ALMA_DEFAULT_MAX_AMOUNT]
+            ];
+
+            // Try to get cached payment products for each Alma option
+            foreach (array_keys($almaProducts) as $productCode) {
+                $products = $this->getCachedPaymentProducts($productCode);
+
+                if (!empty($products)) {
+                    foreach ($products as $product) {
+                        if ($product['code'] === $productCode) {
+                            $installments = substr($product['code'], -2, 1);
+
+                            if (isset($product['options'])) {
+                                $minKey = "basketAmountMin{$installments}x";
+                                $maxKey = "basketAmountMax{$installments}x";
+
+                                if (isset($product['options'][$minKey], $product['options'][$maxKey])) {
+                                    $almaProducts[$productCode] = [
+                                        'min' => (float)$product['options'][$minKey],
+                                        'max' => (float)$product['options'][$maxKey]
+                                    ];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return $almaProducts;
+
+        } catch (Exception $e) {
+            $this->logs->logException($e);
+            // Return default static values in case of error
+            return [
+                'alma-3x' => ['min' => self::$ALMA_DEFAULT_MIN_AMOUNT, 'max' => self::$ALMA_DEFAULT_MAX_AMOUNT],
+                'alma-4x' => ['min' => self::$ALMA_DEFAULT_MIN_AMOUNT, 'max' => self::$ALMA_DEFAULT_MAX_AMOUNT]
+            ];
+        }
+    }
+
+    /**
+     * Generate HTML for local payment methods settings
+     *
+     * @return string HTML content
+     */
+    public function generate_methods_local_payments_settings_html()
+    {
+        ob_start();
+        $this->process_template(
+            'admin-paymentlocal-settings.php',
+            'admin',
+            [
+                'configurationPaymentMethod' => $this->confHelper->getLocalPayment($this->paymentProduct),
+                'method' => $this->paymentProduct,
+                'almaProducts' => $this->getAlmaMaxMinAmount() // Add Alma products configuration
+            ]
+        );
+
+        return ob_get_clean();
     }
 }
