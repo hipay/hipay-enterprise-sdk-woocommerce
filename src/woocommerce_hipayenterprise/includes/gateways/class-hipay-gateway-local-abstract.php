@@ -173,18 +173,41 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
      */
     protected function isPaypalV2()
     {
-        $availablePaymentProducts = $this->apiRequestHandler->getApi()->requestAvailablePayment([
-            'payment_product' => 'paypal',
-            'with_options' => true
-        ]);
-        foreach ($availablePaymentProducts as $product) {
-            if ($product->getCode() === 'paypal' && !empty($product->getOptions())) {
-                $paypalOptions = $product->getOptions();
-                return !empty($paypalOptions['providerArchitectureVersion'])
-                    && $paypalOptions['providerArchitectureVersion'] === 'v1'
-                    && !empty($paypalOptions['payerId']);
+        $paypalOptions = $this->getCachedPaypalOptions();
+
+        return !empty($paypalOptions['providerArchitectureVersion'])
+            && $paypalOptions['providerArchitectureVersion'] === 'v1'
+            && !empty($paypalOptions['payerId']);
+    }
+
+    /**
+     * Get min and max amount by payment product
+     *
+     * @param $total
+     * @param $technicalCode
+     * @return bool
+     */
+    protected function getMinMaxByPaymentProduct($total, $technicalCode)
+    {
+        try {
+            $products = $this->getCachedPaymentProducts($technicalCode);
+
+            foreach ($products as $product) {
+                if ($product['code'] === $technicalCode) {
+                    $options = $product['options'];
+                    $installments = substr($product['code'], -2, 1);
+                    $minKey = "basketAmountMin{$installments}x";
+                    $maxKey = "basketAmountMax{$installments}x";
+
+                    if (isset($options[$minKey], $options[$maxKey])) {
+                        return $total >= (float)$options[$minKey] && $total <= (float)$options[$maxKey];
+                    }
+                }
             }
+        } catch (Exception $e) {
+            $this->logs->logException($e);
         }
+
         return false;
     }
 

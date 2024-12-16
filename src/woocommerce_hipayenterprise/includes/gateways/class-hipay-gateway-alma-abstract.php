@@ -13,6 +13,7 @@
 
 if (!defined('ABSPATH')) {
     exit;
+    // Exit if accessed directly
 }
 
 /**
@@ -22,17 +23,22 @@ if (!defined('ABSPATH')) {
  * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
  */
-class Hipay_Alma_3x extends Hipay_Gateway_Alma_Abstract
+class Hipay_Gateway_Alma_Abstract extends Hipay_Gateway_Local_Abstract
 {
 
     public function __construct()
     {
-        $this->id = 'hipayenterprise_alma_3x';
-        $this->paymentProduct = 'alma-3x';
-        $this->method_title = __('HiPay Enterprise Alma 3x', "hipayenterprise");
-        $this->title = __('Alma 3x', "hipayenterprise");
-        $this->method_description = __('Alma 3x', "hipayenterprise");
-
         parent::__construct();
+    }
+
+    public function is_available()
+    {
+        if ($this->enabled === 'no') {
+            return false;
+        }
+
+        $total = WC()->cart ? WC()->cart->total : 0;
+
+        return $this->getMinMaxByPaymentProduct($total, $this->paymentProduct);
     }
 }
