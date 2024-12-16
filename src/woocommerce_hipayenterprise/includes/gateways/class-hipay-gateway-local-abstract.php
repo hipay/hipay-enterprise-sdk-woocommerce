@@ -116,7 +116,6 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
             'admin',
             [
                 'configurationPaymentMethod' => $this->confHelper->getLocalPayment($this->paymentProduct),
-                'isPayPalV2' => $this->isPaypalV2(),
                 'method' => $this->paymentProduct
             ]
         );
@@ -163,21 +162,6 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
     protected function forceSalesMode()
     {
         return !$this->confHelper->getLocalPayment($this->paymentProduct)["canManualCapture"];
-    }
-
-    /**
-     * Check if it's PayPal v2.
-     *
-     * @return bool
-     * @throws Exception
-     */
-    protected function isPaypalV2()
-    {
-        $paypalOptions = $this->getCachedPaypalOptions();
-
-        return !empty($paypalOptions['providerArchitectureVersion'])
-            && $paypalOptions['providerArchitectureVersion'] === 'v1'
-            && !empty($paypalOptions['payerId']);
     }
 
     /**
