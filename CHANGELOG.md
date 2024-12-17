@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## UNRELEASE
+- **Add** : Dynamically get Alma MAX/MIN from merchant account
+
 ## 2.5.0
 
 - **Add** : Added Klarna payment method
