@@ -55,13 +55,12 @@ class Hipay_Gateway_Alma_Abstract extends Hipay_Gateway_Local_Abstract
     protected function getAlmaMaxMinAmount()
     {
         try {
-            // Initialize Alma products with default static values
+
             $almaProducts = [
                 'alma-3x' => ['min' => self::$ALMA_DEFAULT_MIN_AMOUNT, 'max' => self::$ALMA_DEFAULT_MAX_AMOUNT],
                 'alma-4x' => ['min' => self::$ALMA_DEFAULT_MIN_AMOUNT, 'max' => self::$ALMA_DEFAULT_MAX_AMOUNT]
             ];
 
-            // Try to get cached payment products for each Alma option
             foreach (array_keys($almaProducts) as $productCode) {
                 $products = $this->getCachedPaymentProducts($productCode);
 
@@ -90,7 +89,6 @@ class Hipay_Gateway_Alma_Abstract extends Hipay_Gateway_Local_Abstract
 
         } catch (Exception $e) {
             $this->logs->logException($e);
-            // Return default static values in case of error
             return [
                 'alma-3x' => ['min' => self::$ALMA_DEFAULT_MIN_AMOUNT, 'max' => self::$ALMA_DEFAULT_MAX_AMOUNT],
                 'alma-4x' => ['min' => self::$ALMA_DEFAULT_MIN_AMOUNT, 'max' => self::$ALMA_DEFAULT_MAX_AMOUNT]
@@ -112,7 +110,7 @@ class Hipay_Gateway_Alma_Abstract extends Hipay_Gateway_Local_Abstract
             [
                 'configurationPaymentMethod' => $this->confHelper->getLocalPayment($this->paymentProduct),
                 'method' => $this->paymentProduct,
-                'almaProducts' => $this->getAlmaMaxMinAmount() // Add Alma products configuration
+                'almaProducts' => $this->getAlmaMaxMinAmount()
             ]
         );
 

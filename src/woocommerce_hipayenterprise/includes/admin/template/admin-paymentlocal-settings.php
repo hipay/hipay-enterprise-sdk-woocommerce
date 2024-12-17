@@ -64,6 +64,9 @@
                        name="woocommerce_hipayenterprise_methods_maxAmount_<?php echo $method; ?>[fixed]"
                        value="1"
                 />
+                <div class="alert-info bigger-bolder-text info-icon">
+                    <p><?php _e('For any questions regarding minimum and maximum amounts, please contact support or your account manager.',"hipayenterprise"); ?></p>
+                </div>
             <?php else : ?>
                 <input class="form-control" type="number"
                        name="woocommerce_hipayenterprise_methods_maxAmount_<?php echo $method; ?>[EUR]"
