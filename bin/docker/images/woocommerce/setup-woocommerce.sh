@@ -93,7 +93,11 @@ if [ ! -f /var/www/html/wp-content/plugins/woocommerce/woocommerce.php ]; then
 
     echo $CONFIG
     wp option --allow-root update hipay_enterprise "$CONFIG" --format=json
-    wp option --allow-root update woocommerce_hipayenterprise_credit_card_settings '{"enabled":"yes"}' --format=json
+
+    methods=$(echo $ACTIVE_METHODS | tr "," "\n")
+    for code in $methods; do
+        wp option --allow-root update woocommerce_hipayenterprise_${code}_settings '{"enabled":"yes"}' --format=json
+    done
 
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     printf "\n${COLOR_SUCCESS}     INSTALL PLUGIN EXTERNAL             ${NC}\n"
