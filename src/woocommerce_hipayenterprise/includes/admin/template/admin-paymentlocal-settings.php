@@ -64,7 +64,7 @@
                        name="woocommerce_hipayenterprise_methods_maxAmount_<?php echo $method; ?>[fixed]"
                        value="1"
                 />
-                <div class="alert-info bigger-bolder-text info-icon">
+                <div class="alert-info bigger-bolder-text info-icon form-control">
                     <p><?php _e('For any questions regarding minimum and maximum amounts, please contact support or your account manager.',"hipayenterprise"); ?></p>
                 </div>
             <?php else : ?>
@@ -299,13 +299,13 @@
             <input class="form-control <?php if (empty($isPayPalV2)) echo 'readonly'?>" type="checkbox"
                    name="woocommerce_hipayenterprise_methods_bnpl_<?php echo $method; ?>"
                    id="woocommerce_hipayenterprise_methods_bnpl<?php echo $method; ?>"
-                   style=""
+                   style="margin-bottom: 8px"
                    value="1" <?php if ($bnpl) {
                 echo 'checked="checked"';
             } ?> >
-            <p class="alert-info">
-                <?php _e('The "Buy now, Pay later" feature is only available if the store currency is euros and if the basket amount is between 30 and 2000.',"hipayenterprise"); ?>
-            </p>
+            <div class="alert-info bigger-bolder-text info-icon form-control">
+                <p><?php _e('The "Buy now, Pay later" feature is only available if the store currency is euros and if the basket amount is between 30 and 2000.',"hipayenterprise"); ?></p>
+            </div>
         </div>
     </div>
     <?php endif; ?>
