@@ -17,7 +17,7 @@ jQuery(function ($) {
     $(document.body).off('click', '#place_order', submitOrder);
 
     checkout_form.off(
-      'click',
+      'change',
       'input[name="payment_method"]',
       addPaymentMethod
     );
@@ -505,7 +505,7 @@ jQuery(function ($) {
       init();
       $(document.body).on('click', '#place_order', submitOrder);
       checkout_form.on(
-        'click',
+        'change',
         'input[name="payment_method"]',
         addPaymentMethod
       );
