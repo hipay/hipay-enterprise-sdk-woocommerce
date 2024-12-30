@@ -58,10 +58,6 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
         if ($methodConf["canRefund"]) {
             $this->supports[] = "refunds";
         }
-
-        if (isset($_GET['section']) && preg_match("/^hipayenterprise_paypal/", $_GET['section'])) {
-            $this->availablePayment = Hipay_Available_Payment::getInstance($this->confHelper);
-        }
     }
 
     public function isAvailable()
@@ -120,7 +116,6 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
             'admin',
             [
                 'configurationPaymentMethod' => $this->confHelper->getLocalPayment($this->paymentProduct),
-                'isPayPalV2' => $this->isPaypalV2(),
                 'method' => $this->paymentProduct
             ]
         );
@@ -170,19 +165,34 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
     }
 
     /**
-     * Check if it's PayPal v2.
+     * Get min and max amount by payment product
      *
+     * @param $total
+     * @param $technicalCode
      * @return bool
-     * @throws Exception
      */
-    protected function isPaypalV2()
+    protected function getMinMaxByPaymentProduct($total, $technicalCode)
     {
-        $paypalOptions = Hipay_Available_Payment::getInstance($this->confHelper)
-            ->getAvailablePaymentProducts('paypal')[0]['options'] ?? [];
+        try {
+            $products = $this->getCachedPaymentProducts($technicalCode);
 
-        return !empty($paypalOptions['provider_architecture_version'])
-            && $paypalOptions['provider_architecture_version'] === 'v1'
-            && !empty($paypalOptions['payer_id']);
+            foreach ($products as $product) {
+                if ($product['code'] === $technicalCode) {
+                    $options = $product['options'];
+                    $installments = substr($product['code'], -2, 1);
+                    $minKey = "basketAmountMin{$installments}x";
+                    $maxKey = "basketAmountMax{$installments}x";
+
+                    if (isset($options[$minKey], $options[$maxKey])) {
+                        return $total >= (float)$options[$minKey] && $total <= (float)$options[$maxKey];
+                    }
+                }
+            }
+        } catch (Exception $e) {
+            $this->logs->logException($e);
+        }
+
+        return false;
     }
 
     protected function getOperatingMode()

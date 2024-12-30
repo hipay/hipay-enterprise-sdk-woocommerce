@@ -22,7 +22,7 @@ if (!defined('ABSPATH')) {
  * @license     https://github.com/hipay/hipay-enterprise-sdk-woocommerce/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-enterprise-sdk-woocommerce
  */
-class Hipay_Alma_3x extends Hipay_Gateway_Local_Abstract
+class Hipay_Alma_3x extends Hipay_Gateway_Alma_Abstract
 {
 
     public function __construct()

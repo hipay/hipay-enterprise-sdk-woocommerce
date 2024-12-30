@@ -79,9 +79,9 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
     protected $sandbox;
 
     /**
-     * @var Hipay_Available_Payment
+     * Cache duration in seconds (5 minutes default)
      */
-    protected $availablePayment;
+    const CACHE_DURATION = 300;
 
     /**
      * Hipay_Gateway_Abstract constructor.
@@ -156,15 +156,14 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
             )
         );
 
-        $paypalOptions = Hipay_Available_Payment::getInstance($this->confHelper)
-            ->getAvailablePaymentProducts('paypal')[0]['options'] ?? [];
+        $paypalOptions = $this->getCachedPaypalOptions();
 
         wp_localize_script(
             'hipay-js-front',
             'paypal_version',
-            ['v2' => !empty($paypalOptions['provider_architecture_version'])
-                && $paypalOptions['provider_architecture_version'] === 'v1'
-                && !empty($paypalOptions['payer_id'])]
+            ['v2' => !empty($paypalOptions['providerArchitectureVersion'])
+                && $paypalOptions['providerArchitectureVersion'] === 'v1'
+                && !empty($paypalOptions['payerId'])]
         );
     }
 
@@ -357,5 +356,73 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
         } catch (Hipay_Payment_Exception $e) {
             return $this->handlePaymentError($e);
         }
+    }
+
+    /**
+     * Get cached payment products
+     *
+     * @param string $paymentProduct Payment product code
+     * @return array
+     */
+    protected function getCachedPaymentProducts($paymentProduct)
+    {
+        $cacheKey = sprintf(
+            'hipay_payment_products_%s_%s',
+            $paymentProduct,
+            $this->sandbox ? 'sandbox' : 'production'
+        );
+
+        $cachedData = get_transient($cacheKey);
+
+        if (!empty($cachedData) && is_array($cachedData)) {
+            $this->logs->logInfos("Retrieved payment products from cache for: " . $paymentProduct);
+            return $cachedData;
+        }
+
+        try {
+            $products = $this->apiRequestHandler->getApi()->requestAvailablePayment([
+                'payment_product' => $paymentProduct,
+                'with_options' => true
+            ]);
+
+            $productsArray = [];
+            foreach ($products as $product) {
+                if ($product->getCode() === $paymentProduct && !empty($product->getOptions())) {
+                    $productsArray[] = [
+                        'code' => $product->getCode(),
+                        'options' => $product->getOptions()
+                    ];
+                }
+            }
+
+            if (!empty($productsArray)) {
+                set_transient($cacheKey, $productsArray, self::CACHE_DURATION);
+                $this->logs->logInfos("Cached payment products for: " . $paymentProduct);
+            }
+
+            return $productsArray;
+
+        } catch (Exception $e) {
+            $this->logs->logException($e);
+            return [];
+        }
+    }
+
+    /**
+     * Get PayPal options (now using unified caching)
+     */
+    protected function getCachedPaypalOptions()
+    {
+        $products = $this->getCachedPaymentProducts('paypal');
+
+        if (!empty($products)) {
+            foreach ($products as $product) {
+                if ($product['code'] === 'paypal') {
+                    return $product['options'];
+                }
+            }
+        }
+
+        return [];
     }
 }
