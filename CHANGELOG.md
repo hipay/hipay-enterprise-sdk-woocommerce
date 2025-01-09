@@ -1,6 +1,7 @@
 # CHANGELOG
 
-## UNRELEASE
+## 2.6.0
+
 - **Add** : Dynamically get Alma MAX/MIN from merchant account
 
 ## 2.5.0
