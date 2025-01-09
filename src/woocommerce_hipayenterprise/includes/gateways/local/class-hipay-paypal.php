@@ -221,4 +221,39 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
         return $additionalFields;
     }
 
+    /**
+     * Check if it's PayPal v2.
+     *
+     * @return bool
+     * @throws Exception
+     */
+    protected function isPaypalV2()
+    {
+        $paypalOptions = $this->getCachedPaypalOptions();
+
+        return !empty($paypalOptions['providerArchitectureVersion'])
+            && $paypalOptions['providerArchitectureVersion'] === 'v1'
+            && !empty($paypalOptions['payerId']);
+    }
+
+    /**
+     * Generate HTML for local payment methods settings
+     *
+     * @return string HTML content
+     */
+    public function generate_methods_local_payments_settings_html()
+    {
+        ob_start();
+        $this->process_template(
+            'admin-paymentlocal-settings.php',
+            'admin',
+            [
+                'configurationPaymentMethod' => $this->confHelper->getLocalPayment($this->paymentProduct),
+                'method' => $this->paymentProduct,
+                'isPayPalV2' => $this->isPaypalV2(),
+            ]
+        );
+
+        return ob_get_clean();
+    }
 }

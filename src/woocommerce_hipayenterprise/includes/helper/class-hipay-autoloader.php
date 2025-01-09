@@ -51,6 +51,7 @@ class Hipay_Autoloader
 	    'Hipay_Direct_Post_Formatter' => WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-direct-post-formatter.php',
 	    'Hipay_Hosted_Payment_Formatter' => WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-hosted-payment-formatter.php',
 	    'Hipay_Maintenance_Formatter' => WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-maintenance-formatter-abstract.php',
+        'Hipay_Available_Payment_Product_Formatter' => WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-available-payment-product-formatter.php',
 	    'Hipay_Order_Request_Abstract' => WC_HIPAYENTERPRISE_PATH . 'includes/formatter/request/class-hipay-order-request-abstract.php',
 	    'Hipay_Account_Info_Formatter' => WC_HIPAYENTERPRISE_PATH . 'includes/formatter/threeds/class-hipay-account-info-formatter.php',
 	    'Hipay_Browser_Info_Formatter' => WC_HIPAYENTERPRISE_PATH . 'includes/formatter/threeds/class-hipay-browser-info-formatter.php',
@@ -62,6 +63,7 @@ class Hipay_Autoloader
 	    'Gateway_Hipay' => WC_HIPAYENTERPRISE_PATH . 'includes/gateways/class-gateway-hipay.php',
 	    'Hipay_Gateway_Abstract' => WC_HIPAYENTERPRISE_PATH . 'includes/gateways/class-hipay-gateway-abstract.php',
 	    'Hipay_Gateway_Local_Abstract' => WC_HIPAYENTERPRISE_PATH . 'includes/gateways/class-hipay-gateway-local-abstract.php',
+        'Hipay_Gateway_Alma_Abstract' => WC_HIPAYENTERPRISE_PATH . 'includes/gateways/class-hipay-gateway-alma-abstract.php',
 
 	    'CaptureMode' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/CaptureMode.php',
 	    'CardPaymentProduct' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/enums/CardPaymentProduct.php',
@@ -87,7 +89,6 @@ class Hipay_Autoloader
 	    'Hipay_Token_Helper' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-token-helper.php',
 	    'Hipay_Transactions_Helper' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-transactions.php',
 	    'Hipay_Upgrade_Helper' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-upgrade-helper.php',
-        'Hipay_Available_Payment' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-available-payment.php',
     );
 
 	public static $localMethodClasses;

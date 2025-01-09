@@ -30,6 +30,7 @@ variables:
     HIPAY_API_MOTO_PASSWORD_TEST: $HIPAY_API_PASSWORD_TEST
     HIPAY_MOTO_SECRET_PASSPHRASE_TEST: $HIPAY_SECRET_PASSPHRASE_TEST
     PI_CI_DATA_URL: $PI_CI_DATA_URL
+    ACTIVE_METHODS: credit_card,paypal
     WOOCOMMERCE_VERSION: 8.2.2
     ADMIN_USERNAME: demo@hipay.com
     ADMIN_EMAIL: demo@hipay.com
@@ -139,6 +140,8 @@ get-jira-tickets:
   image: node:latest
   rules:
     - if: $CI_COMMIT_TAG
+    - if: $ONLY_DEPLOY
+      when: never
   script:
     - |
       node <<EOF
@@ -160,10 +163,14 @@ get-jira-tickets:
           let tickets = [];
 
           mergeRequests.forEach((mr) => {
-            const matches = mr.source_branch.match(/EC-\d+/);
+            const matches = mr.source_branch.match(/EC-\d+/i);
+            const matchesTitle = mr.title.match(/(EC-\d+)/ig);
             if(matches?.length) {
               tickets.push(matches[0].toUpperCase());
             }
+            matchesTitle?.forEach((match) => {
+                tickets.push(match.toUpperCase());
+            });
           });
 
           tickets = [...new Set(tickets)];
@@ -209,6 +216,8 @@ release-job:
     TEMP_CHANGELOG_FILE: 'release_changelog.txt'
   rules:
     - if: $CI_COMMIT_TAG
+    - if: $ONLY_DEPLOY
+      when: never
   script:
     - |
       # Extract changelog part according to tag version

@@ -11,11 +11,10 @@ ENV APACHE_RUN_USER=www-data \
     APACHE_LOG_DIR=/var/log/apache2
 
 RUN apt-get update \
-    && apt-get install -y python3 default-mysql-client \
+    && apt-get install -y default-mysql-client less python3 \
     && curl -sS https://getcomposer.org/installer | php -- --filename=composer -- --install-dir=/usr/local/bin \
-    &&  rm -rf /var/lib/apt/lists/*
-
-RUN pecl install xdebug
+    &&  rm -rf /var/lib/apt/lists/* \
+    && pecl install xdebug
 
 ##########################################
 ####            ENTRYPOINT      ##########
@@ -27,14 +26,11 @@ COPY bin/docker/images/woocommerce/docker-entrypoint.sh /tmp/docker-entrypoint.s
 ##########################################
 ####              WP CLI        ##########
 ##########################################
+ADD https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar /usr/local/bin/wp
 WORKDIR /home
-RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-RUN php wp-cli.phar --info
-RUN chmod +x wp-cli.phar
-RUN mv wp-cli.phar /usr/local/bin/wp
-RUN wp --info
-
-RUN chmod u+x /tmp/setup-woocommerce.sh
+RUN chmod +x /usr/local/bin/wp \
+    && wp --info \
+    && chmod u+x /tmp/setup-woocommerce.sh
 
 COPY src/woocommerce_hipayenterprise /tmp/woocommerce_hipayenterprise
 
