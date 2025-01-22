@@ -47,7 +47,7 @@
                     <?php _e('Color', "hipayenterprise"); ?>
                 </label>
                 <div class="col-lg-8">
-                    <input class="form-control" type="text" name="color" id="color" style=""
+                    <input class="form-control color-picker" type="text" name="color" id="color" style=""
                         value="<?php echo esc_textarea($paymentCommon["hosted_fields_style"]["base"]["color"]); ?>"
                         placeholder="">
                 </div>
@@ -88,10 +88,10 @@
 
             <div class="form-group">
                 <label class="control-label col-lg-2" for="placeholderColor">
-                    <?php _e('PlaceHodler color', "hipayenterprise"); ?>
+                    <?php _e('PlaceHolder color', "hipayenterprise"); ?>
                 </label>
                 <div class="col-lg-8">
-                    <input class="form-control" type="text" name="placeholderColor" id="placeholderColor" style=""
+                    <input class="form-control color-picker" type="text" name="placeholderColor" id="placeholderColor" style=""
                         value="<?php echo esc_textarea(
                                $paymentCommon["hosted_fields_style"]["base"]["placeholderColor"]
                            ); ?>" placeholder="">
@@ -102,7 +102,7 @@
                     <?php _e('Caret color', "hipayenterprise"); ?>
                 </label>
                 <div class="col-lg-8">
-                    <input class="form-control" type="text" name="caretColor" id="caretColor" style="" value="<?php echo esc_textarea(
+                    <input class="form-control color-picker" type="text" name="caretColor" id="caretColor" style="" value="<?php echo esc_textarea(
                                $paymentCommon["hosted_fields_style"]["base"]["caretColor"]
                            ); ?>" placeholder="">
                 </div>
@@ -113,7 +113,7 @@
                     <?php _e('Icon color', "hipayenterprise"); ?>
                 </label>
                 <div class="col-lg-8">
-                    <input class="form-control" type="text" name="iconColor" id="iconColor" style="" value="<?php echo esc_textarea(
+                    <input class="form-control color-picker" type="text" name="iconColor" id="iconColor" style="" value="<?php echo esc_textarea(
                                $paymentCommon["hosted_fields_style"]["base"]["iconColor"]
                            ); ?>" placeholder="">
                 </div>
@@ -241,9 +241,56 @@
             <?php _e('Use Oneclick', "hipayenterprise"); ?>
         </label>
         <div class="col-lg-8">
-            <input class="form-control" type="checkbox" name="card_token" id="card_token" style="" value="1" <?php if ($paymentCommon["card_token"]) {
-                echo 'checked="checked"';
-            } ?>>
+            <input class="form-control" type="checkbox" name="card_token" id="card_token" value="1" <?php if ($paymentCommon["card_token"]) echo 'checked="checked"'; ?>>
+        </div>
+    </div>
+
+    <div id="one_click_params" class="one_click_params" style="display: none">
+        <div class="form-group">
+            <div class="col-lg-2"></div>
+            <label class="control-label col-lg-2" for="number_saved_cards_displayed">
+            <span class="label-tooltip" data-toggle="tooltip" title="<?php _e('Maximum number of saved cards displayed by default.', "hipayenterprise"); ?>">
+                <?php _e('Number of saved cards displayed', "hipayenterprise"); ?>
+            </span>
+            </label>
+            <div class="col-lg-4">
+                <input id="number_saved_cards_displayed" class="form-control" type="text" name="number_saved_cards_displayed"
+                       value="<?php if ($paymentCommon["number_saved_cards_displayed"]) echo $paymentCommon["number_saved_cards_displayed"]; ?>">
+                <p class="help-block align-left">
+                    <span class="dashicons dashicons-warning"></span>
+                    <?php _e("Leaving the field empty will display all the customer's saved cards.", "hipayenterprise"); ?>
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-2"></div>
+            <label class="control-label col-lg-2" for="switch_color_input">
+            <span class="label-tooltip" data-toggle="tooltip" title="<?php _e('Color of card save button.', "hipayenterprise"); ?>">
+                <?php _e('Save button color', "hipayenterprise"); ?>
+            </span>
+            </label>
+            <div class="col-lg-4">
+                <div class="color_inputs">
+                    <input id="switch_color_input" class="form-control color-picker" type="text" name="switch_color_input"
+                           value="<?php if ($paymentCommon["switch_color_input"]) echo $paymentCommon["switch_color_input"]; ?>">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-2"></div>
+            <label class="control-label col-lg-2" for="checkbox_color_input">
+            <span class="label-tooltip" data-toggle="tooltip" title="<?php _e('Color of the selected saved card highlight.', "hipayenterprise"); ?>">
+                <?php _e('Highlight color', "hipayenterprise"); ?>
+            </span>
+            </label>
+            <div class="col-lg-4">
+                <div class="color_inputs">
+                    <input id="checkbox_color_input" class="form-control color-picker" type="text" name="checkbox_color_input"
+                           value="<?php if ($paymentCommon["checkbox_color_input"]) echo $paymentCommon["checkbox_color_input"]; ?>">
+                </div>
+            </div>
         </div>
     </div>
 
