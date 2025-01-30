@@ -157,7 +157,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
             }
         }
 
-        private function getActivatedCreditCards(): array
+        private function getActivatedCreditCards()
         {
             return Hipay_Helper::getActivatedPaymentByCountryAndCurrency(
                 $this,
@@ -169,7 +169,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
             );
         }
 
-        private function getSavedCards(): array
+        private function getSavedCards()
         {
             $savedCards = [];
             if (!empty($this->get_tokens())) {
