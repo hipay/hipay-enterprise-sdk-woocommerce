@@ -10,11 +10,14 @@ jQuery(document).ready(($) => {
 
         const isAddPaymentPage = () => $('#add_payment_method').length > 0;
 
-        const getSelectedMethod = () =>
-            $('input[name="payment_method"]:checked')
-                .val()
-                .replace('hipayenterprise_', '')
-                .replace(/_/g, '-');
+        const getSelectedMethod = () => {
+            const selectedValue = $('input[name="payment_method"]:checked').val();
+            return selectedValue ?
+                selectedValue
+                    .replace('hipayenterprise_', '')
+                    .replace(/_/g, '-')
+                : '';
+        };
 
         const handleSubmitButton = (method, selectors) => {
             const { submitButton } = selectors;

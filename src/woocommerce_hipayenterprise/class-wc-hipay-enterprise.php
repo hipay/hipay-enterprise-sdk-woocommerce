@@ -71,13 +71,6 @@ class WC_HipayEnterprise
         );
 
         add_filter(
-            'woocommerce_payment_gateway_get_saved_payment_method_option_html',
-            array('WC_Payment_Token_CC_HiPay', 'wc_get_get_saved_payment_method_option_html_hipay'),
-            10,
-            2
-        );
-
-        add_filter(
             'wc_payment_gateway_form_saved_payment_methods_html',
             array('WC_Payment_Token_CC_HiPay', 'wc_get_form_saved_payment_methods_html_hipay'),
             10,
