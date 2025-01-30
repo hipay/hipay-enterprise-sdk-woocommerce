@@ -194,6 +194,14 @@ class Hipay_Config
     }
 
     /**
+     * @return bool
+     */
+    public function isOneClick()
+    {
+        return (bool)$this->getPaymentGlobal()["card_token"];
+    }
+
+    /**
      * @return mixed
      */
     public function getAccount()

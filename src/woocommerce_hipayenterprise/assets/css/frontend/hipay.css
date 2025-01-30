@@ -173,3 +173,29 @@
   max-width: 50px;
   margin-left: 8px;
 }
+
+.one-click .hipay-field-container {
+  height: inherit;
+}
+
+.hipay-form-row .hipay-field-container #hipay-card-saved-cards {
+  position: relative;
+  height: inherit;
+}
+
+.one-click .card-infos{
+  display: inherit;
+  margin-right: inherit;
+}
+
+.one-click .card-infos div:nth-of-type(2) {
+  gap: 20px;
+}
+
+.hidden {
+  display: none;
+}
+
+.hipay-saved-card {
+  height: 10px;
+}

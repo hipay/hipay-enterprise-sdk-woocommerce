@@ -27,14 +27,11 @@ use HiPay\Fullservice\Gateway\Request\PaymentMethod\CardTokenPaymentMethod;
  */
 class Hipay_Card_Token_Formatter implements Hipay_Api_Formatter
 {
-
     private $cardToken;
 
     private $authenticationIndicator;
 
     private $oneClick;
-
-    private $forceCVV;
 
     /**
      * Hipay_Card_Token_Formatter constructor.
@@ -44,8 +41,7 @@ class Hipay_Card_Token_Formatter implements Hipay_Api_Formatter
     {
         $this->cardToken = $params["cardtoken"];
         $this->authenticationIndicator = $params['authentication_indicator'];
-        $this->oneClick = (isset($params['oneClick']) && $params['oneClick']) ? true : false;
-        $this->forceCVV = (isset($params['force_cvv']) && $params['force_cvv']) ? true : false;
+        $this->oneClick = isset($params['createOneClick']) && $params['createOneClick'];
     }
 
     /**
@@ -71,6 +67,9 @@ class Hipay_Card_Token_Formatter implements Hipay_Api_Formatter
     {
         $cardTokenRequest->cardtoken = $this->cardToken;
         $cardTokenRequest->authentication_indicator = $this->authenticationIndicator;
-        $cardTokenRequest->eci = ($this->oneClick && !$this->forceCVV) ? ECI::RECURRING_ECOMMERCE : ECI::SECURE_ECOMMERCE;
+        $cardTokenRequest->eci = ECI::SECURE_ECOMMERCE;
+        if ($this->oneClick) {
+            $cardTokenRequest->one_click = 1;
+        }
     }
 }

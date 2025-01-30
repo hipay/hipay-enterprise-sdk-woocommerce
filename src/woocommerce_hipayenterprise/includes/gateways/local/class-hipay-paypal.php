@@ -68,7 +68,7 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
 
             wp_localize_script(
                 'hipay-js-front-paypal',
-                'hipay_config',
+                'hipay_config_paypal',
                 $this->getPaypalScriptData($paymentProductConfig)
             );
 

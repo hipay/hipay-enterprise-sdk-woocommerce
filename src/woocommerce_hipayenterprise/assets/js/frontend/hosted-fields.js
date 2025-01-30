@@ -8,6 +8,8 @@ jQuery(function ($) {
   }
   var hipaySDK = {};
 
+  var useOneClick = Boolean(hipay_config.useOneClick);
+
   function destroy() {
     for (var method in methodsInstance) {
       methodsInstance[method].destroy();
@@ -239,7 +241,6 @@ jQuery(function ($) {
 
   function applyPaymentData(response, method) {
     var methodForm = $('#' + methodsInstance[method].options.selector);
-
     for (var key in response) {
       injectInput(methodForm, key, response[key], method);
     }
@@ -339,7 +340,6 @@ jQuery(function ($) {
     }
 
     blockUI();
-
     configHostedFields['selector'] = 'hipayHF-container-' + method;
     configHostedFields['styles'] = {
       base: {
@@ -350,10 +350,50 @@ jQuery(function ($) {
         placeholderColor: hipay_config.placeholderColor,
         caretColor: hipay_config.caretColor,
         iconColor: hipay_config.iconColor
-      }
+      },
+      components: {
+        switch: {
+          mainColor: hipay_config.useOneClick.switch_color
+        },
+        checkbox: {
+          mainColor: hipay_config.useOneClick.checkbox_color
+        }
+      },
     };
 
     methodsInstance[method] = hipaySDK.create(method, configHostedFields);
+
+    const cardForm = document.getElementById('hipayHF-card-form-container');
+    if (!cardForm) {
+      console.error('Card form container not found');
+      return;
+    }
+
+    if (useOneClick) {
+      methodsInstance[method].on('ready', function () {
+        const savedCards = getSavedCustomerCards();
+        const payOtherCardButton = document.getElementById('pay-other-card');
+
+        if (savedCards.length > 0 && payOtherCardButton) {
+          payOtherCardButton.addEventListener('click', () => {
+            cardForm.classList.toggle('hidden');
+          });
+        } else {
+          cardForm.classList.remove('hidden');
+        }
+
+        const savedCardsElements = document.getElementsByClassName('saved-card');
+        if (savedCardsElements.length > 0) {
+          Array.from(savedCardsElements).forEach(card => {
+            card.addEventListener('click', () => {
+              cardForm.classList.add('hidden');
+            });
+          });
+        }
+      });
+    } else {
+      cardForm.classList.remove('hidden');
+    }
 
     methodsInstance[method].on('blur', function (data) {
       // Get error container
@@ -427,7 +467,10 @@ jQuery(function ($) {
       unBlockUI();
     });
   }
-
+  var isCardsDisplayedAreLimited = Boolean(
+      hipay_config?.useOneClick?.card_count &&
+      Number(hipay_config.useOneClick.card_count) > 0
+  );
   function getCardConfig() {
     var firstName = $('#billing_first_name').val();
     var lastName = $('#billing_last_name').val();
@@ -436,7 +479,17 @@ jQuery(function ($) {
       multi_use: allowMultiUse(
         '#wc-hipayenterprise_credit_card-new-payment-method'
       ),
+      one_click: {
+        enabled: useOneClick,
+        ...(isCardsDisplayedAreLimited && {
+          cards_display_count: Number(hipay_config.useOneClick.card_count)
+        }),
+        cards: getSavedCustomerCards(),
+      },
       fields: {
+        savedCards: {
+          selector: 'hipay-card-saved-cards'
+        },
         cardHolder: {
           selector: 'hipay-card-field-cardHolder',
           defaultFirstname: firstName,
@@ -451,6 +504,9 @@ jQuery(function ($) {
         cvc: {
           selector: 'hipay-card-field-cvc',
           helpButton: true
+        },
+        savedCardButton: {
+          selector: 'hipay-saved-card-btn'
         }
       }
     };
@@ -493,6 +549,18 @@ jQuery(function ($) {
     return hipay_config_current_cart.activatedCreditCard.includes(
       result.payment_product
     );
+  }
+
+  function getSavedCustomerCards() {
+    var savedCards = hipay_config_current_cart.savedCreditCards;
+
+    if (!savedCards || !savedCards.length) {
+      return [];
+    }
+
+    return savedCards.filter(card =>  hipay_config_current_cart.activatedCreditCard.includes(
+        card.brand
+    ));
   }
 
   function isPayPalV2()

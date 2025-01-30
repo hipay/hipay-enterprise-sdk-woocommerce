@@ -136,8 +136,6 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
         $this->password = ($this->sandbox) ? $this->confHelper->getAccount()["sandbox"]["api_tokenjs_password_publickey_sandbox"]
             : $this->confHelper->getAccount()["production"]["api_tokenjs_password_publickey_production"];
 
-
-
         wp_localize_script(
             'hipay-js-front',
             'hipay_config',
@@ -152,7 +150,8 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
                 "fontWeight" => $this->confHelper->getHostedFieldsStyle()["fontWeight"],
                 "placeholderColor" => $this->confHelper->getHostedFieldsStyle()["placeholderColor"],
                 "caretColor" => $this->confHelper->getHostedFieldsStyle()["caretColor"],
-                "iconColor" => $this->confHelper->getHostedFieldsStyle()["iconColor"]
+                "iconColor" => $this->confHelper->getHostedFieldsStyle()["iconColor"],
+                'useOneClick' => $this->getOneClickOptions()
             )
         );
 
@@ -165,6 +164,23 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
                 && $paypalOptions['providerArchitectureVersion'] === 'v1'
                 && !empty($paypalOptions['payerId'])]
         );
+    }
+
+    /**
+     * @return bool|array
+     */
+    protected function getOneClickOptions()
+    {
+        if (!is_user_logged_in() || !$this->confHelper->isOneClick()) {
+            return false;
+        }
+
+        $options = [];
+        $options['card_count'] = $this->confHelper->getPaymentGlobal()['number_saved_cards_displayed'] ?? time();
+        $options['switch_color'] = $this->confHelper->getPaymentGlobal()['switch_color_input'] ?? '#02A17B';
+        $options['checkbox_color'] = $this->confHelper->getPaymentGlobal()['checkbox_color_input'] ?? '#02A17B';
+
+        return $options;
     }
 
     /**
@@ -267,7 +283,7 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
      * @param int $order_id
      * @param null $amount
      * @param string $reason
-     * @return array|bool
+     * @return array
      * @throws Exception
      */
     public function process_refund($order_id, $amount = null, $reason = "")
@@ -425,4 +441,5 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
 
         return [];
     }
+
 }

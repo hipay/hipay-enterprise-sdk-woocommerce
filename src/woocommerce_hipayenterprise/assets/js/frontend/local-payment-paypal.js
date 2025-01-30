@@ -61,27 +61,27 @@ jQuery(document).ready(($) => {
 
         const createPaypalInstance = (method) => {
             const hipaySDK = new HiPay({
-                username: hipay_config.apiUsernameTokenJs,
-                password: hipay_config.apiPasswordTokenJs,
-                environment: hipay_config.environment,
-                lang: hipay_config.lang
+                username: hipay_config_paypal.apiUsernameTokenJs,
+                password: hipay_config_paypal.apiPasswordTokenJs,
+                environment: hipay_config_paypal.environment,
+                lang: hipay_config_paypal.lang
             });
 
             const options = {
                 template: 'auto',
                 request: {
-                    locale: hipay_config.locale,
-                    currency: hipay_config.currency,
-                    amount: Number(hipay_config.amount)
+                    locale: hipay_config_paypal.locale,
+                    currency: hipay_config_paypal.currency,
+                    amount: Number(hipay_config_paypal.amount)
                 },
                 paypalButtonStyle: {
-                    shape: hipay_config.buttonShape,
-                    height: Number(hipay_config.buttonHeight || 40),
-                    color: hipay_config.buttonColor,
-                    label: hipay_config.buttonLabel
+                    shape: hipay_config_paypal.buttonShape,
+                    height: Number(hipay_config_paypal.buttonHeight || 40),
+                    color: hipay_config_paypal.buttonColor,
+                    label: hipay_config_paypal.buttonLabel
                 },
                 selector: 'paypal-field',
-                canPayLater: Boolean(hipay_config.bnpl)
+                canPayLater: Boolean(hipay_config_paypal.bnpl)
             };
 
             return hipaySDK.create(method, options);
