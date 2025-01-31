@@ -176,6 +176,7 @@
 
 .one-click .hipay-field-container {
   height: inherit;
+  margin: 0;
 }
 
 .hipay-form-row .hipay-field-container #hipay-card-saved-cards {
@@ -188,8 +189,24 @@
   margin-right: inherit;
 }
 
+.one-click .card-infos .card-infos-left{
+  display: flex;
+  justify-content: space-between;
+}
+
+.one-click .card-infos .card-infos-left img {
+  margin: 0!important;
+}
+
+
+.one-click .card-infos .card-infos-left .card-number {
+  margin: 0!important;
+  width: auto!important;
+}
+
+
 .one-click .card-infos div:nth-of-type(2) {
-  gap: 20px;
+  justify-content: space-between;
 }
 
 .hidden {

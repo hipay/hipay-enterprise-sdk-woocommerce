@@ -347,6 +347,7 @@ jQuery(function ($) {
     var lastName = $('#billing_last_name').val();
 
     return {
+      brand:hipay_config_current_cart.activatedCreditCard,
       one_click: {
         enabled: useOneClick,
         ...(isCardsDisplayedAreLimited && {
