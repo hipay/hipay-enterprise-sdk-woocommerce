@@ -35,4 +35,12 @@ jQuery(function ($) {
     non_selected_header: hipay_config_i18n.available_countries,
     selected_header: hipay_config_i18n.authorized_countries
   });
+
+  $('.color-picker').wpColorPicker();
+  var $useOneClick = $('#card_token');
+  var $paramsOneClick = $('#one_click_params');
+  $paramsOneClick.toggle($useOneClick.is(':checked'));
+  $useOneClick.change(function() {
+    $paramsOneClick.toggle($(this).is(':checked'));
+  });
 });

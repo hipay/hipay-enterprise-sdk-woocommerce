@@ -151,42 +151,73 @@ if (!class_exists('WC_Gateway_Hipay')) {
         public function payment_fields()
         {
             if ($this->supports('tokenization') && is_checkout() && is_user_logged_in()) {
-                $this->tokenization_script();
-                $this->saved_payment_methods();
-                $this->form();
-                $this->save_payment_method_checkbox();
+                $this->renderPaymentForm(true);
             } else {
-                $this->form();
+                $this->renderPaymentForm(false);
             }
         }
 
-        private function form()
+        private function getActivatedCreditCards()
+        {
+            return Hipay_Helper::getActivatedPaymentByCountryAndCurrency(
+                $this,
+                "credit_card",
+                WC()->customer->get_billing_country(),
+                get_woocommerce_currency(),
+                WC()->cart->get_totals()["total"],
+                false
+            );
+        }
+
+        private function getSavedCards()
+        {
+            $savedCards = [];
+            if (!empty($this->get_tokens())) {
+                foreach ($this->get_tokens() as $token) {
+                    $savedCards[] = [
+                        'token' => $token->get_token(),
+                        'brand' => strtolower($token->get_card_type()),
+                        'pan' =>  str_replace('*', 'x', $token->get_data()['pan']),
+                        'card_expiry_month' => $token->get_data()['expiry_month'],
+                        'card_expiry_year' => $token->get_data()['expiry_year'],
+                        'card_holder' => $token->get_data()['card_holder']
+                    ];
+                }
+            }
+            return $savedCards;
+        }
+
+        private function renderPaymentForm(bool $useOneClick)
         {
             $paymentGlobal = $this->confHelper->getPaymentGlobal();
 
-            if ($paymentGlobal['operating_mode'] == OperatingMode::HOSTED_FIELDS ||
-                (is_user_logged_in() && is_add_payment_method_page())) {
-                $activatedCreditCard = Hipay_Helper::getActivatedPaymentByCountryAndCurrency(
-                    $this,
-                    "credit_card",
-                    WC()->customer->get_billing_country(),
-                    get_woocommerce_currency(),
-                    WC()->cart->get_totals()["total"],
-                    false
-                );
-
-                $this->process_template(
-                    'hosted-fields.php',
-                    'frontend',
-                    array(
-                        'activatedCreditCard' => '"' . implode('","', $activatedCreditCard) . '"'
-                    )
-                );
-            } elseif ($paymentGlobal['operating_mode'] == OperatingMode::HOSTED_PAGE) {
+            // Handle hosted page mode
+            if ($paymentGlobal['operating_mode'] == OperatingMode::HOSTED_PAGE && !$useOneClick) {
                 $this->process_template(
                     'hosted-page.php',
                     'frontend',
                     array()
+                );
+                return;
+            }
+
+            // Handle hosted fields mode
+            if ($paymentGlobal['operating_mode'] == OperatingMode::HOSTED_FIELDS ||
+                (is_user_logged_in() && is_add_payment_method_page())) {
+
+                $templateData = [
+                    'activatedCreditCard' => '"' . implode('","', $this->getActivatedCreditCards()) . '"'
+                ];
+
+                if ($useOneClick) {
+                    $templateData['savedCreditCards'] = $this->getSavedCards();
+                    $templateData['useOneClick'] = true;
+                }
+
+                $this->process_template(
+                    'hosted-fields.php',
+                    'frontend',
+                    $templateData
                 );
             }
         }
@@ -415,7 +446,6 @@ if (!class_exists('WC_Gateway_Hipay')) {
                     "browser_info" => json_decode(Hipay_Helper::getPostData('card-browser_info')),
                     "forceSalesMode" => false
                 );
-
                 if ($this->confHelper->getPaymentGlobal()["card_token"]) {
                     $token = Hipay_Helper::getPostData('wc-' . self::GATEWAY_CREDIT_CARD_ID . '-payment-token');
 
@@ -424,7 +454,25 @@ if (!class_exists('WC_Gateway_Hipay')) {
                     }
 
                     $params["createOneClick"] = get_current_user_id() > 0 &&
-                        Hipay_Helper::getPostData('wc-' . self::GATEWAY_CREDIT_CARD_ID . '-new-payment-method');
+                        Hipay_Helper::getPostData('card-one_click');
+
+                    if (Hipay_Helper::getPostData('card-multi_use')
+                        && get_current_user_id() > 0) {
+                        $values = array(
+                            "token" => Hipay_Helper::getPostData('card-token'),
+                            "pan" => str_replace('x', '*', Hipay_Helper::getPostData('card-pan')),
+                            "expiry_year" => Hipay_Helper::getPostData('card-card_expiry_year'),
+                            "expiry_month" => Hipay_Helper::getPostData('card-card_expiry_month'),
+                            "brand" => Hipay_Helper::getPostData('card-brand'),
+                            "card_holder" => Hipay_Helper::getPostData('card-card_holder'),
+                            "user_id" => get_current_user_id(),
+                            "gateway_id" => self::GATEWAY_CREDIT_CARD_ID,
+                            "payment_product" => Hipay_Helper::getPostData('card-payment_product'),
+                            "force_cvv" => true
+                        );
+
+                        Hipay_Token_Helper::createToken($values);
+                    }
                 }
 
                 $response = $this->apiRequestHandler->handleCreditCard($params);
