@@ -255,6 +255,7 @@ jQuery(function ($) {
 
         const savedCardsElements = document.getElementsByClassName('saved-card');
         if (savedCardsElements.length > 0) {
+          cardForm.classList.add('hidden');
           Array.from(savedCardsElements).forEach(card => {
             card.addEventListener('click', () => {
               cardForm.classList.add('hidden');
