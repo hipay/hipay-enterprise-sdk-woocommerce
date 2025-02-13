@@ -1,8 +1,8 @@
 # CHANGELOG
 
-#UNRELEASE
+## 2.7.0
 
-- **Add** : Update OneClick
+- **Add** : Update OneClick payment
 
 ## 2.6.0
 
