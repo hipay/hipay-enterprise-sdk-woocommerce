@@ -167,6 +167,9 @@ class Hipay_Config
                     "capture_mode" => "automatic",
                     "activate_basket" => 0,
                     "card_token" => 0,
+                    'number_saved_cards_displayed' => '',
+                    'switch_color_input' => '#02A17B',
+                    'checkbox_color_input' => '#02A17B',
                     SettingsField::PAYMENT_GLOBAL_LOGS_INFOS => 1,
                     "send_url_notification" => 1,
                     "ccDisplayName" => array("fr" => "Carte de crédit", "en" => "Credit card"),
@@ -188,6 +191,14 @@ class Hipay_Config
     public function isSandbox()
     {
         return (bool)$this->getAccount()["global"]["sandbox_mode"];
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOneClick()
+    {
+        return (bool)$this->getPaymentGlobal()["card_token"];
     }
 
     /**

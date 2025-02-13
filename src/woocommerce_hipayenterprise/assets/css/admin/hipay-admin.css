@@ -224,3 +224,7 @@
 .alert-info.form-control p {
   margin: 0;
 }
+
+.one_click_params .wp-picker-container input[type=text].wp-color-picker {
+  width: 9rem;
+}

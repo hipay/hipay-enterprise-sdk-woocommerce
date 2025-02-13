@@ -173,3 +173,149 @@
   max-width: 50px;
   margin-left: 8px;
 }
+
+.one-click .hipay-field-container {
+  height: inherit;
+  margin: 0px !important;
+}
+
+.hipay-form-row .hipay-field-container #hipay-card-saved-cards {
+  position: relative;
+  height: inherit;
+}
+
+.one-click .card-infos{
+  display: flex;
+  flex-direction: column;
+  margin-right: inherit;
+  gap: 5px;
+}
+
+.one-click .card-infos .card-infos-left{
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+}
+
+.one-click .card-infos .card-infos-left img {
+  display: flex;
+  margin: 0!important;
+  margin-left: -3px!important;
+  max-height: 1.7rem!important;
+}
+
+.one-click .card-infos .card-infos-left{
+  display: flex;
+  white-space: nowrap;
+}
+
+.one-click .card-infos .card-infos-left img {
+  margin: 0!important;
+}
+
+
+.one-click .card-infos .card-infos-left .card-number {
+  margin: 0!important;
+  width: auto!important;
+}
+
+
+.one-click .card-infos div:nth-of-type(2) {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  row-gap: 4px;
+}
+
+.one-click .card-infos .card-infos-left .card-number {
+  display: flex;
+  margin: 0!important;
+  width: auto!important;
+}
+
+@media screen and (max-width: 1100px) {
+
+  .one-click .card-infos .card-infos-left{
+    text-align: right;
+    gap: 8px;
+  }
+
+  .one-click .card-infos .card-infos-left .card-number {
+    width: 110px!important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip;
+    display: flex;
+    justify-content: end;
+  }
+}
+
+@media screen and (max-width: 952px) {
+
+  .one-click .card-infos{
+    gap: 0px;
+  }
+
+  .one-click .card-infos div:nth-of-type(2){
+    gap: 6px;
+    row-gap: 2px;
+  }
+
+  .one-click .card-infos div:nth-of-type(2) span {
+    display: flex;
+    font-size: 0.9em!important;
+  }
+
+  .one-click .card-infos .card-infos-left img {
+    max-width: 2rem!important;
+  }
+
+  .one-click .card-infos .card-infos-left .card-number {
+    width: 70px!important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip;
+    display: flex;
+    justify-content: end;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .one-click .card-infos{
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .one-click .card-infos .card-infos-left{
+    justify-content: flex-start;
+  }
+
+  .one-click .card-infos div:nth-of-type(2) {
+    justify-content: flex-end;
+    width: auto;
+  }
+}
+
+@media screen and (max-width: 530px) {
+  .one-click .card-infos{
+    flex-direction: column;
+  }
+
+  .one-click .card-infos .card-infos-left{
+    justify-content: flex-start;
+  }
+
+  .one-click .card-infos div:nth-of-type(2) {
+    justify-content: flex-start;
+    width: 100%;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.hipay-saved-card {
+  height: 10px;
+  margin: 0;
+}

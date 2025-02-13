@@ -38,28 +38,6 @@ class Hipay_Token_Helper
     );
 
     /**
-     * @param HiPay\Fullservice\Gateway\Model\Transaction $transaction
-     * @param WC_Order $order
-     * @throws Exception
-     */
-    public static function createTokenFromTransaction($transaction, $order)
-    {
-        $values = array();
-        $values["token"] = $transaction->getPaymentMethod()->getToken();
-        $values["pan"] = $transaction->getPaymentMethod()->getPan();
-        $values["expiry_year"] = $transaction->getPaymentMethod()->getCardExpiryYear();
-        $values["expiry_month"] = $transaction->getPaymentMethod()->getCardExpiryMonth();
-        $values["brand"] = $transaction->getPaymentMethod()->getBrand();
-        $values["card_holder"] = $transaction->getPaymentMethod()->getCardHolder();
-        $values["payment_product"] = $transaction->getPaymentProduct();
-        $values["user_id"] = $order->get_user_id();
-        $values["gateway_id"] = $order->get_payment_method();
-        $values["force_cvv"] = false;
-
-        self::createToken($values);
-    }
-
-    /**
      * @param $values
      * @throws Exception
      */

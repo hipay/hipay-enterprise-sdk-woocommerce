@@ -188,30 +188,6 @@ class WC_Payment_Token_CC_HiPay extends WC_Payment_Token
         return $item;
     }
 
-
-    public static function wc_get_get_saved_payment_method_option_html_hipay($html, $token)
-    {
-
-        $cvvUpdateForm = "";
-
-        if ($token->get_force_cvv()) {
-            ob_start();
-
-            Hipay_Helper::process_template(
-                'force-cvv-oc.php',
-                'frontend',
-                array(
-                    "token" => $token
-                )
-            );
-
-            $cvvUpdateForm = ob_get_contents();
-            ob_end_clean();
-        }
-
-        return $html . $cvvUpdateForm;
-    }
-
     public static function wc_get_form_saved_payment_methods_html_hipay($html, $gateways)
     {
 

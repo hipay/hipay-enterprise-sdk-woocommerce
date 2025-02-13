@@ -242,19 +242,6 @@ class Hipay_Notification
                     break;
             }
 
-            if ($this->transaction->getStatus() == TransactionStatus::AUTHORIZED ||
-                $this->transaction->getStatus() == TransactionStatus::CAPTURED) {
-                $customData = $this->transaction->getCustomData();
-                if ((isset($customData["createOneClick"])
-                        && $customData["createOneClick"])
-                    || (isset($customData["forceCvv"])
-                        && $customData["forceCvv"])
-                    && $this->CardTypeAllowRecurring($this->transaction->getPaymentProduct())
-                ) {
-                    Hipay_Token_Helper::createTokenFromTransaction($this->transaction, $this->order);
-                }
-            }
-
             return true;
         } catch (Exception $e) {
             $this->orderHandler->addNote($e->getMessage());

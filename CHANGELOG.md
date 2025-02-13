@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.7.0
+
+- **Add** : Update OneClick payment
+
 ## 2.6.0
 
 - **Add** : Dynamically get Alma MAX/MIN from merchant account
