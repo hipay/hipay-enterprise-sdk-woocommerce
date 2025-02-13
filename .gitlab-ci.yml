@@ -54,10 +54,12 @@ variables:
       - bin/tests/cypress/videos
       - bin/tests/cypress/screenshots
     when: always
-  except:
-    variables:
-      - $ONLY_DEPLOY
-      - $CI_COMMIT_MESSAGE =~ /skip-tests/
+  rules:
+    - if: $ONLY_DEPLOY
+      when: never
+    - if: $CI_COMMIT_MESSAGE =~ /skip-tests/
+      when: never
+    - when: on_success
 
 .login_to_registry: &login-to-registry
   before_script:
@@ -91,9 +93,10 @@ build-test:
       --context "dir://${CI_PROJECT_DIR}"
       --dockerfile "./bin/docker/images/woocommerce/Dockerfile"
       --destination "$CI_REGISTRY/test-jobs-${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}"
-  except:
-    variables:
-      - $ONLY_DEPLOY
+  rules:
+    - if: $ONLY_DEPLOY
+      when: never
+    - when: on_success
   tags:
     - small
 
@@ -128,9 +131,10 @@ package:
   artifacts:
     paths:
       - ./bin/package
-  except:
-    variables:
-      - $ONLY_DEPLOY
+  rules:
+    - if: $ONLY_DEPLOY
+      when: never
+    - when: on_success
   tags:
     - small
 
@@ -139,9 +143,9 @@ get-jira-tickets:
   stage: release
   image: node:latest
   rules:
-    - if: $CI_COMMIT_TAG
     - if: $ONLY_DEPLOY
       when: never
+    - if: $CI_COMMIT_TAG
   script:
     - |
       node <<EOF
@@ -215,9 +219,9 @@ release-job:
   variables:
     TEMP_CHANGELOG_FILE: 'release_changelog.txt'
   rules:
-    - if: $CI_COMMIT_TAG
     - if: $ONLY_DEPLOY
       when: never
+    - if: $CI_COMMIT_TAG
   script:
     - |
       # Extract changelog part according to tag version
