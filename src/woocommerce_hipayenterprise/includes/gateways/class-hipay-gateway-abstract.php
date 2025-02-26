@@ -81,7 +81,7 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
     /**
      * Cache duration in seconds (5 minutes default)
      */
-    const CACHE_DURATION = 300;
+    const CACHE_DURATION = 900;
 
     /**
      * Hipay_Gateway_Abstract constructor.
@@ -155,15 +155,17 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
             )
         );
 
-        $paypalOptions = $this->getCachedPaypalOptions();
+        if ($this->paymentProduct === "paypal") {
+            $paypalOptions = $this->getCachedPaypalOptions();
 
-        wp_localize_script(
-            'hipay-js-front',
-            'paypal_version',
-            ['v2' => !empty($paypalOptions['providerArchitectureVersion'])
-                && $paypalOptions['providerArchitectureVersion'] === 'v1'
-                && !empty($paypalOptions['payerId'])]
-        );
+            wp_localize_script(
+                'hipay-js-front',
+                'paypal_version',
+                ['v2' => !empty($paypalOptions['providerArchitectureVersion'])
+                    && $paypalOptions['providerArchitectureVersion'] === 'v1'
+                    && !empty($paypalOptions['payerId'])]
+            );
+        }
     }
 
     /**
@@ -237,7 +239,8 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
      * @param WC_Payment_Token $payment_token
      * @return array
      */
-    public function custom_payment_methods_list_item($list_item, $payment_token) {
+    public function custom_payment_methods_list_item($list_item, $payment_token)
+    {
         // Check if this is your HiPay payment method
         if ($payment_token->get_gateway_id() === $this->id) {
             if (isset($list_item['actions']['default'])) {
@@ -436,7 +439,6 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
             }
 
             return $productsArray;
-
         } catch (Exception $e) {
             $this->logs->logException($e);
             return [];
@@ -460,5 +462,4 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
 
         return [];
     }
-
 }
