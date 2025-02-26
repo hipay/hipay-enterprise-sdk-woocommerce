@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## UNRELEASED
+
+- **Fix** : Improve the API calls to "availablePaymentProduct" to enhance performance
+
 ## 2.7.0
 
 - **Add** : Update OneClick payment
