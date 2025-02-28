@@ -81,7 +81,7 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
     /**
      * Cache duration in seconds (5 minutes default)
      */
-    const CACHE_DURATION = 900;
+    const CACHE_DURATION = 300;
 
     /**
      * Hipay_Gateway_Abstract constructor.
