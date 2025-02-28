@@ -267,7 +267,7 @@ class Hipay_Helper
      *
      * @param $index
      * @param mixed $default
-     * @return bool
+     * @return mixed
      */
     public static function getPostData($index, $default = null)
     {
