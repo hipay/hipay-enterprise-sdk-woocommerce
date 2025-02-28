@@ -269,7 +269,7 @@ class Hipay_Helper
      * @param bool $default
      * @return bool
      */
-    public static function getPostData($index, $default = false)
+    public static function getPostData($index, $default = null)
     {
         if (isset($_POST[$index])) {
             return wc_clean(wp_unslash($_POST[$index]));
