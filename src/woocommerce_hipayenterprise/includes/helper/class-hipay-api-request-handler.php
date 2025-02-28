@@ -262,7 +262,7 @@ class Hipay_Api_Request_Handler
         $apiResponse = array();
 
         if ($params["paymentProduct"] === "ideal") {
-            $params['issuer_bank_id'] = null;
+            $params["issuer_bank_id"] = null;
         }
 
         $this->initParamsDirectPost($params);
