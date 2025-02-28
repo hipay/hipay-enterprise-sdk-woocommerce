@@ -119,7 +119,7 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
             $this->confHelper->getPaymentGlobal()["sdk_js_url"],
             array(),
             'all',
-            true
+            array('in_footer' => false)
         );
 
         wp_enqueue_script(

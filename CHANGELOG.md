@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Unreleased
+
+- **Fix** : Fixed display of reference to pay for **Multibanco** and **Mooney** payment methods
+
 ## 2.7.0
 
 - **Add** : Update OneClick payment
