@@ -261,6 +261,10 @@ class Hipay_Api_Request_Handler
         $order = wc_get_order($params["order_id"]);
         $apiResponse = array();
 
+        if ($params["paymentProduct"] === "ideal") {
+            $params['issuer_bank_id'] = null;
+        }
+
         $this->initParamsDirectPost($params);
         $params["paymentMethod"] = $this->getPaymentMethod($params, $cc);
 
