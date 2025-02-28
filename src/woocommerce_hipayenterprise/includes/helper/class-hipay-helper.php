@@ -266,7 +266,7 @@ class Hipay_Helper
      * Get HTTP POST data
      *
      * @param $index
-     * @param bool $default
+     * @param mixed $default
      * @return bool
      */
     public static function getPostData($index, $default = null)
