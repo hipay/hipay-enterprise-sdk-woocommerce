@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## UNRELEASED
+
+- **Fix** : Improve the API calls to "availablePaymentProduct" to enhance performance
+- **Fix** : Fix `issuer_bank_id` param for IDeal
+
 ## 2.7.0
 
 - **Add** : Update OneClick payment
