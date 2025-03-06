@@ -192,7 +192,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
             $paymentGlobal = $this->confHelper->getPaymentGlobal();
 
             // Handle hosted page mode
-            if ($paymentGlobal['operating_mode'] == OperatingMode::HOSTED_PAGE && !$useOneClick) {
+            if ($paymentGlobal['operating_mode'] == OperatingMode::HOSTED_PAGE) {
                 $this->process_template(
                     'hosted-page.php',
                     'frontend',
