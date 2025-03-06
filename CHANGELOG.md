@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## UNRELEASED
+## 2.7.1
 
 - **Fix** : Improve the API calls to "availablePaymentProduct" to enhance performance
 - **Fix** : Fix `issuer_bank_id` param for IDeal
