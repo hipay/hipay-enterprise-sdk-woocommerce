@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2.7.1
+
+- **Fix** : Improve the API calls to "availablePaymentProduct" to enhance performance
+- **Fix** : Fix `issuer_bank_id` param for IDeal
+- **Fix** : Fix payment methods on checkout when setting HostedPage mode
+
 ## 2.7.0
 
 - **Add** : Update OneClick payment
