@@ -208,10 +208,9 @@ stop_review:
     - deploy2recette
   script:
     - helm uninstall $RELEASE_NAME --namespace=default
-  when: manual
   rules:
     - if: $ONLY_DEPLOY
-      when: on_success
+      when: manual
     - if: $CI_PIPELINE_SOURCE == "push"
       when: manual
   environment:
