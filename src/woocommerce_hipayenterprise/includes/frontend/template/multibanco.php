@@ -22,7 +22,7 @@
             <td style="padding: 5px 0;">
                 <table cellspacing="0" cellpadding="0" border="0" style="width: 100%;">
                     <tr>
-                        <td style="width: 50%; color: #8a7d63; font-size: 13px; font-weight: bold; vertical-align: top;">ENTITY:</td>
+                        <td style="width: 50%; color: #8a7d63; font-size: 13px; font-weight: bold; vertical-align: top;"><?php echo __('Entity:', "hipayenterprise")?></td>
                         <td style="color: #333333; font-size: 14px; font-weight: bold; padding-left: 15px;"><?php echo $entity ?></td>
                     </tr>
                 </table>
@@ -34,7 +34,7 @@
             <td style="padding: 5px 0;">
                 <table cellspacing="0" cellpadding="0" border="0" style="width: 100%;">
                     <tr>
-                        <td style="width: 50%; color: #8a7d63; font-size: 13px; font-weight: bold; vertical-align: top;">REFERENCE:</td>
+                        <td style="width: 50%; color: #8a7d63; font-size: 13px; font-weight: bold; vertical-align: top;"><?php echo __('Reference:', "hipayenterprise")?></td>
                         <td style="color: #333333; font-size: 14px; font-weight: bold; padding-left: 15px;"><?php echo $reference ?></td>
                     </tr>
                 </table>
@@ -46,7 +46,7 @@
             <td style="padding: 5px 0;">
                 <table cellspacing="0" cellpadding="0" border="0" style="width: 100%;">
                     <tr>
-                        <td style="width: 50%; color: #8a7d63; font-size: 13px; font-weight: bold; vertical-align: top;">AMOUNT:</td>
+                        <td style="width: 50%; color: #8a7d63; font-size: 13px; font-weight: bold; vertical-align: top;"><?php echo __('Amount:', "hipayenterprise")?></td>
                         <td style="color: #333333; font-size: 14px; font-weight: bold; padding-left: 15px;"><?php echo $amount ?> €</td>
                     </tr>
                 </table>
@@ -58,7 +58,7 @@
             <td style="padding: 5px 0;">
                 <table cellspacing="0" cellpadding="0" border="0" style="width: 100%;">
                     <tr>
-                        <td style="width: 50%; color: #8a7d63; font-size: 13px; font-weight: bold; vertical-align: top;">EXPIRATION DATE:</td>
+                        <td style="width: 50%; color: #8a7d63; font-size: 13px; font-weight: bold; vertical-align: top;"><?php echo __('Expiration Date:', "hipayenterprise")?></td>
                         <td style="color: #333333; font-size: 14px; font-weight: bold; padding-left: 15px;"><?php echo $expirationDate ?></td>
                     </tr>
                 </table>
