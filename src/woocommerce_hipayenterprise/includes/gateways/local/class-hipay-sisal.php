@@ -62,7 +62,7 @@ class Hipay_Sisal extends Hipay_Gateway_Local_Abstract
     public function email_instructions($order, $sent_to_admin, $plain_text = false)
     {
         if ($order->get_payment_method() === $this->id) {
-            $this->makeSisalTemplate($order);
+            $this->makeSisalTemplateEmail($order);
         }
     }
 
@@ -124,22 +124,88 @@ class Hipay_Sisal extends Hipay_Gateway_Local_Abstract
     }
 
     /**
+     * Get Sisal payment data from order
+     *
+     * @param WC_Order $order
+     * @return array|false Payment data or false if missing required data
+     */
+    private function getSisalData($order) {
+        $reference = $order->get_meta(self::HIPAY_SISAL_REFERENCE);
+        $barCode = $order->get_meta(self::HIPAY_SISAL_BARCODE);
+
+        if (empty($reference) || empty($barCode)) {
+            $this->logs->logErrors("Missing Sisal data for order " . $order->get_id());
+            return false;
+        }
+
+        return [
+            'reference' => $reference,
+            'barCode' => $barCode,
+            'sdkJsUrl' => $this->confHelper->getPaymentGlobal()["sdk_js_url"]
+        ];
+    }
+
+    /**
      * Make Sisal template for order details
      * @param WC_Order $order
      */
-    private function makeSisalTemplate($order)
-    {
-        $this->reference = $order->get_meta(self::HIPAY_SISAL_REFERENCE);
-        $this->barCode = $order->get_meta(self::HIPAY_SISAL_BARCODE);
+    private function makeSisalTemplate($order) {
+        $data = $this->getSisalData($order);
+        if (!$data) {
+            return;
+        }
+
+        $version = defined('HIPAY_PLUGIN_VERSION') ? HIPAY_PLUGIN_VERSION : '1.0.0';
+        wp_register_script('hipay-sdk', $data['sdkJsUrl'], array('jquery'), $version, true);
+        wp_enqueue_script('hipay-sdk');
+
+        wp_localize_script('hipay-sdk', 'hipaySisalData', [
+            'reference' => esc_js($data['reference']),
+            'barCode' => esc_js($data['barCode']),
+            'locale' => substr(get_locale(), 0, 2),
+            'security' => wp_create_nonce('hipay_sisal_data')
+        ]);
+
+        $script = "
+            document.addEventListener('DOMContentLoaded', function() {
+                var hipaySdk = new HiPay({
+                    username: 'hosted',
+                    password: 'hosted',
+                    environment: 'production',
+                    lang: hipaySisalData.locale
+                });
+                
+                hipaySdk.createReference('sisal', {
+                    selector: 'referenceToPay',
+                    reference: hipaySisalData.reference,
+                    barCode: hipaySisalData.barCode
+                });
+            });
+        ";
+
+        wp_add_inline_script('hipay-sdk', $script);
 
         $this->process_template(
             'sisal.php',
             'frontend',
-            array(
-                'reference' => $this->reference,
-                'barCode' => $this->barCode,
-                'sdkJsUrl' => $this->confHelper->getPaymentGlobal()["sdk_js_url"]
-            )
+            $data
+        );
+    }
+
+    /**
+     * Make Sisal template for email order details
+     * @param WC_Order $order
+     */
+    private function makeSisalTemplateEmail($order) {
+        $data = $this->getSisalData($order);
+        if (!$data) {
+            return;
+        }
+
+        $this->process_template(
+            'email/sisal.php',
+            'frontend',
+            $data
         );
     }
 }

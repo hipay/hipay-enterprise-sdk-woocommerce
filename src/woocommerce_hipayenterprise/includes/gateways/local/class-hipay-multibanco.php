@@ -156,7 +156,7 @@ class Hipay_Multibanco extends Hipay_Gateway_Local_Abstract
         $expirationDate = $order->get_meta(self::HIPAY_MULTIBANCO_EXPIRATION_DATE);
 
         if (empty($entity) || empty($reference)) {
-            $this->logs->logError("Missing Multibanco data for order " . $order->get_id());
+            $this->logs->logErrors("Missing Multibanco data for order " . $order->get_id());
             return false;
         }
 
@@ -179,7 +179,6 @@ class Hipay_Multibanco extends Hipay_Gateway_Local_Abstract
             return;
         }
 
-        // Register and enqueue HiPay SDK
         $version = defined('HIPAY_PLUGIN_VERSION') ? HIPAY_PLUGIN_VERSION : '1.0.0';
         wp_register_script('hipay-sdk', $this->confHelper->getPaymentGlobal()["sdk_js_url"], array(), $version, true);
         wp_enqueue_script('hipay-sdk');
@@ -193,7 +192,6 @@ class Hipay_Multibanco extends Hipay_Gateway_Local_Abstract
             'security' => wp_create_nonce('hipay_multibanco_data')
         ]);
 
-        // Add inline script to initialize the reference
         $script = "
             document.addEventListener('DOMContentLoaded', function() {
                 var hipaySdk = new HiPay({
@@ -215,7 +213,6 @@ class Hipay_Multibanco extends Hipay_Gateway_Local_Abstract
 
         wp_add_inline_script('hipay-sdk', $script);
 
-        // Process the template
         $this->process_template(
             'multibanco.php',
             'frontend',
