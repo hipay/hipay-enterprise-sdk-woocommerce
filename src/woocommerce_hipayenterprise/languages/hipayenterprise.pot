@@ -11,7 +11,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-01-30 10:49+0000\n"
+"POT-Creation-Date: 2025-03-27 15:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: Loco https://localise.biz/\n"
 "X-Domain: hipayenterprise\n"
@@ -121,6 +121,7 @@ msgid "Amount already captured"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-multibanco.php:116
+#: includes/frontend/template/email/multibanco.php:49
 msgid "Amount:"
 msgstr ""
 
@@ -187,7 +188,7 @@ msgstr ""
 msgid "Bancontact Credit Card / QR code"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-sisal.php:96
+#: includes/gateways/local/class-hipay-sisal.php:97
 msgid "Bar code:"
 msgstr ""
 
@@ -325,7 +326,6 @@ msgid "Color"
 msgstr ""
 
 #: includes/admin/template/admin-global-settings.php:269
-msgctxt "Color of card save button."
 msgid "Color of card save button."
 msgstr ""
 
@@ -435,6 +435,7 @@ msgid "Enter the corresponding username, password and secret passphrase."
 msgstr ""
 
 #: includes/gateways/local/class-hipay-multibanco.php:116
+#: includes/frontend/template/email/multibanco.php:25
 msgid "Entity:"
 msgstr ""
 
@@ -443,6 +444,7 @@ msgid "Error processing capture. Please try again."
 msgstr ""
 
 #: includes/gateways/local/class-hipay-multibanco.php:116
+#: includes/frontend/template/email/multibanco.php:61
 msgid "Expiration Date:"
 msgstr ""
 
@@ -639,12 +641,16 @@ msgstr ""
 msgid "HiPay Enterprise SEPA Direct Debit"
 msgstr ""
 
-#: includes/gateways/local/class-hipay-sisal.php:44
+#: includes/gateways/local/class-hipay-sisal.php:45
 msgid "HiPay Enterprise Sisal"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-sofort-uberweisung.php:32
 msgid "HiPay Enterprise Sofort Überweisung"
+msgstr ""
+
+#: includes/frontend/template/email/sisal.php:8
+msgid "HiPay ID"
 msgstr ""
 
 #: includes/admin/class-hipay-admin-post-types.php:98
@@ -808,7 +814,7 @@ msgstr ""
 msgid "Invalid capture amount."
 msgstr ""
 
-#: includes/helper/class-hipay-token-helper.php:108
+#: includes/helper/class-hipay-token-helper.php:86
 msgid "Invalid Card token"
 msgstr ""
 
@@ -835,7 +841,6 @@ msgid "Klarna"
 msgstr ""
 
 #: includes/admin/template/admin-global-settings.php:261
-msgctxt "Leaving the field empty will display all the customer's saved cards."
 msgid "Leaving the field empty will display all the customer's saved cards."
 msgstr ""
 
@@ -907,7 +912,6 @@ msgid ""
 msgstr ""
 
 #: includes/admin/template/admin-global-settings.php:252
-msgctxt "Maximum number of saved cards displayed by default."
 msgid "Maximum number of saved cards displayed by default."
 msgstr ""
 
@@ -967,7 +971,6 @@ msgid "Notifications"
 msgstr ""
 
 #: includes/admin/template/admin-global-settings.php:253
-msgctxt "Number of saved cards displayed"
 msgid "Number of saved cards displayed"
 msgstr ""
 
@@ -1142,7 +1145,8 @@ msgid "Redirect"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-multibanco.php:116
-#: includes/gateways/local/class-hipay-sisal.php:96
+#: includes/gateways/local/class-hipay-sisal.php:97
+#: includes/frontend/template/email/multibanco.php:37
 msgid "Reference:"
 msgstr ""
 
@@ -1183,7 +1187,6 @@ msgid "Sandbox configuration"
 msgstr ""
 
 #: includes/admin/template/admin-global-settings.php:270
-msgctxt "Save button color"
 msgid "Save button color"
 msgstr ""
 
@@ -1230,8 +1233,8 @@ msgstr ""
 msgid "SimpleXML Extension is correcly installed."
 msgstr ""
 
-#: includes/gateways/local/class-hipay-sisal.php:45
 #: includes/gateways/local/class-hipay-sisal.php:46
+#: includes/gateways/local/class-hipay-sisal.php:47
 msgid "Sisal"
 msgstr ""
 
@@ -1279,6 +1282,12 @@ msgstr ""
 msgid ""
 "The new PayPal integration allows you to pay with PayPal without redirection "
 "and to offer payment with installments."
+msgstr ""
+
+#: includes/frontend/template/email/sisal.php:58
+msgid ""
+"The operation will have an additional cost of €2.00 as a collection fee to "
+"be paid at the cash desk."
 msgstr ""
 
 #: includes/admin/class-hipay-admin-capture.php:366
@@ -1460,6 +1469,10 @@ msgid ""
 "your store. <a href=\"%s\">here</a>"
 msgstr ""
 
+#: includes/frontend/template/email/sisal.php:53
+msgid "You have chosen cash payment with Mooney."
+msgstr ""
+
 #: includes/admin/template/admin-mapping-delivery-settings.php:12
 msgid "You must define your delivery methods with those of HiPay."
 msgstr ""
@@ -1488,6 +1501,12 @@ msgstr ""
 msgid ""
 "You will be redirected to an external payment page. Please do not refresh "
 "the page during the process."
+msgstr ""
+
+#: includes/frontend/template/email/sisal.php:63
+msgid ""
+"You will receive an e-mail summarising your purchase, in which you will find "
+"the modalities for making the cash payment at Mooney points."
 msgstr ""
 
 #: includes/admin/template/admin-faq-settings.php:49

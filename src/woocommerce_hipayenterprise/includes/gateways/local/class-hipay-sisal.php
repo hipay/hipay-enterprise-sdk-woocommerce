@@ -16,6 +16,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+use Picqer\Barcode\BarcodeGeneratorPNG;
 /**
  *
  * @author      HiPay <support.tpp@hipay.com>
@@ -141,6 +142,7 @@ class Hipay_Sisal extends Hipay_Gateway_Local_Abstract
         return [
             'reference' => $reference,
             'barCode' => $barCode,
+            'barCodeImg' => esc_attr($this->generate_barcode_base64($barCode)),
             'sdkJsUrl' => $this->confHelper->getPaymentGlobal()["sdk_js_url"]
         ];
     }
@@ -162,6 +164,7 @@ class Hipay_Sisal extends Hipay_Gateway_Local_Abstract
         wp_localize_script('hipay-sdk', 'hipaySisalData', [
             'reference' => esc_js($data['reference']),
             'barCode' => esc_js($data['barCode']),
+            'barCodeImg' => esc_js($data['barCodeImg']),
             'locale' => substr(get_locale(), 0, 2),
             'security' => wp_create_nonce('hipay_sisal_data')
         ]);
@@ -186,7 +189,7 @@ class Hipay_Sisal extends Hipay_Gateway_Local_Abstract
         wp_add_inline_script('hipay-sdk', $script);
 
         $this->process_template(
-            'sisal.php',
+            'email/sisal.php',
             'frontend',
             $data
         );
@@ -208,4 +211,14 @@ class Hipay_Sisal extends Hipay_Gateway_Local_Abstract
             $data
         );
     }
+
+    private function generate_barcode_base64($barcode)
+    {
+        $generator = new BarcodeGeneratorPNG();
+        $barcodeData = $generator->getBarcode($barcode, $generator::TYPE_CODE_128_C, 3, 100);
+        $base64 = 'data:image/png;base64,' . base64_encode($barcodeData);
+
+        return $base64;
+    }
+
 }
