@@ -142,7 +142,7 @@ class Hipay_Sisal extends Hipay_Gateway_Local_Abstract
         return [
             'reference' => $reference,
             'barCode' => $barCode,
-            'barCodeImg' => esc_attr($this->generate_barcode_base64($barCode)),
+            'barCodeImg' => esc_attr($this->generate_barcode_image($barCode)),
             'sdkJsUrl' => $this->confHelper->getPaymentGlobal()["sdk_js_url"]
         ];
     }
@@ -189,7 +189,7 @@ class Hipay_Sisal extends Hipay_Gateway_Local_Abstract
         wp_add_inline_script('hipay-sdk', $script);
 
         $this->process_template(
-            'email/sisal.php',
+            'sisal.php',
             'frontend',
             $data
         );
@@ -212,13 +212,27 @@ class Hipay_Sisal extends Hipay_Gateway_Local_Abstract
         );
     }
 
-    private function generate_barcode_base64($barcode)
-    {
+    /**
+     * Generate barcode image by barcode number
+     * @param string $barcode
+     *
+     * @throws \Picqer\Barcode\Exceptions\UnknownTypeException
+     */
+    private function generate_barcode_image($barcode) {
         $generator = new BarcodeGeneratorPNG();
-        $barcodeData = $generator->getBarcode($barcode, $generator::TYPE_CODE_128_C, 3, 100);
-        $base64 = 'data:image/png;base64,' . base64_encode($barcodeData);
+        $barcodeData = $generator->getBarcode($barcode, $generator::TYPE_CODE_128,4, 100);
 
-        return $base64;
+        $upload_dir = wp_upload_dir();
+        $file_name = "barcode-" .$barcode . ".png";
+        $file_path = $upload_dir['basedir'] . '/' . $file_name;
+        $file_url = $upload_dir['baseurl'] . '/' . $file_name;
+
+        if (!file_exists($file_path)) {
+            file_put_contents($file_path, $barcodeData);
+        }
+
+        return $file_url;
     }
+
 
 }

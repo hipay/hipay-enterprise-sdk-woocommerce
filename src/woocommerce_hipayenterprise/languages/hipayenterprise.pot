@@ -11,7 +11,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-03-27 15:21+0000\n"
+"POT-Creation-Date: 2025-03-28 10:19+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: Loco https://localise.biz/\n"
 "X-Domain: hipayenterprise\n"
@@ -121,7 +121,7 @@ msgid "Amount already captured"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-multibanco.php:116
-#: includes/frontend/template/email/multibanco.php:49
+#: includes/frontend/template/email/multibanco.php:100
 msgid "Amount:"
 msgstr ""
 
@@ -435,7 +435,7 @@ msgid "Enter the corresponding username, password and secret passphrase."
 msgstr ""
 
 #: includes/gateways/local/class-hipay-multibanco.php:116
-#: includes/frontend/template/email/multibanco.php:25
+#: includes/frontend/template/email/multibanco.php:76
 msgid "Entity:"
 msgstr ""
 
@@ -444,7 +444,7 @@ msgid "Error processing capture. Please try again."
 msgstr ""
 
 #: includes/gateways/local/class-hipay-multibanco.php:116
-#: includes/frontend/template/email/multibanco.php:61
+#: includes/frontend/template/email/multibanco.php:112
 msgid "Expiration Date:"
 msgstr ""
 
@@ -649,7 +649,7 @@ msgstr ""
 msgid "HiPay Enterprise Sofort Überweisung"
 msgstr ""
 
-#: includes/frontend/template/email/sisal.php:8
+#: includes/frontend/template/email/sisal.php:19
 msgid "HiPay ID"
 msgstr ""
 
@@ -1146,7 +1146,7 @@ msgstr ""
 
 #: includes/gateways/local/class-hipay-multibanco.php:116
 #: includes/gateways/local/class-hipay-sisal.php:97
-#: includes/frontend/template/email/multibanco.php:37
+#: includes/frontend/template/email/multibanco.php:88
 msgid "Reference:"
 msgstr ""
 
@@ -1284,7 +1284,7 @@ msgid ""
 "and to offer payment with installments."
 msgstr ""
 
-#: includes/frontend/template/email/sisal.php:58
+#: includes/frontend/template/email/sisal.php:69
 msgid ""
 "The operation will have an additional cost of €2.00 as a collection fee to "
 "be paid at the cash desk."
@@ -1340,6 +1340,12 @@ msgstr ""
 msgid ""
 "To check if an error occurred during the notification, check the hipay-error "
 "and hipay-callback logs."
+msgstr ""
+
+#: includes/frontend/template/email/multibanco.php:126
+msgid ""
+"To pay a Multibanco Reference on your e-banking or at an ATM, choose "
+"'payments', then 'services'"
 msgstr ""
 
 #: includes/admin/template/admin-faq-settings.php:17
@@ -1469,7 +1475,7 @@ msgid ""
 "your store. <a href=\"%s\">here</a>"
 msgstr ""
 
-#: includes/frontend/template/email/sisal.php:53
+#: includes/frontend/template/email/sisal.php:64
 msgid "You have chosen cash payment with Mooney."
 msgstr ""
 
@@ -1503,7 +1509,7 @@ msgid ""
 "the page during the process."
 msgstr ""
 
-#: includes/frontend/template/email/sisal.php:63
+#: includes/frontend/template/email/sisal.php:74
 msgid ""
 "You will receive an e-mail summarising your purchase, in which you will find "
 "the modalities for making the cash payment at Mooney points."

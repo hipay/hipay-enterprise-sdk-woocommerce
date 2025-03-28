@@ -3,9 +3,9 @@ msgstr ""
 "Project-Id-Version: WooCommerce HiPay Enterprise\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-10-18 15:57+0000\n"
-"PO-Revision-Date: 2025-03-27 15:24+0000\n"
+"PO-Revision-Date: 2025-03-28 10:20+0000\n"
 "Last-Translator: \n"
-"Language-Team: Français\n"
+"Language-Team: French (France)\n"
 "Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "MIME-Version: 1.0\n"
@@ -123,7 +123,7 @@ msgid "Amount already captured"
 msgstr "Montant déjà capturé"
 
 #: includes/gateways/local/class-hipay-multibanco.php:116
-#: includes/frontend/template/email/multibanco.php:49
+#: includes/frontend/template/email/multibanco.php:100
 msgid "Amount:"
 msgstr "Montant:"
 
@@ -457,7 +457,7 @@ msgstr ""
 "correspondants."
 
 #: includes/gateways/local/class-hipay-multibanco.php:116
-#: includes/frontend/template/email/multibanco.php:25
+#: includes/frontend/template/email/multibanco.php:76
 msgid "Entity:"
 msgstr "Entité:"
 
@@ -466,7 +466,7 @@ msgid "Error processing capture. Please try again."
 msgstr "Une erreur est survenue pendant la capture, veuillez réessayer"
 
 #: includes/gateways/local/class-hipay-multibanco.php:116
-#: includes/frontend/template/email/multibanco.php:61
+#: includes/frontend/template/email/multibanco.php:112
 msgid "Expiration Date:"
 msgstr "Date d'expiration:"
 
@@ -680,7 +680,7 @@ msgstr "HiPay Enterprise Sisal"
 msgid "HiPay Enterprise Sofort Überweisung"
 msgstr "HiPay Enterprise Sofort Überweisung"
 
-#: includes/frontend/template/email/sisal.php:8
+#: includes/frontend/template/email/sisal.php:19
 msgid "HiPay ID"
 msgstr "Identifiant HiPay"
 
@@ -1227,7 +1227,7 @@ msgstr "Redirection"
 
 #: includes/gateways/local/class-hipay-multibanco.php:116
 #: includes/gateways/local/class-hipay-sisal.php:97
-#: includes/frontend/template/email/multibanco.php:37
+#: includes/frontend/template/email/multibanco.php:88
 msgid "Reference:"
 msgstr "Référence:"
 
@@ -1375,7 +1375,7 @@ msgstr ""
 "La nouvelle intégration PayPal V2 vous permet de payer avec PayPal sans "
 "redirection et d'offrir le paiement en plusieurs fois."
 
-#: includes/frontend/template/email/sisal.php:58
+#: includes/frontend/template/email/sisal.php:69
 msgid ""
 "The operation will have an additional cost of €2.00 as a collection fee to "
 "be paid at the cash desk."
@@ -1453,6 +1453,14 @@ msgid ""
 msgstr ""
 "Pour vérifier si une erreur s'est produite lors de la notification, "
 "consultez les logs hipay-error et hipay-callback."
+
+#: includes/frontend/template/email/multibanco.php:126
+msgid ""
+"To pay a Multibanco Reference on your e-banking or at an ATM, choose "
+"'payments', then 'services'"
+msgstr ""
+"Pour payer une référence Multibanco sur votre banque en ligne ou dans un "
+"distributeur automatique de billet, choisissez 'Paiements', puis 'Services'."
 
 #: includes/admin/template/admin-faq-settings.php:17
 msgid ""
@@ -1594,7 +1602,7 @@ msgstr ""
 "Vous pouvez accepter ou refuser cette transaction sur la page "
 "d'administration de votre boutique. <a href=\"%s\">ici</a>"
 
-#: includes/frontend/template/email/sisal.php:53
+#: includes/frontend/template/email/sisal.php:64
 msgid "You have chosen cash payment with Mooney."
 msgstr "Vous avez choisi le paiement en espèces avec Mooney."
 
@@ -1630,7 +1638,7 @@ msgstr ""
 "Vous allez être redirigé vers une page de paiement externe. Veuillez ne pas "
 "actualiser la page pendant le processus."
 
-#: includes/frontend/template/email/sisal.php:63
+#: includes/frontend/template/email/sisal.php:74
 msgid ""
 "You will receive an e-mail summarising your purchase, in which you will find "
 "the modalities for making the cash payment at Mooney points."
