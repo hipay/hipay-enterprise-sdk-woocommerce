@@ -1,8 +1,8 @@
 
 <style type="text/css">
     #multibancoTemplate {
-        margin: 0;
         padding: 0;
+        margin: 0 0 20px;
     }
     #multibancoTemplate table, #multibancoTemplate td, #multibancoTemplate div, #multibancoTemplate p {
         margin: 0;
@@ -18,7 +18,7 @@
     }
     #multibancoTemplate .logo-container {
         text-align: center;
-        padding: 20px 0 40px 0;
+        padding: 20px 0 10px 0;
         vertical-align: middle;
     }
     #multibancoTemplate .logo-img {
@@ -28,18 +28,18 @@
         display: block;
     }
     #multibancoTemplate .data-row {
-        padding: 8px 0;
+        padding: 4px 0;
     }
     #multibancoTemplate .label {
         font-weight: normal;
-        font-size: 18px;
+        font-size: 22px;
         color: #333;
         text-align: right;
         padding-right: 20px;
         vertical-align: middle;
     }
     #multibancoTemplate .value {
-        font-weight: bold;
+        font-weight: normal;
         font-size: 22px;
         color: #000;
         text-align: left;
@@ -47,11 +47,14 @@
         vertical-align: middle;
     }
     #multibancoTemplate .footer-text {
-        padding: 40px 80px 20px 80px;
+        padding: 0 80px 20px 80px;
         font-size: 16px;
         color: #333;
         line-height: 1.5;
         text-align: center;
+    }
+    #multibancoTemplate table:not( .has-background ) tbody td {
+        background-color: inherit;
     }
 </style>
 
