@@ -34,7 +34,7 @@
         font-weight: normal;
         font-size: 22px;
         color: #333;
-        text-align: right;
+        text-align: left;
         padding-right: 20px;
         vertical-align: middle;
     }
@@ -76,7 +76,8 @@
                         <td class="data-row">
                             <table width="100%" cellpadding="0" cellspacing="0" border="0">
                                 <tr>
-                                    <td class="label" width="50%" align="right"><?php echo __('Entity:', "hipayenterprise")?></td>
+                                    <td class="label" width="25%" align="right"></td>
+                                    <td class="label" width="25%" align="right"><?php echo __('Entity:', "hipayenterprise")?></td>
                                     <td class="value" width="50%" align="left"><?php echo $entity ?></td>
                                 </tr>
                             </table>
@@ -88,7 +89,8 @@
                         <td class="data-row">
                             <table width="100%" cellpadding="0" cellspacing="0" border="0">
                                 <tr>
-                                    <td class="label" width="50%" align="right"><?php echo __('Reference:', "hipayenterprise")?></td>
+                                    <td class="label" width="25%" align="right"></td>
+                                    <td class="label" width="25%" align="right"><?php echo __('Reference:', "hipayenterprise")?></td>
                                     <td class="value" width="50%" align="left"><?php echo $reference ?></td>
                                 </tr>
                             </table>
@@ -100,7 +102,8 @@
                         <td class="data-row">
                             <table width="100%" cellpadding="0" cellspacing="0" border="0">
                                 <tr>
-                                    <td class="label" width="50%" align="right"><?php echo __('Amount:', "hipayenterprise")?></td>
+                                    <td class="label" width="25%" align="right"></td>
+                                    <td class="label" width="25%" align="right"><?php echo __('Amount:', "hipayenterprise")?></td>
                                     <td class="value" width="50%" align="left"><?php echo $amount ?> €</td>
                                 </tr>
                             </table>
@@ -112,7 +115,8 @@
                         <td class="data-row">
                             <table width="100%" cellpadding="0" cellspacing="0" border="0">
                                 <tr>
-                                    <td class="label" width="50%" align="right"><?php echo __('Expiration Date:', "hipayenterprise")?></td>
+                                    <td class="label" width="25%" align="right"></td>
+                                    <td class="label" width="25%" align="right"><?php echo __('Expiration Date:', "hipayenterprise")?></td>
                                     <td class="value" width="50%" align="left"><?php echo $expirationDate ?></td>
                                 </tr>
                             </table>
