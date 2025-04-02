@@ -214,7 +214,7 @@ class Hipay_Multibanco extends Hipay_Gateway_Local_Abstract
         wp_add_inline_script('hipay-sdk', $script);
 
         $this->process_template(
-            'email/multibanco.php',
+            'multibanco.php',
             'frontend',
             $data
         );
