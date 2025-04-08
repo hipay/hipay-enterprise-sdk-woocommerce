@@ -2,6 +2,7 @@ services:
   wordpress:
     depends_on:
       - database
+      - mailcatcher
     build:
       context: .
       dockerfile: bin/docker/images/woocommerce/Dockerfile
@@ -20,3 +21,9 @@ services:
       - '3309:3306'
     env_file:
       - bin/docker/conf/development/wordpress.env.sample
+
+  mailcatcher:
+    image: schickling/mailcatcher
+    ports:
+      - "1080:1080" # Web UI
+      - "1025:1025" # SMTP server
