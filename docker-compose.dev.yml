@@ -25,5 +25,5 @@ services:
   mailcatcher:
     image: schickling/mailcatcher
     ports:
-      - "1080:1080" # Web UI
-      - "1025:1025" # SMTP server
+      - "1080:1080"
+    mem_limit: 256M
