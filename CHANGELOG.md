@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# UNRELEASE
+
+- **Fix** : Remove SDK js init from email template Multibanco/Sisal
+
 ## 2.7.1
 
 - **Fix** : Improve the API calls to "availablePaymentProduct" to enhance performance
