@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WooCommerce HiPay Enterprise\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-10-18 15:57+0000\n"
-"PO-Revision-Date: 2025-03-28 10:20+0000\n"
+"PO-Revision-Date: 2025-04-14 14:01+0000\n"
 "Last-Translator: \n"
 "Language-Team: French (France)\n"
 "Language: fr_FR\n"
@@ -345,7 +345,7 @@ msgstr "Couleur"
 
 #: includes/admin/template/admin-global-settings.php:269
 msgid "Color of card save button."
-msgstr ""
+msgstr "Couleur du bouton d'enregistrement de la carte."
 
 #: includes/admin/template/admin-global-settings.php:284
 msgid "Color of the selected saved card highlight."
@@ -909,6 +909,8 @@ msgstr "Klarna"
 #: includes/admin/template/admin-global-settings.php:261
 msgid "Leaving the field empty will display all the customer's saved cards."
 msgstr ""
+"Si vous laissez le champ vide, toutes les cartes enregistrées du client "
+"s'afficheront."
 
 #: includes/gateways/class-gateway-hipay.php:61
 msgid "Local and international payments using Hipay Enterprise."
@@ -989,7 +991,7 @@ msgstr ""
 
 #: includes/admin/template/admin-global-settings.php:252
 msgid "Maximum number of saved cards displayed by default."
-msgstr ""
+msgstr "Nombre maximum de cartes enregistrées affichées par défaut."
 
 #: includes/admin/template/admin-creditcard-settings.php:111
 #: includes/admin/template/admin-paymentlocal-settings.php:53
@@ -1049,7 +1051,7 @@ msgstr "Notifications"
 
 #: includes/admin/template/admin-global-settings.php:253
 msgid "Number of saved cards displayed"
-msgstr ""
+msgstr "Nombre maximum de cartes affichées par client"
 
 #: includes/gateways/class-gateway-hipay.php:494
 msgid "One click not activated"
@@ -1269,7 +1271,7 @@ msgstr "Configuration sandbox"
 
 #: includes/admin/template/admin-global-settings.php:270
 msgid "Save button color"
-msgstr ""
+msgstr "Couleur du bouton de sauvegarde de carte"
 
 #: includes/admin/template/admin-mapping-category-settings.php:55
 #: includes/admin/template/admin-mapping-delivery-settings.php:87
