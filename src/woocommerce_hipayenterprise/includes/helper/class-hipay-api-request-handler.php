@@ -281,6 +281,21 @@ class Hipay_Api_Request_Handler
 
         switch ($response->getState()) {
             case TransactionState::COMPLETED:
+                if ($this->plugin->confHelper->getPaymentGlobal()["card_token"]) {
+                    $token = Hipay_Token_Helper::cardExists(
+                        $response->getPaymentMethod()->getPan(),
+                        $response->getPaymentMethod()->getBrand(),
+                        $order->get_user_id()
+                    );
+
+                    if (!empty($token->get_token())) {
+                        $token->set_authorized(true);
+                        $token->save();
+                    }
+                }
+
+                $redirectUrl = $order->get_checkout_order_received_url();
+                break;
             case TransactionState::PENDING:
                 $redirectUrl = $order->get_checkout_order_received_url();
                 break;

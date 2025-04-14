@@ -61,6 +61,7 @@ class Hipay_Token_Helper
         $token->set_gateway_id($values["gateway_id"]);
         $token->set_payment_product($values["payment_product"]);
         $token->set_force_cvv($values["force_cvv"]);
+        $token->set_authorized($values["authorized"]);
         $token->set_date_created($dateCreated);
 
         $token->save();
@@ -94,7 +95,7 @@ class Hipay_Token_Helper
      * @param $customerId
      * @return WC_Payment_Token_CC_HiPay
      */
-    private static function cardExists($pan, $brand, $customerId)
+    public static function cardExists($pan, $brand, $customerId)
     {
         $tokens = WC_Payment_Tokens::get_customer_tokens($customerId);
 
