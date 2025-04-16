@@ -242,6 +242,27 @@ class Hipay_Notification
                     break;
             }
 
+            if ($this->transaction->getStatus() == TransactionStatus::AUTHORIZED ||
+                $this->transaction->getStatus() == TransactionStatus::CAPTURED) {
+                $customData = $this->transaction->getCustomData();
+                if ((isset($customData["createOneClick"])
+                        && $customData["createOneClick"])
+                ) {
+
+                    $paymentMethod = $this->transaction->getPaymentMethod();
+                    $token = Hipay_Token_Helper::cardExists(
+                        $paymentMethod->getPan(),
+                        $paymentMethod->getBrand(),
+                        $this->order->get_user_id()
+                    );
+
+                    if (!empty($token->get_token())) {
+                        $token->set_authorized(true);
+                        $token->save();
+                    }
+
+                }
+            }
             return true;
         } catch (Exception $e) {
             $this->orderHandler->addNote($e->getMessage());

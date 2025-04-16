@@ -245,6 +245,12 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
     {
         // Check if this is your HiPay payment method
         if ($payment_token->get_gateway_id() === $this->id) {
+            $token_data = $payment_token->get_data();
+
+            if (isset($token_data['authorized']) && !$token_data['authorized']) {
+                return null;
+            }
+
             if (isset($list_item['actions']['default'])) {
                 unset($list_item['actions']['default']);
             }

@@ -34,6 +34,7 @@ class WC_Payment_Token_CC_HiPay extends WC_Payment_Token
         'card_holder' => '',
         'payment_product' => '',
         'force_cvv' => false,
+        'authorized' => true,
         'date_created' => ''
     );
 
@@ -159,6 +160,16 @@ class WC_Payment_Token_CC_HiPay extends WC_Payment_Token
     public function set_force_cvv($force_cvv)
     {
         $this->set_prop('force_cvv', $force_cvv);
+    }
+
+    public function get_authorized($context = 'view')
+    {
+        return $this->get_prop('authorized', $context);
+    }
+
+    public function set_authorized($authorized)
+    {
+        $this->set_prop('authorized', $authorized);
     }
 
     public function get_date_created($context = 'view')
