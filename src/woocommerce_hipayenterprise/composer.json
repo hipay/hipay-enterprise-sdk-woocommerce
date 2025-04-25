@@ -12,10 +12,11 @@
   "require": {
     "giggsey/libphonenumber-for-php": "^8.12",
     "hipay/hipay-fullservice-sdk-php": "^2.19.1",
-    "michelf/php-markdown": "1.9.1"
+    "michelf/php-markdown": "1.9.1",
+    "picqer/php-barcode-generator": "2.0.1"
   },
   "require-dev": {
     "phpunit/phpunit": "^8.5"
   },
-  "version": "2.7.1"
+  "version": "2.7.2"
 }

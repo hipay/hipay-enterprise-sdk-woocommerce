@@ -174,6 +174,10 @@ if (!class_exists('WC_Gateway_Hipay')) {
             $savedCards = [];
             if (!empty($this->get_tokens())) {
                 foreach ($this->get_tokens() as $token) {
+                    if (!$token->get_authorized()) {
+                        continue;
+                    }
+
                     $savedCards[] = [
                         'token' => $token->get_token(),
                         'brand' => strtolower($token->get_card_type()),
@@ -468,7 +472,8 @@ if (!class_exists('WC_Gateway_Hipay')) {
                             "user_id" => get_current_user_id(),
                             "gateway_id" => self::GATEWAY_CREDIT_CARD_ID,
                             "payment_product" => Hipay_Helper::getPostData('card-payment_product'),
-                            "force_cvv" => true
+                            "force_cvv" => true,
+                            "authorized" => false
                         );
 
                         Hipay_Token_Helper::createToken($values);

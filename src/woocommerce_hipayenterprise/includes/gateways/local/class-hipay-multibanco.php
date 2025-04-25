@@ -80,7 +80,7 @@ class Hipay_Multibanco extends Hipay_Gateway_Local_Abstract
     public function email_instructions($order, $sent_to_admin, $plain_text = false)
     {
         if ($order->get_payment_method() === $this->id) {
-            $this->makeMultibancoTemplate($order);
+            $this->makeMultibancoTemplateEmail($order);
         }
     }
 
@@ -144,26 +144,98 @@ class Hipay_Multibanco extends Hipay_Gateway_Local_Abstract
     }
 
     /**
+     * Get Multibanco payment data from order
+     *
+     * @param WC_Order $order
+     * @return array|false Payment data or false if missing required data
+     */
+    private function getMultibancoData($order) {
+        $entity = $order->get_meta(self::HIPAY_MULTIBANCO_ENTITY);
+        $reference = $order->get_meta(self::HIPAY_MULTIBANCO_REFERENCE);
+        $amount = $order->get_meta(self::HIPAY_MULTIBANCO_AMOUNT);
+        $expirationDate = $order->get_meta(self::HIPAY_MULTIBANCO_EXPIRATION_DATE);
+
+        if (empty($entity) || empty($reference)) {
+            $this->logs->logErrors("Missing Multibanco data for order " . $order->get_id());
+            return false;
+        }
+
+        return [
+            'entity' => $entity,
+            'reference' => $reference,
+            'amount' => $amount,
+            'expirationDate' => $expirationDate
+        ];
+    }
+
+    /**
      * Make Multibanco template for order details
+     *
      * @param WC_Order $order
      */
-    private function makeMultibancoTemplate($order)
-    {
-        $this->entity = $order->get_meta(self::HIPAY_MULTIBANCO_ENTITY);
-        $this->reference = $order->get_meta(self::HIPAY_MULTIBANCO_REFERENCE);
-        $this->amount = $order->get_meta(self::HIPAY_MULTIBANCO_AMOUNT);
-        $this->expirationDate = $order->get_meta(self::HIPAY_MULTIBANCO_EXPIRATION_DATE);
+    private function makeMultibancoTemplate($order) {
+        $data = $this->getMultibancoData($order);
+        if (!$data) {
+            return;
+        }
+
+        $version = defined('HIPAY_PLUGIN_VERSION') ? HIPAY_PLUGIN_VERSION : '1.0.0';
+        wp_register_script('hipay-sdk', $this->confHelper->getPaymentGlobal()["sdk_js_url"], array(), $version, true);
+        wp_enqueue_script('hipay-sdk');
+
+        wp_localize_script('hipay-sdk', 'hipayMultibancoData', [
+            'reference' => esc_js($data['reference']),
+            'entity' => esc_js($data['entity']),
+            'amount' => esc_js($data['amount']),
+            'expirationDate' => esc_js($data['expirationDate']),
+            'locale' => substr(get_locale(), 0, 2),
+            'security' => wp_create_nonce('hipay_multibanco_data')
+        ]);
+
+        $script = "
+            document.addEventListener('DOMContentLoaded', function() {
+                var hipaySdk = new HiPay({
+                    username: 'hosted',
+                    password: 'hosted',
+                    environment: 'production',
+                    lang: hipayMultibancoData.locale
+                });
+                
+                hipaySdk.createReference('multibanco', {
+                    selector: 'referenceToPay',
+                    reference: hipayMultibancoData.reference,
+                    entity: hipayMultibancoData.entity,
+                    amount: hipayMultibancoData.amount,
+                    expirationDate: hipayMultibancoData.expirationDate,
+                });
+            });
+        ";
+
+        wp_add_inline_script('hipay-sdk', $script);
 
         $this->process_template(
             'multibanco.php',
             'frontend',
-            array(
-                'entity' => $this->entity,
-                'reference' => $this->reference,
-                'amount' => $this->amount,
-                'expirationDate' => $this->expirationDate,
-                'sdkJsUrl' => $this->confHelper->getPaymentGlobal()["sdk_js_url"]
-            )
+            $data
+        );
+    }
+
+    /**
+     * Make Multibanco template for email order details
+     *
+     * @param WC_Order $order
+     */
+    private function makeMultibancoTemplateEmail($order) {
+        $data = $this->getMultibancoData($order);
+        if (!$data) {
+            return;
+        }
+
+        // Process the email template
+        $this->process_template(
+            'email/multibanco.php',
+            'frontend',
+            $data
         );
     }
 }

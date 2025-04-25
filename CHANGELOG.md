@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2.7.2
+
+- **Fix** : (OneClick) Prevent saving payment card details without proper authorization.
+- **Fix** : Remove SDK js init from email template Multibanco/Sisal
+
 ## 2.7.1
 
 - **Fix** : Improve the API calls to "availablePaymentProduct" to enhance performance
