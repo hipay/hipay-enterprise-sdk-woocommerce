@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## UNRELEASE
+
+- **Fix** : Fix HiPay payment integration and form handling on WooCommerce order-pay page
+
 ## 2.7.2
 
 - **Fix** : (OneClick) Prevent saving payment card details without proper authorization.
