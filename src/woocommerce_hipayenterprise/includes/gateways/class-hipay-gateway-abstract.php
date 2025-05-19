@@ -153,7 +153,8 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
                 "placeholderColor" => $this->confHelper->getHostedFieldsStyle()["placeholderColor"],
                 "caretColor" => $this->confHelper->getHostedFieldsStyle()["caretColor"],
                 "iconColor" => $this->confHelper->getHostedFieldsStyle()["iconColor"],
-                'useOneClick' => $this->getOneClickOptions()
+                'useOneClick' => $this->getOneClickOptions(),
+                'isOrderPayPage' => $this->isOrderPayPage()
             )
         );
 
@@ -469,5 +470,13 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
         }
 
         return [];
+    }
+
+    /**
+     * Check if we're on the order-pay endpoint
+     */
+    protected function isOrderPayPage() {
+        global $wp;
+        return isset($wp->query_vars['order-pay']) && !empty($wp->query_vars['order-pay']);
     }
 }
