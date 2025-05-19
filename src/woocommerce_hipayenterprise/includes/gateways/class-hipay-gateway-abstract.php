@@ -138,24 +138,37 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
         $this->password = ($this->sandbox) ? $this->confHelper->getAccount()["sandbox"]["api_tokenjs_password_publickey_sandbox"]
             : $this->confHelper->getAccount()["production"]["api_tokenjs_password_publickey_production"];
 
+        $hipay_config_data = array(
+            "apiUsernameTokenJs" => $this->username,
+            "apiPasswordTokenJs" => $this->password,
+            "lang" => substr(get_locale(), 0, 2),
+            "environment" => $this->sandbox ? "stage" : "production",
+            "fontFamily" => $this->confHelper->getHostedFieldsStyle()["fontFamily"],
+            "color" => $this->confHelper->getHostedFieldsStyle()["color"],
+            "fontSize" => $this->confHelper->getHostedFieldsStyle()["fontSize"],
+            "fontWeight" => $this->confHelper->getHostedFieldsStyle()["fontWeight"],
+            "placeholderColor" => $this->confHelper->getHostedFieldsStyle()["placeholderColor"],
+            "caretColor" => $this->confHelper->getHostedFieldsStyle()["caretColor"],
+            "iconColor" => $this->confHelper->getHostedFieldsStyle()["iconColor"],
+            'useOneClick' => $this->getOneClickOptions(),
+            'isOrderPayPage' => $this->isOrderPayPage()
+        );
+
+        if ($this->isOrderPayPage()) {
+            global $wp;
+            $order_id = absint($wp->query_vars['order-pay']);
+            $order = wc_get_order($order_id);
+
+            if ($order) {
+                $hipay_config_data["customerFirstName"] = $order->get_billing_first_name();
+                $hipay_config_data["customerLastName"] = $order->get_billing_last_name();
+            }
+        }
+
         wp_localize_script(
             'hipay-js-front',
             'hipay_config',
-            array(
-                "apiUsernameTokenJs" => $this->username,
-                "apiPasswordTokenJs" => $this->password,
-                "lang" => substr(get_locale(), 0, 2),
-                "environment" => $this->sandbox ? "stage" : "production",
-                "fontFamily" => $this->confHelper->getHostedFieldsStyle()["fontFamily"],
-                "color" => $this->confHelper->getHostedFieldsStyle()["color"],
-                "fontSize" => $this->confHelper->getHostedFieldsStyle()["fontSize"],
-                "fontWeight" => $this->confHelper->getHostedFieldsStyle()["fontWeight"],
-                "placeholderColor" => $this->confHelper->getHostedFieldsStyle()["placeholderColor"],
-                "caretColor" => $this->confHelper->getHostedFieldsStyle()["caretColor"],
-                "iconColor" => $this->confHelper->getHostedFieldsStyle()["iconColor"],
-                'useOneClick' => $this->getOneClickOptions(),
-                'isOrderPayPage' => $this->isOrderPayPage()
-            )
+            $hipay_config_data
         );
 
         if ($this->paymentProduct === "paypal") {
