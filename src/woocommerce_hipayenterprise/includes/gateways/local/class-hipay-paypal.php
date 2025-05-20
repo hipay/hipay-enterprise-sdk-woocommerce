@@ -106,7 +106,7 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
             'buttonLabel' => $paymentProductConfig['buttonLabel'],
             'buttonHeight' => $paymentProductConfig['buttonHeight'],
             'bnpl' => $paymentProductConfig['bnpl'],
-            "amount" => $this->isOrderPayPage()
+            'amount' => $this->isOrderPayPage()
                 ? $this->getOrderPayAmount()
                 : (WC()->cart ? WC()->cart->get_total('') : 0),
             'currency' => get_woocommerce_currency(),
