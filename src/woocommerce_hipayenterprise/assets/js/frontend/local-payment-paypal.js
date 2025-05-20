@@ -11,7 +11,7 @@ jQuery(document).ready(($) => {
           ? $('#order_review')
           : $('form.checkout'),
       submitButton: $('#payment .place-order .button').clone(),
-      paypalField: $('#paypal-field'),
+      paypalField: $('#paypal-field')
     });
 
     const isAddPaymentPage = () => $('#add_payment_method').length > 0;
@@ -50,7 +50,7 @@ jQuery(document).ready(($) => {
       isAddPaymentPage,
       getSelectedMethod,
       handleSubmitButton,
-      destroyMethods,
+      destroyMethods
     };
   })();
 
@@ -78,7 +78,7 @@ jQuery(document).ready(($) => {
           username: hipay_config_paypal.apiUsernameTokenJs,
           password: hipay_config_paypal.apiPasswordTokenJs,
           environment: hipay_config_paypal.environment,
-          lang: hipay_config_paypal.lang,
+          lang: hipay_config_paypal.lang
         });
 
         const options = {
@@ -86,16 +86,16 @@ jQuery(document).ready(($) => {
           request: {
             locale: hipay_config_paypal.locale,
             currency: hipay_config_paypal.currency,
-            amount: String(hipay_config_paypal.amount),
+            amount: String(hipay_config_paypal.amount)
           },
           paypalButtonStyle: {
             shape: hipay_config_paypal.buttonShape,
             height: Number(hipay_config_paypal.buttonHeight || 40),
             color: hipay_config_paypal.buttonColor,
-            label: hipay_config_paypal.buttonLabel,
+            label: hipay_config_paypal.buttonLabel
           },
           selector: 'paypal-field',
-          canPayLater: Boolean(hipay_config_paypal.bnpl),
+          canPayLater: Boolean(hipay_config_paypal.bnpl)
         };
 
         return hipaySDK.create(method, options);
@@ -134,7 +134,7 @@ jQuery(document).ready(($) => {
 
     return {
       init,
-      updateMethods,
+      updateMethods
     };
   })();
 
@@ -189,7 +189,7 @@ jQuery(document).ready(($) => {
     };
 
     return {
-      bindEvents,
+      bindEvents
     };
   })();
 
