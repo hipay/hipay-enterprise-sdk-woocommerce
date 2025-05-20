@@ -36,7 +36,7 @@ jQuery(function ($) {
       username: hipay_config.apiUsernameTokenJs,
       password: hipay_config.apiPasswordTokenJs,
       environment: hipay_config.environment,
-      lang: hipay_config.lang,
+      lang: hipay_config.lang
     });
 
     hipaySDK.injectBaseStylesheet();
@@ -57,6 +57,7 @@ jQuery(function ($) {
   function isHostedFields() {
     return hipay_config_card.operating_mode === 'hosted_fields';
   }
+
   function isOneClick() {
     return (
       $(
@@ -67,6 +68,7 @@ jQuery(function ($) {
       ).val() !== 'new'
     );
   }
+
   function checkPayment() {
     if (isOneClick()) {
       injectInput(
@@ -224,16 +226,16 @@ jQuery(function ($) {
         fontWeight: hipay_config.fontWeight,
         placeholderColor: hipay_config.placeholderColor,
         caretColor: hipay_config.caretColor,
-        iconColor: hipay_config.iconColor,
+        iconColor: hipay_config.iconColor
       },
       components: {
         switch: {
-          mainColor: hipay_config.useOneClick.switch_color,
+          mainColor: hipay_config.useOneClick.switch_color
         },
         checkbox: {
-          mainColor: hipay_config.useOneClick.checkbox_color,
-        },
-      },
+          mainColor: hipay_config.useOneClick.checkbox_color
+        }
+      }
     };
 
     methodsInstance[method] = hipaySDK.create(method, configHostedFields);
@@ -346,10 +348,12 @@ jQuery(function ($) {
       unBlockUI();
     });
   }
+
   var isCardsDisplayedAreLimited = Boolean(
     hipay_config?.useOneClick?.card_count &&
       Number(hipay_config.useOneClick.card_count) > 0
   );
+
   function getCardConfig() {
     var firstName = $('#billing_first_name').val();
     var lastName = $('#billing_last_name').val();
@@ -359,33 +363,33 @@ jQuery(function ($) {
       one_click: {
         enabled: useOneClick,
         ...(isCardsDisplayedAreLimited && {
-          cards_display_count: Number(hipay_config.useOneClick.card_count),
+          cards_display_count: Number(hipay_config.useOneClick.card_count)
         }),
-        cards: getSavedCustomerCards(),
+        cards: getSavedCustomerCards()
       },
       fields: {
         savedCards: {
-          selector: 'hipay-card-saved-cards',
+          selector: 'hipay-card-saved-cards'
         },
         cardHolder: {
           selector: 'hipay-card-field-cardHolder',
           defaultFirstname: firstName,
-          defaultLastname: lastName,
+          defaultLastname: lastName
         },
         cardNumber: {
-          selector: 'hipay-card-field-cardNumber',
+          selector: 'hipay-card-field-cardNumber'
         },
         expiryDate: {
-          selector: 'hipay-card-field-expiryDate',
+          selector: 'hipay-card-field-expiryDate'
         },
         cvc: {
           selector: 'hipay-card-field-cvc',
-          helpButton: true,
+          helpButton: true
         },
         savedCardButton: {
-          selector: 'hipay-saved-card-btn',
-        },
-      },
+          selector: 'hipay-saved-card-btn'
+        }
+      }
     };
   }
 
@@ -407,8 +411,8 @@ jQuery(function ($) {
       message: null,
       overlayCSS: {
         background: '#fff',
-        opacity: 0.6,
-      },
+        opacity: 0.6
+      }
     });
   }
 
