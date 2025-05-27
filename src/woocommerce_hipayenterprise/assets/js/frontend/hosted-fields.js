@@ -204,7 +204,7 @@ jQuery(function ($) {
   }
 
   function injectInput(form, key, data, method) {
-    if (form && form.length) {
+    if (form?.length) {
       var valueResponse = data instanceof Object ? JSON.stringify(data) : data;
 
       // Remove existing input with the same name to prevent duplicates
@@ -296,7 +296,7 @@ jQuery(function ($) {
       return true;
     }
 
-    if (methodsInstance[method] !== undefined) {
+    if (typeof methodsInstance[method] !== 'undefined') {
       return methodsInstance[method];
     }
 
@@ -452,8 +452,7 @@ jQuery(function ($) {
   );
 
   function getCardConfig() {
-    var firstName = '';
-    var lastName = '';
+    var firstName, lastName;
     if (hipay_config.isOrderPayPage) {
       firstName = hipay_config.customerFirstName || '';
       lastName = hipay_config.customerLastName || '';
