@@ -126,7 +126,6 @@ class Hipay_Notification
                 case TransactionStatus::CARD_HOLDER_AUTHENTICATED:
                 case TransactionStatus::AUTHENTICATION_ATTEMPTED:
                 case TransactionStatus::COULD_NOT_AUTHENTICATE:
-                case TransactionStatus::AUTHENTICATION_FAILED:
                 case TransactionStatus::COLLECTED:
                 case TransactionStatus::ACQUIRER_FOUND:
                 case TransactionStatus::ACQUIRER_NOT_FOUND:
@@ -139,6 +138,7 @@ class Hipay_Notification
                     break;
                 case TransactionStatus::DENIED:
                 case TransactionStatus::REFUSED:
+                case TransactionStatus::AUTHENTICATION_FAILED:
                     $this->orderHandler->paymentFailed(
                         __(
                             "Transaction  refused. Order was cancelled with transaction:",

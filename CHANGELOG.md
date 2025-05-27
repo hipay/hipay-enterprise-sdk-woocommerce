@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## UNRELEASE
+
+- **Fix** : Updated order status and state upon authentication failure with notification code 109
+
 ## 2.7.2
 
 - **Fix** : (OneClick) Prevent saving payment card details without proper authorization.
