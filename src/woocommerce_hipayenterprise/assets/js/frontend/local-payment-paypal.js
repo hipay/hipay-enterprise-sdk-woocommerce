@@ -10,7 +10,9 @@ jQuery(document).ready(($) => {
         : isOrderPayPage
           ? $('#order_review')
           : $('form.checkout'),
-      submitButton: $('#payment .place-order .button').clone(),
+      submitButton: isOrderPayPage
+        ? $('#place_order').clone()
+        : $('#payment .place-order .button').clone(),
       paypalField: $('#paypal-field')
     });
 
@@ -25,18 +27,35 @@ jQuery(document).ready(($) => {
 
     const handleSubmitButton = (method, selectors) => {
       const { submitButton } = selectors;
-      const placeOrderButton = $('#payment .place-order .button');
 
-      if (method === 'paypal' && paypal_version?.v2 !== null) {
-        placeOrderButton.remove();
-      } else if (!placeOrderButton.length) {
-        $('#payment .place-order').append(submitButton);
+      if (isOrderPayPage) {
+        // Handle order-pay page button
+        const placeOrderButton = $('#place_order');
+
+        if (method === 'paypal' && paypal_version?.v2 !== null) {
+          // Hide the button when PayPal is selected
+          placeOrderButton.hide();
+        } else {
+          // Show the button for other methods or restore it
+          if (!placeOrderButton.is(':visible')) {
+            placeOrderButton.show();
+          }
+        }
+      } else {
+        // Handle checkout page button (existing logic)
+        const placeOrderButton = $('#payment .place-order .button');
+
+        if (method === 'paypal' && paypal_version?.v2 !== null) {
+          placeOrderButton.remove();
+        } else if (!placeOrderButton.length) {
+          $('#payment .place-order').append(submitButton);
+        }
       }
     };
 
     const destroyMethods = (methodsInstance) => {
       Object.values(methodsInstance).forEach((method) => {
-        if (method) {
+        if (typeof method?.destroy === 'function') {
           method.destroy();
         }
       });
@@ -129,6 +148,9 @@ jQuery(document).ready(($) => {
 
       if (selectedMethod === 'paypal') {
         init(selectors);
+      } else {
+        // Handle button restoration when PayPal is deselected
+        checkoutUtils.handleSubmitButton(selectedMethod, selectors);
       }
     };
 
@@ -147,6 +169,9 @@ jQuery(document).ready(($) => {
 
       if (selectedMethod === 'paypal') {
         paypalIntegration.updateMethods(selectors);
+      } else {
+        // Handle button restoration for non-PayPal methods
+        checkoutUtils.handleSubmitButton(selectedMethod, selectors);
       }
       pageLoaded = true;
     };
@@ -168,8 +193,12 @@ jQuery(document).ready(($) => {
         });
 
         // Immediate initialization if paypal is selected
-        if (checkoutUtils.getSelectedMethod() === 'paypal') {
+        const currentMethod = checkoutUtils.getSelectedMethod();
+        if (currentMethod === 'paypal') {
           paypalIntegration.init(selectors);
+        } else {
+          // Ensure button is visible for non-PayPal methods on page load
+          checkoutUtils.handleSubmitButton(currentMethod, selectors);
         }
       }
 

@@ -68,10 +68,7 @@ jQuery(function ($) {
     // Then destroy method instances
     for (var method in methodsInstance) {
       try {
-        if (
-          methodsInstance[method] &&
-          typeof methodsInstance[method].destroy === 'function'
-        ) {
+        if (typeof methodsInstance[method]?.destroy === 'function') {
           methodsInstance[method].destroy();
         }
       } catch (e) {
@@ -222,10 +219,7 @@ jQuery(function ($) {
   function getPaymentData(method) {
     hideErrorDiv(method);
     try {
-      if (
-        methodsInstance[method] &&
-        typeof methodsInstance[method].getPaymentData === 'function'
-      ) {
+      if (typeof methodsInstance[method]?.getPaymentData === 'function') {
         methodsInstance[method].getPaymentData().then(
           function (response) {
             if (isCreditCardSelected() && !isCardTypeActivated(response)) {
@@ -279,7 +273,7 @@ jQuery(function ($) {
 
   function isHiPayMethod() {
     var selected = $('input[name="payment_method"]:checked').val();
-    return selected && selected.indexOf('hipayenterprise_') !== -1;
+    return (selected?.indexOf('hipayenterprise_') ?? -1) !== -1;
   }
 
   function isAddPaymentPage() {
@@ -531,8 +525,7 @@ jQuery(function ($) {
 
   function isCardTypeActivated(result) {
     return (
-      result &&
-      result.payment_product &&
+      result?.payment_product &&
       hipay_config_current_cart.activatedCreditCard.includes(
         result.payment_product
       )
@@ -552,11 +545,7 @@ jQuery(function ($) {
   }
 
   function isPayPalV2() {
-    return (
-      paypal_version &&
-      paypal_version.v2 === '1' &&
-      getSelectedMethod() === 'paypal'
-    );
+    return paypal_version?.v2 === '1' && getSelectedMethod() === 'paypal';
   }
 
   function processCheckout() {
