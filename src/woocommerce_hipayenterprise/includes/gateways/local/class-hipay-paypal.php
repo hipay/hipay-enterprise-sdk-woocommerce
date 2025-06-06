@@ -106,9 +106,12 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
             'buttonLabel' => $paymentProductConfig['buttonLabel'],
             'buttonHeight' => $paymentProductConfig['buttonHeight'],
             'bnpl' => $paymentProductConfig['bnpl'],
-            'amount' => WC()->cart->total,
+            'amount' => $this->isOrderPayPage()
+                ? $this->getOrderPayAmount()
+                : (WC()->cart ? WC()->cart->get_total('') : 0),
             'currency' => get_woocommerce_currency(),
             'locale' => get_locale(),
+            'isOrderPayPage' => $this->isOrderPayPage()
         ];
     }
 
@@ -255,5 +258,22 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
         );
 
         return ob_get_clean();
+    }
+
+    /**
+     * Get amount to be paid in order pay page
+     *
+     * @return float
+     */
+    protected function getOrderPayAmount() {
+        global $wp;
+        if (isset($wp->query_vars['order-pay']) && !empty($wp->query_vars['order-pay'])) {
+            $order_id = absint($wp->query_vars['order-pay']);
+            $order = wc_get_order($order_id);
+            if ($order) {
+                return $order->get_total();
+            }
+        }
+        return 0;
     }
 }
