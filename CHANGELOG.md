@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## UNRELEASE
+
+## 2.7.3
+
+- **Fix** : Updated order status and state upon authentication failure with notification code 109
+- **Fix** : Fixed HiPay payment integration and form handling on WooCommerce order-pay page
+- **Fix** : Fixed "HIPAY_SELECTOR_MUST_BE_EMPTY" error occurring during checkout process
+
 ## 2.7.2
 
 - **Fix** : (OneClick) Prevent saving payment card details without proper authorization.
@@ -8,8 +16,8 @@
 ## 2.7.1
 
 - **Fix** : Improve the API calls to "availablePaymentProduct" to enhance performance
-- **Fix** : Fix `issuer_bank_id` param for IDeal
-- **Fix** : Fix payment methods on checkout when setting HostedPage mode
+- **Fix** : Fixed `issuer_bank_id` param for IDeal
+- **Fix** : Fixed payment methods on checkout when setting HostedPage mode
 
 ## 2.7.0
 
