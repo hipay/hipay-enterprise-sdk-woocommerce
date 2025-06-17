@@ -2,6 +2,8 @@
 
 ## UNRELEASE
 
+## 2.7.3
+
 - **Fix** : Updated order status and state upon authentication failure with notification code 109
 - **Fix** : Fixed HiPay payment integration and form handling on WooCommerce order-pay page
 - **Fix** : Fixed "HIPAY_SELECTOR_MUST_BE_EMPTY" error occurring during checkout process
