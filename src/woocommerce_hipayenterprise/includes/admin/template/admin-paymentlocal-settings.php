@@ -91,6 +91,10 @@
                 <option value="3" <?php echo $configurationPaymentMethod["orderExpirationTime"] == "3" ? 'selected' : '' ?>><?php _e('3 days', "hipayenterprise"); ?></option>
                 <option value="30" <?php echo $configurationPaymentMethod["orderExpirationTime"] == "30" ? 'selected' : '' ?>><?php _e('30 days', "hipayenterprise"); ?></option>
                 <option value="90" <?php echo $configurationPaymentMethod["orderExpirationTime"] == "90" ? 'selected' : '' ?>><?php _e('90 days', "hipayenterprise"); ?></option>
+                <option value="H1" <?php echo $configurationPaymentMethod["orderExpirationTime"] == "H1" ? 'selected' : '' ?>><?php _e('1 hour', "hipayenterprise"); ?></option>
+                <option value="H3" <?php echo $configurationPaymentMethod["orderExpirationTime"] == "H3" ? 'selected' : '' ?>><?php _e('3 hours', "hipayenterprise"); ?></option>
+                <option value="H6" <?php echo $configurationPaymentMethod["orderExpirationTime"] == "H6" ? 'selected' : '' ?>><?php _e('6 hours', "hipayenterprise"); ?></option>
+                <option value="H12" <?php echo $configurationPaymentMethod["orderExpirationTime"] == "H12" ? 'selected' : '' ?>><?php _e('12 hours', "hipayenterprise"); ?></option>
             </select>
         </div>
     </div>
