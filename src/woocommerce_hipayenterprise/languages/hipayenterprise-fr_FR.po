@@ -33,6 +33,14 @@ msgid "%s data"
 msgstr "%s données"
 
 #: includes/admin/template/admin-paymentlocal-settings.php:91
+msgid "0 day"
+msgstr "Jour courant"
+
+#: includes/admin/template/admin-paymentlocal-settings.php:91
+msgid "1 day"
+msgstr "1 jour"
+
+#: includes/admin/template/admin-paymentlocal-settings.php:91
 msgid "3 days"
 msgstr "3 jours"
 

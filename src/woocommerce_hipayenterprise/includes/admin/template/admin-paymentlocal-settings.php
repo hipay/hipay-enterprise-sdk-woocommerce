@@ -88,6 +88,8 @@
         <div class="col-lg-8">
             <select name="woocommerce_hipayenterprise_methods_orderExpirationTime_<?php echo $method; ?>"
                 id="woocommerce_hipayenterprise_methods_orderExpirationTime_<?php echo $method; ?>">
+                <option value="0" <?php echo $configurationPaymentMethod["orderExpirationTime"] == "0" ? 'selected' : '' ?>><?php _e('0 day', "hipayenterprise"); ?></option>
+                <option value="1" <?php echo $configurationPaymentMethod["orderExpirationTime"] == "1" ? 'selected' : '' ?>><?php _e('1 day', "hipayenterprise"); ?></option>
                 <option value="3" <?php echo $configurationPaymentMethod["orderExpirationTime"] == "3" ? 'selected' : '' ?>><?php _e('3 days', "hipayenterprise"); ?></option>
                 <option value="30" <?php echo $configurationPaymentMethod["orderExpirationTime"] == "30" ? 'selected' : '' ?>><?php _e('30 days', "hipayenterprise"); ?></option>
                 <option value="90" <?php echo $configurationPaymentMethod["orderExpirationTime"] == "90" ? 'selected' : '' ?>><?php _e('90 days', "hipayenterprise"); ?></option>
