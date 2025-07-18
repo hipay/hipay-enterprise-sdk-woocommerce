@@ -2,6 +2,9 @@
 
 ## UNRELEASE
 
+## 2.7.4
+- **Fix** : Multibanco SIBS SPG integration -> Order API
+
 ## 2.7.3
 
 - **Fix** : Updated order status and state upon authentication failure with notification code 109
