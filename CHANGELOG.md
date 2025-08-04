@@ -2,6 +2,8 @@
 
 ## UNRELEASE
 
+- **Add** : Enhanced SDK JavaScript security by implementing Subresource Integrity (SRI) with automatic integrity hash fetching
+
 ## 2.7.4
 - **Fix** : Multibanco SIBS SPG integration -> Order API
 
