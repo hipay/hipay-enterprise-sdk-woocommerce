@@ -179,9 +179,8 @@ class Hipay_Multibanco extends Hipay_Gateway_Local_Abstract
             return;
         }
 
-        $version = defined('HIPAY_PLUGIN_VERSION') ? HIPAY_PLUGIN_VERSION : '1.0.0';
-        wp_register_script('hipay-sdk', $this->confHelper->getPaymentGlobal()["sdk_js_url"], array(), $version, true);
-        wp_enqueue_script('hipay-sdk');
+        $version = defined('WC_HIPAYENTERPRISE_VERSION') ? WC_HIPAYENTERPRISE_VERSION : '1.0.0';
+        Hipay_SRI_Helper_Curl::enqueue_sdk_with_sri($this->confHelper->getPaymentGlobal()["sdk_js_url"], 'hipay-sdk', array(), $version, true);
 
         wp_localize_script('hipay-sdk', 'hipayMultibancoData', [
             'reference' => esc_js($data['reference']),
