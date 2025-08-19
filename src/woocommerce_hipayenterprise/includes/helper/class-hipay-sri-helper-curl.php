@@ -30,9 +30,9 @@ class Hipay_SRI_Helper_Curl
     const CACHE_KEY_PREFIX = 'hipay_sri_hash_';
     
     /**
-     * Cache expiration time (1 hour)
+     * Cache expiration time (5 minutes)
      */
-    const CACHE_EXPIRATION = 3600;
+    const CACHE_EXPIRATION = 300;
     
     /**
      * Store integrity hashes for scripts
