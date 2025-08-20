@@ -89,6 +89,7 @@ class Hipay_Autoloader
 	    'Hipay_Token_Helper' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-token-helper.php',
 	    'Hipay_Transactions_Helper' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-transactions.php',
 	    'Hipay_Upgrade_Helper' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-upgrade-helper.php',
+	    'Hipay_SRI_Helper_Curl' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-sri-helper-curl.php',
     );
 
 	public static $localMethodClasses;
