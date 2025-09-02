@@ -1,4 +1,4 @@
-image: $REGISTRY_CI/gitlab-ci-base:buster
+image: $REGISTRY_CI/gitlab-ci-base:bookworm
 
 stages:
   - build-test
@@ -125,8 +125,6 @@ build-test:
 
 package:
   stage: package
-  before_script:
-    - apt-get install -y zip sshpass
   script:
     - echo "Package module $CI_COMMIT_REF_SLUG"
     - cd src/woocommerce_hipayenterprise

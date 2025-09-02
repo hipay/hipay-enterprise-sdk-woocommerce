@@ -115,9 +115,9 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
         $this->addActions();
 
         if (!is_wc_endpoint_url('order-received')) {
-            wp_enqueue_script(
-                'hipay-js-hosted-fields-sdk',
+            Hipay_SRI_Helper_Curl::enqueue_sdk_with_sri(
                 $this->confHelper->getPaymentGlobal()["sdk_js_url"],
+                'hipay-js-hosted-fields-sdk',
                 array(),
                 'all',
                 true

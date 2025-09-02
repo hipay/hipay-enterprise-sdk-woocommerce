@@ -157,9 +157,8 @@ class Hipay_Sisal extends Hipay_Gateway_Local_Abstract
             return;
         }
 
-        $version = defined('HIPAY_PLUGIN_VERSION') ? HIPAY_PLUGIN_VERSION : '1.0.0';
-        wp_register_script('hipay-sdk', $data['sdkJsUrl'], array('jquery'), $version, true);
-        wp_enqueue_script('hipay-sdk');
+        $version = defined('WC_HIPAYENTERPRISE_VERSION') ? WC_HIPAYENTERPRISE_VERSION : '1.0.0';
+        Hipay_SRI_Helper_Curl::enqueue_sdk_with_sri($data['sdkJsUrl'], 'hipay-sdk', array('jquery'), $version, true);
 
         wp_localize_script('hipay-sdk', 'hipaySisalData', [
             'reference' => esc_js($data['reference']),

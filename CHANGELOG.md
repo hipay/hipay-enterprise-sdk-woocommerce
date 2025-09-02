@@ -2,6 +2,11 @@
 
 ## UNRELEASE
 
+## 2.8.0
+
+- **Add** : Enhanced SDK JavaScript security by implementing Subresource Integrity (SRI) with automatic integrity hash fetching
+- **Fix** : Multibanco SIBS SPG integration -> Order API
+
 ## 2.7.3
 
 - **Fix** : Updated order status and state upon authentication failure with notification code 109
