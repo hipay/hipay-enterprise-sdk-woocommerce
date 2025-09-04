@@ -306,6 +306,9 @@ jQuery(function ($) {
       configHostedFields = getCardConfig();
     } else {
       configHostedFields['template'] = 'auto';
+      configHostedFields['request'] = {
+        amount: hipay_hosted_fields_data.amount
+      }
     }
 
     configHostedFields['selector'] = 'hipayHF-container-' + method;
