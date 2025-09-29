@@ -286,7 +286,7 @@ class Hipay_Helper
      */
     public static function getLanguage()
     {
-        return substr(get_locale(), 0, 2);
+        return apply_filters('hipay_frontend_lang', substr(get_locale(), 0, 2));
     }
 
     /**

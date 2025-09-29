@@ -92,7 +92,7 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
         return [
             'apiUsernameTokenJs' => $this->username,
             'apiPasswordTokenJs' => $this->password,
-            'lang' => substr(get_locale(), 0, 2),
+            'lang' => apply_filters('hipay_frontend_lang', substr(get_locale(), 0, 2)),
             'environment' => $this->sandbox ? 'stage' : 'production',
             'fontFamily' => $this->confHelper->getHostedFieldsStyle()['fontFamily'],
             'color' => $this->confHelper->getHostedFieldsStyle()['color'],
@@ -110,7 +110,7 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
                 ? $this->getOrderPayAmount()
                 : (WC()->cart ? WC()->cart->get_total('') : 0),
             'currency' => get_woocommerce_currency(),
-            'locale' => get_locale(),
+            'locale' => apply_filters('hipay_backend_locale', get_locale()),
             'isOrderPayPage' => $this->isOrderPayPage()
         ];
     }

@@ -141,7 +141,7 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
         $hipay_config_data = array(
             "apiUsernameTokenJs" => $this->username,
             "apiPasswordTokenJs" => $this->password,
-            "lang" => substr(get_locale(), 0, 2),
+            "lang" => apply_filters('hipay_frontend_lang', substr(get_locale(), 0, 2)),
             "environment" => $this->sandbox ? "stage" : "production",
             "fontFamily" => $this->confHelper->getHostedFieldsStyle()["fontFamily"],
             "color" => $this->confHelper->getHostedFieldsStyle()["color"],
