@@ -3,6 +3,7 @@
 ## UNRELEASE
 
 - **Add** : Added Oney widget checkout
+- **Add** : Added WordPress filters for language detection to improve multilingual plugin compatibility (Weglot, WPML, etc.)
 
 ## 2.8.0
 
