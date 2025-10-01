@@ -5,8 +5,9 @@
         </label>
         <div class="col-lg-8">
             <?php
-            if (isset($configurationPaymentMethod["displayName"][substr(get_locale(), 0, 2)])) {
-                $displayName = $configurationPaymentMethod["displayName"][substr(get_locale(), 0, 2)];
+            $current_lang = substr(apply_filters('hipay_locale', get_locale()), 0, 2);
+            if (isset($configurationPaymentMethod["displayName"][$current_lang])) {
+                $displayName = $configurationPaymentMethod["displayName"][$current_lang];
             } else {
                 $displayName = $configurationPaymentMethod["displayName"]['en'];
             }

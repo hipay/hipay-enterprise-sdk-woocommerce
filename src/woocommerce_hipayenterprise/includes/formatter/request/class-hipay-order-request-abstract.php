@@ -100,7 +100,7 @@ abstract class Hipay_Order_Request_Abstract extends Hipay_Api_Formatter_Abstact
         $orderRequest->lastname = $this->order->get_billing_last_name();
         $orderRequest->email = $this->order->get_billing_email();
         $orderRequest->ipaddr = $this->order->get_customer_ip_address();
-        $orderRequest->language = get_locale();
+        $orderRequest->language = apply_filters('hipay_locale', get_locale());
         $orderRequest->http_user_agent = $_SERVER ['HTTP_USER_AGENT'];
         $orderRequest->basket = $this->params["basket"];
         $orderRequest->delivery_information = $this->params["delivery_information"];
