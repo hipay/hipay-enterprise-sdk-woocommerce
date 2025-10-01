@@ -187,7 +187,7 @@ class Hipay_Multibanco extends Hipay_Gateway_Local_Abstract
             'entity' => esc_js($data['entity']),
             'amount' => esc_js($data['amount']),
             'expirationDate' => esc_js($data['expirationDate']),
-            'locale' => apply_filters('hipay_frontend_lang', substr(get_locale(), 0, 2)),
+            'locale' => substr(apply_filters('hipay_locale', get_locale()), 0, 2),
             'security' => wp_create_nonce('hipay_multibanco_data')
         ]);
 

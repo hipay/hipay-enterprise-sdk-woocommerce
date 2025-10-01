@@ -164,7 +164,7 @@ class Hipay_Sisal extends Hipay_Gateway_Local_Abstract
             'reference' => esc_js($data['reference']),
             'barCode' => esc_js($data['barCode']),
             'barCodeImg' => esc_js($data['barCodeImg']),
-            'locale' => apply_filters('hipay_frontend_lang', substr(get_locale(), 0, 2)),
+            'locale' => substr(apply_filters('hipay_locale', get_locale()), 0, 2),
             'security' => wp_create_nonce('hipay_sisal_data')
         ]);
 
