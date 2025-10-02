@@ -13,7 +13,7 @@ variables:
 
 include:
   - project: 'pi-ecommerce/cms/cms-template-ci'
-    ref: '1.0.0'
+    ref: 'feature/link-jira-version'
     file: 'release.yaml'
 
 ########################
