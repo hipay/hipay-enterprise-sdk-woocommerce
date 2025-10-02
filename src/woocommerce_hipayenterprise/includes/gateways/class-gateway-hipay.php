@@ -426,6 +426,14 @@ if (!class_exists('WC_Gateway_Hipay')) {
                     "card_cvc_invalid_error" => __("CVC is invalid.", 'hipayenterprise'),
                     )
                 );
+
+                wp_localize_script(
+                    'hipay-js-front',
+                    'hipay_hosted_fields_data',
+                    array(
+                    "amount" => WC()->cart->get_totals()["total"],
+                    )
+                );
             }
         }
 

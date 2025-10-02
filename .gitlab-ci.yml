@@ -13,7 +13,7 @@ variables:
 
 include:
   - project: 'pi-ecommerce/cms/cms-template-ci'
-    ref: '1.0.0'
+    ref: 'feature/link-jira-version'
     file: 'release.yaml'
 
 ########################
@@ -94,6 +94,7 @@ build-test:
     name: gcr.io/kaniko-project/executor:v1.6.0-debug
   script:
     - /kaniko/executor
+      --force
       --cache=true
       --context "dir://${CI_PROJECT_DIR}"
       --dockerfile "./bin/docker/images/woocommerce/Dockerfile"
@@ -154,6 +155,7 @@ build:
       when: manual
   script:
     - /kaniko/executor
+      --force
       --cache=true
       --context "dir://${CI_PROJECT_DIR}"
       --dockerfile "./bin/docker/images/woocommerce/Dockerfile"
