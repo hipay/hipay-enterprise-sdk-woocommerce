@@ -32,6 +32,13 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
     protected $paymentProduct = 'paypal';
 
     /**
+     * Flag to track if PayPal scripts have been localized.
+     *
+     * @var bool
+     */
+    private $scriptsLocalized = false;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -43,21 +50,17 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
 
         parent::__construct();
 
-        $paymentProductConfig = $this->confHelper->getLocalPayment($this->paymentProduct);
-
         if ($this->isPaypalV2()) {
-            $this->enqueuePaypalScripts($paymentProductConfig);
+            $this->enqueuePaypalScript();
         }
     }
 
     /**
-     * Enqueue PayPal scripts and localize required data.
-     *
-     * @param array $paymentProductConfig
+     * Enqueue PayPal script (without localization).
      */
-    protected function enqueuePaypalScripts(array $paymentProductConfig)
+    protected function enqueuePaypalScript()
     {
-        if (!is_admin()) { // Check if not in the admin area
+        if (!is_admin()) {
             wp_enqueue_script(
                 'hipay-js-front-paypal',
                 plugins_url('/assets/js/frontend/local-payment-paypal.js', WC_HIPAYENTERPRISE_BASE_FILE),
@@ -65,20 +68,34 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
                 'all',
                 true
             );
-
-            wp_localize_script(
-                'hipay-js-front-paypal',
-                'hipay_config_paypal',
-                $this->getPaypalScriptData($paymentProductConfig)
-            );
-
-            wp_localize_script(
-                'hipay-js-front-paypal',
-                'paypal_version',
-                ['v2' => $this->isPaypalV2()]
-            );
-
         }
+    }
+
+    /**
+     * Localize PayPal scripts with current cart/order data.
+     * Called from payment_fields() to ensure cart is loaded.
+     *
+     * @param array $paymentProductConfig
+     */
+    protected function localizePaypalScripts(array $paymentProductConfig)
+    {
+        if ($this->scriptsLocalized || is_admin()) {
+            return;
+        }
+
+        wp_localize_script(
+            'hipay-js-front-paypal',
+            'hipay_config_paypal',
+            $this->getPaypalScriptData($paymentProductConfig)
+        );
+
+        wp_localize_script(
+            'hipay-js-front-paypal',
+            'paypal_version',
+            ['v2' => $this->isPaypalV2()]
+        );
+
+        $this->scriptsLocalized = true;
     }
 
     /**
@@ -120,6 +137,11 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
      */
     public function payment_fields()
     {
+        if ($this->isPaypalV2()) {
+            $paymentProductConfig = $this->confHelper->getLocalPayment($this->paymentProduct);
+            $this->localizePaypalScripts($paymentProductConfig);
+        }
+
         $this->process_template(
             $this->getLocalPaymentMethodTemplate(),
             'frontend',

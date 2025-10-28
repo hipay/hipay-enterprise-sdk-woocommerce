@@ -355,10 +355,31 @@ class Hipay_Api_Request_Handler
     private function iniParamsWithConfiguration(&$params)
     {
         if ($this->plugin->confHelper->getPaymentGlobal()["activate_basket"]) {
-            $params["basket"] = $this->cartFormatter->generate();
-            if (count(WC()->cart->calculate_shipping()) > 0) {
-                $params["delivery_information"] = $this->deliveryFormatter->generate();
+            // Get order for blocks checkout
+            $order = null;
+            if (isset($params["order_id"])) {
+                $order = wc_get_order($params["order_id"]);
             }
+
+            // Pass order to cart formatter for blocks checkout support
+            $params["basket"] = $this->cartFormatter->generate(array(), "", null, null, $order);
+
+            $hasCartShipping = WC()->cart && count(WC()->cart->calculate_shipping()) > 0;
+            $hasOrderShipping = $order && $order->get_shipping_methods();
+
+            $paymentsRequiringDelivery = ['3xcb', '3xcb-no-fees', '4xcb', '4xcb-no-fees', 'alma-3x', 'alma-4x'];
+            $requiresDeliveryInfo = isset($params["paymentProduct"]) && in_array($params["paymentProduct"], $paymentsRequiringDelivery);
+
+            $paymentsNotRequiringDelivery = ['paypal'];
+            $paymentAcceptsDelivery = !isset($params["paymentProduct"]) || !in_array($params["paymentProduct"], $paymentsNotRequiringDelivery);
+
+            if ($requiresDeliveryInfo || (($hasCartShipping || $hasOrderShipping) && $paymentAcceptsDelivery)) {
+                $params["delivery_information"] = $this->deliveryFormatter->generate($order);
+            }
+        }
+
+        if (isset($params["paymentProduct"]) && $params["paymentProduct"] === 'paypal' && isset($params["delivery_information"])) {
+            unset($params["delivery_information"]);
         }
 
         $params["authentication_indicator"] = $this->plugin->confHelper->getPaymentGlobal()["activate_3d_secure"];

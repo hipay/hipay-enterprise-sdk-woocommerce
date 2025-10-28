@@ -79,6 +79,28 @@ class WC_HipayEnterprise
 
         // Init Plugin Update handling
         new Hipay_Admin_Plugin_Update_Handler($currentPluginVersion, WC_HIPAYENTERPRISE_PLUGIN_NAME);
+
+        // Initialize WooCommerce Blocks integration
+        $this->initBlocksIntegration();
+    }
+
+    /**
+     * Initialize WooCommerce Blocks integration
+     */
+    public function initBlocksIntegration()
+    {
+        try {
+            // Check if WooCommerce Blocks is available
+            if (Hipay_Blocks_Integration::is_blocks_available()) {
+                Hipay_Blocks_Integration::get_instance();
+            }
+        } catch (Exception $e) {
+            // Silently fail to prevent breaking the site
+            // Blocks integration is optional, plugin will work without it
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('HiPay: Failed to initialize blocks integration - ' . $e->getMessage());
+            }
+        }
     }
 
     /**

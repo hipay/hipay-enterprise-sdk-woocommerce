@@ -470,7 +470,7 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
     /**
      * Get PayPal options (now using unified caching)
      */
-    protected function getCachedPaypalOptions()
+    public function getCachedPaypalOptions()
     {
         $products = $this->getCachedPaymentProducts('paypal');
 

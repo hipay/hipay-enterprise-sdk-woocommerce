@@ -142,7 +142,25 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
                 "phone" => json_decode(Hipay_Helper::getPostData($this->paymentProduct.'-phone'))
             );
 
-            if (is_array($method["additionalFields"]["formFields"])) {
+            // Add provider_data if present (for PayPal v2 blocks integration)
+            $providerData = Hipay_Helper::getPostData('provider_data');
+
+            // If not in POST, try transient (for blocks checkout)
+            if (!$providerData) {
+                $transient_key = 'hipay_provider_data_' . WC()->session->get_customer_id();
+                $providerData = get_transient($transient_key);
+                if ($providerData) {
+                    // Delete transient after use
+                    delete_transient($transient_key);
+                }
+            }
+
+            if ($providerData) {
+                $params['provider_data'] = $providerData;
+            }
+
+            // Add additional form fields if they exist
+            if (isset($method["additionalFields"]["formFields"]) && is_array($method["additionalFields"]["formFields"])) {
                 foreach ($method["additionalFields"]["formFields"] as $name => $field) {
                     $params[$name] = Hipay_Helper::getPostData($this->paymentProduct . '-' . $name);
                 }
