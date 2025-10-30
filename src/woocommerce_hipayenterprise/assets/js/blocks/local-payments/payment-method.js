@@ -1,7 +1,10 @@
 import { useState, useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
+import { useSelect } from '@wordpress/data';
+import { CART_STORE_KEY } from '@woocommerce/block-data';
 import { usePaymentMethodRefresh } from '../utils/payment-method-refresh';
 import PayPalButton from './paypal-button';
+import SDKWidget from './sdk-widget';
 
 const LocalPaymentComponent = ({
     eventRegistration,
@@ -20,6 +23,12 @@ const LocalPaymentComponent = ({
 
     const config = settings.config || {};
     const additionalFields = config.additionalFields || {};
+    
+    // Get cart totals from the store for PayPal
+    const cartTotals = useSelect((select) => {
+        const store = select(CART_STORE_KEY);
+        return store.getCartTotals();
+    }, []);
 
     // Handle payment processing
     useEffect(() => {
@@ -186,6 +195,9 @@ const LocalPaymentComponent = ({
         }
     };
 
+    // Determine if this payment method needs SDK widget rendering
+    const needsSDKWidget = config.needsSDKWidget || false;
+    
     // Handle PayPal v2
     if (config.isPayPalV2) {
         return (
@@ -198,12 +210,40 @@ const LocalPaymentComponent = ({
                     config={config}
                     billing={billing}
                     shippingData={shippingData}
+                    cartTotals={cartTotals}
                     onPaymentDataChange={setPaypalPaymentData}
                 />
             </div>
         );
     }
+    
+    // Handle other local payments that need SDK widget rendering
+    // (e.g., Multibanco, Sisal - methods that render UI via HiPay SDK)
+    if (needsSDKWidget) {
+        return (
+            <div className="hipay-local-payment-block hipay-sdk-widget">
+                {settings.description && (
+                    <p className="hipay-description">{settings.description}</p>
+                )}
 
+                <SDKWidget
+                    config={config}
+                    paymentProduct={config.paymentProduct}
+                    cartTotals={cartTotals}
+                />
+                
+                {additionalFields.formFields && (
+                    <div className="hipay-form-fields">
+                        {Object.entries(additionalFields.formFields).map(([fieldName, fieldConfig]) =>
+                            renderField(fieldName, fieldConfig)
+                        )}
+                    </div>
+                )}
+            </div>
+        );
+    }
+
+    // Default: Simple form-based local payments (iDEAL, Bancontact, etc.)
     return (
         <div className="hipay-local-payment-block">
             {settings.description && (

@@ -38,4 +38,17 @@ final class Hipay_Bnpp3x_Block extends Hipay_Local_Payment_Block_Abstract
      * @var string
      */
     protected $paymentProduct = 'bnpp-3x';
+    
+    /**
+     * Override to add SDK widget flag for BNPP methods
+     */
+    protected function get_payment_config()
+    {
+        $config = parent::get_payment_config();
+        
+        // BNPP 3x needs SDK widget to render the payment selector
+        $config['needsSDKWidget'] = true;
+        
+        return $config;
+    }
 }

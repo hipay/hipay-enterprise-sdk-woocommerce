@@ -38,4 +38,17 @@ final class Hipay_Oney_3xcb_Block extends Hipay_Local_Payment_Block_Abstract
      * @var string
      */
     protected $paymentProduct = '3xcb';
+    
+    /**
+     * Override to add SDK widget flag for Oney methods
+     */
+    protected function get_payment_config()
+    {
+        $config = parent::get_payment_config();
+        
+        // Oney 3x needs SDK widget to render the payment selector
+        $config['needsSDKWidget'] = true;
+        
+        return $config;
+    }
 }

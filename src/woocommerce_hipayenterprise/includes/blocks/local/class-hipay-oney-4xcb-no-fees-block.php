@@ -38,4 +38,17 @@ final class Hipay_Oney_4xcb_No_Fees_Block extends Hipay_Local_Payment_Block_Abst
      * @var string
      */
     protected $paymentProduct = '4xcb-no-fees';
+    
+    /**
+     * Override to add SDK widget flag for Oney methods
+     */
+    protected function get_payment_config()
+    {
+        $config = parent::get_payment_config();
+        
+        // Oney 4x no fees needs SDK widget to render the payment selector
+        $config['needsSDKWidget'] = true;
+        
+        return $config;
+    }
 }

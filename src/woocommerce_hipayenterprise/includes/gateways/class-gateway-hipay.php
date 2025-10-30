@@ -392,9 +392,11 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
         public function localize_scripts()
         {
+            // Only localize for classic checkout, not blocks
             if (is_page() &&
             (is_checkout() || is_add_payment_method_page()) &&
-            !is_order_received_page()) {
+            !is_order_received_page() &&
+            !$this->is_blocks_checkout()) {
                 wp_enqueue_style(
                     'hipayenterprise-style',
                     plugins_url('/assets/css/frontend/hipay.css', WC_HIPAYENTERPRISE_BASE_FILE),

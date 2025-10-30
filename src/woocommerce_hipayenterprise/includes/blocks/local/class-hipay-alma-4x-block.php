@@ -38,4 +38,17 @@ final class Hipay_Alma_4x_Block extends Hipay_Local_Payment_Block_Abstract
      * @var string
      */
     protected $paymentProduct = 'alma_4x';
+    
+    /**
+     * Override to add SDK widget flag for Alma methods
+     */
+    protected function get_payment_config()
+    {
+        $config = parent::get_payment_config();
+        
+        // Alma 4x needs SDK widget to render the payment selector
+        $config['needsSDKWidget'] = true;
+        
+        return $config;
+    }
 }

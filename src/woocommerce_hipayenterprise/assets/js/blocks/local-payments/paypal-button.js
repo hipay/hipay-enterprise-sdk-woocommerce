@@ -7,12 +7,15 @@ import { CART_STORE_KEY, CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
  * PayPal v2 Button Component
  * Renders and manages the PayPal button integration for blocks checkout
  */
-const PayPalButton = ({ config, billing, shippingData, onPaymentDataChange }) => {
-    // Get cart totals from the store
-    const cartTotals = useSelect((select) => {
+const PayPalButton = ({ config, billing, shippingData, cartTotals: cartTotalsProp, onPaymentDataChange }) => {
+    // Get cart totals from the store as fallback
+    const cartTotalsFromStore = useSelect((select) => {
         const store = select(CART_STORE_KEY);
         return store.getCartTotals();
     }, []);
+    
+    // Use prop if available, otherwise fall back to store
+    const cartTotals = cartTotalsProp || cartTotalsFromStore;
 
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -177,18 +180,26 @@ const PayPalButton = ({ config, billing, shippingData, onPaymentDataChange }) =>
                 // Get amount from cart totals
                 // WooCommerce blocks stores total_price in cents (string format)
                 let amount = 0;
+                
+                console.log('[HiPay PayPal] Cart totals:', cartTotals);
+                
                 if (cartTotals?.total_price) {
                     // total_price is in cents as a string, convert to decimal
                     amount = (parseFloat(cartTotals.total_price) / 100).toFixed(2);
+                    console.log('[HiPay PayPal] Amount from total_price:', amount);
                 } else if (cartTotals?.total_items) {
                     // Fallback to total_items if available (also in cents)
                     amount = (parseFloat(cartTotals.total_items) / 100).toFixed(2);
+                    console.log('[HiPay PayPal] Amount from total_items:', amount);
                 }
 
                 // Ensure minimum amount
                 if (parseFloat(amount) < 0.01) {
+                    console.log('[HiPay PayPal] Amount below minimum, setting to 0.01');
                     amount = '0.01';
                 }
+                
+                console.log('[HiPay PayPal] Final amount:', amount, 'Currency:', cartTotals?.currency_code);
 
                 const currency = cartTotals?.currency_code || 'EUR';
 
