@@ -11,12 +11,6 @@ ENV APACHE_RUN_USER=www-data \
     APACHE_LOG_DIR=/var/log/apache2
 
 RUN apt-get update \
-<<<<<<< HEAD
-    && apt-get install -y default-mysql-client less python3 \
-    && curl -sS https://getcomposer.org/installer | php -- --filename=composer -- --install-dir=/usr/local/bin \
-    &&  rm -rf /var/lib/apt/lists/* \
-    && pecl install xdebug
-=======
     && apt-get install -y python3 default-mysql-client msmtp \
     && curl -sS https://getcomposer.org/installer | php -- --filename=composer -- --install-dir=/usr/local/bin \
     &&  rm -rf /var/lib/apt/lists/* \
@@ -24,7 +18,6 @@ RUN apt-get update \
     && echo "host smtp\nport 1025\ntls off\nfrom pi-ecommerce@hipay.com" > /etc/msmtprc \
 
 RUN pecl install xdebug
->>>>>>> origin/feature/UPDATE-WOOCOMMERCE
 
 ##########################################
 ####            ENTRYPOINT      ##########
