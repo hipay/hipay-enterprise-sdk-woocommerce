@@ -30,24 +30,63 @@ const PayPalButton = ({ config, billing, shippingData, onPaymentDataChange }) =>
 
     // Hide the WooCommerce Blocks Place Order button for PayPal v2
     useEffect(() => {
-        // Target only the blocks checkout button
-        const placeOrderButton = document.querySelector('.wc-block-components-checkout-place-order-button');
+        let placeOrderButton = null;
+        let checkInterval = null;
         
-        if (placeOrderButton) {
-            // Store original display value to restore later
-            const originalDisplay = placeOrderButton.style.display || '';
-            placeOrderButton.dataset.originalDisplay = originalDisplay;
+        // Function to hide the button
+        const hideButton = (button) => {
+            if (button && button.style.display !== 'none') {
+                // Store original display value to restore later
+                const originalDisplay = button.style.display || '';
+                button.dataset.originalDisplay = originalDisplay;
+                
+                // Hide the button
+                button.style.display = 'none';
+            }
+        };
+        
+        // Function to check and hide button (handles async rendering)
+        const checkAndHideButton = () => {
+            placeOrderButton = document.querySelector('.wc-block-components-checkout-place-order-button');
             
-            // Hide the button
-            placeOrderButton.style.display = 'none';
-            
-            // Cleanup: restore button when component unmounts (user switches payment method)
-            return () => {
-                if (placeOrderButton) {
-                    placeOrderButton.style.display = placeOrderButton.dataset.originalDisplay || '';
+            if (placeOrderButton) {
+                hideButton(placeOrderButton);
+                // Stop checking once found and hidden
+                if (checkInterval) {
+                    clearInterval(checkInterval);
+                    checkInterval = null;
                 }
-            };
+            }
+        };
+        
+        // Initial check
+        checkAndHideButton();
+        
+        // If button not found, keep checking (button might render after this component)
+        if (!placeOrderButton) {
+            checkInterval = setInterval(checkAndHideButton, 100);
+            
+            // Stop checking after 5 seconds to avoid infinite loop
+            setTimeout(() => {
+                if (checkInterval) {
+                    clearInterval(checkInterval);
+                    checkInterval = null;
+                }
+            }, 5000);
         }
+        
+        // Cleanup: restore button when component unmounts (user switches payment method)
+        return () => {
+            if (checkInterval) {
+                clearInterval(checkInterval);
+            }
+            
+            // Restore button
+            const button = document.querySelector('.wc-block-components-checkout-place-order-button');
+            if (button) {
+                button.style.display = button.dataset.originalDisplay || '';
+            }
+        };
     }, []);
 
     // Clean up on unmount

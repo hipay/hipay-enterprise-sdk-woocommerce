@@ -50,10 +50,10 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
 
         parent::__construct();
 
-        $paymentProductConfig = $this->confHelper->getLocalPayment($this->paymentProduct);
-
+        // Only enqueue the script here - localization happens in payment_fields()
+        // when cart is fully loaded
         if ($this->isPaypalV2()) {
-            $this->localizePaypalScripts($paymentProductConfig);
+            $this->enqueuePaypalScript();
         }
     }
 
@@ -108,6 +108,24 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
      */
     protected function getPaypalScriptData(array $paymentProductConfig)
     {
+        // Get cart total - ensure it's a clean numeric value
+        $amount = 0;
+        if ($this->isOrderPayPage()) {
+            $amount = $this->getOrderPayAmount();
+        } elseif (WC()->cart) {
+            // Get total as float, remove any formatting
+            $total = WC()->cart->get_total('');
+            $amount = is_numeric($total) ? floatval($total) : 0;
+        }
+        
+        // Ensure minimum amount of 0.01
+        if ($amount < 0.01) {
+            $amount = 0.01;
+        }
+        
+        // Format to 2 decimal places
+        $amount = number_format($amount, 2, '.', '');
+
         return [
             'apiUsernameTokenJs' => $this->username,
             'apiPasswordTokenJs' => $this->password,
@@ -125,9 +143,7 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
             'buttonLabel' => $paymentProductConfig['buttonLabel'],
             'buttonHeight' => $paymentProductConfig['buttonHeight'],
             'bnpl' => $paymentProductConfig['bnpl'],
-            'amount' => $this->isOrderPayPage()
-                ? $this->getOrderPayAmount()
-                : (WC()->cart ? WC()->cart->get_total('') : 0),
+            'amount' => $amount,
             'currency' => get_woocommerce_currency(),
             'locale' => apply_filters('hipay_locale', get_locale()),
             'isOrderPayPage' => $this->isOrderPayPage()
