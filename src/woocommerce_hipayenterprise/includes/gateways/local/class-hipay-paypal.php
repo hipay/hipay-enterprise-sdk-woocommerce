@@ -49,28 +49,47 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
         $this->method_description = __('Paypal', 'hipayenterprise');
 
         parent::__construct();
-
-        // Only enqueue the script here - localization happens in payment_fields()
-        // when cart is fully loaded
-        if ($this->isPaypalV2()) {
-            $this->enqueuePaypalScript();
-        }
+        
+        // Note: Script enqueuing and localization moved to payment_fields()
+        // This ensures proper checkout type detection and cart availability
     }
 
     /**
-     * Enqueue PayPal script (without localization).
+     * Enqueue PayPal script for classic checkout only (not blocks).
      */
     protected function enqueuePaypalScript()
     {
         if (!is_admin()) {
-            wp_enqueue_script(
-                'hipay-js-front-paypal',
-                plugins_url('/assets/js/frontend/local-payment-paypal.js', WC_HIPAYENTERPRISE_BASE_FILE),
-                [],
-                'all',
-                true
-            );
+            // Only enqueue classic script if NOT using blocks checkout
+            // Blocks checkout uses its own React component (paypal-button.js)
+            if (!$this->is_blocks_checkout()) {
+                wp_enqueue_script(
+                    'hipay-js-front-paypal',
+                    plugins_url('/assets/js/frontend/local-payment-paypal.js', WC_HIPAYENTERPRISE_BASE_FILE),
+                    [],
+                    'all',
+                    true
+                );
+            }
         }
+    }
+    
+    /**
+     * Check if current page is using blocks checkout
+     * 
+     * @return bool
+     */
+    protected function is_blocks_checkout()
+    {
+        // Check if we're on a checkout page with blocks
+        if (function_exists('has_block') && is_checkout()) {
+            global $post;
+            if ($post && has_block('woocommerce/checkout', $post)) {
+                return true;
+            }
+        }
+        
+        return false;
     }
 
     /**
@@ -156,6 +175,10 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
     public function payment_fields()
     {
         if ($this->isPaypalV2()) {
+            // Enqueue script first (only for classic checkout, not blocks)
+            $this->enqueuePaypalScript();
+            
+            // Then localize with cart data
             $paymentProductConfig = $this->confHelper->getLocalPayment($this->paymentProduct);
             $this->localizePaypalScripts($paymentProductConfig);
         }
