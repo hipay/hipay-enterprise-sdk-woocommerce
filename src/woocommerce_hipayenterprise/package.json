@@ -5,7 +5,8 @@
   "scripts": {
     "build": "webpack --mode production",
     "dev": "webpack --mode development --watch",
-    "start": "webpack --mode development"
+    "start": "webpack --mode development",
+    "build:prod": "npm install && npm run build && echo '\n✓ Build complete! Built files are ready for distribution.'"
   },
   "keywords": [
     "woocommerce",
