@@ -50,8 +50,10 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
 
         parent::__construct();
 
+        $paymentProductConfig = $this->confHelper->getLocalPayment($this->paymentProduct);
+
         if ($this->isPaypalV2()) {
-            $this->enqueuePaypalScript();
+            $this->localizePaypalScripts($paymentProductConfig);
         }
     }
 

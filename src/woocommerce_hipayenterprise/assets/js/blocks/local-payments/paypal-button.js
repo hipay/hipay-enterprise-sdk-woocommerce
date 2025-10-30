@@ -28,6 +28,28 @@ const PayPalButton = ({ config, billing, shippingData, onPaymentDataChange }) =>
         onPaymentDataChangeRef.current = onPaymentDataChange;
     }, [onPaymentDataChange]);
 
+    // Hide the WooCommerce Blocks Place Order button for PayPal v2
+    useEffect(() => {
+        // Target only the blocks checkout button
+        const placeOrderButton = document.querySelector('.wc-block-components-checkout-place-order-button');
+        
+        if (placeOrderButton) {
+            // Store original display value to restore later
+            const originalDisplay = placeOrderButton.style.display || '';
+            placeOrderButton.dataset.originalDisplay = originalDisplay;
+            
+            // Hide the button
+            placeOrderButton.style.display = 'none';
+            
+            // Cleanup: restore button when component unmounts (user switches payment method)
+            return () => {
+                if (placeOrderButton) {
+                    placeOrderButton.style.display = placeOrderButton.dataset.originalDisplay || '';
+                }
+            };
+        }
+    }, []);
+
     // Clean up on unmount
     useEffect(() => {
         return () => {
