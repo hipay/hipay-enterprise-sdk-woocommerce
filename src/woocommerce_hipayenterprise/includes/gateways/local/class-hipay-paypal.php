@@ -106,9 +106,7 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
             'buttonLabel' => $paymentProductConfig['buttonLabel'],
             'buttonHeight' => $paymentProductConfig['buttonHeight'],
             'bnpl' => $paymentProductConfig['bnpl'],
-            'amount' => $this->isOrderPayPage()
-                ? $this->getOrderPayAmount()
-                : (WC()->cart ? WC()->cart->get_total('') : 0),
+            'amount' => $this->getCartAmount(),
             'currency' => get_woocommerce_currency(),
             'locale' => apply_filters('hipay_locale', get_locale()),
             'isOrderPayPage' => $this->isOrderPayPage()
@@ -276,4 +274,35 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
         }
         return 0;
     }
+
+    /**
+     * Get cart amount with proper validation and fallback handling
+     *
+     * @return float
+     */
+    protected function getCartAmount() {
+        if ($this->isOrderPayPage()) {
+            return $this->getOrderPayAmount();
+        }
+
+        if (!WC()->cart) {
+            return 0.01;
+        }
+
+        // Calculate cart totals if not already calculated
+        if (!WC()->cart->totals_are_calculated) {
+            WC()->cart->calculate_totals();
+        }
+
+        // Get cart total
+        $total = WC()->cart->get_total('edit');
+
+        if (is_numeric($total) && $total > 0) {
+            return floatval($total);
+        }
+
+        // Fallback: minimum amount for PayPal
+        return 0.01;
+    }
+
 }

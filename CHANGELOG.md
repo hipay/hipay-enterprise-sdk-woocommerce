@@ -1,6 +1,7 @@
 # CHANGELOG
 
 ## UNRELEASE
+- **Fix** : MISSING_OPTION request.currency for paypal
 
 ## 2.9.0
 
