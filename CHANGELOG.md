@@ -1,7 +1,7 @@
 # CHANGELOG
 
 ## UNRELEASE
-- **Fix** : MISSING_OPTION request.currency for paypal
+- **Fix** : validate Paypal amount
 
 ## 2.9.0
 

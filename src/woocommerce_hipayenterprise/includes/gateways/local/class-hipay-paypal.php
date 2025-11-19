@@ -25,6 +25,13 @@ if (!defined('ABSPATH')) {
 class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
 {
     /**
+     * Minimum amount for PayPal transactions.
+     *
+     * @var float
+     */
+    const MINIMUM_AMOUNT = 0.01;
+
+    /**
      * Payment product code.
      *
      * @var string
@@ -286,7 +293,7 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
         }
 
         if (!WC()->cart) {
-            return 0.01;
+            return self::MINIMUM_AMOUNT;
         }
 
         // Calculate cart totals if not already calculated
@@ -302,7 +309,7 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
         }
 
         // Fallback: minimum amount for PayPal
-        return 0.01;
+        return self::MINIMUM_AMOUNT;
     }
 
 }
