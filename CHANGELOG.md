@@ -1,6 +1,9 @@
 # CHANGELOG
 
 ## UNRELEASE
+
+## 2.9.1
+
 - **Fix** : validate Paypal amount
 
 ## 2.9.0
