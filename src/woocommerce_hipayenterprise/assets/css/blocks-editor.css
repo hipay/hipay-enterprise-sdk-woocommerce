@@ -1,0 +1,303 @@
+/**
+ * HiPay Enterprise WooCommerce Blocks Styles
+ */
+
+/* ==================================================
+   Credit Card Block Styles
+   ================================================== */
+
+/* Hosted fields container */
+.wc-block-checkout .hipay-credit-card-block .hipay-form-row,
+.wc-block-cart .hipay-credit-card-block .hipay-form-row {
+    display: flex !important;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.wc-block-checkout .hipay-credit-card-block .hipay-field-container,
+.wc-block-cart .hipay-credit-card-block .hipay-field-container {
+    flex: 1 !important;
+    min-width: 0 !important;
+    display: block !important;
+}
+
+.wc-block-checkout .hipay-credit-card-block .hipay-field-container-half,
+.wc-block-cart .hipay-credit-card-block .hipay-field-container-half {
+    flex: 1 !important;
+    display: block !important;
+}
+
+/* Ensure fields are properly sized and visible */
+.wc-block-checkout .hipay-credit-card-block .hipay-field,
+.wc-block-checkout #hipay-card-field-cardHolder,
+.wc-block-checkout #hipay-card-field-cardNumber,
+.wc-block-checkout #hipay-card-field-expiryDate,
+.wc-block-checkout #hipay-card-field-cvc,
+.wc-block-checkout .hipay-credit-card-block div.hipay-field,
+.wc-block-checkout .hipay-credit-card-block div[id^="hipay-card-field-"],
+.wc-block-checkout div[id^="hipay-card-field-"],
+.wc-block-cart .hipay-credit-card-block .hipay-field,
+.wc-block-cart #hipay-card-field-cardHolder,
+.wc-block-cart #hipay-card-field-cardNumber,
+.wc-block-cart #hipay-card-field-expiryDate,
+.wc-block-cart #hipay-card-field-cvc,
+.wc-block-cart .hipay-credit-card-block div[id^="hipay-card-field-"],
+.wc-block-cart div[id^="hipay-card-field-"] {
+    width: 100% !important;
+    min-height: 40px !important;
+    height: 40px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 1px solid #ddd !important;
+    border-radius: 4px !important;
+    background-color: #fff !important;
+    box-sizing: border-box !important;
+    transition: border-color 0.2s ease !important;
+    display: block !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.wc-block-checkout .hipay-credit-card-block .hipay-field:focus-within,
+.wc-block-checkout #hipay-card-field-cardHolder:focus-within,
+.wc-block-checkout #hipay-card-field-cardNumber:focus-within,
+.wc-block-checkout #hipay-card-field-expiryDate:focus-within,
+.wc-block-checkout #hipay-card-field-cvc:focus-within,
+.wc-block-cart .hipay-credit-card-block .hipay-field:focus-within,
+.wc-block-cart #hipay-card-field-cardHolder:focus-within,
+.wc-block-cart #hipay-card-field-cardNumber:focus-within,
+.wc-block-cart #hipay-card-field-expiryDate:focus-within,
+.wc-block-cart #hipay-card-field-cvc:focus-within {
+    border-color: #7e8993 !important;
+    outline: none !important;
+}
+
+/* Card holder input field (not an iframe) */
+.wc-block-checkout #hipay-card-field-cardHolder input,
+.wc-block-checkout #hipay-card-field-cardHolder input[type="text"],
+.wc-block-cart #hipay-card-field-cardHolder input,
+.wc-block-cart #hipay-card-field-cardHolder input[type="text"] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 38px !important;
+    border: none !important;
+    padding: 8px 12px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    background: transparent !important;
+    font-family: inherit !important;
+    font-size: 15px !important;
+    outline: none !important;
+}
+
+/* Ensure iframes inside fields take full space and are visible */
+.wc-block-checkout .hipay-credit-card-block .hipay-field iframe,
+.wc-block-checkout #hipay-card-field-cardHolder iframe,
+.wc-block-checkout #hipay-card-field-cardNumber iframe,
+.wc-block-checkout #hipay-card-field-expiryDate iframe,
+.wc-block-checkout #hipay-card-field-cvc iframe,
+.wc-block-checkout div[id^="hipay-card-field-"] iframe,
+.wc-block-checkout .hipay-field > iframe,
+.wc-block-cart .hipay-credit-card-block .hipay-field iframe,
+.wc-block-cart #hipay-card-field-cardHolder iframe,
+.wc-block-cart #hipay-card-field-cardNumber iframe,
+.wc-block-cart #hipay-card-field-expiryDate iframe,
+.wc-block-cart #hipay-card-field-cvc iframe,
+.wc-block-cart div[id^="hipay-card-field-"] iframe,
+.wc-block-cart .hipay-field > iframe {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 38px !important;
+    border: none !important;
+    padding: 0 0 0 12px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* Target the container divs that might be hidden */
+.wc-block-checkout #hipay-card-field-cardNumber > div,
+.wc-block-checkout #hipay-card-field-expiryDate > div,
+.wc-block-checkout #hipay-card-field-cvc > div,
+.wc-block-checkout div[id^="hipay-card-field-"] > div,
+.wc-block-cart #hipay-card-field-cardNumber > div,
+.wc-block-cart #hipay-card-field-expiryDate > div,
+.wc-block-cart #hipay-card-field-cvc > div,
+.wc-block-cart div[id^="hipay-card-field-"] > div {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100% !important;
+    height: 100% !important;
+    position: relative !important;
+}
+
+/* Override any SDK-applied hidden states */
+.wc-block-checkout #hipay-card-field-cardNumber *,
+.wc-block-checkout #hipay-card-field-expiryDate *,
+.wc-block-checkout #hipay-card-field-cvc *,
+.wc-block-checkout #hipay-card-field-cardNumber,
+.wc-block-checkout #hipay-card-field-expiryDate,
+.wc-block-checkout #hipay-card-field-cvc,
+.wc-block-cart #hipay-card-field-cardNumber *,
+.wc-block-cart #hipay-card-field-expiryDate *,
+.wc-block-cart #hipay-card-field-cvc *,
+.wc-block-cart #hipay-card-field-cardNumber,
+.wc-block-cart #hipay-card-field-expiryDate,
+.wc-block-cart #hipay-card-field-cvc {
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Ensure wrapper divs are visible */
+.wc-block-checkout div[class*="hipay-"][id*="cardNumber"],
+.wc-block-checkout div[class*="hipay-"][id*="expiryDate"],
+.wc-block-checkout div[class*="hipay-"][id*="cvc"],
+.wc-block-cart div[class*="hipay-"][id*="cardNumber"],
+.wc-block-cart div[class*="hipay-"][id*="expiryDate"],
+.wc-block-cart div[class*="hipay-"][id*="cvc"] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    min-height: 40px !important;
+}
+
+/* Saved cards styling for blocks */
+.wc-block-checkout .hipay-credit-card-block .hipay-saved-cards,
+.wc-block-cart .hipay-credit-card-block .hipay-saved-cards {
+    margin-bottom: 20px;
+}
+
+.wc-block-checkout .hipay-credit-card-block .hipay-saved-cards label,
+.wc-block-cart .hipay-credit-card-block .hipay-saved-cards label {
+    display: block;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.wc-block-checkout .hipay-credit-card-block .hipay-saved-cards label:hover,
+.wc-block-cart .hipay-credit-card-block .hipay-saved-cards label:hover {
+    background-color: #f9f9f9;
+}
+
+.wc-block-checkout .hipay-credit-card-block .hipay-saved-cards input[type="radio"],
+.wc-block-cart .hipay-credit-card-block .hipay-saved-cards input[type="radio"] {
+    margin-right: 10px;
+}
+
+.wc-block-checkout .hipay-credit-card-block .hipay-save-card,
+.wc-block-cart .hipay-credit-card-block .hipay-save-card {
+    margin-top: 15px;
+}
+
+.wc-block-checkout .hipay-credit-card-block .hipay-save-card label,
+.wc-block-cart .hipay-credit-card-block .hipay-save-card label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.wc-block-checkout .hipay-credit-card-block .hipay-save-card input[type="checkbox"],
+.wc-block-cart .hipay-credit-card-block .hipay-save-card input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+/* Error messages */
+.wc-block-checkout .hipay-credit-card-block .hipay-error,
+.wc-block-cart .hipay-credit-card-block .hipay-error {
+    color: #d63638;
+    margin-top: 10px;
+    padding: 8px;
+    background-color: #fef0f0;
+    border: 1px solid #f8d7da;
+    border-radius: 4px;
+}
+
+/* Hosted page notice */
+.wc-block-checkout .hipay-credit-card-block .hipay-hosted-page-notice,
+.wc-block-cart .hipay-credit-card-block .hipay-hosted-page-notice {
+    padding: 15px;
+    background-color: #f0f6fc;
+    border: 1px solid #b6d4fe;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+/* ==================================================
+   Local Payment Methods Styles
+   ================================================== */
+
+.wc-block-checkout .hipay-local-payment-block .hipay-description,
+.wc-block-cart .hipay-local-payment-block .hipay-description {
+    margin-bottom: 15px;
+    color: #666;
+}
+
+.wc-block-checkout .hipay-local-payment-block .hipay-form-fields,
+.wc-block-cart .hipay-local-payment-block .hipay-form-fields {
+    margin-bottom: 15px;
+}
+
+.wc-block-checkout .hipay-local-payment-block .hipay-field,
+.wc-block-cart .hipay-local-payment-block .hipay-field {
+    margin-bottom: 15px;
+}
+
+.wc-block-checkout .hipay-local-payment-block .hipay-field label,
+.wc-block-cart .hipay-local-payment-block .hipay-field label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.wc-block-checkout .hipay-local-payment-block .hipay-field input,
+.wc-block-checkout .hipay-local-payment-block .hipay-field select,
+.wc-block-cart .hipay-local-payment-block .hipay-field input,
+.wc-block-cart .hipay-local-payment-block .hipay-field select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.wc-block-checkout .hipay-local-payment-block .hipay-field.has-error input,
+.wc-block-checkout .hipay-local-payment-block .hipay-field.has-error select,
+.wc-block-cart .hipay-local-payment-block .hipay-field.has-error input,
+.wc-block-cart .hipay-local-payment-block .hipay-field.has-error select {
+    border-color: #d63638;
+}
+
+.wc-block-checkout .hipay-local-payment-block .error-message,
+.wc-block-cart .hipay-local-payment-block .error-message {
+    color: #d63638;
+    font-size: 12px;
+    margin-top: 4px;
+    display: block;
+}
+
+/* ==================================================
+   PayPal v2 Specific Styles
+   ================================================== */
+
+.wc-block-checkout .hipay-paypal-v2 .hipay-paypal-button-container,
+.wc-block-cart .hipay-paypal-v2 .hipay-paypal-button-container {
+    margin: 15px 0;
+}
+
+.wc-block-checkout .hipay-paypal-v2 .hipay-paypal-loading,
+.wc-block-cart .hipay-paypal-v2 .hipay-paypal-loading {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+}

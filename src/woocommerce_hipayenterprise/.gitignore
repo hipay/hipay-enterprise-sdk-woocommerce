@@ -1,0 +1,4 @@
+node_modules/
+*.log
+.DS_Store
+# Note: build/ directory is NOT ignored - built files must be committed for distribution

@@ -102,25 +102,36 @@ abstract class Hipay_Order_Request_Abstract extends Hipay_Api_Formatter_Abstact
         $orderRequest->ipaddr = $this->order->get_customer_ip_address();
         $orderRequest->language = apply_filters('hipay_locale', get_locale());
         $orderRequest->http_user_agent = $_SERVER ['HTTP_USER_AGENT'];
-        $orderRequest->basket = $this->params["basket"];
-        $orderRequest->delivery_information = $this->params["delivery_information"];
-        $orderRequest->authentication_indicator = $this->params["authentication_indicator"];
+
+        if (isset($this->params["basket"])) {
+            $orderRequest->basket = $this->params["basket"];
+        }
+        if (isset($this->params["delivery_information"])) {
+            $orderRequest->delivery_information = $this->params["delivery_information"];
+        }
+
+        $orderRequest->authentication_indicator = isset($this->params["authentication_indicator"])
+            ? $this->params["authentication_indicator"]
+            : 0;
 
         if (isset($confProduct['orderExpirationTime'])) {
             $orderRequest->expiration_limit = $confProduct['orderExpirationTime'];
         }
 
-        if (isset($confProduct['merchantPromotion'])) {
-            $orderRequest->payment_product_parameters = json_encode(
-                array(
-                    "merchant_promotion" => !empty($confProduct['merchantPromotion']) ?
-                    $confProduct['merchantPromotion'] :
-                    \HiPay\Fullservice\Helper\MerchantPromotionCalculator::calculate(
-                        $product,
-                        $orderRequest->amount
-                    )
-                )
-            );
+        if (isset($confProduct['merchantPromotion']) && $confProduct['merchantPromotion'] !== false) {
+            $merchantPromotion = !empty($confProduct['merchantPromotion']) ?
+                $confProduct['merchantPromotion'] :
+                \HiPay\Fullservice\Helper\MerchantPromotionCalculator::calculate(
+                    $product,
+                    $orderRequest->amount
+                );
+
+            if ($merchantPromotion) {
+                // Use array instead of json_encode - SDK accepts both formats
+                $orderRequest->payment_product_parameters = array(
+                    "merchant_promotion" => $merchantPromotion
+                );
+            }
         }
     }
 

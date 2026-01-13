@@ -39,6 +39,13 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
     protected $paymentProduct = 'paypal';
 
     /**
+     * Flag to track if PayPal scripts have been localized.
+     *
+     * @var bool
+     */
+    private $scriptsLocalized = false;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -49,43 +56,74 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
         $this->method_description = __('Paypal', 'hipayenterprise');
 
         parent::__construct();
-
-        $paymentProductConfig = $this->confHelper->getLocalPayment($this->paymentProduct);
-
-        if ($this->isPaypalV2()) {
-            $this->enqueuePaypalScripts($paymentProductConfig);
-        }
+        
+        // Note: Script enqueuing and localization moved to payment_fields()
+        // This ensures proper checkout type detection and cart availability
     }
 
     /**
-     * Enqueue PayPal scripts and localize required data.
+     * Enqueue PayPal script for classic checkout only (not blocks).
+     */
+    protected function enqueuePaypalScript()
+    {
+        if (!is_admin()) {
+            // Only enqueue classic script if NOT using blocks checkout
+            // Blocks checkout uses its own React component (paypal-button.js)
+            if (!$this->is_blocks_checkout()) {
+                wp_enqueue_script(
+                    'hipay-js-front-paypal',
+                    plugins_url('/assets/js/frontend/local-payment-paypal.js', WC_HIPAYENTERPRISE_BASE_FILE),
+                    [],
+                    'all',
+                    true
+                );
+            }
+        }
+    }
+    
+    /**
+     * Check if current page is using blocks checkout
+     * 
+     * @return bool
+     */
+    protected function is_blocks_checkout()
+    {
+        // Check if we're on a checkout page with blocks
+        if (function_exists('has_block') && is_checkout()) {
+            global $post;
+            if ($post && has_block('woocommerce/checkout', $post)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    /**
+     * Localize PayPal scripts with current cart/order data.
+     * Called from payment_fields() to ensure cart is loaded.
      *
      * @param array $paymentProductConfig
      */
-    protected function enqueuePaypalScripts(array $paymentProductConfig)
+    protected function localizePaypalScripts(array $paymentProductConfig)
     {
-        if (!is_admin()) { // Check if not in the admin area
-            wp_enqueue_script(
-                'hipay-js-front-paypal',
-                plugins_url('/assets/js/frontend/local-payment-paypal.js', WC_HIPAYENTERPRISE_BASE_FILE),
-                [],
-                'all',
-                true
-            );
-
-            wp_localize_script(
-                'hipay-js-front-paypal',
-                'hipay_config_paypal',
-                $this->getPaypalScriptData($paymentProductConfig)
-            );
-
-            wp_localize_script(
-                'hipay-js-front-paypal',
-                'paypal_version',
-                ['v2' => $this->isPaypalV2()]
-            );
-
+        if ($this->scriptsLocalized || is_admin()) {
+            return;
         }
+
+        wp_localize_script(
+            'hipay-js-front-paypal',
+            'hipay_config_paypal',
+            $this->getPaypalScriptData($paymentProductConfig)
+        );
+
+        wp_localize_script(
+            'hipay-js-front-paypal',
+            'paypal_version',
+            ['v2' => $this->isPaypalV2()]
+        );
+
+        $this->scriptsLocalized = true;
     }
 
     /**
@@ -96,6 +134,24 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
      */
     protected function getPaypalScriptData(array $paymentProductConfig)
     {
+        // Get cart total - ensure it's a clean numeric value
+        $amount = 0;
+        if ($this->isOrderPayPage()) {
+            $amount = $this->getOrderPayAmount();
+        } elseif (WC()->cart) {
+            // Get total as float, remove any formatting
+            $total = WC()->cart->get_total('');
+            $amount = is_numeric($total) ? floatval($total) : 0;
+        }
+        
+        // Ensure minimum amount of 0.01
+        if ($amount < 0.01) {
+            $amount = 0.01;
+        }
+        
+        // Format to 2 decimal places
+        $amount = number_format($amount, 2, '.', '');
+
         return [
             'apiUsernameTokenJs' => $this->username,
             'apiPasswordTokenJs' => $this->password,
@@ -113,7 +169,7 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
             'buttonLabel' => $paymentProductConfig['buttonLabel'],
             'buttonHeight' => $paymentProductConfig['buttonHeight'],
             'bnpl' => $paymentProductConfig['bnpl'],
-            'amount' => $this->getCartAmount(),
+            'amount' => $amount,
             'currency' => get_woocommerce_currency(),
             'locale' => apply_filters('hipay_locale', get_locale()),
             'isOrderPayPage' => $this->isOrderPayPage()
@@ -125,6 +181,15 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
      */
     public function payment_fields()
     {
+        if ($this->isPaypalV2()) {
+            // Enqueue script first (only for classic checkout, not blocks)
+            $this->enqueuePaypalScript();
+            
+            // Then localize with cart data
+            $paymentProductConfig = $this->confHelper->getLocalPayment($this->paymentProduct);
+            $this->localizePaypalScripts($paymentProductConfig);
+        }
+
         $this->process_template(
             $this->getLocalPaymentMethodTemplate(),
             'frontend',

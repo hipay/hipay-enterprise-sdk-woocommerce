@@ -90,6 +90,12 @@ class Hipay_Autoloader
 	    'Hipay_Transactions_Helper' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-transactions.php',
 	    'Hipay_Upgrade_Helper' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-upgrade-helper.php',
 	    'Hipay_SRI_Helper_Curl' => WC_HIPAYENTERPRISE_PATH . 'includes/helper/class-hipay-sri-helper-curl.php',
+
+	    // WooCommerce Blocks Integration
+	    'Hipay_Blocks_Integration' => WC_HIPAYENTERPRISE_PATH . 'includes/blocks/class-hipay-blocks-integration.php',
+	    'Hipay_Payment_Block_Abstract' => WC_HIPAYENTERPRISE_PATH . 'includes/blocks/class-hipay-payment-block-abstract.php',
+	    'Hipay_Credit_Card_Block' => WC_HIPAYENTERPRISE_PATH . 'includes/blocks/class-hipay-credit-card-block.php',
+	    'Hipay_Local_Payment_Block_Abstract' => WC_HIPAYENTERPRISE_PATH . 'includes/blocks/class-hipay-local-payment-block-abstract.php',
     );
 
 	public static $localMethodClasses;

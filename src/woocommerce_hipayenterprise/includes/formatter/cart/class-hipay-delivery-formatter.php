@@ -28,18 +28,42 @@ class Hipay_Delivery_Formatter implements Hipay_Api_Formatter
     protected static $instance = null;
 
     protected $mappedShipping;
+    protected $order;
 
     /**
      * Return  mapped delivery shipping information
      *
+     * @param WC_Order|null $order Optional order object for blocks checkout
      * @return \HiPay\Fullservice\Gateway\Request\Info\DeliveryShippingInfoRequest|mixed
      * @throws Exception
      */
-    public function generate()
+    public function generate($order = null)
     {
-        $this->mappedShipping = Hipay_Helper_Mapping::getHipayMappingFromDeliveryMethod(
-            WC()->cart->calculate_shipping()[0]->method_id
-        );
+        $this->order = $order;
+
+        // Try to get shipping method from order first (for blocks checkout)
+        if ($order && $order->get_shipping_methods()) {
+            $shippingMethods = $order->get_shipping_methods();
+            $firstMethod = reset($shippingMethods);
+            if ($firstMethod) {
+                $methodId = $firstMethod->get_method_id();
+            } else {
+                $methodId = null;
+            }
+        } elseif (WC()->cart && count(WC()->cart->calculate_shipping()) > 0) {
+            // Fall back to cart for classic checkout
+            $methodId = WC()->cart->calculate_shipping()[0]->method_id;
+        } else {
+            // No shipping method available
+            $methodId = null;
+        }
+
+        if ($methodId) {
+            $this->mappedShipping = Hipay_Helper_Mapping::getHipayMappingFromDeliveryMethod($methodId);
+        } else {
+            // Default to "no mapping" but provide a default delivery date for Oney/Alma
+            $this->mappedShipping = 1;
+        }
 
         $deliveryShippingInfo = new \HiPay\Fullservice\Gateway\Request\Info\DeliveryShippingInfoRequest();
 
@@ -69,15 +93,19 @@ class Hipay_Delivery_Formatter implements Hipay_Api_Formatter
      */
     private function calculateEstimatedDate()
     {
+        $today = new \Datetime();
+
         if ($this->mappedShipping != 1) {
-            $today = new \Datetime();
-            $daysDelay = $this->mappedShipping[Hipay_Mapping_Delivery_Controller::ORDER_PREPARATION][0] +
-                $this->mappedShipping[Hipay_Mapping_Delivery_Controller::DELIVERY_ESTIMATED][0];
+            $daysDelay = (int)$this->mappedShipping[Hipay_Mapping_Delivery_Controller::ORDER_PREPARATION][0] +
+                (int)$this->mappedShipping[Hipay_Mapping_Delivery_Controller::DELIVERY_ESTIMATED][0];
             $interval = new \DateInterval("P{$daysDelay}D");
 
             return $today->add($interval)->format("Y-m-d");
         }
-        return null;
+
+        // Default to 7 days if no mapping is available (required for Oney payments)
+        $interval = new \DateInterval("P7D");
+        return $today->add($interval)->format("Y-m-d");
     }
 
     /**
@@ -95,7 +123,10 @@ class Hipay_Delivery_Formatter implements Hipay_Api_Formatter
                 )
             );
         }
-        return null;
+
+        // Default delivery method for Oney/Alma when no shipping mapping exists
+        // Must be JSON with mode and shipping as per HiPay SDK DeliveryShippingInfoRequest
+        return json_encode(array('mode' => 'CARRIER', 'shipping' => 'STANDARD'));
     }
 
     public static function initHiPayDeliveryFormatter()
