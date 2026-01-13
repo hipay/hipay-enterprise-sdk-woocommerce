@@ -59,7 +59,7 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
             $this->supports[] = "refunds";
         }
 
-        if($this->isAvailable()) {
+        if ($this->isAvailable()) {
             add_action('wp_print_scripts', array($this, 'localize_scripts'), 5);
         }
     }
