@@ -67,12 +67,44 @@ class Hipay_Upgrade_Helper
             $this->logs->logInfos("Begin plugin upgrade from  : " . $currentPluginVersion);
 
             $this->updateConfigFromFile();
+            $this->updateAlmaCountries();
             $this->confHelper->update_option($this->configHipay);
 
             $this->logs->logInfos("Hipay Plugin configuration is now in version : " . WC_HIPAYENTERPRISE_VERSION);
         } catch (\Exception $e) {
             $this->logs->logException($e);
             $this->logs->logInfos("[ERROR] Hipay Plugin configuration is in version : " . WC_HIPAYENTERPRISE_VERSION);
+        }
+    }
+
+    /**
+     * Update Alma countries to match SDK configuration
+     * this ensures merchants get the correct countries after upgrade
+     */
+    private function updateAlmaCountries()
+    {
+        try {
+            $this->logs->logInfos("# Begin Update Alma countries");
+
+            // Get countries from SDK
+            $alma3xSdk = \HiPay\Fullservice\Data\PaymentProduct\Collection::getItem('alma-3x');
+            $alma4xSdk = \HiPay\Fullservice\Data\PaymentProduct\Collection::getItem('alma-4x');
+
+            if ($alma3xSdk && isset($this->configHipay[Hipay_Config::KEY_PAYMENT][Hipay_Config::KEY_LOCAL_PAYMENT]['alma-3x'])) {
+                $newCountries = $alma3xSdk->getCountries();
+                $this->configHipay[Hipay_Config::KEY_PAYMENT][Hipay_Config::KEY_LOCAL_PAYMENT]['alma-3x']['countries'] = $newCountries;
+                $this->logs->logInfos("Updated alma-3x countries to: " . json_encode($newCountries));
+            }
+
+            if ($alma4xSdk && isset($this->configHipay[Hipay_Config::KEY_PAYMENT][Hipay_Config::KEY_LOCAL_PAYMENT]['alma-4x'])) {
+                $newCountries = $alma4xSdk->getCountries();
+                $this->configHipay[Hipay_Config::KEY_PAYMENT][Hipay_Config::KEY_LOCAL_PAYMENT]['alma-4x']['countries'] = $newCountries;
+                $this->logs->logInfos("Updated alma-4x countries to: " . json_encode($newCountries));
+            }
+
+            $this->logs->logInfos("# End Update Alma countries");
+        } catch (\Exception $e) {
+            $this->logs->logException($e);
         }
     }
 
@@ -185,7 +217,7 @@ class Hipay_Upgrade_Helper
         return array(
             "displayName" => "",
             "currencies" => "",
-            "countries" => "",
+            //"countries" => "",
             "minAmount" => "",
             "maxAmount" => "",
             "frontPosition" => "",

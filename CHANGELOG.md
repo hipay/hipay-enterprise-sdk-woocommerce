@@ -1,6 +1,8 @@
 # CHANGELOG
 
 ## UNRELEASE
+- **Fix** : Alma issues on Woocommerce
+
 
 ## 2.9.1
 

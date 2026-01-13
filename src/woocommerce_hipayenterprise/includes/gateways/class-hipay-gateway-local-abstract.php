@@ -58,6 +58,10 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
         if ($methodConf["canRefund"]) {
             $this->supports[] = "refunds";
         }
+
+        if ($this->isAvailable()) {
+            add_action('wp_print_scripts', array($this, 'localize_scripts'), 5);
+        }
     }
 
     public function isAvailable()
@@ -198,5 +202,20 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
     protected function getOperatingMode()
     {
         return $this->confHelper->getPaymentGlobal()['operating_mode'];
+    }
+
+    public function localize_scripts()
+    {
+        if (is_page() &&
+        (is_checkout() || is_add_payment_method_page()) &&
+        !is_order_received_page()) {
+            wp_localize_script(
+                'hipay-js-front',
+                'hipay_hosted_fields_data',
+                array(
+                    "amount" => WC()->cart->get_totals()["total"],
+                )
+            );
+        }
     }
 }
