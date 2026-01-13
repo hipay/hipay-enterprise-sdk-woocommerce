@@ -25,6 +25,13 @@ if (!defined('ABSPATH')) {
 class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
 {
     /**
+     * Minimum amount for PayPal transactions.
+     *
+     * @var float
+     */
+    const MINIMUM_AMOUNT = 0.01;
+
+    /**
      * Payment product code.
      *
      * @var string
@@ -339,4 +346,35 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
         }
         return 0;
     }
+
+    /**
+     * Get cart amount with proper validation and fallback handling
+     *
+     * @return float
+     */
+    protected function getCartAmount() {
+        if ($this->isOrderPayPage()) {
+            return $this->getOrderPayAmount();
+        }
+
+        if (!WC()->cart) {
+            return self::MINIMUM_AMOUNT;
+        }
+
+        // Calculate cart totals if not already calculated
+        if (!WC()->cart->totals_are_calculated) {
+            WC()->cart->calculate_totals();
+        }
+
+        // Get cart total
+        $total = WC()->cart->get_total('edit');
+
+        if (is_numeric($total) && $total > 0) {
+            return floatval($total);
+        }
+
+        // Fallback: minimum amount for PayPal
+        return self::MINIMUM_AMOUNT;
+    }
+
 }

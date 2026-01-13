@@ -1,6 +1,12 @@
 # CHANGELOG
 
 ## UNRELEASE
+- **Fix** : Alma issues on Woocommerce
+
+
+## 2.9.1
+
+- **Fix** : validate Paypal amount
 
 ## 2.9.0
 
