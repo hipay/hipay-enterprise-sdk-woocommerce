@@ -39,13 +39,6 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
     protected $paymentProduct = 'paypal';
 
     /**
-     * Flag to track if PayPal scripts have been localized.
-     *
-     * @var bool
-     */
-    private $scriptsLocalized = false;
-
-    /**
      * Constructor.
      */
     public function __construct()
@@ -56,74 +49,43 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
         $this->method_description = __('Paypal', 'hipayenterprise');
 
         parent::__construct();
-        
-        // Note: Script enqueuing and localization moved to payment_fields()
-        // This ensures proper checkout type detection and cart availability
+
+        $paymentProductConfig = $this->confHelper->getLocalPayment($this->paymentProduct);
+
+        if ($this->isPaypalV2()) {
+            $this->enqueuePaypalScripts($paymentProductConfig);
+        }
     }
 
     /**
-     * Enqueue PayPal script for classic checkout only (not blocks).
-     */
-    protected function enqueuePaypalScript()
-    {
-        if (!is_admin()) {
-            // Only enqueue classic script if NOT using blocks checkout
-            // Blocks checkout uses its own React component (paypal-button.js)
-            if (!$this->is_blocks_checkout()) {
-                wp_enqueue_script(
-                    'hipay-js-front-paypal',
-                    plugins_url('/assets/js/frontend/local-payment-paypal.js', WC_HIPAYENTERPRISE_BASE_FILE),
-                    [],
-                    'all',
-                    true
-                );
-            }
-        }
-    }
-    
-    /**
-     * Check if current page is using blocks checkout
-     * 
-     * @return bool
-     */
-    protected function is_blocks_checkout()
-    {
-        // Check if we're on a checkout page with blocks
-        if (function_exists('has_block') && is_checkout()) {
-            global $post;
-            if ($post && has_block('woocommerce/checkout', $post)) {
-                return true;
-            }
-        }
-        
-        return false;
-    }
-
-    /**
-     * Localize PayPal scripts with current cart/order data.
-     * Called from payment_fields() to ensure cart is loaded.
+     * Enqueue PayPal scripts
      *
      * @param array $paymentProductConfig
      */
-    protected function localizePaypalScripts(array $paymentProductConfig)
+    protected function enqueuePaypalScripts(array $paymentProductConfig)
     {
-        if ($this->scriptsLocalized || is_admin()) {
-            return;
+        if (!is_admin()) {
+            wp_enqueue_script(
+                'hipay-js-front-paypal',
+                plugins_url('/assets/js/frontend/local-payment-paypal.js', WC_HIPAYENTERPRISE_BASE_FILE),
+                ['jquery'],
+                filemtime(WC_HIPAYENTERPRISE_PATH . 'assets/js/frontend/local-payment-paypal.js'),
+                true
+            );
+
+            wp_localize_script(
+                'hipay-js-front-paypal',
+                'hipay_config_paypal',
+                $this->getPaypalScriptData($paymentProductConfig)
+            );
+
+            wp_localize_script(
+                'hipay-js-front-paypal',
+                'paypal_version',
+                ['v2' => $this->isPaypalV2()]
+            );
+
         }
-
-        wp_localize_script(
-            'hipay-js-front-paypal',
-            'hipay_config_paypal',
-            $this->getPaypalScriptData($paymentProductConfig)
-        );
-
-        wp_localize_script(
-            'hipay-js-front-paypal',
-            'paypal_version',
-            ['v2' => $this->isPaypalV2()]
-        );
-
-        $this->scriptsLocalized = true;
     }
 
     /**
@@ -134,24 +96,6 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
      */
     protected function getPaypalScriptData(array $paymentProductConfig)
     {
-        // Get cart total - ensure it's a clean numeric value
-        $amount = 0;
-        if ($this->isOrderPayPage()) {
-            $amount = $this->getOrderPayAmount();
-        } elseif (WC()->cart) {
-            // Get total as float, remove any formatting
-            $total = WC()->cart->get_total('');
-            $amount = is_numeric($total) ? floatval($total) : 0;
-        }
-        
-        // Ensure minimum amount of 0.01
-        if ($amount < 0.01) {
-            $amount = 0.01;
-        }
-        
-        // Format to 2 decimal places
-        $amount = number_format($amount, 2, '.', '');
-
         return [
             'apiUsernameTokenJs' => $this->username,
             'apiPasswordTokenJs' => $this->password,
@@ -169,10 +113,22 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
             'buttonLabel' => $paymentProductConfig['buttonLabel'],
             'buttonHeight' => $paymentProductConfig['buttonHeight'],
             'bnpl' => $paymentProductConfig['bnpl'],
-            'amount' => $amount,
+            'amount' => $this->getCartAmount(),
             'currency' => get_woocommerce_currency(),
             'locale' => apply_filters('hipay_locale', get_locale()),
-            'isOrderPayPage' => $this->isOrderPayPage()
+            'isOrderPayPage' => $this->isOrderPayPage(),
+            'shippingAddress' => $this->getShippingAddressForValidation(),
+            'i18n' => [
+                'addressRequired' => __('Shipping address is required for PayPal payment.', 'hipayenterprise'),
+                'invalidAddressPrefix' => __('Invalid delivery address. Please check or correct the following fields: ', 'hipayenterprise'),
+                'unableToInitialize' => __('Unable to initialize PayPal. Please check your shipping address.', 'hipayenterprise'),
+                'fieldNames' => [
+                    'zipCode' => __('Postal Code', 'hipayenterprise'),
+                    'city' => __('City', 'hipayenterprise'),
+                    'country' => __('Country', 'hipayenterprise'),
+                    'streetaddress' => __('Street Address', 'hipayenterprise'),
+                ]
+            ]
         ];
     }
 
@@ -181,15 +137,6 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
      */
     public function payment_fields()
     {
-        if ($this->isPaypalV2()) {
-            // Enqueue script first (only for classic checkout, not blocks)
-            $this->enqueuePaypalScript();
-            
-            // Then localize with cart data
-            $paymentProductConfig = $this->confHelper->getLocalPayment($this->paymentProduct);
-            $this->localizePaypalScripts($paymentProductConfig);
-        }
-
         $this->process_template(
             $this->getLocalPaymentMethodTemplate(),
             'frontend',
@@ -375,6 +322,129 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
 
         // Fallback: minimum amount for PayPal
         return self::MINIMUM_AMOUNT;
+    }
+
+    /**
+     * Get shipping address for validation in PayPal v2
+     *
+     * @return array|null
+     */
+    protected function getShippingAddressForValidation()
+    {
+        // Check if we're on order-pay page
+        if ($this->isOrderPayPage()) {
+            return $this->getOrderShippingAddress();
+        }
+
+        // Get from cart/customer for checkout page
+        $customer = WC()->customer;
+
+        if (!$customer) {
+            return null;
+        }
+
+        // Get shipping address, fallback to billing if shipping is empty
+        $zipCode = $customer->get_shipping_postcode();
+        $city = $customer->get_shipping_city();
+        $country = $customer->get_shipping_country();
+        $streetaddress = $customer->get_shipping_address_1();
+        $streetaddress2 = $customer->get_shipping_address_2();
+        $firstname = $customer->get_shipping_first_name();
+        $lastname = $customer->get_shipping_last_name();
+
+        // Fallback to billing address if shipping is not set
+        if (empty($zipCode)) {
+            $zipCode = $customer->get_billing_postcode();
+        }
+        if (empty($city)) {
+            $city = $customer->get_billing_city();
+        }
+        if (empty($country)) {
+            $country = $customer->get_billing_country();
+        }
+        if (empty($streetaddress)) {
+            $streetaddress = $customer->get_billing_address_1();
+        }
+        if (empty($streetaddress2)) {
+            $streetaddress2 = $customer->get_billing_address_2();
+        }
+        if (empty($firstname)) {
+            $firstname = $customer->get_billing_first_name();
+        }
+        if (empty($lastname)) {
+            $lastname = $customer->get_billing_last_name();
+        }
+
+        return [
+            'zipCode' => $zipCode ?: '',
+            'city' => $city ?: '',
+            'country' => $country ?: '',
+            'streetaddress' => $streetaddress ?: '',
+            'streetaddress2' => $streetaddress2 ?: '',
+            'firstname' => $firstname ?: '',
+            'lastname' => $lastname ?: '',
+        ];
+    }
+
+    /**
+     * Get shipping address from order (for order-pay page)
+     *
+     * @return array|null
+     */
+    protected function getOrderShippingAddress()
+    {
+        global $wp;
+
+        if (isset($wp->query_vars['order-pay']) && !empty($wp->query_vars['order-pay'])) {
+            $order_id = absint($wp->query_vars['order-pay']);
+            $order = wc_get_order($order_id);
+
+            if ($order) {
+                // Get shipping address, fallback to billing if shipping is empty
+                $zipCode = $order->get_shipping_postcode();
+                $city = $order->get_shipping_city();
+                $country = $order->get_shipping_country();
+                $streetaddress = $order->get_shipping_address_1();
+                $streetaddress2 = $order->get_shipping_address_2();
+                $firstname = $order->get_shipping_first_name();
+                $lastname = $order->get_shipping_last_name();
+
+                // Fallback to billing address if shipping is not set
+                if (empty($zipCode)) {
+                    $zipCode = $order->get_billing_postcode();
+                }
+                if (empty($city)) {
+                    $city = $order->get_billing_city();
+                }
+                if (empty($country)) {
+                    $country = $order->get_billing_country();
+                }
+                if (empty($streetaddress)) {
+                    $streetaddress = $order->get_billing_address_1();
+                }
+                if (empty($streetaddress2)) {
+                    $streetaddress2 = $order->get_billing_address_2();
+                }
+                if (empty($firstname)) {
+                    $firstname = $order->get_billing_first_name();
+                }
+                if (empty($lastname)) {
+                    $lastname = $order->get_billing_last_name();
+                }
+
+                return [
+                    'zipCode' => $zipCode ?: '',
+                    'city' => $city ?: '',
+                    'country' => $country ?: '',
+                    'streetaddress' => $streetaddress ?: '',
+                    'streetaddress2' => $streetaddress2 ?: '',
+                    'firstname' => $firstname ?: '',
+                    'lastname' => $lastname ?: '',
+                ];
+            }
+        }
+
+        return null;
     }
 
 }
