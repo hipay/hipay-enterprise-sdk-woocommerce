@@ -28,8 +28,8 @@ const PayPalButton = ({ config, billing, shippingData, cartTotals: cartTotalsPro
     const initializedRef = useRef(false);
     const onPaymentDataChangeRef = useRef(onPaymentDataChange);
 
-    // Get i18n translations from config
-    const i18n = config.paypalConfig?.i18n || {
+    // Get i18n translations
+    const i18n = {
         addressRequired: __('Shipping address is required for PayPal payment.', 'hipayenterprise'),
         invalidAddressPrefix: __('Invalid delivery address. Please check or correct the following fields: ', 'hipayenterprise'),
         unableToInitialize: __('Unable to initialize PayPal. Please check your shipping address.', 'hipayenterprise'),
@@ -42,16 +42,13 @@ const PayPalButton = ({ config, billing, shippingData, cartTotals: cartTotalsPro
     };
 
     /**
-     * Extract shipping address - prefers DOM values for real-time updates,
-     * falls back to store data
+     * Extract shipping address
      */
     const getShippingAddress = () => {
-        // Use DOM address if available (more up-to-date during typing)
         if (domAddress && (domAddress.zipCode || domAddress.city || domAddress.streetaddress)) {
             return domAddress;
         }
 
-        // Fall back to store data
         const hasShippingAddress = shippingAddress?.postcode || shippingAddress?.city || shippingAddress?.address_1;
         const address = hasShippingAddress ? shippingAddress : billingAddress;
 
@@ -66,15 +63,10 @@ const PayPalButton = ({ config, billing, shippingData, cartTotals: cartTotalsPro
         };
     };
 
-    // State to track address from DOM (for real-time updates)
     const [domAddress, setDomAddress] = useState(null);
     const addressChangeTimeoutRef = useRef(null);
 
-    /**
-     * Read address directly from DOM fields (for real-time updates)
-     */
     const getAddressFromDOM = () => {
-        // Helper to get value from input or select
         const getValue = (id) => {
             const el = document.getElementById(id);
             if (!el) return '';
@@ -82,14 +74,11 @@ const PayPalButton = ({ config, billing, shippingData, cartTotals: cartTotalsPro
             return (value && typeof value === 'string') ? value.trim() : '';
         };
 
-        // Helper to find field by partial ID match (WooCommerce Blocks uses various patterns)
         const findFieldValue = (patterns) => {
             for (const pattern of patterns) {
-                // Try exact ID match
                 let value = getValue(pattern);
                 if (value) return value;
 
-                // Try querySelector for partial matches
                 const el = document.querySelector(`[id*="${pattern}"]`) ||
                            document.querySelector(`[name*="${pattern}"]`) ||
                            document.querySelector(`input[id$="${pattern}"]`) ||
@@ -102,8 +91,6 @@ const PayPalButton = ({ config, billing, shippingData, cartTotals: cartTotalsPro
             return '';
         };
 
-        // Try shipping fields first, fall back to billing
-        // WooCommerce Blocks may use different ID patterns
         let postcode = findFieldValue(['shipping-postcode', 'billing-postcode', 'postcode']);
         let city = findFieldValue(['shipping-city', 'billing-city', 'city']);
         let country = findFieldValue(['shipping-country', 'billing-country', 'country']);
@@ -112,7 +99,6 @@ const PayPalButton = ({ config, billing, shippingData, cartTotals: cartTotalsPro
         let firstName = findFieldValue(['shipping-first_name', 'billing-first_name', 'first_name', 'first-name']);
         let lastName = findFieldValue(['shipping-last_name', 'billing-last_name', 'last_name', 'last-name']);
 
-        // If still no country, try to get from WooCommerce Blocks store as fallback
         if (!country && (billingAddress?.country || shippingAddress?.country)) {
             country = shippingAddress?.country || billingAddress?.country || '';
         }
@@ -128,15 +114,12 @@ const PayPalButton = ({ config, billing, shippingData, cartTotals: cartTotalsPro
         };
     };
 
-    // Listen to DOM changes for real-time address validation
     useEffect(() => {
         const handleAddressChange = (e) => {
-            // Clear any pending timeout
             if (addressChangeTimeoutRef.current) {
                 clearTimeout(addressChangeTimeoutRef.current);
             }
 
-            // Debounce the validation (300ms)
             addressChangeTimeoutRef.current = setTimeout(() => {
                 const newAddress = getAddressFromDOM();
                 console.log('[HiPay PayPal] DOM address changed:', newAddress);
@@ -144,13 +127,11 @@ const PayPalButton = ({ config, billing, shippingData, cartTotals: cartTotalsPro
             }, 300);
         };
 
-        // Address field selectors for WooCommerce Blocks
         const fieldSelectors = [
             '#billing-postcode', '#billing-city', '#billing-country', '#billing-address_1',
             '#shipping-postcode', '#shipping-city', '#shipping-country', '#shipping-address_1'
         ];
 
-        // Add event listeners
         fieldSelectors.forEach(selector => {
             const field = document.querySelector(selector);
             if (field) {
@@ -159,7 +140,6 @@ const PayPalButton = ({ config, billing, shippingData, cartTotals: cartTotalsPro
             }
         });
 
-        // Also use MutationObserver to catch dynamically added fields
         const observer = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
                 if (mutation.addedNodes.length) {
@@ -177,7 +157,6 @@ const PayPalButton = ({ config, billing, shippingData, cartTotals: cartTotalsPro
 
         observer.observe(document.body, { childList: true, subtree: true });
 
-        // Initial read
         const initialAddress = getAddressFromDOM();
         if (initialAddress.zipCode || initialAddress.city || initialAddress.streetaddress) {
             setDomAddress(initialAddress);
@@ -199,7 +178,7 @@ const PayPalButton = ({ config, billing, shippingData, cartTotals: cartTotalsPro
     }, []);
 
     /**
-     * Validate shipping address - returns validation result
+     * Validate shipping address
      */
     const validateShippingAddress = (address) => {
         if (!address || typeof address !== 'object') {
@@ -229,35 +208,28 @@ const PayPalButton = ({ config, billing, shippingData, cartTotals: cartTotalsPro
         return { isValid: true };
     };
 
-    // Keep callback ref updated without triggering re-initialization
     useEffect(() => {
         onPaymentDataChangeRef.current = onPaymentDataChange;
     }, [onPaymentDataChange]);
 
-    // Hide the WooCommerce Blocks Place Order button for PayPal v2
     useEffect(() => {
         let placeOrderButton = null;
         let checkInterval = null;
         
-        // Function to hide the button
         const hideButton = (button) => {
             if (button && button.style.display !== 'none') {
-                // Store original display value to restore later
                 const originalDisplay = button.style.display || '';
                 button.dataset.originalDisplay = originalDisplay;
                 
-                // Hide the button
                 button.style.display = 'none';
             }
         };
         
-        // Function to check and hide button (handles async rendering)
         const checkAndHideButton = () => {
             placeOrderButton = document.querySelector('.wc-block-components-checkout-place-order-button');
             
             if (placeOrderButton) {
                 hideButton(placeOrderButton);
-                // Stop checking once found and hidden
                 if (checkInterval) {
                     clearInterval(checkInterval);
                     checkInterval = null;
@@ -265,14 +237,11 @@ const PayPalButton = ({ config, billing, shippingData, cartTotals: cartTotalsPro
             }
         };
         
-        // Initial check
         checkAndHideButton();
         
-        // If button not found, keep checking (button might render after this component)
         if (!placeOrderButton) {
             checkInterval = setInterval(checkAndHideButton, 100);
             
-            // Stop checking after 5 seconds to avoid infinite loop
             setTimeout(() => {
                 if (checkInterval) {
                     clearInterval(checkInterval);
@@ -281,13 +250,11 @@ const PayPalButton = ({ config, billing, shippingData, cartTotals: cartTotalsPro
             }, 5000);
         }
         
-        // Cleanup: restore button when component unmounts (user switches payment method)
         return () => {
             if (checkInterval) {
                 clearInterval(checkInterval);
             }
             
-            // Restore button
             const button = document.querySelector('.wc-block-components-checkout-place-order-button');
             if (button) {
                 button.style.display = button.dataset.originalDisplay || '';
@@ -295,7 +262,6 @@ const PayPalButton = ({ config, billing, shippingData, cartTotals: cartTotalsPro
         };
     }, []);
 
-    // Clean up on unmount
     useEffect(() => {
         return () => {
             if (buttonInstanceRef.current && typeof buttonInstanceRef.current.destroy === 'function') {
