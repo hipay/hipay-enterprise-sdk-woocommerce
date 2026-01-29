@@ -29,23 +29,13 @@ const PayPalButton = ({ config, billing, shippingData, cartTotals: cartTotalsPro
     const onPaymentDataChangeRef = useRef(onPaymentDataChange);
 
     // Get i18n translations
-    const i18n = {
-        addressRequired: __('Shipping address is required for PayPal payment.', 'hipayenterprise'),
-        invalidAddressPrefix: __('Invalid delivery address. Please check or correct the following fields: ', 'hipayenterprise'),
-        unableToInitialize: __('Unable to initialize PayPal. Please check your shipping address.', 'hipayenterprise'),
-        fieldNames: {
-            zipCode: __('Postal Code', 'hipayenterprise'),
-            city: __('City', 'hipayenterprise'),
-            country: __('Country', 'hipayenterprise'),
-            streetaddress: __('Street Address', 'hipayenterprise'),
-        }
-    };
+    const i18n = config.paypalConfig?.i18n;
 
     /**
      * Extract shipping address
      */
     const getShippingAddress = () => {
-        if (domAddress && (domAddress.zipCode || domAddress.city || domAddress.streetaddress)) {
+        if ( domAddress?.zipCode || domAddress?.city || domAddress?.streetaddress ) {
             return domAddress;
         }
 

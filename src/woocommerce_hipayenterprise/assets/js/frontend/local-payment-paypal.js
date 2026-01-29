@@ -91,42 +91,13 @@ jQuery(document).ready(($) => {
         return trimmedValue;
       };
 
-      const shipToDifferentAddress = $('#ship-to-different-address-checkbox').is(':checked');
-      let zipCode, city, country, streetaddress, streetaddress2, firstname, lastname;
-
-      if (!shipToDifferentAddress) {
-        zipCode = getFieldValue('#billing_postcode');
-        city = getFieldValue('#billing_city');
-        country = getFieldValue('#billing_country');
-        streetaddress = getFieldValue('#billing_address_1');
-        streetaddress2 = getFieldValue('#billing_address_2');
-        firstname = getFieldValue('#billing_first_name');
-        lastname = getFieldValue('#billing_last_name');
-      } else {
-        zipCode = getFieldValue('#shipping_postcode');
-        city = getFieldValue('#shipping_city');
-        country = getFieldValue('#shipping_country');
-        streetaddress = getFieldValue('#shipping_address_1');
-        streetaddress2 = getFieldValue('#shipping_address_2');
-        firstname = getFieldValue('#shipping_first_name');
-        lastname = getFieldValue('#shipping_last_name');
-
-        if (!zipCode) {
-          zipCode = getFieldValue('#billing_postcode');
-        }
-        if (!city) {
-          city = getFieldValue('#billing_city');
-        }
-        if (!country) {
-          country = getFieldValue('#billing_country');
-        }
-        if (!streetaddress) {
-          streetaddress = getFieldValue('#billing_address_1');
-        }
-        if (!streetaddress2) streetaddress2 = getFieldValue('#billing_address_2');
-        if (!firstname) firstname = getFieldValue('#billing_first_name');
-        if (!lastname) lastname = getFieldValue('#billing_last_name');
-      }
+      const zipCode = getFieldValue('#shipping_postcode') || getFieldValue('#billing_postcode');
+      const city = getFieldValue('#shipping_city') || getFieldValue('#billing_city');
+      const country = getFieldValue('#shipping_country') || getFieldValue('#billing_country');
+      const streetaddress = getFieldValue('#shipping_address_1') || getFieldValue('#billing_address_1');
+      const streetaddress2 = getFieldValue('#shipping_address_2') || getFieldValue('#billing_address_2');
+      const firstname = getFieldValue('#shipping_first_name') || getFieldValue('#billing_first_name');
+      const lastname = getFieldValue('#shipping_last_name') || getFieldValue('#billing_last_name');
 
       const address = {
         zipCode: zipCode,
