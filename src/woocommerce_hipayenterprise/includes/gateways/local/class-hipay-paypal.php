@@ -333,118 +333,28 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
     {
         // Check if we're on order-pay page
         if ($this->isOrderPayPage()) {
-            return $this->getOrderShippingAddress();
+            global $wp;
+            if (isset($wp->query_vars['order-pay']) && !empty($wp->query_vars['order-pay'])) {
+                $source = wc_get_order(absint($wp->query_vars['order-pay']));
+            }
+        } else {
+            $source = WC()->customer;
         }
 
-        // Get from cart/customer for checkout page
-        $customer = WC()->customer;
-
-        if (!$customer) {
+        if (empty($source)) {
             return null;
         }
 
         // Get shipping address, fallback to billing if shipping is empty
-        $zipCode = $customer->get_shipping_postcode();
-        $city = $customer->get_shipping_city();
-        $country = $customer->get_shipping_country();
-        $streetaddress = $customer->get_shipping_address_1();
-        $streetaddress2 = $customer->get_shipping_address_2();
-        $firstname = $customer->get_shipping_first_name();
-        $lastname = $customer->get_shipping_last_name();
-
-        // Fallback to billing address if shipping is not set
-        if (empty($zipCode)) {
-            $zipCode = $customer->get_billing_postcode();
-        }
-        if (empty($city)) {
-            $city = $customer->get_billing_city();
-        }
-        if (empty($country)) {
-            $country = $customer->get_billing_country();
-        }
-        if (empty($streetaddress)) {
-            $streetaddress = $customer->get_billing_address_1();
-        }
-        if (empty($streetaddress2)) {
-            $streetaddress2 = $customer->get_billing_address_2();
-        }
-        if (empty($firstname)) {
-            $firstname = $customer->get_billing_first_name();
-        }
-        if (empty($lastname)) {
-            $lastname = $customer->get_billing_last_name();
-        }
-
         return [
-            'zipCode' => $zipCode ?: '',
-            'city' => $city ?: '',
-            'country' => $country ?: '',
-            'streetaddress' => $streetaddress ?: '',
-            'streetaddress2' => $streetaddress2 ?: '',
-            'firstname' => $firstname ?: '',
-            'lastname' => $lastname ?: '',
+            'zipCode' => $source->get_shipping_postcode() ?? $source->get_billing_postcode(),
+            'city' => $source->get_shipping_city() ?? $source->get_billing_city(),
+            'country' => $source->get_shipping_country() ?? $source->get_billing_country(),
+            'streetaddress' => $source->get_shipping_address_1() ?? $source->get_billing_address_1(),
+            'streetaddress2' => $source->get_shipping_address_2() ?? $source->get_billing_address_2(),
+            'firstname' => $source->get_shipping_first_name() ?? $source->get_billing_first_name(),
+            'lastname' => $source->get_shipping_last_name() ?? $source->get_billing_last_name(),
         ];
-    }
-
-    /**
-     * Get shipping address from order (for order-pay page)
-     *
-     * @return array|null
-     */
-    protected function getOrderShippingAddress()
-    {
-        global $wp;
-
-        if (isset($wp->query_vars['order-pay']) && !empty($wp->query_vars['order-pay'])) {
-            $order_id = absint($wp->query_vars['order-pay']);
-            $order = wc_get_order($order_id);
-
-            if ($order) {
-                // Get shipping address, fallback to billing if shipping is empty
-                $zipCode = $order->get_shipping_postcode();
-                $city = $order->get_shipping_city();
-                $country = $order->get_shipping_country();
-                $streetaddress = $order->get_shipping_address_1();
-                $streetaddress2 = $order->get_shipping_address_2();
-                $firstname = $order->get_shipping_first_name();
-                $lastname = $order->get_shipping_last_name();
-
-                // Fallback to billing address if shipping is not set
-                if (empty($zipCode)) {
-                    $zipCode = $order->get_billing_postcode();
-                }
-                if (empty($city)) {
-                    $city = $order->get_billing_city();
-                }
-                if (empty($country)) {
-                    $country = $order->get_billing_country();
-                }
-                if (empty($streetaddress)) {
-                    $streetaddress = $order->get_billing_address_1();
-                }
-                if (empty($streetaddress2)) {
-                    $streetaddress2 = $order->get_billing_address_2();
-                }
-                if (empty($firstname)) {
-                    $firstname = $order->get_billing_first_name();
-                }
-                if (empty($lastname)) {
-                    $lastname = $order->get_billing_last_name();
-                }
-
-                return [
-                    'zipCode' => $zipCode ?: '',
-                    'city' => $city ?: '',
-                    'country' => $country ?: '',
-                    'streetaddress' => $streetaddress ?: '',
-                    'streetaddress2' => $streetaddress2 ?: '',
-                    'firstname' => $firstname ?: '',
-                    'lastname' => $lastname ?: '',
-                ];
-            }
-        }
-
-        return null;
     }
 
 }

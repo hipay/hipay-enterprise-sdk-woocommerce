@@ -171,16 +171,10 @@ const PayPalButton = ({ config, billing, shippingData, cartTotals: cartTotalsPro
      * Validate shipping address
      */
     const validateShippingAddress = (address) => {
-        if (!address || typeof address !== 'object') {
-            return {
-                isValid: false,
-                errorMessage: i18n.addressRequired
-            };
-        }
-
+        const addressObj = address || {};
         const requiredFields = ['zipCode', 'city', 'country', 'streetaddress'];
         const missingFields = requiredFields.filter((field) => {
-            const value = address[field];
+            const value = addressObj[field];
             return !value || (typeof value === 'string' && value.trim() === '');
         });
 

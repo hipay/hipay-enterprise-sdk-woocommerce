@@ -113,21 +113,12 @@ jQuery(document).ready(($) => {
     };
 
     const validateShippingAddress = (address) => {
-
-      if (!address || typeof address !== 'object') {
-        return {
-          isValid: false,
-          errorMessage: hipay_config_paypal.i18n.addressRequired
-        };
-      }
-
+      const addressObj = address || {};
       const requiredFields = ['zipCode', 'city', 'country', 'streetaddress'];
 
       const missingFields = requiredFields.filter((field) => {
-        const value = address[field];
-        const isEmpty = !value || (typeof value === 'string' && value.trim() === '');
-
-        return isEmpty;
+        const value = addressObj[field];
+        return !value || (typeof value === 'string' && value.trim() === '');
       });
 
 
@@ -249,7 +240,9 @@ jQuery(document).ready(($) => {
             showAddressError(
               hipay_config_paypal.i18n.unableToInitialize
             );
-            $('#paypal-field').empty();
+            if (typeof instance.destroy === 'function') {
+              instance.destroy();
+            }
           });
         }
 
