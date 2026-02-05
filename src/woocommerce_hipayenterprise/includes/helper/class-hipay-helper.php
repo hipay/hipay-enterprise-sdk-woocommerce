@@ -275,6 +275,24 @@ class Hipay_Helper
             return wc_clean(wp_unslash($_POST[$index]));
         }
 
+        // Check for blocks payment data (hipay_* format)
+        // For credit card: card-* → hipay_*
+        if (strpos($index, 'card-') === 0) {
+            $blocks_key = str_replace('card-', 'hipay_', $index);
+            if (isset($_POST[$blocks_key])) {
+                return wc_clean(wp_unslash($_POST[$blocks_key]));
+            }
+        }
+
+        // For local payments: paymentmethod-field → hipay_field
+        if (preg_match('/^([a-z_]+)-(.+)$/', $index, $matches)) {
+            $field_name = $matches[2];
+            $blocks_key = 'hipay_' . $field_name;
+            if (isset($_POST[$blocks_key])) {
+                return wc_clean(wp_unslash($_POST[$blocks_key]));
+            }
+        }
+
         return $default;
     }
 

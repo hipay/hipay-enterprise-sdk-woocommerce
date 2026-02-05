@@ -27,7 +27,7 @@ update_option('woocommerce_price_decimal_sep', $price_decimal_sep);
 update_option('woocommerce_price_num_decimals', $price_num_decimals);
 update_option('woocommerce_price_thousand_sep', $price_thousand_sep);
 update_option('woocommerce_store_address', $address);
-update_option('woocommerce_admin_notices', 'a:0:{}');
+update_option('woocommerce_admin_notices', []);
 update_option('woocommerce_flat_rate_1_settings','a:3:{s:5:"title";s:9:"Flat rate";s:10:"tax_status";s:7:"taxable";s:4:"cost";s:1:"5";}');
 update_option('woocommerce_flat_rate_2_settings1','a:3:{s:5:"title";s:9:"Flat rate";s:10:"tax_status";s:7:"taxable";s:4:"cost";s:2:"30";}');
 update_option('permalink_structure', '/%year%/%monthnum%/%day%/%postname%/');

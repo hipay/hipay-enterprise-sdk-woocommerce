@@ -58,18 +58,18 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
     }
 
     /**
-     * Enqueue PayPal scripts and localize required data.
+     * Enqueue PayPal scripts
      *
      * @param array $paymentProductConfig
      */
     protected function enqueuePaypalScripts(array $paymentProductConfig)
     {
-        if (!is_admin()) { // Check if not in the admin area
+        if (!is_admin()) {
             wp_enqueue_script(
                 'hipay-js-front-paypal',
                 plugins_url('/assets/js/frontend/local-payment-paypal.js', WC_HIPAYENTERPRISE_BASE_FILE),
-                [],
-                'all',
+                ['jquery'],
+                filemtime(WC_HIPAYENTERPRISE_PATH . 'assets/js/frontend/local-payment-paypal.js'),
                 true
             );
 
@@ -116,7 +116,19 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
             'amount' => $this->getCartAmount(),
             'currency' => get_woocommerce_currency(),
             'locale' => apply_filters('hipay_locale', get_locale()),
-            'isOrderPayPage' => $this->isOrderPayPage()
+            'isOrderPayPage' => $this->isOrderPayPage(),
+            'shippingAddress' => $this->getShippingAddressForValidation(),
+            'i18n' => [
+                'addressRequired' => __('Shipping address is required for PayPal payment.', 'hipayenterprise'),
+                'invalidAddressPrefix' => __('Invalid delivery address. Please check or correct the following fields: ', 'hipayenterprise'),
+                'unableToInitialize' => __('Unable to initialize PayPal. Please check your shipping address.', 'hipayenterprise'),
+                'fieldNames' => [
+                    'zipCode' => __('Postal Code', 'hipayenterprise'),
+                    'city' => __('City', 'hipayenterprise'),
+                    'country' => __('Country', 'hipayenterprise'),
+                    'streetaddress' => __('Street Address', 'hipayenterprise'),
+                ]
+            ]
         ];
     }
 
@@ -310,6 +322,40 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
 
         // Fallback: minimum amount for PayPal
         return self::MINIMUM_AMOUNT;
+    }
+
+    /**
+     * Get shipping address for validation in PayPal v2
+     *
+     * @return array|null
+     */
+    protected function getShippingAddressForValidation()
+    {
+        // Check if we're on order-pay page
+        $source = null;
+        if ($this->isOrderPayPage()) {
+            global $wp;
+            if (isset($wp->query_vars['order-pay']) && !empty($wp->query_vars['order-pay'])) {
+                $source = wc_get_order(absint($wp->query_vars['order-pay']));
+            }
+        } else {
+            $source = WC()->customer;
+        }
+
+        if (empty($source)) {
+            return null;
+        }
+
+        // Get shipping address, fallback to billing if shipping is empty
+        return [
+            'zipCode' => $source->get_shipping_postcode() ?? $source->get_billing_postcode(),
+            'city' => $source->get_shipping_city() ?? $source->get_billing_city(),
+            'country' => $source->get_shipping_country() ?? $source->get_billing_country(),
+            'streetaddress' => $source->get_shipping_address_1() ?? $source->get_billing_address_1(),
+            'streetaddress2' => $source->get_shipping_address_2() ?? $source->get_billing_address_2(),
+            'firstname' => $source->get_shipping_first_name() ?? $source->get_billing_first_name(),
+            'lastname' => $source->get_shipping_last_name() ?? $source->get_billing_last_name(),
+        ];
     }
 
 }

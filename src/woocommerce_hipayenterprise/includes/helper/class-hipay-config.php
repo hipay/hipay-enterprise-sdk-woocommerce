@@ -283,11 +283,15 @@ class Hipay_Config
 
     /**
      * @param $paymentId
-     * @return mixed
+     * @return mixed|null
      */
     public function getLocalPayment($paymentId)
     {
-        return $this->getConfigHipay()["payment"][self::KEY_LOCAL_PAYMENT][$paymentId];
+        $config = $this->getConfigHipay();
+        if (isset($config["payment"][self::KEY_LOCAL_PAYMENT][$paymentId])) {
+            return $config["payment"][self::KEY_LOCAL_PAYMENT][$paymentId];
+        }
+        return null;
     }
 
     /**

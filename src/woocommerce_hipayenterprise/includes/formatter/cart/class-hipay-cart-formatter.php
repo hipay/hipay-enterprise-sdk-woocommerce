@@ -66,7 +66,7 @@ class Hipay_Cart_Formatter implements Hipay_Api_Formatter
      *
      * @return json
      */
-    public function generate($items = array(), $operation = "", $itemOperation = null, $originalBasket = null)
+    public function generate($items = array(), $operation = "", $itemOperation = null, $originalBasket = null, $order = null)
     {
         if (!empty($operation)) {
             $this->itemOperation = $itemOperation;
@@ -77,7 +77,7 @@ class Hipay_Cart_Formatter implements Hipay_Api_Formatter
 
         $cart = new HiPay\Fullservice\Gateway\Model\Cart\Cart();
 
-        $this->mapRequest($cart);
+        $this->mapRequest($cart, $order);
 
         return $cart->toJson();
     }
@@ -86,13 +86,18 @@ class Hipay_Cart_Formatter implements Hipay_Api_Formatter
      * Map Request
      *
      * @param Hipay\Fullservice\Gateway\Model\Cart\Cart $cart
+     * @param WC_Order $order Order object (for blocks checkout)
      */
-    public function mapRequest(&$cart)
+    public function mapRequest(&$cart, $order = null)
     {
         // Item Type good
         $cartItems = $this->items;
         if (empty($this->items) && empty($this->operation)) {
             $cartItems = WC()->cart->get_cart_contents();
+
+            if (empty($cartItems) && $order instanceof WC_Order) {
+                $cartItems = $order->get_items();
+            }
         }
 
         foreach ($cartItems as $cartItemKey => $value) {
@@ -114,9 +119,18 @@ class Hipay_Cart_Formatter implements Hipay_Api_Formatter
             }
         } else {
             $feesItems = WC()->cart->calculate_shipping();
-            foreach ($feesItems as $feeItemKey => $fee) {
-                $itemTypeFee = $this->initItemTypeFee($fee);
-                $cart->addItem($itemTypeFee);
+
+            if (empty($feesItems) && $order instanceof WC_Order) {
+                $shippingMethods = $order->get_shipping_methods();
+                foreach ($shippingMethods as $shipping) {
+                    $itemTypeFee = $this->initItemTypeFeeFromOrder($shipping);
+                    $cart->addItem($itemTypeFee);
+                }
+            } else {
+                foreach ($feesItems as $feeItemKey => $fee) {
+                    $itemTypeFee = $this->initItemTypeFee($fee);
+                    $cart->addItem($itemTypeFee);
+                }
             }
         }
 
@@ -208,11 +222,59 @@ class Hipay_Cart_Formatter implements Hipay_Api_Formatter
     {
         $productReference = $fee->get_method_id();
         $name = $fee->get_label();
-        $unitPrice = (float)$fee->get_cost() + $fee->get_shipping_tax();
+        // Round to 2 decimals to avoid floating point precision issues (required by Alma/Oney)
+        $unitPrice = round((float)$fee->get_cost() + $fee->get_shipping_tax(), 2);
         $taxRate = 0;
 
-        if (count(WC_Tax::get_shipping_tax_rates()) > 0) {
-            $taxRate = (float)WC_Tax::get_shipping_tax_rates()[0]["rate"];
+        $shippingTaxRates = WC_Tax::get_shipping_tax_rates();
+        if (!empty($shippingTaxRates)) {
+            $firstRate = reset($shippingTaxRates);
+            if (isset($firstRate['rate'])) {
+                $taxRate = (float)$firstRate['rate'];
+            }
+        }
+
+        $discount = 0.00;
+        $totalAmount = $unitPrice;
+        $item = HiPay\Fullservice\Gateway\Model\Cart\Item::buildItemTypeFees(
+            $productReference,
+            $name,
+            $unitPrice,
+            $taxRate,
+            $discount,
+            $totalAmount
+        );
+
+        // forced category
+        $item->setProductCategory(11);
+
+        return $item;
+    }
+
+    /**
+     *  Init item type fee from order (for blocks checkout)
+     *
+     * @param WC_Order_Item_Shipping $shipping
+     * @return \HiPay\Fullservice\Gateway\Model\Cart\Item
+     */
+    private function initItemTypeFeeFromOrder($shipping)
+    {
+        $productReference = $shipping->get_method_id();
+        $name = $shipping->get_method_title();
+
+        $shippingTotal = (float)$shipping->get_total();
+        $shippingTax = (float)$shipping->get_total_tax();
+
+        // Round to 2 decimals to avoid floating point precision issues (required by Alma/Oney)
+        $unitPrice = round($shippingTotal + $shippingTax, 2);
+        $taxRate = 0;
+
+        $shippingTaxRates = WC_Tax::get_shipping_tax_rates();
+        if (!empty($shippingTaxRates)) {
+            $firstRate = reset($shippingTaxRates);
+            if (isset($firstRate['rate'])) {
+                $taxRate = (float)$firstRate['rate'];
+            }
         }
 
         $discount = 0.00;
@@ -240,6 +302,13 @@ class Hipay_Cart_Formatter implements Hipay_Api_Formatter
     private function getSku($product)
     {
         $sku = $product->get_sku();
+
+        // If SKU is empty, use product ID as fallback
+        if (empty($sku)) {
+            $sku = 'product-' . $product->get_id();
+        }
+
+        // For variations, append ID to ensure uniqueness
         if ($product instanceof \WC_Product_Variation) {
             $sku .= '-' . $product->get_id();
         }
@@ -253,13 +322,21 @@ class Hipay_Cart_Formatter implements Hipay_Api_Formatter
      */
     private function initItemTypeGood($cartItem)
     {
-        $product = $cartItem['data'];
-        if ($cartItem instanceof WC_Order_Item_Product) {
+        // Handle both cart items (arrays) and order items (objects)
+        $isOrderItem = $cartItem instanceof WC_Order_Item_Product;
+
+        if ($isOrderItem) {
             $product = wc_get_product($cartItem->get_product_id());
+            $quantity = abs($cartItem->get_quantity());
+            $totalAmount = abs($cartItem->get_total()) + abs($cartItem->get_total_tax());
+        } else {
+            $product = $cartItem['data'];
+            $quantity = abs($cartItem["quantity"]);
+            $totalAmount = abs($cartItem["line_total"]) + abs($cartItem["line_tax"]);
         }
+
         $item = new HiPay\Fullservice\Gateway\Model\Cart\Item();
 
-        $quantity = abs($cartItem["quantity"]);
         $discount = 0;
         if ($product->is_on_sale()) {
             $discount = -1 *
@@ -270,13 +347,22 @@ class Hipay_Cart_Formatter implements Hipay_Api_Formatter
                 );
         }
 
-        $totalAmount = abs($cartItem["line_total"]) + abs($cartItem["line_tax"]);
         $unitPrice = round(($totalAmount - $discount) / $quantity, 3);
-        $taxRate = WC_Tax::get_rates($product->get_tax_class())[1]["rate"];
+
+        // Get tax rate - handle case where it doesn't exist
+        $taxRate = 0;
+        $taxRates = WC_Tax::get_rates($product->get_tax_class());
+        if (!empty($taxRates)) {
+            $firstRate = reset($taxRates);
+            $taxRate = isset($firstRate["rate"]) ? $firstRate["rate"] : 0;
+        }
 
         // Get First Category because non default cat on
         $productCategories = get_the_terms($product->get_id(), 'product_cat');
-        $productCategory = (int)Hipay_Helper_Mapping::getHipayCategoryFromMapping($productCategories[0]->term_id);
+        $productCategory = 1; // Default category
+        if ($productCategories && !empty($productCategories)) {
+            $productCategory = (int)Hipay_Helper_Mapping::getHipayCategoryFromMapping($productCategories[0]->term_id);
+        }
 
         $item->__constructItem(
             null,

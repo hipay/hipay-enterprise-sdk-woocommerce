@@ -114,23 +114,27 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
 
         $this->addActions();
 
-        if (!is_wc_endpoint_url('order-received')) {
-            Hipay_SRI_Helper_Curl::enqueue_sdk_with_sri(
-                $this->confHelper->getPaymentGlobal()["sdk_js_url"],
-                'hipay-js-hosted-fields-sdk',
+        // Only load classic checkout scripts if NOT using blocks checkout
+        // Blocks checkout uses its own React components
+        if (!$this->is_blocks_checkout()) {
+            if (!is_wc_endpoint_url('order-received')) {
+                Hipay_SRI_Helper_Curl::enqueue_sdk_with_sri(
+                    $this->confHelper->getPaymentGlobal()["sdk_js_url"],
+                    'hipay-js-hosted-fields-sdk',
+                    array(),
+                    'all',
+                    true
+                );
+            }
+
+            wp_enqueue_script(
+                'hipay-js-front',
+                plugins_url('/assets/js/frontend/hosted-fields.js', WC_HIPAYENTERPRISE_BASE_FILE),
                 array(),
                 'all',
                 true
             );
         }
-
-        wp_enqueue_script(
-            'hipay-js-front',
-            plugins_url('/assets/js/frontend/hosted-fields.js', WC_HIPAYENTERPRISE_BASE_FILE),
-            array(),
-            'all',
-            true
-        );
 
         $this->sandbox = $this->confHelper->getAccount()["global"]["sandbox_mode"];
         $this->username = ($this->sandbox) ? $this->confHelper->getAccount()["sandbox"]["api_tokenjs_username_sandbox"]
@@ -470,7 +474,7 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
     /**
      * Get PayPal options (now using unified caching)
      */
-    protected function getCachedPaypalOptions()
+    public function getCachedPaypalOptions()
     {
         $products = $this->getCachedPaymentProducts('paypal');
 
@@ -491,5 +495,23 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
     protected function isOrderPayPage() {
         global $wp;
         return isset($wp->query_vars['order-pay']) && !empty($wp->query_vars['order-pay']);
+    }
+    
+    /**
+     * Check if current page is using blocks checkout
+     * 
+     * @return bool
+     */
+    protected function is_blocks_checkout()
+    {
+        // Check if we're on a checkout page with blocks
+        if (function_exists('has_block') && is_checkout()) {
+            global $post;
+            if ($post && has_block('woocommerce/checkout', $post)) {
+                return true;
+            }
+        }
+        
+        return false;
     }
 }

@@ -31,3 +31,4 @@ bin/tests/.npmrc
 #  Source  #
 ############
 src/woocommerce_hipayenterprise/composer.lock
+src/woocommerce_hipayenterprise/package-lock.json

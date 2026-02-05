@@ -3,6 +3,26 @@ version=1.0.0
 
 function cleanAndPackage()
 {
+    # Build JavaScript files for WooCommerce Blocks
+    echo "Building JavaScript files for WooCommerce Blocks..."
+    cd src/woocommerce_hipayenterprise
+    
+    if [ ! -d "node_modules" ]; then
+        echo "Installing npm dependencies..."
+        npm install
+    fi
+    
+    echo "Running webpack build..."
+    npm run build
+    
+    if [ ! -f "assets/js/blocks/build/credit-card-block.js" ]; then
+        echo "ERROR: Build failed - credit-card-block.js not found!"
+        exit 1
+    fi
+    
+    echo "Build completed successfully!"
+    cd ../..
+    
     cp -Rf src/woocommerce_hipayenterprise bin/package/
     cd bin/package/
 

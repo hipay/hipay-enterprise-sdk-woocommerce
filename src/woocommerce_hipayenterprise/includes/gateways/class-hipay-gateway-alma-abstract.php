@@ -48,6 +48,39 @@ class Hipay_Gateway_Alma_Abstract extends Hipay_Gateway_Local_Abstract
     }
 
     /**
+     * Override parent method to use limits for Alma
+     * Check if payment method is available for current cart
+     *
+     * @return boolean
+     */
+    public function isAvailableForCurrentCart()
+    {
+        $cartTotals = WC()->cart->get_totals();
+        $country = WC()->customer->get_billing_country();
+        $currency = get_woocommerce_currency();
+        $total = $cartTotals["total"];
+
+        $this->logs->logInfos("isAvailableForCurrentCart() called for Alma " . $this->paymentProduct . ": country=" . $country . ", currency=" . $currency . ", total=" . $total);
+
+        //check country and currency from config
+        $conf = $this->confHelper->getPayment()[Hipay_Config::KEY_LOCAL_PAYMENT][$this->paymentProduct];
+
+        $countryAuthorized = empty($conf["countries"]) || in_array($country, $conf["countries"]);
+        $currencyAuthorized = empty($conf["currencies"]) || in_array($currency, $conf["currencies"]);
+
+        $this->logs->logInfos("isAvailableForCurrentCart() for " . $this->paymentProduct . ": countryAuthorized=" . $countryAuthorized . ", currencyAuthorized=" . $currencyAuthorized);
+
+        if (!$countryAuthorized || !$currencyAuthorized) {
+            $this->logs->logInfos("isAvailableForCurrentCart() for " . $this->paymentProduct . ": FAILED - country or currency not authorized");
+            return false;
+        }
+
+        $isAmountValid = $this->getMinMaxByPaymentProduct($total, $this->paymentProduct);
+
+        return $isAmountValid;
+    }
+
+    /**
      * Get Alma payment products min and max amount limits
      *
      * @return array

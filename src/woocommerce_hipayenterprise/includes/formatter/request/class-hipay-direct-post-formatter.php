@@ -50,7 +50,7 @@ class Hipay_Direct_Post_Formatter extends Hipay_Order_Request_Abstract
         parent::__construct($plugin, $params, $order);
         $this->paymentProduct = $params["paymentProduct"];
         $this->paymentMethod = $params["paymentMethod"];
-        $this->cardHolder = $params["card_holder"];
+        $this->cardHolder = isset($params["card_holder"]) ? $params["card_holder"] : '';
     }
 
     /**
@@ -79,7 +79,18 @@ class Hipay_Direct_Post_Formatter extends Hipay_Order_Request_Abstract
     {
         parent::mapRequest($orderRequest);
 
-        $orderRequest->payment_product = $this->paymentProduct;
+        // CRITICAL: Only set payment_product if it has a valid value
+        // When using card tokens, the HiPay API can determine the payment product from the token
+        if (!empty($this->paymentProduct)) {
+            $orderRequest->payment_product = $this->paymentProduct;
+        } else {
+            // Set to null (not empty string!) so RequestSerializer skips it
+            // RequestSerializer only includes scalar values (bool, int, float, string)
+            // null is NOT scalar, so it won't be included in the API request
+            error_log('HiPay: payment_product is empty, setting to null to omit from API request');
+            $orderRequest->payment_product = null;
+        }
+
         $orderRequest->paymentMethod = $this->paymentMethod;
         $orderRequest->device_fingerprint = $this->params["deviceFingerprint"];
         if (isset($this->params["provider_data"]) && !empty($this->params["provider_data"])) {

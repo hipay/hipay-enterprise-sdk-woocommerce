@@ -65,6 +65,7 @@ msgstr "3 jours"
 msgid "30 days"
 msgstr "30 jours"
 
+#: includes/admin/template/admin-paymentlocal-settings.php:93
 #: includes/admin/template/admin-paymentlocal-settings.php:99
 msgid "90 days"
 msgstr "90 jours"
@@ -97,10 +98,6 @@ msgstr "4x Carte Bancaire - Oney"
 #: includes/gateways/local/class-hipay-oney-4xcb-no-fees.php:34
 msgid "4x Carte Bancaire sans frais - Oney"
 msgstr "4x Carte Bancaire sans frais - Oney"
-
-#: includes/admin/template/admin-paymentlocal-settings.php:93
-msgid "90 days"
-msgstr "90 jours"
 
 #: includes/helper/class-hipay-helper.php:182
 #, php-format
@@ -177,9 +174,7 @@ msgstr "Identifiants API"
 
 #: includes/admin/class-hipay-admin-assets.php:65
 msgid "Are-you sure to capture these elements ?"
-msgstr ""
-"\n"
-"Êtes-vous sûr de capturer ces éléments?"
+msgstr "Êtes-vous sûr de capturer ces éléments?"
 
 #: includes/admin/template/admin-paymentlocal-settings.php:190
 msgid ""
@@ -1016,7 +1011,7 @@ msgid ""
 "enable the 'Send Customer Cart' option."
 msgstr ""
 "Le mapping des modes de livraison est obligatoire pour les modes de paiement "
-"Oney ou si vous activez l'option \"Envoyer le panier\".\n"
+"Oney ou si vous activez l'option \"Envoyer le panier\"."
 
 #: includes/admin/template/admin-global-settings.php:252
 msgid "Maximum number of saved cards displayed by default."
@@ -1681,3 +1676,31 @@ msgstr ""
 #: includes/admin/template/admin-faq-settings.php:133
 msgid "Your credentials must be granted to"
 msgstr "Vous identifiants doivent être configuré pour"
+
+#: includes/gateways/local/class-hipay-paypal.php:123
+msgid "Shipping address is required for PayPal payment."
+msgstr "L'adresse de livraison est requise pour le paiement PayPal."
+
+#: includes/gateways/local/class-hipay-paypal.php:124
+msgid "Invalid delivery address. Please check or correct the following fields: "
+msgstr "Adresse de livraison invalide. Merci de vérifier ou corriger les champs suivants : "
+
+#: includes/gateways/local/class-hipay-paypal.php:125
+msgid "Unable to initialize PayPal. Please check your shipping address."
+msgstr "Impossible d'initialiser PayPal. Veuillez vérifier votre adresse de livraison."
+
+#: includes/gateways/local/class-hipay-paypal.php:126
+msgid "Postal Code"
+msgstr "Code Postal"
+
+#: includes/gateways/local/class-hipay-paypal.php:127
+msgid "City"
+msgstr "Ville"
+
+#: includes/gateways/local/class-hipay-paypal.php:128
+msgid "Country"
+msgstr "Pays"
+
+#: includes/gateways/local/class-hipay-paypal.php:129
+msgid "Street Address"
+msgstr "Adresse"
