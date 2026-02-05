@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## UNRELEASED
+## UNRELEASE
 
 ## 2.9.2
 
