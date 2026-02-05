@@ -112,7 +112,6 @@ const PayPalButton = ({ config, billing, shippingData, cartTotals: cartTotalsPro
 
             addressChangeTimeoutRef.current = setTimeout(() => {
                 const newAddress = getAddressFromDOM();
-                console.log('[HiPay PayPal] DOM address changed:', newAddress);
                 setDomAddress(newAddress);
             }, 300);
         };
@@ -266,8 +265,6 @@ const PayPalButton = ({ config, billing, shippingData, cartTotals: cartTotalsPro
 
         const validationResult = validateShippingAddress(domAddress);
 
-        console.log('[HiPay PayPal] Address changed, validating:', domAddress, validationResult);
-
         // If button was already initialized and address changed, we need to recreate it
         if (initializedRef.current && buttonInstanceRef.current) {
             if (!validationResult.isValid) {
@@ -316,7 +313,7 @@ const PayPalButton = ({ config, billing, shippingData, cartTotals: cartTotalsPro
                 const validationResult = validateShippingAddress(currentAddress);
 
                 if (!validationResult.isValid) {
-                    console.log('[HiPay PayPal] Address validation failed:', validationResult.errorMessage);
+                    console.warn('[HiPay PayPal] Address validation failed:', validationResult.errorMessage);
                     setAddressError(validationResult.errorMessage);
                     setIsLoading(false);
                     return;

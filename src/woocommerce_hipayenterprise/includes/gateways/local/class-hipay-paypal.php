@@ -332,6 +332,7 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
     protected function getShippingAddressForValidation()
     {
         // Check if we're on order-pay page
+        $source = null;
         if ($this->isOrderPayPage()) {
             global $wp;
             if (isset($wp->query_vars['order-pay']) && !empty($wp->query_vars['order-pay'])) {
