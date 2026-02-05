@@ -1,0 +1,44 @@
+# Italian translation for HiPay Enterprise WooCommerce
+# Copyright (C) 2018 HiPay
+# This file is distributed under the same license as the WooCommerce HiPay Enterprise package.
+msgid ""
+msgstr ""
+"Project-Id-Version: WooCommerce HiPay Enterprise\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-01-26 12:00+0000\n"
+"PO-Revision-Date: 2026-01-26 12:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: Italian\n"
+"Language: it_IT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: includes/gateways/local/class-hipay-paypal.php:122
+msgid "Shipping address is required for PayPal payment."
+msgstr "L'indirizzo di spedizione è obbligatorio per il pagamento PayPal."
+
+#: includes/gateways/local/class-hipay-paypal.php:124
+msgid "Invalid delivery address. Please check or correct the following fields: "
+msgstr "Indirizzo di consegna non valido. Si prega di verificare o correggere i seguenti campi: "
+
+#: includes/gateways/local/class-hipay-paypal.php:125
+msgid "Unable to initialize PayPal. Please check your shipping address."
+msgstr "Impossibile inizializzare PayPal. Si prega di verificare l'indirizzo di spedizione."
+
+#: includes/gateways/local/class-hipay-paypal.php:126
+msgid "Postal Code"
+msgstr "Codice Postale"
+
+#: includes/gateways/local/class-hipay-paypal.php:127
+msgid "City"
+msgstr "Città"
+
+#: includes/gateways/local/class-hipay-paypal.php:128
+msgid "Country"
+msgstr "Paese"
+
+#: includes/gateways/local/class-hipay-paypal.php:129
+msgid "Street Address"
+msgstr "Indirizzo"

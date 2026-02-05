@@ -188,6 +188,17 @@ abstract class Hipay_Local_Payment_Block_Abstract extends Hipay_Payment_Block_Ab
                         'buttonLabel' => $methodConf['buttonLabel'] ?? 'paypal',
                         'buttonHeight' => $methodConf['buttonHeight'] ?? 40,
                         'bnpl' => $methodConf['bnpl'] ?? false,
+                        'i18n' => [
+                            'addressRequired' => __('Shipping address is required for PayPal payment.', 'hipayenterprise'),
+                            'invalidAddressPrefix' => __('Invalid delivery address. Please check or correct the following fields: ', 'hipayenterprise'),
+                            'unableToInitialize' => __('Unable to initialize PayPal. Please check your shipping address.', 'hipayenterprise'),
+                            'fieldNames' => [
+                                'zipCode' => __('Postal Code', 'hipayenterprise'),
+                                'city' => __('City', 'hipayenterprise'),
+                                'country' => __('Country', 'hipayenterprise'),
+                                'streetaddress' => __('Street Address', 'hipayenterprise'),
+                            ]
+                        ]
                     ];
                 }
             } catch (Exception $e) {
