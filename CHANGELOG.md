@@ -1,6 +1,9 @@
 # CHANGELOG
 
-## UNRELEASE
+## UNRELEASED
+
+## 2.9.2
+
 - **Fix** : Alma issues on Woocommerce
 - **Fix** : Fixed shipping address for Paypal v2
 
