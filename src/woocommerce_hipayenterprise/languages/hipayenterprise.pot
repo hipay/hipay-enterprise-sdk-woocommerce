@@ -1519,3 +1519,31 @@ msgstr ""
 #: includes/admin/template/admin-faq-settings.php:133
 msgid "Your credentials must be granted to"
 msgstr ""
+
+#: includes/gateways/local/class-hipay-paypal.php:123
+msgid "Shipping address is required for PayPal payment."
+msgstr ""
+
+#: includes/gateways/local/class-hipay-paypal.php:124
+msgid "Invalid delivery address. Please check or correct the following fields: "
+msgstr ""
+
+#: includes/gateways/local/class-hipay-paypal.php:125
+msgid "Unable to initialize PayPal. Please check your shipping address."
+msgstr ""
+
+#: includes/gateways/local/class-hipay-paypal.php:126
+msgid "Postal Code"
+msgstr ""
+
+#: includes/gateways/local/class-hipay-paypal.php:127
+msgid "City"
+msgstr ""
+
+#: includes/gateways/local/class-hipay-paypal.php:128
+msgid "Country"
+msgstr ""
+
+#: includes/gateways/local/class-hipay-paypal.php:129
+msgid "Street Address"
+msgstr ""

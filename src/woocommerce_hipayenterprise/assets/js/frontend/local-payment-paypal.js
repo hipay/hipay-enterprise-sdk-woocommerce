@@ -62,6 +62,7 @@ jQuery(document).ready(($) => {
       Object.keys(methodsInstance).forEach(
         (key) => delete methodsInstance[key]
       );
+      $('#paypal-field').empty();
     };
 
     return {
@@ -76,13 +77,101 @@ jQuery(document).ready(($) => {
   const paypalIntegration = (() => {
     let methodsInstance = {};
 
+    const getCurrentShippingAddress = () => {
+
+      const getFieldValue = (fieldId) => {
+        const field = $(fieldId);
+        if (!field.length) {
+          return '';
+        }
+
+        const value = field[0] ? field[0].value : field.val();
+        const trimmedValue = value ? String(value).trim() : '';
+
+        return trimmedValue;
+      };
+
+      const zipCode = getFieldValue('#shipping_postcode') || getFieldValue('#billing_postcode');
+      const city = getFieldValue('#shipping_city') || getFieldValue('#billing_city');
+      const country = getFieldValue('#shipping_country') || getFieldValue('#billing_country');
+      const streetaddress = getFieldValue('#shipping_address_1') || getFieldValue('#billing_address_1');
+      const streetaddress2 = getFieldValue('#shipping_address_2') || getFieldValue('#billing_address_2');
+      const firstname = getFieldValue('#shipping_first_name') || getFieldValue('#billing_first_name');
+      const lastname = getFieldValue('#shipping_last_name') || getFieldValue('#billing_last_name');
+
+      const address = {
+        zipCode: zipCode,
+        city: city,
+        country: country,
+        streetaddress: streetaddress,
+        streetaddress2: streetaddress2,
+        firstname: firstname,
+        lastname: lastname
+      };
+
+      return address;
+    };
+
+    const validateShippingAddress = (address) => {
+      const addressObj = address || {};
+      const requiredFields = ['zipCode', 'city', 'country', 'streetaddress'];
+
+      const missingFields = requiredFields.filter((field) => {
+        const value = addressObj[field];
+        return !value || (typeof value === 'string' && value.trim() === '');
+      });
+
+
+      if (missingFields.length > 0) {
+
+        const translatedFields = missingFields.map((field) => {
+          return hipay_config_paypal.i18n.fieldNames[field] || field;
+        });
+
+        return {
+          isValid: false,
+          errorMessage:
+            hipay_config_paypal.i18n.invalidAddressPrefix +
+            translatedFields.join(', ') +
+            '.'
+        };
+      }
+
+      return { isValid: true };
+    };
+
+    const showAddressError = (errorMessage) => {
+      const errorDiv = $('#error-js-paypal');
+      const paypalField = $('#paypal-field');
+
+      paypalField.empty();
+      paypalField.removeAttr('data-paypal-button');
+      paypalField.hide();
+
+      errorDiv.html(errorMessage).show();
+    };
+
+    const hideAddressError = () => {
+      const errorDiv = $('#error-js-paypal');
+      const paypalField = $('#paypal-field');
+
+      errorDiv.html('').hide();
+      paypalField.empty().show();
+    };
+
     const init = (selectors) => {
       const method = checkoutUtils.getSelectedMethod();
       checkoutUtils.handleSubmitButton(method, selectors);
 
       if (method === 'paypal' && paypal_version?.v2 !== null) {
-        methodsInstance[method] = createPaypalInstance(method);
-        handlePaypalEvents(methodsInstance[method], selectors.checkoutForm);
+        const paypalInstance = createPaypalInstance(method);
+
+        if (paypalInstance) {
+          methodsInstance[method] = paypalInstance;
+          handlePaypalEvents(methodsInstance[method], selectors.checkoutForm);
+        } else {
+          checkoutUtils.handleSubmitButton(method, selectors);
+        }
       }
     };
 
@@ -92,6 +181,24 @@ jQuery(document).ready(($) => {
         if (!paypalFieldExists) {
           return null;
         }
+
+        const paypalField = $('#paypal-field');
+
+        const containerContent = paypalField.html();
+
+        const shippingAddress = getCurrentShippingAddress();
+
+        const validationResult = validateShippingAddress(shippingAddress);
+
+        if (!validationResult.isValid) {
+          showAddressError(validationResult.errorMessage);
+          return null;
+        }
+
+        paypalField.empty();
+        paypalField.removeAttr('data-paypal-button');
+
+        hideAddressError();
 
         const hipaySDK = new HiPay({
           username: hipay_config_paypal.apiUsernameTokenJs,
@@ -105,7 +212,16 @@ jQuery(document).ready(($) => {
           request: {
             locale: hipay_config_paypal.locale,
             currency: hipay_config_paypal.currency,
-            amount: String(hipay_config_paypal.amount)
+            amount: String(hipay_config_paypal.amount),
+            customerShippingInformation: {
+              zipCode: shippingAddress.zipCode,
+              city: shippingAddress.city,
+              country: shippingAddress.country,
+              streetaddress: shippingAddress.streetaddress,
+              streetaddress2: shippingAddress.streetaddress2 || '',
+              firstname: shippingAddress.firstname || '',
+              lastname: shippingAddress.lastname || ''
+            }
           },
           paypalButtonStyle: {
             shape: hipay_config_paypal.buttonShape,
@@ -117,9 +233,24 @@ jQuery(document).ready(($) => {
           canPayLater: Boolean(hipay_config_paypal.bnpl)
         };
 
-        return hipaySDK.create(method, options);
+        const instance = hipaySDK.create(method, options);
+
+        if (instance && typeof instance.catch === 'function') {
+          instance.catch((error) => {
+            showAddressError(
+              hipay_config_paypal.i18n.unableToInitialize
+            );
+            if (typeof instance.destroy === 'function') {
+              instance.destroy();
+            }
+          });
+        }
+
+        return instance;
       } catch (error) {
-        console.error('Error creating PayPal instance:', error);
+        showAddressError(
+          hipay_config_paypal.i18n.unableToInitialize
+        );
         return null;
       }
     };
@@ -149,7 +280,7 @@ jQuery(document).ready(($) => {
       if (selectedMethod === 'paypal') {
         init(selectors);
       } else {
-        // Handle button restoration when PayPal is deselected
+        hideAddressError();
         checkoutUtils.handleSubmitButton(selectedMethod, selectors);
       }
     };
@@ -162,6 +293,7 @@ jQuery(document).ready(($) => {
 
   const checkoutEventHandlers = (() => {
     let pageLoaded = false;
+    let addressChangeTimeout = null;
     const selectors = checkoutUtils.cacheSelectors();
 
     const handlePaymentMethodChange = () => {
@@ -215,6 +347,36 @@ jQuery(document).ready(($) => {
           handleOrderReviewUpdate();
         }
       });
+
+      if (!isOrderPayPage) {
+        const addressFields = [
+          '#shipping_postcode',
+          '#shipping_city',
+          '#shipping_country',
+          '#shipping_address_1',
+          '#billing_postcode',
+          '#billing_city',
+          '#billing_country',
+          '#billing_address_1'
+        ].join(', ');
+
+        $(document.body).on('change blur input', addressFields, function() {
+          const selectedMethod = checkoutUtils.getSelectedMethod();
+          const fieldId = $(this).attr('id');
+          const fieldValue = this.value;
+
+          if (selectedMethod === 'paypal' && paypal_version?.v2 !== null) {
+            if (addressChangeTimeout) {
+              clearTimeout(addressChangeTimeout);
+            }
+
+            addressChangeTimeout = setTimeout(() => {
+              paypalIntegration.updateMethods(selectors);
+              addressChangeTimeout = null;
+            }, 800);
+          }
+        });
+      }
     };
 
     return {
