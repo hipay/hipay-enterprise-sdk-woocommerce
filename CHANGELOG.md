@@ -6,6 +6,8 @@
 
 - **Fix** : Alma issues on Woocommerce
 - **Fix** : Fixed shipping address for Paypal v2
+- **Fix** : Update iDeal logo
+- **Fix** : Fixed compatibility with Woocommerce Checkout Blocks
 
 ## 2.9.1
 
