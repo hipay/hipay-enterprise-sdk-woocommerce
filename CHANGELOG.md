@@ -1,6 +1,7 @@
 # CHANGELOG
 
 ## UNRELEASE
+- **Fix** : fix order not updated due to conflict with WPML plugin
 
 ## 2.9.2
 

@@ -66,6 +66,11 @@ class Hipay_Notification
     {
         $this->plugin = $plugin;
         $this->transaction = (new HiPay\Fullservice\Gateway\Mapper\TransactionMapper($data))->getModelObjectMapped();
+
+        //[PI-4682]  WPML's filter crashes with the error:
+        //  Cannot access offset of type array in isset or empty.
+        unset($_POST['payment_method']);
+
         $plugin->logs->logCallback(print_r($this->transaction, true));
 
         $this->confHelper = new Hipay_Config();
@@ -109,11 +114,6 @@ class Hipay_Notification
             );
 
             $this->orderHandler->saveTransactionId($this->transaction->getTransactionReference());
-            update_post_meta(
-                $this->order->get_id(),
-                '_transaction_id',
-                $this->transaction->getTransactionReference()
-            );
 
             $this->orderHandler->addNote(Hipay_Helper::formatOrderData($this->transaction));
             $this->transactionsHelper->saveTransaction($this->order, $this->transaction);
@@ -244,10 +244,11 @@ class Hipay_Notification
 
             if ($this->transaction->getStatus() == TransactionStatus::AUTHORIZED ||
                 $this->transaction->getStatus() == TransactionStatus::CAPTURED) {
-                $customData = $this->transaction->getCustomData();
-                if ((isset($customData["createOneClick"])
-                        && $customData["createOneClick"])
-                ) {
+                $customDataRaw = $this->transaction->getCustomData();
+                $customData = is_array($customDataRaw)
+                    ? $customDataRaw
+                    : (is_string($customDataRaw) ? json_decode($customDataRaw, true) : array());
+                if (!empty($customData["createOneClick"])) {
 
                     $paymentMethod = $this->transaction->getPaymentMethod();
                     $token = Hipay_Token_Helper::cardExists(
