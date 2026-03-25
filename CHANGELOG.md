@@ -2,6 +2,7 @@
 
 ## UNRELEASE
 - **Fix** : fix order not updated due to conflict with WPML plugin
+- **Add** : Added Apple Pay (Classic/Blocks Checkout)
 
 ## 2.9.2
 
