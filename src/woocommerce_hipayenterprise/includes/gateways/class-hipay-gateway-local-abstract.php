@@ -32,7 +32,10 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
         $this->has_fields = true;
         parent::__construct();
 
-        $methodConf = $this->confHelper->getLocalPayment($this->paymentProduct);
+        $dbConf = $this->confHelper->getLocalPayment($this->paymentProduct) ?: [];
+        $jsonDefaults = $this->confHelper->getLocalPaymentDefaults($this->paymentProduct);
+
+        $methodConf  = array_merge($dbConf, $jsonDefaults);
 
         if (!empty($methodConf["displayName"][Hipay_Helper::getLanguage()])) {
             $this->title = $methodConf["displayName"][Hipay_Helper::getLanguage()];
@@ -47,15 +50,17 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
         $this->init_form_fields();
         $this->init_settings();
 
-        if ($methodConf["canManualCapture"]) {
+        $jsonDefaults = $this->confHelper->getLocalPaymentDefaults($this->paymentProduct);
+
+        if (!empty($jsonDefaults["canManualCapture"])) {
             $this->supports[] = "captures";
         }
 
-        if ($methodConf["canManualCapturePartially"]) {
+        if (!empty($jsonDefaults["canManualCapturePartially"])) {
             $this->supports[] = "partialCaptures";
         }
 
-        if ($methodConf["canRefund"]) {
+        if (!empty($jsonDefaults["canRefund"])) {
             $this->supports[] = "refunds";
         }
 
@@ -115,11 +120,17 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
     public function generate_methods_local_payments_settings_html()
     {
         ob_start();
+
+        $dbConfig       = $this->confHelper->getLocalPayment($this->paymentProduct) ?: [];
+        $jsonDefaults   = $this->confHelper->getLocalPaymentDefaults($this->paymentProduct);
+
+        $config = array_merge($jsonDefaults, $dbConfig);
+
         $this->process_template(
             'admin-paymentlocal-settings.php',
             'admin',
             [
-                'configurationPaymentMethod' => $this->confHelper->getLocalPayment($this->paymentProduct),
+                'configurationPaymentMethod' => $config,
                 'method' => $this->paymentProduct
             ]
         );

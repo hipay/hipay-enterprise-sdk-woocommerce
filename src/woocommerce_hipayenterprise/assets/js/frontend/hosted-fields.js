@@ -290,6 +290,11 @@ jQuery(function ($) {
       return true;
     }
 
+      const containerId = isCreditCardSelected() ? 'hipayHF-container-card' : 'hipayHF-container-' + method;
+      if (!document.getElementById(containerId)) {
+          return true;
+      }
+
     if (typeof methodsInstance[method] !== 'undefined') {
       return methodsInstance[method];
     }

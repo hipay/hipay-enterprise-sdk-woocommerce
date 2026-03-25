@@ -130,6 +130,11 @@ class Hipay_Config
                     "api_tokenjs_username_sandbox" => "",
                     "api_tokenjs_password_publickey_sandbox" => "",
                     "api_secret_passphrase_sandbox" => "",
+                    "api_apple_pay_username_sandbox" => "",
+                    "api_apple_pay_password_sandbox" => "",
+                    "api_apple_pay_passphrase_sandbox" => "",
+                    "api_apple_pay_tokenjs_username_sandbox" => "",
+                    "api_apple_pay_tokenjs_password_sandbox" => "",
                 ),
                 "production" => array(
                     "api_username_production" => "",
@@ -137,6 +142,11 @@ class Hipay_Config
                     "api_tokenjs_username_production" => "",
                     "api_tokenjs_password_publickey_production" => "",
                     "api_secret_passphrase_production" => "",
+                    "api_apple_pay_username_production" => "",
+                    "api_apple_pay_password_production" => "",
+                    "api_apple_pay_passphrase_production" => "",
+                    "api_apple_pay_tokenjs_username_production" => "",
+                    "api_apple_pay_tokenjs_password_production" => "",
                 ),
                 "hash_algorithm" => array(
                     "production" => HashAlgorithm::SHA256,
@@ -295,6 +305,23 @@ class Hipay_Config
     }
 
     /**
+     * Return the raw defaults for a local payment method from its JSON file.
+     * Used to fill in keys that are missing from a stored (potentially stale) DB config.
+     *
+     * @param $paymentId
+     * @return array
+     */
+    public function getLocalPaymentDefaults($paymentId)
+    {
+        $file = $this->jsonFilesPath . 'local/' . $paymentId . '.json';
+        if (file_exists($file)) {
+            $json = json_decode(file_get_contents($file), true);
+            return isset($json['config']) ? $json['config'] : [];
+        }
+        return [];
+    }
+
+    /**
      * @param $value
      * @return mixed
      */
@@ -361,6 +388,9 @@ class Hipay_Config
             if ($sdkConfig !== null) {
                 // Array merge gives priority to the last array over the first when keys are in both tables
                 $creditCard[$json["name"]] = array_merge($sdkConfig->toArray(), $json["config"]);
+            } else {
+                // Payment method not yet in SDK (e.g. Apple Pay): use only the JSON config
+                $creditCard[$json["name"]] = $json["config"];
             }
         }
 

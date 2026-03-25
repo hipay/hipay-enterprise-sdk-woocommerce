@@ -86,6 +86,9 @@ abstract class Hipay_Local_Payment_Block_Abstract extends Hipay_Payment_Block_Ab
                     $mappedKey = 'browserInfo';
                 }
                 $_POST[$mappedKey] = $value;
+            } elseif (strpos($key, $this->paymentProduct . '-') === 0) {
+                // avoid double-prefixing
+                $_POST[$key] = $value;
             } else {
                 // Prefix other keys with payment product
                 $_POST[$this->paymentProduct . '-' . $key] = $value;
