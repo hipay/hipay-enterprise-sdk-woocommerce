@@ -55,7 +55,7 @@ final class Hipay_Applepay_Block extends Hipay_Local_Payment_Block_Abstract
         $config['apiUsernameTokenJs'] = $apiUsername;
         $config['apiPasswordTokenJs'] = $apiPassword;
         $config['buttonType']         = $methodConf['buttonType'] ?? 'plain';
-        $config['buttonStyle']        = $methodConf['buttonStyle'] ?? 'white';
+        $config['buttonStyle']        = $methodConf['buttonStyle'] ?? 'black';
         $config['shopName']           = get_bloginfo('name');
         $config['currency']           = get_woocommerce_currency();
         $config['countryCode']        = $countryCode;

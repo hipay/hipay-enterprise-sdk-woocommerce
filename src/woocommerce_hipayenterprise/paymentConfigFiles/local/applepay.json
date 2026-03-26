@@ -23,7 +23,7 @@
     "currencies": [],
     "countries": [],
     "buttonType": "plain",
-    "buttonStyle": "white",
+    "buttonStyle": "black",
     "merchantId": "",
     "minAmount": {
       "EUR": 0

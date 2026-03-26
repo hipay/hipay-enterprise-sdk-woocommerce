@@ -321,7 +321,7 @@
 
             var applePayStyle = {
                 type:  config.buttonType  || 'plain',
-                color: config.buttonStyle || 'white',
+                color: config.buttonStyle || 'black',
             };
 
 

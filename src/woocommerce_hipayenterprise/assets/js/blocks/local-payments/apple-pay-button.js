@@ -157,7 +157,7 @@ const ApplePayButton = ({ config, onPaymentDataChange }) => {
 
                 const applePayStyle = {
                     type:  config.buttonType  || 'plain',
-                    color: config.buttonStyle || 'white',
+                    color: config.buttonStyle || 'black',
                 };
 
                 const applePayInstance = hipay.create('paymentRequestButton', {

@@ -98,7 +98,7 @@ class Hipay_Applepay extends Hipay_Gateway_Local_Abstract
             'environment'        => $sandbox ? 'stage' : 'production',
             'lang'               => substr(apply_filters('hipay_locale', get_locale()), 0, 2),
             'buttonType'         => $paymentProductConfig['buttonType'] ?? 'plain',
-            'buttonStyle'        => $paymentProductConfig['buttonStyle'] ?? 'white',
+            'buttonStyle'        => $paymentProductConfig['buttonStyle'] ?? 'black',
             'shopName'           => get_bloginfo('name'),
             'amount'             => $this->getCartAmount(),
             'currency'           => get_woocommerce_currency(),
