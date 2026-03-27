@@ -48,10 +48,12 @@ class Hipay_Applepay extends Hipay_Gateway_Local_Abstract
 
         $paymentProductConfig = $this->confHelper->getLocalPayment($this->paymentProduct);
 
-        if (!is_admin() && $paymentProductConfig
-            && (is_checkout() || is_add_payment_method_page())
-            && !is_order_received_page()) {
-            $this->enqueueApplePayScripts($paymentProductConfig);
+        if (!is_admin() && $paymentProductConfig) {
+            add_action('wp_enqueue_scripts', function () use ($paymentProductConfig) {
+                if ((is_checkout() || is_add_payment_method_page()) && !is_order_received_page()) {
+                    $this->enqueueApplePayScripts($paymentProductConfig);
+                }
+            });
         }
     }
 
