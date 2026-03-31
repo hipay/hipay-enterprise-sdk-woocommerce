@@ -114,7 +114,14 @@ if (!class_exists('WC_Gateway_Hipay')) {
         {
             $transactionReference = Hipay_Helper::getPostData('$1', '');
 
-            if (!Hipay_Helper::checkSignature($this)) {
+            $isApplePay = false;
+            $customData = Hipay_Helper::getPostData('custom_data');
+            if (!empty($customData)) {
+                $customDataArray = is_array($customData) ? $customData : json_decode($customData, true);
+                $isApplePay = !empty($customDataArray['isApplePay']);
+            }
+
+            if (!Hipay_Helper::checkSignature($this, $isApplePay)) {
                 $this->logs->logErrors("Notify : Signature is wrong for Transaction $transactionReference.");
                 header('HTTP/1.1 403 Forbidden');
                 die('Bad Callback initiated - signature');
@@ -123,7 +130,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
             try {
                 $notification = new Hipay_Notification($this, $_POST);
                 $notification->processTransaction();
-            } catch (Exception $e) {
+            } catch (\Throwable $e) {
                 header("HTTP/1.0 500 Internal server error");
             }
         }

@@ -301,3 +301,31 @@
     padding: 20px;
     color: #666;
 }
+
+/* Apple Pay Style */
+
+.wc-block-checkout .hipay-applepay-blocks-container,
+.wc-block-cart .hipay-applepay-blocks-container {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.wc-block-checkout .hipay-applepay-button-container,
+.wc-block-cart .hipay-applepay-button-container {
+    width: 100%;
+    max-width: 100%;
+    min-width: 200px;
+    height: 44px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.wc-block-checkout .hipay-applepay-button-container > div,
+.wc-block-checkout .hipay-applepay-button-container apple-pay-button,
+.wc-block-cart .hipay-applepay-button-container > div,
+.wc-block-cart .hipay-applepay-button-container apple-pay-button {
+    width: 100%;
+    max-width: 100%;
+    height: 44px;
+}

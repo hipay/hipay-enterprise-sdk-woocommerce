@@ -116,7 +116,22 @@ class Hipay_Settings_Handler
                 ),
                 "api_tokenjs_password_publickey_sandbox" => Hipay_Helper::getPostData(
                     'woocommerce_hipayenterprise_account_sandbox_password_publickey'
-                )
+                ),
+                "api_apple_pay_username_sandbox" => Hipay_Helper::getPostData(
+                    'woocommerce_hipayenterprise_account_sandbox_apple_pay_username'
+                ),
+                "api_apple_pay_password_sandbox" => Hipay_Helper::getPostData(
+                    'woocommerce_hipayenterprise_account_sandbox_apple_pay_password'
+                ),
+                "api_apple_pay_passphrase_sandbox" => Hipay_Helper::getPostData(
+                    'woocommerce_hipayenterprise_account_sandbox_apple_pay_passphrase'
+                ),
+                "api_apple_pay_tokenjs_username_sandbox" => Hipay_Helper::getPostData(
+                    'woocommerce_hipayenterprise_account_sandbox_apple_pay_tokenjs_username'
+                ),
+                "api_apple_pay_tokenjs_password_sandbox" => Hipay_Helper::getPostData(
+                    'woocommerce_hipayenterprise_account_sandbox_apple_pay_tokenjs_password'
+                ),
             );
 
             $settings["account"]["production"] = array(
@@ -134,7 +149,22 @@ class Hipay_Settings_Handler
                 ),
                 "api_tokenjs_password_publickey_production" => Hipay_Helper::getPostData(
                     'woocommerce_hipayenterprise_account_production_password_publickey'
-                )
+                ),
+                "api_apple_pay_username_production" => Hipay_Helper::getPostData(
+                    'woocommerce_hipayenterprise_account_production_apple_pay_username'
+                ),
+                "api_apple_pay_password_production" => Hipay_Helper::getPostData(
+                    'woocommerce_hipayenterprise_account_production_apple_pay_password'
+                ),
+                "api_apple_pay_passphrase_production" => Hipay_Helper::getPostData(
+                    'woocommerce_hipayenterprise_account_production_apple_pay_passphrase'
+                ),
+                "api_apple_pay_tokenjs_username_production" => Hipay_Helper::getPostData(
+                    'woocommerce_hipayenterprise_account_production_apple_pay_tokenjs_username'
+                ),
+                "api_apple_pay_tokenjs_password_production" => Hipay_Helper::getPostData(
+                    'woocommerce_hipayenterprise_account_production_apple_pay_tokenjs_password'
+                ),
             );
 
             $settings["account"]["hash_algorithm"] = $this->plugin->confHelper->getHashAlgorithm();
@@ -318,10 +348,14 @@ class Hipay_Settings_Handler
                 "buttonLabel",
                 "buttonColor",
                 "buttonHeight",
-                "bnpl"
+                "bnpl",
+                "buttonType",
+                "buttonStyle",
             );
 
+            $jsonDefaults = $this->plugin->confHelper->getLocalPaymentDefaults($methods);
             $settings = $this->plugin->confHelper->getLocalPayments();
+            $settings[$methods] = array_merge($jsonDefaults, $settings[$methods] ?? []);
 
             foreach ($settings[$methods] as $key => $value) {
                 if (in_array($key, $keySaved)) {

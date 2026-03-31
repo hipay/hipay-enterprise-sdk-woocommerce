@@ -316,4 +316,66 @@
         </div>
     </div>
     <?php endif; ?>
+    <?php if (isset($configurationPaymentMethod["buttonType"]) || in_array("buttonType", $configurationPaymentMethod["displayConfigurationFields"] ?? [])) : ?>
+        <div class="form-group">
+            <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_methods_buttonType<?php echo $method; ?>">
+                <?php _e('Button Type', "hipayenterprise"); ?>
+            </label>
+            <div class="col-lg-8">
+                <?php $buttonType = $configurationPaymentMethod["buttonType"] ?? 'plain'; ?>
+                <select class="form-control" name="woocommerce_hipayenterprise_methods_buttonType_<?php echo $method; ?>"
+                        id="woocommerce_hipayenterprise_methods_buttonType<?php echo $method; ?>">
+                    <option value="plain" <?php if ($buttonType == "plain") { echo "selected"; } ?>>
+                        <?php _e('Plain', "hipayenterprise"); ?>
+                    </option>
+                    <option value="buy" <?php if ($buttonType == "buy") { echo "selected"; } ?>>
+                        <?php _e('Buy', "hipayenterprise"); ?>
+                    </option>
+                    <option value="donate" <?php if ($buttonType == "donate") { echo "selected"; } ?>>
+                        <?php _e('Donate', "hipayenterprise"); ?>
+                    </option>
+                    <option value="book" <?php if ($buttonType == "book") { echo "selected"; } ?>>
+                        <?php _e('Book', "hipayenterprise"); ?>
+                    </option>
+                    <option value="subscribe" <?php if ($buttonType == "subscribe") { echo "selected"; } ?>>
+                        <?php _e('Subscribe', "hipayenterprise"); ?>
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_methods_buttonStyle<?php echo $method; ?>">
+                <?php _e('Button Style', "hipayenterprise"); ?>
+            </label>
+            <div class="col-lg-8">
+                <?php $buttonStyle = $configurationPaymentMethod["buttonStyle"] ?? 'black'; ?>
+                <select class="form-control" name="woocommerce_hipayenterprise_methods_buttonStyle_<?php echo $method; ?>"
+                        id="woocommerce_hipayenterprise_methods_buttonStyle<?php echo $method; ?>">
+                    <option value="black" <?php if ($buttonStyle == "black") { echo "selected"; } ?>>
+                        <?php _e('Black', "hipayenterprise"); ?>
+                    </option>
+                    <option value="white" <?php if ($buttonStyle == "white") { echo "selected"; } ?>>
+                        <?php _e('White', "hipayenterprise"); ?>
+                    </option>
+                    <option value="white-outline" <?php if ($buttonStyle == "white-outline") { echo "selected"; } ?>>
+                        <?php _e('White with outline', "hipayenterprise"); ?>
+                    </option>
+                </select>
+            </div>
+        </div>
+    <?php endif; ?>
+    <?php if (in_array("merchantId", $configurationPaymentMethod["displayConfigurationFields"] ?? [])) : ?>
+        <div class="form-group">
+            <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_methods_merchantId<?php echo $method; ?>">
+                <?php _e('Merchant ID', "hipayenterprise"); ?>
+            </label>
+            <div class="col-lg-8">
+                <input class="form-control" type="text"
+                       name="woocommerce_hipayenterprise_methods_merchantId_<?php echo $method; ?>"
+                       id="woocommerce_hipayenterprise_methods_merchantId<?php echo $method; ?>"
+                       value="<?php echo esc_attr($configurationPaymentMethod["merchantId"] ?? ''); ?>"
+                       placeholder="">
+            </div>
+        </div>
+    <?php endif; ?>
 </div>
