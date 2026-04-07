@@ -1,6 +1,9 @@
 # CHANGELOG
 
 ## UNRELEASE
+
+## 2.10.0
+
 - **Fix** : fix order not updated due to conflict with WPML plugin
 - **Add** : Added Apple Pay (Classic/Blocks Checkout)
 
