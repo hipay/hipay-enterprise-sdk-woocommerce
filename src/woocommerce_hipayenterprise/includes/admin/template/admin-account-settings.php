@@ -163,4 +163,143 @@
     </div>
 </div>
 
+
+<div class="panel">
+    <h3 class="wc-settings-sub-title" id="woocommerce_hipayenterprise_api_tab_applepay">
+        <i class='dashicons dashicons-admin-network'></i>
+        <?php _e('Apple Pay configuration (Production)', "hipayenterprise"); ?>
+    </h3>
+    <p class="description"><?php _e(
+                'Optional. If left empty, the standard API credentials above will be used for Apple Pay. Make sure to add the field <code>custom_data</code> among the notification fields in your HiPay merchant account settings.',
+                "hipayenterprise"
+        ); ?></p>
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_account_production_apple_pay_username">
+                <?php _e('Apple Pay Username', "hipayenterprise"); ?>
+            </label>
+            <div class="col-lg-8">
+                <input class="form-control" type="text"
+                       name="woocommerce_hipayenterprise_account_production_apple_pay_username"
+                       id="woocommerce_hipayenterprise_account_production_apple_pay_username"
+                       value="<?php echo esc_textarea($account["production"]["api_apple_pay_username_production"] ?? ''); ?>">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_account_production_apple_pay_password">
+                <?php _e('Apple Pay Password', "hipayenterprise"); ?>
+            </label>
+            <div class="col-lg-8">
+                <input class="form-control" type="password"
+                       name="woocommerce_hipayenterprise_account_production_apple_pay_password"
+                       id="woocommerce_hipayenterprise_account_production_apple_pay_password"
+                       value="<?php echo esc_textarea($account["production"]["api_apple_pay_password_production"] ?? ''); ?>">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_account_production_apple_pay_passphrase">
+                <?php _e('Apple Pay Secret passphrase', "hipayenterprise"); ?>
+            </label>
+            <div class="col-lg-8">
+                <input class="form-control" type="password"
+                       name="woocommerce_hipayenterprise_account_production_apple_pay_passphrase"
+                       id="woocommerce_hipayenterprise_account_production_apple_pay_passphrase"
+                       value="<?php echo esc_textarea($account["production"]["api_apple_pay_passphrase_production"] ?? ''); ?>">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_account_production_apple_pay_tokenjs_username">
+                <?php _e('Apple Pay Tokenization (Public)', "hipayenterprise"); ?>
+            </label>
+            <div class="col-lg-8">
+                <input class="form-control" type="text"
+                       name="woocommerce_hipayenterprise_account_production_apple_pay_tokenjs_username"
+                       id="woocommerce_hipayenterprise_account_production_apple_pay_tokenjs_username"
+                       value="<?php echo esc_textarea($account["production"]["api_apple_pay_tokenjs_username_production"] ?? ''); ?>">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_account_production_apple_pay_tokenjs_password">
+                <?php _e('Apple Pay Tokenization Password', "hipayenterprise"); ?>
+            </label>
+            <div class="col-lg-8">
+                <input class="form-control" type="text"
+                       name="woocommerce_hipayenterprise_account_production_apple_pay_tokenjs_password"
+                       id="woocommerce_hipayenterprise_account_production_apple_pay_tokenjs_password"
+                       value="<?php echo esc_textarea($account["production"]["api_apple_pay_tokenjs_password_production"] ?? ''); ?>">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel">
+    <h3 class="wc-settings-sub-title" id="woocommerce_hipayenterprise_api_tab_applepay_sandbox">
+        <i class='dashicons dashicons-admin-network'></i>
+        <?php _e('Apple Pay configuration (Sandbox)', "hipayenterprise"); ?>
+    </h3>
+    <p class="description"><?php _e(
+                'Optional. If left empty, the standard sandbox API credentials above will be used for Apple Pay.',
+                "hipayenterprise"
+        ); ?></p>
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_account_sandbox_apple_pay_username">
+                <?php _e('Apple Pay Username', "hipayenterprise"); ?>
+            </label>
+            <div class="col-lg-8">
+                <input class="form-control" type="text"
+                       name="woocommerce_hipayenterprise_account_sandbox_apple_pay_username"
+                       id="woocommerce_hipayenterprise_account_sandbox_apple_pay_username"
+                       value="<?php echo esc_textarea($account["sandbox"]["api_apple_pay_username_sandbox"] ?? ''); ?>">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_account_sandbox_apple_pay_password">
+                <?php _e('Apple Pay Password', "hipayenterprise"); ?>
+            </label>
+            <div class="col-lg-8">
+                <input class="form-control" type="password"
+                       name="woocommerce_hipayenterprise_account_sandbox_apple_pay_password"
+                       id="woocommerce_hipayenterprise_account_sandbox_apple_pay_password"
+                       value="<?php echo esc_textarea($account["sandbox"]["api_apple_pay_password_sandbox"] ?? ''); ?>">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_account_sandbox_apple_pay_passphrase">
+                <?php _e('Apple Pay Secret passphrase', "hipayenterprise"); ?>
+            </label>
+            <div class="col-lg-8">
+                <input class="form-control" type="password"
+                       name="woocommerce_hipayenterprise_account_sandbox_apple_pay_passphrase"
+                       id="woocommerce_hipayenterprise_account_sandbox_apple_pay_passphrase"
+                       value="<?php echo esc_textarea($account["sandbox"]["api_apple_pay_passphrase_sandbox"] ?? ''); ?>">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_account_sandbox_apple_pay_tokenjs_username">
+                <?php _e('Apple Pay Tokenization (Public)', "hipayenterprise"); ?>
+            </label>
+            <div class="col-lg-8">
+                <input class="form-control" type="text"
+                       name="woocommerce_hipayenterprise_account_sandbox_apple_pay_tokenjs_username"
+                       id="woocommerce_hipayenterprise_account_sandbox_apple_pay_tokenjs_username"
+                       value="<?php echo esc_textarea($account["sandbox"]["api_apple_pay_tokenjs_username_sandbox"] ?? ''); ?>">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_account_sandbox_apple_pay_tokenjs_password">
+                <?php _e('Apple Pay Tokenization Password', "hipayenterprise"); ?>
+            </label>
+            <div class="col-lg-8">
+                <input class="form-control" type="text"
+                       name="woocommerce_hipayenterprise_account_sandbox_apple_pay_tokenjs_password"
+                       id="woocommerce_hipayenterprise_account_sandbox_apple_pay_tokenjs_password"
+                       value="<?php echo esc_textarea($account["sandbox"]["api_apple_pay_tokenjs_password_sandbox"] ?? ''); ?>">
+            </div>
+        </div>
+    </div>
+</div>
+
 <table></table>

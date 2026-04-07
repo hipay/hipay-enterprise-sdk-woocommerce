@@ -5,6 +5,7 @@ import LocalPaymentComponent from './payment-method';
 
 // Get all HiPay local payment methods
 const hipayLocalMethods = [
+    'hipayenterprise_applepay',
     'hipayenterprise_alma_3x',
     'hipayenterprise_alma_4x',
     'hipayenterprise_bancontact',

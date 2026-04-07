@@ -5,6 +5,7 @@ import { CART_STORE_KEY } from '@woocommerce/block-data';
 import { usePaymentMethodRefresh } from '../utils/payment-method-refresh';
 import PayPalButton from './paypal-button';
 import SDKWidget from './sdk-widget';
+import ApplePayButton from './apple-pay-button';
 
 const LocalPaymentComponent = ({
     eventRegistration,
@@ -20,6 +21,7 @@ const LocalPaymentComponent = ({
     const [formData, setFormData] = useState({});
     const [errors, setErrors] = useState({});
     const [paypalPaymentData, setPaypalPaymentData] = useState(null);
+    const [applePayPaymentData, setApplePayPaymentData] = useState(null);
 
     const config = settings.config || {};
     const additionalFields = config.additionalFields || {};
@@ -48,6 +50,23 @@ const LocalPaymentComponent = ({
                         type: emitResponse.responseTypes.SUCCESS,
                         meta: {
                             paymentMethodData: paypalPaymentData,
+                        },
+                    };
+                }
+
+                // check if we have a token from the Apple Pay button
+                if (config.isApplePay) {
+                    if (!applePayPaymentData || !applePayPaymentData['applepay-card-token']) {
+                        return {
+                            type: emitResponse.responseTypes.ERROR,
+                            message: __('Please authorize with Apple Pay first', 'hipayenterprise'),
+                        };
+                    }
+
+                    return {
+                        type: emitResponse.responseTypes.SUCCESS,
+                        meta: {
+                            paymentMethodData: applePayPaymentData,
                         },
                     };
                 }
@@ -84,7 +103,7 @@ const LocalPaymentComponent = ({
         });
 
         return unsubscribe;
-    }, [onPaymentSetup, formData, config.paymentProduct, config.isPayPalV2, paypalPaymentData]);
+    }, [onPaymentSetup, formData, config.paymentProduct, config.isPayPalV2, paypalPaymentData, config.isApplePay, applePayPaymentData]);
 
     const validateFields = () => {
         const validationErrors = {};
@@ -216,7 +235,22 @@ const LocalPaymentComponent = ({
             </div>
         );
     }
-    
+
+    // Handle Apple Pay
+    if (config.isApplePay) {
+        return (
+            <div className="hipay-local-payment-block hipay-applepay">
+                {settings.description && (
+                    <p className="hipay-description">{settings.description}</p>
+                )}
+                <ApplePayButton
+                    config={config}
+                    onPaymentDataChange={setApplePayPaymentData}
+                />
+            </div>
+        );
+    }
+
     // Handle other local payments that need SDK widget rendering
     // (e.g., Multibanco, Sisal - methods that render UI via HiPay SDK)
     if (needsSDKWidget) {

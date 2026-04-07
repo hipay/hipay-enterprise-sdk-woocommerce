@@ -80,6 +80,10 @@ class Hipay_Api_Request_Handler
     public function handleCreditCard($params)
     {
 
+        if (isset($params['isApplePay']) && $params['isApplePay']) {
+            return $this->handleDirectOrder($params, true);
+        }
+
         $mode = $this->plugin->confHelper->getPaymentGlobal()["operating_mode"];
 
         if (isset($params["oneClick"]) && $params["oneClick"]) {

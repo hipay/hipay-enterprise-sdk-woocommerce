@@ -60,7 +60,8 @@ class Hipay_Api
     {
         $this->plugin->logs->logInfos("# requestDirectPost " . $order->get_id());
 
-        $gatewayClient = $this->createGatewayClient();
+        $isApplePay = isset($params['isApplePay']) && $params['isApplePay'];
+        $gatewayClient = $this->createGatewayClient(false, $isApplePay);
 
         $directPostFormatter = new Hipay_Direct_Post_Formatter($this->plugin, $params, $order);
         $orderRequest = $directPostFormatter->generate();
@@ -82,7 +83,8 @@ class Hipay_Api
         $order = wc_get_order($params["order_id"]);
         $this->plugin->logs->logInfos("# RequestMaintenance " . $order->get_id());
 
-        $gatewayClient = $this->createGatewayClient();
+        $isApplePay = $order->get_payment_method() === 'hipayenterprise_applepay';
+        $gatewayClient = $this->createGatewayClient(false, $isApplePay);
         $params["transaction_reference"] = $order->get_transaction_id();
 
         $maintenanceFormatter = new Hipay_Maintenance_Formatter($this->plugin, $params, $order);
@@ -194,7 +196,7 @@ class Hipay_Api
      * @return \HiPay\Fullservice\Gateway\Client\GatewayClient
      * @throws Exception
      */
-    private function createGatewayClient($forceConfig = false)
+    private function createGatewayClient($forceConfig = false, $isApplePay = false)
     {
         //@TODO implements proxy configuration
         $proxy = array();
@@ -205,10 +207,30 @@ class Hipay_Api
             $sandbox = ($forceConfig === Configuration::API_ENV_STAGE);
         }
 
-        $username = ($sandbox) ? $this->plugin->confHelper->getAccount()["sandbox"]["api_username_sandbox"]
-            : $this->plugin->confHelper->getAccount()["production"]["api_username_production"];
-        $password = ($sandbox) ? $this->plugin->confHelper->getAccount()["sandbox"]["api_password_sandbox"]
-            : $this->plugin->confHelper->getAccount()["production"]["api_password_production"];
+        $account = $this->plugin->confHelper->getAccount();
+
+        if ($isApplePay) {
+            if ($sandbox) {
+                $username = !empty($account['sandbox']['api_apple_pay_username_sandbox'])
+                    ? $account['sandbox']['api_apple_pay_username_sandbox']
+                    : $account['sandbox']['api_username_sandbox'];
+                $password = !empty($account['sandbox']['api_apple_pay_password_sandbox'])
+                    ? $account['sandbox']['api_apple_pay_password_sandbox']
+                    : $account['sandbox']['api_password_sandbox'];
+            } else {
+                $username = !empty($account['production']['api_apple_pay_username_production'])
+                    ? $account['production']['api_apple_pay_username_production']
+                    : $account['production']['api_username_production'];
+                $password = !empty($account['production']['api_apple_pay_password_production'])
+                    ? $account['production']['api_apple_pay_password_production']
+                    : $account['production']['api_password_production'];
+            }
+        } else {
+            $username = ($sandbox) ? $account['sandbox']['api_username_sandbox']
+                : $account['production']['api_username_production'];
+            $password = ($sandbox) ? $account['sandbox']['api_password_sandbox']
+                : $account['production']['api_password_production'];
+        }
 
         $env = ($sandbox) ? Configuration::API_ENV_STAGE : Configuration::API_ENV_PRODUCTION;
 

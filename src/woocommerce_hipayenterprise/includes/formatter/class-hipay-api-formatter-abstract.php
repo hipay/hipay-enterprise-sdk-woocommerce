@@ -95,6 +95,10 @@ abstract class Hipay_Api_Formatter_Abstact implements Hipay_Api_Formatter
             $customDataHipay["force_cvv"] = true;
         }
 
+        if (isset($this->params["isApplePay"]) && $this->params["isApplePay"]) {
+            $customDataHipay["isApplePay"] = true;
+        }
+
         $customDataHipay = apply_filters('hipay_wc_request_custom_data', $customDataHipay, $order, $params);
 
         $request->custom_data = json_encode($customDataHipay);

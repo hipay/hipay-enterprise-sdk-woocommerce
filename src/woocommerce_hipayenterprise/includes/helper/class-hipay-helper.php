@@ -104,13 +104,19 @@ class Hipay_Helper
      * @param $plugin
      * @return bool
      */
-    public static function checkSignature($plugin)
+    public static function checkSignature($plugin, $isApplePay = false)
     {
+        $account = $plugin->confHelper->getAccount();
+
         if ($plugin->confHelper->isSandbox()) {
-            $passphrase = $plugin->confHelper->getAccount()["sandbox"]["api_secret_passphrase_sandbox"];
+            $passphrase = $isApplePay && !empty($account['sandbox']['api_apple_pay_passphrase_sandbox'])
+                ? $account['sandbox']['api_apple_pay_passphrase_sandbox']
+                : $account['sandbox']['api_secret_passphrase_sandbox'];
             $environment = Configuration::API_ENV_STAGE;
         } else {
-            $passphrase = $plugin->confHelper->getAccount()["production"]["api_secret_passphrase_production"];
+            $passphrase = $isApplePay && !empty($account['production']['api_apple_pay_passphrase_production'])
+                ? $account['production']['api_apple_pay_passphrase_production']
+                : $account['production']['api_secret_passphrase_production'];
             $environment = Configuration::API_ENV_PRODUCTION;
         }
 
@@ -260,6 +266,44 @@ class Hipay_Helper
 
 
         return $message;
+    }
+
+    /**
+     * Resolve Apple Pay tokenization credentials
+     *
+     * @param array $account
+     * @param bool  $sandbox
+     * @return array
+     */
+    public static function getApplePayTokenJsCredentials(array $account, $sandbox)
+    {
+        if ($sandbox) {
+            $env      = $account['sandbox'];
+            $username = !empty($env['api_apple_pay_tokenjs_username_sandbox'])
+                ? $env['api_apple_pay_tokenjs_username_sandbox']
+                : (!empty($env['api_apple_pay_username_sandbox'])
+                    ? $env['api_apple_pay_username_sandbox']
+                    : ($env['api_tokenjs_username_sandbox'] ?? ''));
+            $password = !empty($env['api_apple_pay_tokenjs_password_sandbox'])
+                ? $env['api_apple_pay_tokenjs_password_sandbox']
+                : (!empty($env['api_apple_pay_password_sandbox'])
+                    ? $env['api_apple_pay_password_sandbox']
+                    : ($env['api_tokenjs_password_publickey_sandbox'] ?? ''));
+        } else {
+            $env      = $account['production'];
+            $username = !empty($env['api_apple_pay_tokenjs_username_production'])
+                ? $env['api_apple_pay_tokenjs_username_production']
+                : (!empty($env['api_apple_pay_username_production'])
+                    ? $env['api_apple_pay_username_production']
+                    : ($env['api_tokenjs_username_production'] ?? ''));
+            $password = !empty($env['api_apple_pay_tokenjs_password_production'])
+                ? $env['api_apple_pay_tokenjs_password_production']
+                : (!empty($env['api_apple_pay_password_production'])
+                    ? $env['api_apple_pay_password_production']
+                    : ($env['api_tokenjs_password_publickey_production'] ?? ''));
+        }
+
+        return ['username' => $username, 'password' => $password];
     }
 
     /**
