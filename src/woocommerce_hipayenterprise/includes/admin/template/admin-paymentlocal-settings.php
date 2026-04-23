@@ -364,6 +364,40 @@
             </div>
         </div>
     <?php endif; ?>
+    <?php if (in_array("multi_browser_enabled", $configurationPaymentMethod["displayConfigurationFields"] ?? [])) : ?>
+        <div class="form-group">
+            <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_methods_multi_browser_enabled<?php echo esc_attr($method); ?>">
+                <?php _e('Apple Pay multi-browser', "hipayenterprise"); ?>
+            </label>
+            <div class="col-lg-8">
+                <?php $multiBrowserEnabled = !empty($configurationPaymentMethod["multi_browser_enabled"]); ?>
+                <input class="form-control" type="checkbox"
+                       name="woocommerce_hipayenterprise_methods_multi_browser_enabled_<?php echo esc_attr($method); ?>"
+                       id="woocommerce_hipayenterprise_methods_multi_browser_enabled<?php echo esc_attr($method); ?>"
+                       style="margin-bottom: 8px"
+                       value="1" <?php if ($multiBrowserEnabled) { echo 'checked="checked"'; } ?>
+                       onchange="document.getElementById('hipay-display-mode-group-<?php echo esc_js($method); ?>').style.display = this.checked ? '' : 'none';">
+            </div>
+        </div>
+        <div class="form-group" id="hipay-display-mode-group-<?php echo esc_attr($method); ?>"
+             style="<?php echo $multiBrowserEnabled ? '' : 'display:none;'; ?>">
+            <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_methods_display_mode<?php echo esc_attr($method); ?>">
+                <?php _e('Display mode', "hipayenterprise"); ?>
+            </label>
+            <div class="col-lg-8">
+                <?php $displayMode = $configurationPaymentMethod["display_mode"] ?? 'popup'; ?>
+                <select class="form-control" name="woocommerce_hipayenterprise_methods_display_mode_<?php echo esc_attr($method); ?>"
+                        id="woocommerce_hipayenterprise_methods_display_mode<?php echo esc_attr($method); ?>">
+                    <option value="popup" <?php if ($displayMode === 'popup') { echo 'selected'; } ?>>
+                        <?php _e('Popup', "hipayenterprise"); ?>
+                    </option>
+                    <option value="modal" <?php if ($displayMode === 'modal') { echo 'selected'; } ?>>
+                        <?php _e('Modal', "hipayenterprise"); ?>
+                    </option>
+                </select>
+            </div>
+        </div>
+    <?php endif; ?>
     <?php if (in_array("merchantId", $configurationPaymentMethod["displayConfigurationFields"] ?? [])) : ?>
         <div class="form-group">
             <label class="control-label col-lg-2" for="woocommerce_hipayenterprise_methods_merchantId<?php echo $method; ?>">

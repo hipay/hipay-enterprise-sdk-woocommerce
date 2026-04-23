@@ -243,8 +243,10 @@
             return;
         }
 
-        if (!window.ApplePaySession || !window.ApplePaySession.canMakePayments()) {
-            // Browser does not support Apple Pay
+        const config = window.hipay_config_applepay || {};
+
+        const multiBrowserEnabled = Boolean(config.multiBrowserEnabled);
+        if (!multiBrowserEnabled && (!window.ApplePaySession || !window.ApplePaySession.canMakePayments())) {
             $('li.wc_payment_method.payment_method_hipayenterprise_applepay').hide();
             return;
         }
@@ -255,8 +257,6 @@
         }
         hideTosNotice();
         hidePlaceOrderButton();
-
-        const config = window.hipay_config_applepay || {};
         const countryCode = $('#billing_country').val() || config.countryCode || '';
 
         removeUnhandledRejectionListener();
@@ -325,15 +325,23 @@
             };
 
 
-            var created = hipay.create('paymentRequestButton', {
+            var createOptions = {
                 displayName: config.shopName || '',
                 request:     request,
                 applePayStyle: applePayStyle,
                 selector:    currentContainerId,
-            });
+            };
+            if (multiBrowserEnabled && config.displayMode) {
+                createOptions.displayMode = config.displayMode;
+            }
+            var created = hipay.create('paymentRequestButton', createOptions);
 
             Promise.resolve(created)
                 .then(function (instance) {
+                    if (!instance) {
+                        $('li.wc_payment_method.payment_method_hipayenterprise_applepay').hide();
+                        return;
+                    }
                     applePayInstance = instance;
 
                     applePayInstance.on('paymentAuthorized', function (hipayToken) {

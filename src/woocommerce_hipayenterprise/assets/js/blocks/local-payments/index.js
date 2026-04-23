@@ -48,12 +48,20 @@ hipayLocalMethods.forEach((methodName) => {
             return <LocalPaymentComponent {...props} settings={settings} cartData={props} />;
         };
 
+        const isApplePay = methodName === 'hipayenterprise_applepay';
+
         const paymentMethodConfig = {
             name: methodName,
             label: <Label />,
             content: <Content />,
             edit: <Content />,
             canMakePayment: ({ billingAddress, cartTotals, shippingAddress }) => {
+                if (isApplePay && !settings?.config?.multiBrowserEnabled) {
+                    if (!window.ApplePaySession || !window.ApplePaySession.canMakePayments()) {
+                        return false;
+                    }
+                }
+
                 // Get restrictions from settings
                 const restrictions = settings?.config?.restrictions || {};
 

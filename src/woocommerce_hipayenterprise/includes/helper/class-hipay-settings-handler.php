@@ -351,6 +351,8 @@ class Hipay_Settings_Handler
                 "bnpl",
                 "buttonType",
                 "buttonStyle",
+                "multi_browser_enabled",
+                "display_mode",
             );
 
             $jsonDefaults = $this->plugin->confHelper->getLocalPaymentDefaults($methods);
@@ -368,6 +370,8 @@ class Hipay_Settings_Handler
                         if (isset($value[$lang])) {
                             $settings[$methods][$key][$lang] = $value[$lang];
                         }
+                    } elseif ($key === 'display_mode') {
+                        $settings[$methods][$key] = in_array($value, ['popup', 'modal'], true) ? $value : 'popup';
                     } else {
                         $settings[$methods][$key] = $value;
                     }

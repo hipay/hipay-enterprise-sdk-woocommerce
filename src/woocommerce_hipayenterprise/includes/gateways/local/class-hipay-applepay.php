@@ -109,6 +109,8 @@ class Hipay_Applepay extends Hipay_Gateway_Local_Abstract
             'countryCode'        => $countryCode,
             'isOrderPayPage'     => $this->isOrderPayPage(),
             'tosNoticeMessage'   => __('Please accept the terms and conditions to use Apple Pay.', 'hipayenterprise'),
+            'multiBrowserEnabled' => !empty($paymentProductConfig['multi_browser_enabled']),
+            'displayMode'         => $paymentProductConfig['display_mode'] ?? 'popup',
         ];
     }
 

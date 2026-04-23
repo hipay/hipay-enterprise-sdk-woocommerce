@@ -10,7 +10,7 @@ Author URI: https://www.hipay.com
 */
 
 if ( ! class_exists( 'WC_HipayEnterprise' ) ) {
-	define( 'WC_HIPAYENTERPRISE_VERSION', '2.10.0' );
+	define( 'WC_HIPAYENTERPRISE_VERSION', '2.10.1' );
 	define( 'WC_HIPAYENTERPRISE_NAME', 'WooCommerce HiPay Enterprise' );
 	define( 'WC_HIPAYENTERPRISE_PATH', plugin_dir_path( __FILE__ ) );
 	define(

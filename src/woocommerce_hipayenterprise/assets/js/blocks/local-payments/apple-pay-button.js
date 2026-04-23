@@ -97,11 +97,7 @@ const ApplePayButton = ({ config, onPaymentDataChange }) => {
             return;
         }
 
-        if (!window.ApplePaySession || !window.ApplePaySession.canMakePayments()) {
-            setIsLoading(false);
-            setError(__('Apple Pay is not available on this device or browser.', 'hipayenterprise'));
-            return;
-        }
+        const multiBrowserEnabled = Boolean(config.multiBrowserEnabled);
 
         const waitForContainer = () => {
             const container = document.getElementById(containerIdRef.current);
@@ -160,12 +156,22 @@ const ApplePayButton = ({ config, onPaymentDataChange }) => {
                     color: config.buttonStyle || 'black',
                 };
 
-                const applePayInstance = hipay.create('paymentRequestButton', {
+                const createOptions = {
                     displayName:   config.shopName || '',
                     request:       request,
                     applePayStyle: applePayStyle,
                     selector:      containerIdRef.current,
-                });
+                };
+                if (multiBrowserEnabled && config.displayMode) {
+                    createOptions.displayMode = config.displayMode;
+                }
+                const applePayInstance = hipay.create('paymentRequestButton', createOptions);
+
+                if (!applePayInstance) {
+                    setIsLoading(false);
+                    setError(__('Apple Pay is not available on this device or browser.', 'hipayenterprise'));
+                    return;
+                }
 
                 applePayInstance.on('paymentAuthorized', (hipayToken) => {
                     const paymentProduct = hipayToken.payment_product

@@ -16,7 +16,9 @@
       "maxAmount",
       "buttonType",
       "buttonStyle",
-      "merchantId"
+      "merchantId",
+      "multi_browser_enabled",
+      "display_mode"
     ],
     "countrySelectorReadOnly": 0,
     "currencySelectorReadOnly": 0,
@@ -25,6 +27,8 @@
     "buttonType": "plain",
     "buttonStyle": "black",
     "merchantId": "",
+    "multi_browser_enabled": true,
+    "display_mode": "popup",
     "minAmount": {
       "EUR": 0
     },
