@@ -35,7 +35,7 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
         $dbConf = $this->confHelper->getLocalPayment($this->paymentProduct) ?: [];
         $jsonDefaults = $this->confHelper->getLocalPaymentDefaults($this->paymentProduct);
 
-        $methodConf  = array_merge($dbConf, $jsonDefaults);
+        $methodConf  = array_merge($jsonDefaults, $dbConf);
 
         if (!empty($methodConf["displayName"][Hipay_Helper::getLanguage()])) {
             $this->title = $methodConf["displayName"][Hipay_Helper::getLanguage()];
@@ -50,17 +50,15 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
         $this->init_form_fields();
         $this->init_settings();
 
-        $jsonDefaults = $this->confHelper->getLocalPaymentDefaults($this->paymentProduct);
-
-        if (!empty($jsonDefaults["canManualCapture"])) {
+        if (!empty($methodConf["canManualCapture"])) {
             $this->supports[] = "captures";
         }
 
-        if (!empty($jsonDefaults["canManualCapturePartially"])) {
+        if (!empty($methodConf["canManualCapturePartially"])) {
             $this->supports[] = "partialCaptures";
         }
 
-        if (!empty($jsonDefaults["canRefund"])) {
+        if (!empty($methodConf["canRefund"])) {
             $this->supports[] = "refunds";
         }
 
@@ -149,12 +147,14 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
 
             $method = $this->confHelper->getLocalPayment($this->paymentProduct);
 
+            $rawPhone = Hipay_Helper::getPostData($this->paymentProduct.'-phone');
+
             $params = array(
                 "order_id" => $order_id,
                 "paymentProduct" => Hipay_Helper::getPostData($this->paymentProduct.'-payment_product', $this->paymentProduct),
                 "forceSalesMode" => $this->forceSalesMode(),
                 "deviceFingerprint" => Hipay_Helper::getPostData($this->paymentProduct.'-device_fingerprint'),
-                "phone" => json_decode(Hipay_Helper::getPostData($this->paymentProduct.'-phone'))
+                "phone" => json_decode($rawPhone) ?: $rawPhone
             );
 
             // Add provider_data if present (for PayPal v2 blocks integration)
