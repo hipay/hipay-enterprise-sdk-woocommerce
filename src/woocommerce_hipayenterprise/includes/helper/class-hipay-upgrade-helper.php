@@ -68,6 +68,7 @@ class Hipay_Upgrade_Helper
 
             $this->updateConfigFromFile();
             $this->updateAlmaCountries();
+            $this->updateBancomatPayCountries();
             $this->confHelper->update_option($this->configHipay);
 
             $this->logs->logInfos("Hipay Plugin configuration is now in version : " . WC_HIPAYENTERPRISE_VERSION);
@@ -103,6 +104,28 @@ class Hipay_Upgrade_Helper
             }
 
             $this->logs->logInfos("# End Update Alma countries");
+        } catch (\Exception $e) {
+            $this->logs->logException($e);
+        }
+    }
+
+    /**
+     * Update Bancomat Pay countries to match SDK configuration
+     */
+    private function updateBancomatPayCountries()
+    {
+        try {
+            $this->logs->logInfos("# Begin Update Bancomat Pay countries");
+
+            $bancomatPaySdk = \HiPay\Fullservice\Data\PaymentProduct\Collection::getItem('bancomatpay');
+
+            if ($bancomatPaySdk && isset($this->configHipay[Hipay_Config::KEY_PAYMENT][Hipay_Config::KEY_LOCAL_PAYMENT]['bancomatpay'])) {
+                $newCountries = $bancomatPaySdk->getCountries();
+                $this->configHipay[Hipay_Config::KEY_PAYMENT][Hipay_Config::KEY_LOCAL_PAYMENT]['bancomatpay']['countries'] = $newCountries;
+                $this->logs->logInfos("Updated bancomatpay countries to: " . json_encode($newCountries));
+            }
+
+            $this->logs->logInfos("# End Update Bancomat Pay countries");
         } catch (\Exception $e) {
             $this->logs->logException($e);
         }

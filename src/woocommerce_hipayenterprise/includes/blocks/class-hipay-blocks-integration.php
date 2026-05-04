@@ -161,6 +161,10 @@ class Hipay_Blocks_Integration
                 'file' => $blocks_path . 'class-hipay-alma-4x-block.php',
             ),
             array(
+                'class' => 'Hipay_Bancomat_Pay_Block',
+                'file' => $blocks_path . 'class-hipay-bancomat-pay-block.php',
+            ),
+            array(
                 'class' => 'Hipay_Bancontact_Block',
                 'file' => $blocks_path . 'class-hipay-bancontact-block.php',
             ),

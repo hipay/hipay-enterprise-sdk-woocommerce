@@ -1,4 +1,4 @@
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
 import { CART_STORE_KEY } from '@woocommerce/block-data';
@@ -6,6 +6,7 @@ import { usePaymentMethodRefresh } from '../utils/payment-method-refresh';
 import PayPalButton from './paypal-button';
 import SDKWidget from './sdk-widget';
 import ApplePayButton from './apple-pay-button';
+import PhoneHostedField from './phone-hosted-field';
 
 const LocalPaymentComponent = ({
     eventRegistration,
@@ -22,9 +23,13 @@ const LocalPaymentComponent = ({
     const [errors, setErrors] = useState({});
     const [paypalPaymentData, setPaypalPaymentData] = useState(null);
     const [applePayPaymentData, setApplePayPaymentData] = useState(null);
+    const phoneInstanceRef = useRef(null);
 
     const config = settings.config || {};
     const additionalFields = config.additionalFields || {};
+
+    const hasPhoneHostedField = Object.values(additionalFields.formFields || {})
+        .some((f) => f.controlType === 'phone');
     
     // Get cart totals from the store for PayPal
     const cartTotals = useSelect((select) => {
@@ -71,6 +76,37 @@ const LocalPaymentComponent = ({
                     };
                 }
 
+                if (hasPhoneHostedField) {
+                    if (!phoneInstanceRef.current) {
+                        return {
+                            type: emitResponse.responseTypes.ERROR,
+                            message: __('Phone field is not ready. Please wait and try again.', 'hipayenterprise'),
+                        };
+                    }
+                    try {
+                        const phoneData = await phoneInstanceRef.current.getPaymentData();
+                        const paymentMethodData = {
+                            hipay_payment_product: config.paymentProduct,
+                        };
+
+                        for (const key in phoneData) {
+                            const value = phoneData[key];
+                            paymentMethodData[key] = value instanceof Object
+                                ? JSON.stringify(value)
+                                : value;
+                        }
+                        return {
+                            type: emitResponse.responseTypes.SUCCESS,
+                            meta: { paymentMethodData },
+                        };
+                    } catch (err) {
+                        return {
+                            type: emitResponse.responseTypes.ERROR,
+                            message: (config.i18n && config.i18n.invalidPhoneNumber) || __('Please enter a valid phone number.', 'hipayenterprise'),
+                        };
+                    }
+                }
+
                 // For regular local payments, validate form fields
                 const validationErrors = validateFields();
                 if (Object.keys(validationErrors).length > 0) {
@@ -103,7 +139,7 @@ const LocalPaymentComponent = ({
         });
 
         return unsubscribe;
-    }, [onPaymentSetup, formData, config.paymentProduct, config.isPayPalV2, paypalPaymentData, config.isApplePay, applePayPaymentData]);
+    }, [onPaymentSetup, formData, config.paymentProduct, config.isPayPalV2, paypalPaymentData, config.isApplePay, applePayPaymentData, hasPhoneHostedField]);
 
     const validateFields = () => {
         const validationErrors = {};
@@ -290,12 +326,20 @@ const LocalPaymentComponent = ({
                 </div>
             )}
 
-            {additionalFields.formFields && (
-                <div className="hipay-form-fields">
-                    {Object.entries(additionalFields.formFields).map(([fieldName, fieldConfig]) =>
-                        renderField(fieldName, fieldConfig)
-                    )}
-                </div>
+            {hasPhoneHostedField ? (
+                <PhoneHostedField
+                    config={config}
+                    paymentProduct={config.paymentProduct}
+                    instanceRef={phoneInstanceRef}
+                />
+            ) : (
+                additionalFields.formFields && (
+                    <div className="hipay-form-fields">
+                        {Object.entries(additionalFields.formFields).map(([fieldName, fieldConfig]) =>
+                            renderField(fieldName, fieldConfig)
+                        )}
+                    </div>
+                )
             )}
 
             {Object.keys(errors).length > 0 && (
