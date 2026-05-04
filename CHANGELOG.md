@@ -1,7 +1,7 @@
 # CHANGELOG
 
 ## UNRELEASE
-
+- **Add** : Added Bancomat Pay
 - **Add** : Added Apple Pay Multi-browser feature
 
 ## 2.10.0
