@@ -42,3 +42,24 @@ msgstr "País"
 #: includes/gateways/local/class-hipay-paypal.php:129
 msgid "Street Address"
 msgstr "Endereço"
+
+#: includes/gateways/local/class-hipay-bancomat-pay.php
+#: includes/blocks/local/class-hipay-bancomat-pay-block.php
+msgid "The payment will need to be validated on your Bancomat Pay application."
+msgstr "O pagamento terá de ser validado na sua aplicação Bancomat Pay."
+
+#: includes/frontend/template/bancomat-pay-pending.php
+msgid "Payment pending"
+msgstr "Pagamento pendente"
+
+#: includes/frontend/template/bancomat-pay-pending.php
+msgid "This page will update automatically once the payment is confirmed."
+msgstr "Esta página será atualizada automaticamente assim que o pagamento for confirmado."
+
+#: includes/frontend/template/bancomat-pay-pending.php
+msgid "Order #%s is waiting for payment confirmation."
+msgstr "O pedido n.º%s aguarda confirmação de pagamento."
+
+#: assets/js/blocks/local-payments/payment-method.js
+msgid "Please enter a valid phone number."
+msgstr "Por favor, introduza um número de telefone válido."

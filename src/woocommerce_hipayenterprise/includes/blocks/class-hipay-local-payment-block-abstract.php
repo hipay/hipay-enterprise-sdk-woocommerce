@@ -232,6 +232,9 @@ abstract class Hipay_Local_Payment_Block_Abstract extends Hipay_Payment_Block_Ab
             'api_tokenjs_password_publickey_production' => $account['production']['api_tokenjs_password_publickey_production'] ?? '',
             'lang' => substr(apply_filters('hipay_locale', get_locale()), 0, 2),
             'locale' => apply_filters('hipay_locale', get_locale()),
+            'i18n' => [
+                'invalidPhoneNumber' => __('Please enter a valid phone number.', 'hipayenterprise'),
+            ],
         ];
     }
 
