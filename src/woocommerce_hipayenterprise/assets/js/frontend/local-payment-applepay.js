@@ -331,8 +331,11 @@
                 applePayStyle: applePayStyle,
                 selector:    currentContainerId,
             };
-            if (multiBrowserEnabled && config.displayMode) {
-                createOptions.displayMode = config.displayMode;
+            if (multiBrowserEnabled) {
+                createOptions.multiBrowsers = true;
+                if (config.displayMode) {
+                    createOptions.displayMode = config.displayMode;
+                }
             }
             var created = hipay.create('paymentRequestButton', createOptions);
 
