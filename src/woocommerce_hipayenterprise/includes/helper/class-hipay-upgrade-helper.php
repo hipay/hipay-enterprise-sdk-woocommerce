@@ -192,6 +192,13 @@ class Hipay_Upgrade_Helper
      */
     private function applyDiffFromDefaultConfig(&$configHipay, $paymentMethod, $paymentMethodType)
     {
+        if (!isset($configHipay[Hipay_Config::KEY_PAYMENT])) {
+            $configHipay[Hipay_Config::KEY_PAYMENT] = array();
+        }
+        if (!isset($configHipay[Hipay_Config::KEY_PAYMENT][$paymentMethodType])) {
+            $configHipay[Hipay_Config::KEY_PAYMENT][$paymentMethodType] = array();
+        }
+
         // Add new payment Method
         $configHipay[Hipay_Config::KEY_PAYMENT][$paymentMethodType] = array_merge(
             $configHipay[Hipay_Config::KEY_PAYMENT][$paymentMethodType],
@@ -207,6 +214,11 @@ class Hipay_Upgrade_Helper
         }
 
         foreach ($paymentMethod as $key => $value) {
+            // Initialize the key if it doesn't exist
+            if (!isset($configHipay[Hipay_Config::KEY_PAYMENT][$paymentMethodType][$key])) {
+                $configHipay[Hipay_Config::KEY_PAYMENT][$paymentMethodType][$key] = array();
+            }
+
             // Add new properties to payment method
             $configHipay[Hipay_Config::KEY_PAYMENT][$paymentMethodType][$key] = array_merge(
                 $configHipay[Hipay_Config::KEY_PAYMENT][$paymentMethodType][$key],
