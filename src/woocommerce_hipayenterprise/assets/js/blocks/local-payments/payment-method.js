@@ -23,7 +23,25 @@ const LocalPaymentComponent = ({
     const [errors, setErrors] = useState({});
     const [paypalPaymentData, setPaypalPaymentData] = useState(null);
     const [applePayPaymentData, setApplePayPaymentData] = useState(null);
+    const [termsAccepted, setTermsAccepted] = useState(false);
     const phoneInstanceRef = useRef(null);
+
+    useEffect(() => {
+        const termsEl = document.getElementById('terms-and-conditions');
+        if (!termsEl) {
+            setTermsAccepted(true); // No terms checkbox = no terms requirement
+        } else {
+            setTermsAccepted(termsEl.checked);
+        }
+
+        const handleTermsChange = (e) => {
+            if (e.target && e.target.id === 'terms-and-conditions') {
+                setTermsAccepted(e.target.checked);
+            }
+        };
+        document.addEventListener('change', handleTermsChange);
+        return () => document.removeEventListener('change', handleTermsChange);
+    }, []);
 
     const config = settings.config || {};
     const additionalFields = config.additionalFields || {};
@@ -326,14 +344,20 @@ const LocalPaymentComponent = ({
                 </div>
             )}
 
-            {hasPhoneHostedField ? (
+            {hasPhoneHostedField && !termsAccepted && (
+                <p className="woocommerce-error" style={{ fontSize: '0.9em' }}>
+                    {__('Please accept the terms and conditions to use Bancomat Pay.', 'hipayenterprise')}
+                </p>
+            )}
+
+            {hasPhoneHostedField && termsAccepted ? (
                 <PhoneHostedField
                     config={config}
                     paymentProduct={config.paymentProduct}
                     instanceRef={phoneInstanceRef}
                 />
             ) : (
-                additionalFields.formFields && (
+                !hasPhoneHostedField && additionalFields.formFields && (
                     <div className="hipay-form-fields">
                         {Object.entries(additionalFields.formFields).map(([fieldName, fieldConfig]) =>
                             renderField(fieldName, fieldConfig)

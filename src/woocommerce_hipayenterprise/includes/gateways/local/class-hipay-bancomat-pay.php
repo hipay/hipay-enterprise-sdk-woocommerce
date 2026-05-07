@@ -42,14 +42,12 @@ class Hipay_Bancomat_Pay extends Hipay_Gateway_Local_Abstract
 
     public function payment_fields()
     {
-        $paymentConfig = $this->confHelper->getLocalPayment($this->paymentProduct);
         $this->process_template(
-            'local-payment.php',
+            'bancomat-pay.php',
             'frontend',
             array(
-                'localPaymentName' => $this->paymentProduct,
-                'additionalFields' => $paymentConfig['additionalFields'] ?? array(),
-                'informativeMessage' => __('The payment will need to be validated on your Bancomat Pay application.', 'hipayenterprise')
+                'localPaymentName'   => $this->paymentProduct,
+                'informativeMessage' => __('The payment will need to be validated on your Bancomat Pay application.', 'hipayenterprise'),
             )
         );
     }
