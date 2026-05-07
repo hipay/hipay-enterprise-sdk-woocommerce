@@ -48,6 +48,10 @@ msgstr "Indirizzo"
 msgid "The payment will need to be validated on your Bancomat Pay application."
 msgstr "Il pagamento dovrà essere convalidato sulla tua applicazione Bancomat Pay."
 
+#: includes/frontend/template/bancomat-pay.php
+msgid "Please accept the terms and conditions to use Bancomat Pay."
+msgstr "Accetta i termini e le condizioni per utilizzare Bancomat Pay."
+
 #: includes/frontend/template/bancomat-pay-pending.php
 msgid "Payment pending"
 msgstr "Pagamento in attesa"

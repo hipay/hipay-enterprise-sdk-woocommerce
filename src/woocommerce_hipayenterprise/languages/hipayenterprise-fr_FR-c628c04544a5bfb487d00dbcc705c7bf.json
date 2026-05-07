@@ -12,6 +12,9 @@
             },
             "Please enter a valid phone number.": [
                 "Veuillez saisir un numéro de téléphone valide."
+            ],
+            "Please accept the terms and conditions to use Bancomat Pay.": [
+                "Veuillez accepter les conditions générales pour utiliser Bancomat Pay."
             ]
         }
     }

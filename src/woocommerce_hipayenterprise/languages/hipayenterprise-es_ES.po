@@ -48,6 +48,11 @@ msgstr "Dirección"
 msgid "The payment will need to be validated on your Bancomat Pay application."
 msgstr "El pago deberá ser validado en su aplicación Bancomat Pay."
 
+#: includes/frontend/template/bancomat-pay.php
+#: assets/js/blocks/local-payments/payment-method.js
+msgid "Please accept the terms and conditions to use Bancomat Pay."
+msgstr "Por favor, acepta los términos y condiciones para usar Bancomat Pay."
+
 #: includes/frontend/template/bancomat-pay-pending.php
 msgid "Payment pending"
 msgstr "Pago pendiente"
