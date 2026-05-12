@@ -32,6 +32,10 @@
     "maxAmount": {
       "EUR": false
     },
-    "logo": "paypal.png"
+    "logo": "paypal.png",
+    "canManualCapture": false,
+    "canManualCapturePartially": false,
+    "canRefund": true,
+    "additionalFields": {}
   }
 }
