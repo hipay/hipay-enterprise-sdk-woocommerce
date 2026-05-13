@@ -49,19 +49,4 @@ final class Hipay_Bancomat_Pay_Block extends Hipay_Local_Payment_Block_Abstract
 
         return $config;
     }
-
-    /**
-     * Override to ensure the phone from the blocks form is json_encoded before
-     * process_payment reads it with json_decode().
-     */
-    public function process_blocks_payment($context, $result)
-    {
-        if ($context->payment_method !== $this->name) {
-            return $result;
-        }
-
-        $result = parent::process_blocks_payment($context, $result);
-
-        return $result;
-    }
 }
