@@ -1707,6 +1707,7 @@ msgstr "Adresse"
 
 #: includes/gateways/local/class-hipay-bancomat-pay.php
 #: includes/blocks/local/class-hipay-bancomat-pay-block.php
+#: includes/frontend/template/bancomat-pay-pending.php
 msgid "The payment will need to be validated on your Bancomat Pay application."
 msgstr "Le paiement devra être validé sur votre application Bancomat Pay."
 
@@ -1724,8 +1725,20 @@ msgid "This page will update automatically once the payment is confirmed."
 msgstr "La page sera mise à jour automatiquement une fois le paiement confirmé."
 
 #: includes/frontend/template/bancomat-pay-pending.php
-msgid "Order #%s is waiting for payment confirmation."
-msgstr "La commande n°%s est en attente de confirmation de paiement."
+msgid "Payment confirmed"
+msgstr "Paiement confirmé"
+
+#: includes/frontend/template/bancomat-pay-pending.php
+msgid "Thank you! Order #%s is now being processed."
+msgstr "Merci ! La commande n°%s est maintenant en cours de traitement."
+
+#: includes/frontend/template/bancomat-pay-pending.php
+msgid "Payment failed"
+msgstr "Paiement échoué"
+
+#: includes/frontend/template/bancomat-pay-pending.php
+msgid "Your payment could not be processed. Please try again."
+msgstr "Votre paiement n'a pas pu être traité. Veuillez réessayer."
 
 #: assets/js/blocks/local-payments/payment-method.js
 msgid "Please enter a valid phone number."

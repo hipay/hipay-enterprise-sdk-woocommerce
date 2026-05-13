@@ -1550,6 +1550,7 @@ msgstr ""
 
 #: includes/gateways/local/class-hipay-bancomat-pay.php
 #: includes/blocks/local/class-hipay-bancomat-pay-block.php
+#: includes/frontend/template/bancomat-pay-pending.php
 msgid "The payment will need to be validated on your Bancomat Pay application."
 msgstr ""
 
@@ -1567,7 +1568,19 @@ msgid "This page will update automatically once the payment is confirmed."
 msgstr ""
 
 #: includes/frontend/template/bancomat-pay-pending.php
-msgid "Order #%s is waiting for payment confirmation."
+msgid "Payment confirmed"
+msgstr ""
+
+#: includes/frontend/template/bancomat-pay-pending.php
+msgid "Thank you! Order #%s is now being processed."
+msgstr ""
+
+#: includes/frontend/template/bancomat-pay-pending.php
+msgid "Payment failed"
+msgstr ""
+
+#: includes/frontend/template/bancomat-pay-pending.php
+msgid "Your payment could not be processed. Please try again."
 msgstr ""
 
 #: assets/js/blocks/local-payments/payment-method.js
