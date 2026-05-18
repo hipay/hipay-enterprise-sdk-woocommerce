@@ -22,7 +22,7 @@
     ],
     "countrySelectorReadOnly": 0,
     "currencySelectorReadOnly": 0,
-    "currencies": [],
+    "currencies": ["EUR"],
     "countries": [],
     "buttonType": "plain",
     "buttonStyle": "black",

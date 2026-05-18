@@ -162,8 +162,11 @@ const ApplePayButton = ({ config, onPaymentDataChange }) => {
                     applePayStyle: applePayStyle,
                     selector:      containerIdRef.current,
                 };
-                if (multiBrowserEnabled && config.displayMode) {
-                    createOptions.displayMode = config.displayMode;
+                if (multiBrowserEnabled) {
+                    createOptions.multiBrowsers = true;
+                    if (config.displayMode) {
+                        createOptions.displayMode = config.displayMode;
+                    }
                 }
                 const applePayInstance = hipay.create('paymentRequestButton', createOptions);
 
