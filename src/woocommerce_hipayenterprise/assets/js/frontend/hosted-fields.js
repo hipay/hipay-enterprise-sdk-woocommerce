@@ -116,6 +116,13 @@ jQuery(function ($) {
     }
   }
 
+  function syncBancomatPayPhoneVisibility() {
+    var termsCheckbox = document.getElementById('terms');
+    var isAccepted = !termsCheckbox || termsCheckbox.checked;
+    $('.hipay-phone-hosted-field').toggle(isAccepted);
+    $('#hipay-bancomatpay-tos-notice').toggle(!isAccepted);
+  }
+
   function addPaymentMethod() {
     if (isProcessing) return;
 
@@ -384,6 +391,9 @@ jQuery(function ($) {
       methodsInstance[method].on('helpButtonToggled', handleHelpButtonToggle);
       methodsInstance[method].on('ready', function () {
         unBlockUI();
+        if (method === 'bancomatpay') {
+          syncBancomatPayPhoneVisibility();
+        }
       });
       methodsInstance[method].on('error', function (error) {
         console.error('Method error:', error);
@@ -597,6 +607,13 @@ jQuery(function ($) {
   }
 
   var debouncedCheckoutProcess = debounce(processCheckout, 300, false);
+
+  $(document).on('change', '#terms', function () {
+    if (getSelectedMethod() === 'bancomatpay') {
+      $('.hipay-phone-hosted-field').toggle(this.checked);
+      $('#hipay-bancomatpay-tos-notice').toggle(!this.checked);
+    }
+  });
 
   $(document).ready(function () {
     setInterval(ensureLockReleased, MAX_LOCK_TIME);

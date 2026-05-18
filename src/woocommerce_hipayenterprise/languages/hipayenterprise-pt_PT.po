@@ -42,3 +42,42 @@ msgstr "País"
 #: includes/gateways/local/class-hipay-paypal.php:129
 msgid "Street Address"
 msgstr "Endereço"
+
+#: includes/gateways/local/class-hipay-bancomat-pay.php
+#: includes/blocks/local/class-hipay-bancomat-pay-block.php
+#: includes/frontend/template/bancomat-pay-pending.php
+msgid "The payment will need to be validated on your Bancomat Pay application."
+msgstr "O pagamento terá de ser validado na sua aplicação Bancomat Pay."
+
+#: includes/frontend/template/bancomat-pay.php
+#: assets/js/blocks/local-payments/payment-method.js
+msgid "Please accept the terms and conditions to use Bancomat Pay."
+msgstr "Por favor, aceite os termos e condições para usar o Bancomat Pay."
+
+#: includes/frontend/template/bancomat-pay-pending.php
+msgid "Payment pending"
+msgstr "Pagamento pendente"
+
+#: includes/frontend/template/bancomat-pay-pending.php
+msgid "This page will update automatically once the payment is confirmed."
+msgstr "Esta página será atualizada automaticamente assim que o pagamento for confirmado."
+
+#: includes/frontend/template/bancomat-pay-pending.php
+msgid "Payment confirmed"
+msgstr "Pagamento confirmado"
+
+#: includes/frontend/template/bancomat-pay-pending.php
+msgid "Thank you! Order #%s is now being processed."
+msgstr "Obrigado! O pedido n.º%s está agora a ser processado."
+
+#: includes/frontend/template/bancomat-pay-pending.php
+msgid "Payment failed"
+msgstr "Pagamento falhado"
+
+#: includes/frontend/template/bancomat-pay-pending.php
+msgid "Your payment could not be processed. Please try again."
+msgstr "O seu pagamento não pôde ser processado. Tente novamente."
+
+#: assets/js/blocks/local-payments/payment-method.js
+msgid "Please enter a valid phone number."
+msgstr "Por favor, introduza um número de telefone válido."

@@ -1547,3 +1547,42 @@ msgstr ""
 #: includes/gateways/local/class-hipay-paypal.php:129
 msgid "Street Address"
 msgstr ""
+
+#: includes/gateways/local/class-hipay-bancomat-pay.php
+#: includes/blocks/local/class-hipay-bancomat-pay-block.php
+#: includes/frontend/template/bancomat-pay-pending.php
+msgid "The payment will need to be validated on your Bancomat Pay application."
+msgstr ""
+
+#: includes/frontend/template/bancomat-pay.php
+#: assets/js/blocks/local-payments/payment-method.js
+msgid "Please accept the terms and conditions to use Bancomat Pay."
+msgstr ""
+
+#: includes/frontend/template/bancomat-pay-pending.php
+msgid "Payment pending"
+msgstr ""
+
+#: includes/frontend/template/bancomat-pay-pending.php
+msgid "This page will update automatically once the payment is confirmed."
+msgstr ""
+
+#: includes/frontend/template/bancomat-pay-pending.php
+msgid "Payment confirmed"
+msgstr ""
+
+#: includes/frontend/template/bancomat-pay-pending.php
+msgid "Thank you! Order #%s is now being processed."
+msgstr ""
+
+#: includes/frontend/template/bancomat-pay-pending.php
+msgid "Payment failed"
+msgstr ""
+
+#: includes/frontend/template/bancomat-pay-pending.php
+msgid "Your payment could not be processed. Please try again."
+msgstr ""
+
+#: assets/js/blocks/local-payments/payment-method.js
+msgid "Please enter a valid phone number."
+msgstr ""

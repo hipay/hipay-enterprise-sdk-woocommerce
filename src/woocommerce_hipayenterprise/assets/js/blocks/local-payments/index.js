@@ -8,6 +8,7 @@ const hipayLocalMethods = [
     'hipayenterprise_applepay',
     'hipayenterprise_alma_3x',
     'hipayenterprise_alma_4x',
+    'hipayenterprise_bancomatpay',
     'hipayenterprise_bancontact',
     'hipayenterprise_bnpp3x',
     'hipayenterprise_bnpp4x',
