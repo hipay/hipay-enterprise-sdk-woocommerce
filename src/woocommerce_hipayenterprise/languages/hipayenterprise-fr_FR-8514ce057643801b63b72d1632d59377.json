@@ -1,0 +1,27 @@
+{
+    "translation-revision-date": "2026-04-29T00:00:00+0000",
+    "generator": "WP-CLI/2.x",
+    "source": "assets/js/blocks/build/local-payments-block.js",
+    "domain": "messages",
+    "locale_data": {
+        "messages": {
+            "": {
+                "domain": "messages",
+                "plural-forms": "nplurals=2; plural=(n > 1);",
+                "lang": "fr"
+            },
+            "Please enter a valid phone number.": [
+                "Veuillez saisir un numéro de téléphone valide."
+            ],
+            "Please accept the terms and conditions to use Bancomat Pay.": [
+                "Veuillez accepter les conditions générales pour utiliser Bancomat Pay."
+            ],
+            "Please accept the terms and conditions to use Apple Pay.": [
+                "Veuillez accepter les conditions générales pour utiliser Apple Pay."
+            ],
+            "Please accept the terms and conditions to use PayPal.": [
+                "Veuillez accepter les conditions générales pour utiliser PayPal."
+            ]
+        }
+    }
+}

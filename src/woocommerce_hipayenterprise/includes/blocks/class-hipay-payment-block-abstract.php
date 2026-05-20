@@ -213,6 +213,18 @@ abstract class Hipay_Payment_Block_Abstract extends AbstractPaymentMethodType
                 'hipayenterprise',
                 WC_HIPAYENTERPRISE_PATH . 'languages/'
             );
+
+            add_filter('pre_load_script_translations', function ($translations, $file, $handle, $domain) use ($script_handle) {
+                if ($handle !== $script_handle || $domain !== 'hipayenterprise' || null !== $translations) {
+                    return $translations;
+                }
+                $locale    = determine_locale();
+                $languages = untrailingslashit(WC_HIPAYENTERPRISE_PATH . 'languages');
+                foreach (glob($languages . '/hipayenterprise-' . $locale . '-*.json') as $json_file) {
+                    return file_get_contents($json_file);
+                }
+                return $translations;
+            }, 10, 4);
         }
 
         $script_handles[] = $script_handle;
