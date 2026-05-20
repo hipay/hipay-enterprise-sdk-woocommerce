@@ -327,7 +327,7 @@
 }
 
 #hipayHF-container-bancomatpay-blocks .HiPayField--focused + .hipay-field-label {
-    margin-bottom: 12px !important;
+    margin-bottom: 12px;
 }
 
 .wc-block-checkout .hipay-applepay-button-container > div,
