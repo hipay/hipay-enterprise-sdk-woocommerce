@@ -169,6 +169,22 @@
     min-height: 40px !important;
 }
 
+/* CVV help section */
+[data-hipay-id='hipay-help-cvc'] {
+    display: none;
+    font-size: 14px;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.25rem;
+    color: #856404;
+    background-color: #fff3cd;
+    border: solid 1px #ffeeba;
+    margin-top: 8px;
+}
+
+[data-hipay-id='hipay-help-cvc'].hipay-visible {
+    display: block;
+}
+
 /* Saved cards styling for blocks */
 .wc-block-checkout .hipay-credit-card-block .hipay-saved-cards,
 .wc-block-cart .hipay-credit-card-block .hipay-saved-cards {
