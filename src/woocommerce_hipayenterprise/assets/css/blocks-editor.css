@@ -326,7 +326,7 @@
     margin: 0;
 }
 
-#hipayHF-container-bancomatpay-blocks .HiPayField--focused + .hipay-field-label {
+#hipayHF-container-bancomatpay-blocks .HiPayField--focused + .hipay-field-label, #hipayHF-container-bancomatpay-blocks .HiPayField--invalid + .hipay-field-label {
     margin-bottom: 12px;
 }
 
