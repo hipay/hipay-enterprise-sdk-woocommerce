@@ -325,6 +325,10 @@
     margin: 0;
 }
 
+#hipayHF-container-bancomatpay-blocks .HiPayField--focused + .hipay-field-label {
+    margin-bottom: 12px !important;
+}
+
 .wc-block-checkout .hipay-applepay-button-container > div,
 .wc-block-checkout .hipay-applepay-button-container apple-pay-button,
 .wc-block-cart .hipay-applepay-button-container > div,
