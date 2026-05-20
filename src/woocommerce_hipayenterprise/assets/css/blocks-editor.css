@@ -316,9 +316,8 @@
     width: 100%;
     max-width: 100%;
     min-width: 200px;
-    height: 44px;
+    min-height: 44px;
     box-sizing: border-box;
-    overflow: hidden;
 }
 
 .wc-block-checkout .hipay-phone-hosted-field .hipay-form-container,
