@@ -316,9 +316,17 @@
     width: 100%;
     max-width: 100%;
     min-width: 200px;
-    height: 44px;
+    min-height: 44px;
     box-sizing: border-box;
-    overflow: hidden;
+}
+
+.wc-block-checkout .hipay-phone-hosted-field .hipay-form-container,
+.wc-block-cart .hipay-phone-hosted-field .hipay-form-container {
+    margin: 0;
+}
+
+#hipayHF-container-bancomatpay-blocks .HiPayField--focused + .hipay-field-label, #hipayHF-container-bancomatpay-blocks .HiPayField--invalid + .hipay-field-label {
+    margin-bottom: 12px;
 }
 
 .wc-block-checkout .hipay-applepay-button-container > div,

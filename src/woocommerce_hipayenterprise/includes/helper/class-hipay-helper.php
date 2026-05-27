@@ -335,6 +335,10 @@ class Hipay_Helper
             if (isset($_POST[$blocks_key])) {
                 return wc_clean(wp_unslash($_POST[$blocks_key]));
             }
+            // FIX: WC Blocks puts payment_data as bare keys (e.g. 'phone') into $_POST.
+            if (isset($_POST[$field_name])) {
+                return wc_clean(wp_unslash($_POST[$field_name]));
+            }
         }
 
         return $default;

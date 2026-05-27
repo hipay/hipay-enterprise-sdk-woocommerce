@@ -2,6 +2,10 @@
 
 ## UNRELEASE
 
+## 2.11.0
+- **Add** : Added Bancomat Pay
+- **Add** : Added Apple Pay Multi-browser feature
+
 ## 2.10.0
 
 - **Fix** : fix order not updated due to conflict with WPML plugin

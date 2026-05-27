@@ -52,7 +52,7 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
 
         $paymentProductConfig = $this->confHelper->getLocalPayment($this->paymentProduct);
 
-        if ($this->isPaypalV2()) {
+        if ($this->isPaypalV2() && !empty($paymentProductConfig)) {
             $this->enqueuePaypalScripts($paymentProductConfig);
         }
     }

@@ -59,6 +59,8 @@ final class Hipay_Applepay_Block extends Hipay_Local_Payment_Block_Abstract
         $config['shopName']           = get_bloginfo('name');
         $config['currency']           = get_woocommerce_currency();
         $config['countryCode']        = $countryCode;
+        $config['multiBrowserEnabled'] = !empty($methodConf['multi_browser_enabled']);
+        $config['displayMode']         = $methodConf['display_mode'] ?? 'popup';
 
         return $config;
     }

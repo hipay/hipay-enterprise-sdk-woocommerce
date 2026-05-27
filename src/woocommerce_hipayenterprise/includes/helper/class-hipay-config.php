@@ -216,7 +216,11 @@ class Hipay_Config
      */
     public function getAccount()
     {
-        return $this->getConfigHipay()["account"];
+        $config = $this->getConfigHipay();
+        if (isset($config["account"])) {
+            return $config["account"];
+        }
+        return $this->getDefaultConfig()["account"];
     }
 
     /**
@@ -224,7 +228,11 @@ class Hipay_Config
      */
     public function getAccountProduction()
     {
-        return $this->getConfigHipay()["account"]["production"];
+        $account = $this->getAccount();
+        if (isset($account["production"])) {
+            return $account["production"];
+        }
+        return $this->getDefaultConfig()["account"]["production"];
     }
 
     /**
@@ -232,7 +240,11 @@ class Hipay_Config
      */
     public function getHashAlgorithm()
     {
-        return $this->getConfigHipay()["account"]["hash_algorithm"];
+        $account = $this->getAccount();
+        if (isset($account["hash_algorithm"])) {
+            return $account["hash_algorithm"];
+        }
+        return $this->getDefaultConfig()["account"]["hash_algorithm"];
     }
 
     /**
@@ -240,7 +252,11 @@ class Hipay_Config
      */
     public function getAccountSandbox()
     {
-        return $this->getConfigHipay()["account"]["sandbox"];
+        $account = $this->getAccount();
+        if (isset($account["sandbox"])) {
+            return $account["sandbox"];
+        }
+        return $this->getDefaultConfig()["account"]["sandbox"];
     }
 
     /**
@@ -248,7 +264,11 @@ class Hipay_Config
      */
     public function getPayment()
     {
-        return $this->getConfigHipay()["payment"];
+        $config = $this->getConfigHipay();
+        if (isset($config["payment"])) {
+            return $config["payment"];
+        }
+        return $this->getDefaultConfig()["payment"];
     }
 
     /**
@@ -256,7 +276,11 @@ class Hipay_Config
      */
     public function getPaymentGlobal()
     {
-        return $this->getConfigHipay()["payment"]["global"];
+        $config = $this->getConfigHipay();
+        if (isset($config["payment"]["global"])) {
+            return $config["payment"]["global"];
+        }
+        return $this->getDefaultConfig()["payment"]["global"];
     }
 
     /**
@@ -272,7 +296,11 @@ class Hipay_Config
      */
     public function getPaymentCreditCard()
     {
-        return $this->getConfigHipay()["payment"]["credit_card"];
+        $config = $this->getConfigHipay();
+        if (isset($config["payment"]["credit_card"])) {
+            return $config["payment"]["credit_card"];
+        }
+        return $this->getDefaultConfig()["payment"]["credit_card"];
     }
 
     /**
@@ -280,7 +308,11 @@ class Hipay_Config
      */
     public function getFraud()
     {
-        return $this->getConfigHipay()["fraud"];
+        $config = $this->getConfigHipay();
+        if (isset($config["fraud"])) {
+            return $config["fraud"];
+        }
+        return $this->getDefaultConfig()["fraud"];
     }
 
     /**
@@ -288,7 +320,11 @@ class Hipay_Config
      */
     public function getLocalPayments()
     {
-        return $this->getConfigHipay()["payment"][self::KEY_LOCAL_PAYMENT];
+        $config = $this->getConfigHipay();
+        if (isset($config["payment"][self::KEY_LOCAL_PAYMENT])) {
+            return $config["payment"][self::KEY_LOCAL_PAYMENT];
+        }
+        return $this->getDefaultConfig()["payment"][self::KEY_LOCAL_PAYMENT];
     }
 
     /**
