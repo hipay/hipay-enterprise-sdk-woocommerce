@@ -15,6 +15,12 @@
             ],
             "Please accept the terms and conditions to use Bancomat Pay.": [
                 "Veuillez accepter les conditions générales pour utiliser Bancomat Pay."
+            ],
+            "Please accept the terms and conditions to use Apple Pay.": [
+                "Veuillez accepter les conditions générales pour utiliser Apple Pay."
+            ],
+            "Please accept the terms and conditions to use PayPal.": [
+                "Veuillez accepter les conditions générales pour utiliser PayPal."
             ]
         }
     }

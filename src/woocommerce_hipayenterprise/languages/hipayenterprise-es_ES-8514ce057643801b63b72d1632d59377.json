@@ -8,13 +8,19 @@
             "": {
                 "domain": "messages",
                 "plural-forms": "nplurals=2; plural=(n != 1);",
-                "lang": "pt"
+                "lang": "es"
             },
             "Please enter a valid phone number.": [
-                "Por favor, introduza um número de telefone válido."
+                "Por favor, introduzca un número de teléfono válido."
             ],
             "Please accept the terms and conditions to use Bancomat Pay.": [
-                "Por favor, aceite os termos e condições para usar o Bancomat Pay."
+                "Por favor, acepta los términos y condiciones para usar Bancomat Pay."
+            ],
+            "Please accept the terms and conditions to use Apple Pay.": [
+                "Por favor, acepta los términos y condiciones para usar Apple Pay."
+            ],
+            "Please accept the terms and conditions to use PayPal.": [
+                "Por favor, acepta los términos y condiciones para usar PayPal."
             ]
         }
     }
