@@ -91,76 +91,93 @@ class Hipay_Customer_Billing_Info_Formatter implements Hipay_Api_Formatter
         $phoneExceptionMessage = 'The format of the phone number must match %s phone.';
         switch ($this->payment_product) {
             case 'mbway':
-                $customerBillingInfo->phone = isset($this->params['phone']) ? $this->params['phone']: null;
-                $this->checkPhone(
-                    $customerBillingInfo,
-                    'PT',
-                    sprintf($phoneExceptionMessage, 'a Portuguese'),
-                    false
-                );
+                $mbwayPhone = isset($this->params['phone']) ? $this->params['phone'] : null;
+                $customerBillingInfo->phone = $mbwayPhone !== null ? $mbwayPhone : $this->order->get_billing_phone();
+                try {
+                    $this->checkPhone(
+                        $customerBillingInfo,
+                        'PT',
+                        sprintf($phoneExceptionMessage, 'a Portuguese'),
+                        false
+                    );
+                } catch (Hipay_Payment_Exception $e) {
+                    $this->logs->logErrors($e->getMessage());
+                }
                 break;
             case 'bnpp-3xcb':
             case 'bnpp-4xcb':
-                $this->checkPhone($customerBillingInfo, 'FR', sprintf($phoneExceptionMessage, 'a French'));
+                try {
+                    $this->checkPhone($customerBillingInfo, 'FR', sprintf($phoneExceptionMessage, 'a French'));
+                } catch (Hipay_Payment_Exception $e) {
+                    $this->logs->logErrors($e->getMessage());
+                }
                 break;
             case '3xcb':
             case '3xcb-no-fees':
             case '4xcb':
             case '4xcb-no-fees':
-                switch ($customerBillingInfo->country) {
-                    case 'FR':
-                        $this->checkPhone(
-                            $customerBillingInfo,
-                            $customerBillingInfo->country,
-                            sprintf($phoneExceptionMessage, 'a French')
-                        );
-                        break;
-                    case 'IT':
-                        $this->checkPhone(
-                            $customerBillingInfo,
-                            $customerBillingInfo->country,
-                            sprintf($phoneExceptionMessage, 'an Italian')
-                        );
-                        break;
-                    case 'BE':
-                        $this->checkPhone(
-                            $customerBillingInfo,
-                            $customerBillingInfo->country,
-                            sprintf($phoneExceptionMessage, 'a Belgian')
-                        );
-                        break;
-                    case 'PT':
-                        $this->checkPhone(
-                            $customerBillingInfo,
-                            $customerBillingInfo->country,
-                            sprintf($phoneExceptionMessage, 'a Portuguese')
-                        );
-                        break;
+                try {
+                    switch ($customerBillingInfo->country) {
+                        case 'FR':
+                            $this->checkPhone(
+                                $customerBillingInfo,
+                                $customerBillingInfo->country,
+                                sprintf($phoneExceptionMessage, 'a French')
+                            );
+                            break;
+                        case 'IT':
+                            $this->checkPhone(
+                                $customerBillingInfo,
+                                $customerBillingInfo->country,
+                                sprintf($phoneExceptionMessage, 'an Italian')
+                            );
+                            break;
+                        case 'BE':
+                            $this->checkPhone(
+                                $customerBillingInfo,
+                                $customerBillingInfo->country,
+                                sprintf($phoneExceptionMessage, 'a Belgian')
+                            );
+                            break;
+                        case 'PT':
+                            $this->checkPhone(
+                                $customerBillingInfo,
+                                $customerBillingInfo->country,
+                                sprintf($phoneExceptionMessage, 'a Portuguese')
+                            );
+                            break;
+                    }
+                } catch (Hipay_Payment_Exception $e) {
+                    $this->logs->logErrors($e->getMessage());
                 }
                 break;
             case 'credit-long':
-                switch ($customerBillingInfo->country) {
-                    case 'FR':
-                        $this->checkPhone(
-                            $customerBillingInfo,
-                            $customerBillingInfo->country,
-                            sprintf($phoneExceptionMessage, 'a French')
-                        );
-                        break;
-                    case 'IT':
-                        $this->checkPhone(
-                            $customerBillingInfo,
-                            $customerBillingInfo->country,
-                            sprintf($phoneExceptionMessage, 'an Italian')
-                        );
-                        break;
-                    case 'PT':
-                        $this->checkPhone(
-                            $customerBillingInfo,
-                            $customerBillingInfo->country,
-                            sprintf($phoneExceptionMessage, 'a Portuguese')
-                        );
-                        break;
+                try {
+                    switch ($customerBillingInfo->country) {
+                        case 'FR':
+                            $this->checkPhone(
+                                $customerBillingInfo,
+                                $customerBillingInfo->country,
+                                sprintf($phoneExceptionMessage, 'a French')
+                            );
+                            break;
+                        case 'IT':
+                            $this->checkPhone(
+                                $customerBillingInfo,
+                                $customerBillingInfo->country,
+                                sprintf($phoneExceptionMessage, 'an Italian')
+                            );
+                            break;
+                        case 'PT':
+                            $this->checkPhone(
+                                $customerBillingInfo,
+                                $customerBillingInfo->country,
+                                sprintf($phoneExceptionMessage, 'a Portuguese')
+                            );
+                            break;
+                    }
+                } catch (Hipay_Payment_Exception $e) {
+                    $this->logs->logErrors($e->getMessage());
                 }
                 break;
         }
