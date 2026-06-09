@@ -91,8 +91,7 @@ class Hipay_Customer_Billing_Info_Formatter implements Hipay_Api_Formatter
         $phoneExceptionMessage = 'The format of the phone number must match %s phone.';
         switch ($this->payment_product) {
             case 'mbway':
-                $mbwayPhone = isset($this->params['phone']) ? $this->params['phone'] : null;
-                $customerBillingInfo->phone = $mbwayPhone !== null ? $mbwayPhone : $this->order->get_billing_phone();
+                $customerBillingInfo->phone = !empty($this->params['phone']) ? $this->params['phone'] : $this->order->get_billing_phone();
                 try {
                     $this->checkPhone(
                         $customerBillingInfo,
