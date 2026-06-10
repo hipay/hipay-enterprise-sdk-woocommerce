@@ -1,6 +1,7 @@
 # CHANGELOG
 
 ## UNRELEASE
+- **Fix** : fix Mbway phone number issue
 
 ## 2.11.0
 - **Add** : Added Bancomat Pay
