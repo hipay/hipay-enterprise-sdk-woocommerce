@@ -2,7 +2,13 @@
 
 ## UNRELEASE
 
+## 2.11.1
+
+- **Fix** : fix Mbway phone number issue
+- **Fix** : Fixed an issue where payment initialization required accepting T&Cs
+
 ## 2.11.0
+
 - **Add** : Added Bancomat Pay
 - **Add** : Added Apple Pay Multi-browser feature
 

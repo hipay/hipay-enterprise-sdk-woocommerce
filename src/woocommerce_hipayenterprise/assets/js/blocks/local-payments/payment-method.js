@@ -61,6 +61,12 @@ const LocalPaymentComponent = ({
             try {
                 // For PayPal v2, check if we have PayPal payment data
                 if (config.isPayPalV2) {
+                    if (!termsAccepted) {
+                        return {
+                            type: emitResponse.responseTypes.ERROR,
+                            message: __('Please accept the terms and conditions to use PayPal.', 'hipayenterprise'),
+                        };
+                    }
                     if (!paypalPaymentData || !paypalPaymentData.paypalOrderId) {
                         return {
                             type: emitResponse.responseTypes.ERROR,
@@ -79,6 +85,12 @@ const LocalPaymentComponent = ({
 
                 // check if we have a token from the Apple Pay button
                 if (config.isApplePay) {
+                    if (!termsAccepted) {
+                        return {
+                            type: emitResponse.responseTypes.ERROR,
+                            message: __('Please accept the terms and conditions to use Apple Pay.', 'hipayenterprise'),
+                        };
+                    }
                     if (!applePayPaymentData || !applePayPaymentData['applepay-card-token']) {
                         return {
                             type: emitResponse.responseTypes.ERROR,
@@ -95,6 +107,12 @@ const LocalPaymentComponent = ({
                 }
 
                 if (hasPhoneHostedField) {
+                    if (!termsAccepted) {
+                        return {
+                            type: emitResponse.responseTypes.ERROR,
+                            message: __('Please accept the terms and conditions to use Bancomat Pay.', 'hipayenterprise'),
+                        };
+                    }
                     if (!phoneInstanceRef.current) {
                         return {
                             type: emitResponse.responseTypes.ERROR,
@@ -157,7 +175,7 @@ const LocalPaymentComponent = ({
         });
 
         return unsubscribe;
-    }, [onPaymentSetup, formData, config.paymentProduct, config.isPayPalV2, paypalPaymentData, config.isApplePay, applePayPaymentData, hasPhoneHostedField]);
+    }, [onPaymentSetup, formData, config.paymentProduct, config.isPayPalV2, paypalPaymentData, config.isApplePay, applePayPaymentData, hasPhoneHostedField, termsAccepted]);
 
     const validateFields = () => {
         const validationErrors = {};
@@ -278,14 +296,20 @@ const LocalPaymentComponent = ({
                 {settings.description && (
                     <p className="hipay-description">{settings.description}</p>
                 )}
-
-                <PayPalButton
-                    config={config}
-                    billing={billing}
-                    shippingData={shippingData}
-                    cartTotals={cartTotals}
-                    onPaymentDataChange={setPaypalPaymentData}
-                />
+                {!termsAccepted && (
+                    <p className="woocommerce-error" style={{ fontSize: '0.9em' }}>
+                        {__('Please accept the terms and conditions to use PayPal.', 'hipayenterprise')}
+                    </p>
+                )}
+                {termsAccepted && (
+                    <PayPalButton
+                        config={config}
+                        billing={billing}
+                        shippingData={shippingData}
+                        cartTotals={cartTotals}
+                        onPaymentDataChange={setPaypalPaymentData}
+                    />
+                )}
             </div>
         );
     }
@@ -297,10 +321,17 @@ const LocalPaymentComponent = ({
                 {settings.description && (
                     <p className="hipay-description">{settings.description}</p>
                 )}
-                <ApplePayButton
-                    config={config}
-                    onPaymentDataChange={setApplePayPaymentData}
-                />
+                {!termsAccepted && (
+                    <p className="woocommerce-error" style={{ fontSize: '0.9em' }}>
+                        {__('Please accept the terms and conditions to use Apple Pay.', 'hipayenterprise')}
+                    </p>
+                )}
+                {termsAccepted && (
+                    <ApplePayButton
+                        config={config}
+                        onPaymentDataChange={setApplePayPaymentData}
+                    />
+                )}
             </div>
         );
     }
