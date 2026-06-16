@@ -1,6 +1,6 @@
 {
   "name": "woocommerce-hipayenterprise",
-  "version": "2.11.0",
+  "version": "2.11.1",
   "description": "HiPay Enterprise SDK for WooCommerce - Block Checkout Support",
   "scripts": {
     "build": "webpack --mode production",
