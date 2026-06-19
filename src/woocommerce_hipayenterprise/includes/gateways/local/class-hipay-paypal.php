@@ -115,6 +115,7 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
             'bnpl' => $paymentProductConfig['bnpl'],
             'amount' => $this->getCartAmount(),
             'currency' => get_woocommerce_currency(),
+            'decimalSeparator' => wc_get_price_decimal_separator(),
             'locale' => apply_filters('hipay_locale', get_locale()),
             'isOrderPayPage' => $this->isOrderPayPage(),
             'shippingAddress' => $this->getShippingAddressForValidation(),
@@ -122,6 +123,7 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
                 'addressRequired' => __('Shipping address is required for PayPal payment.', 'hipayenterprise'),
                 'invalidAddressPrefix' => __('Invalid delivery address. Please check or correct the following fields: ', 'hipayenterprise'),
                 'unableToInitialize' => __('Unable to initialize PayPal. Please check your shipping address.', 'hipayenterprise'),
+                'tosRequired' => __('Please accept the terms and conditions to use PayPal.', 'hipayenterprise'),
                 'fieldNames' => [
                     'zipCode' => __('Postal Code', 'hipayenterprise'),
                     'city' => __('City', 'hipayenterprise'),
