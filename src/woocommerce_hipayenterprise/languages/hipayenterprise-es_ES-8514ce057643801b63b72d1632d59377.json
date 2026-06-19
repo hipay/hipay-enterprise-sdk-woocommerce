@@ -1,5 +1,5 @@
 {
-    "translation-revision-date": "2026-04-29T00:00:00+0000",
+    "translation-revision-date": "2026-06-18T00:00:00+0000",
     "generator": "WP-CLI/2.x",
     "source": "assets/js/blocks/build/local-payments-block.js",
     "domain": "messages",
@@ -21,6 +21,27 @@
             ],
             "Please accept the terms and conditions to use PayPal.": [
                 "Por favor, acepta los términos y condiciones para usar PayPal."
+            ],
+            "Failed to load HiPay SDK": [
+                "Error al cargar el SDK de HiPay"
+            ],
+            "Apple Pay is not available on this device or browser.": [
+                "Apple Pay no está disponible en este dispositivo o navegador."
+            ],
+            "Apple Pay payment was not authorized. Please try again.": [
+                "El pago con Apple Pay no fue autorizado. Por favor, inténtalo de nuevo."
+            ],
+            "Apple Pay is not available for this merchant account.": [
+                "Apple Pay no está disponible para esta cuenta de comerciante."
+            ],
+            "Unable to initialize Apple Pay.": [
+                "No se puede inicializar Apple Pay."
+            ],
+            "Loading Apple Pay...": [
+                "Cargando Apple Pay..."
+            ],
+            "Processing your Apple Pay payment...": [
+                "Procesando tu pago con Apple Pay..."
             ]
         }
     }
