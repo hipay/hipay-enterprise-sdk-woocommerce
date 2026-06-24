@@ -2,6 +2,8 @@
 
 ## UNRELEASE
 
+- **Fix** : Fixed Paypal not applying discounts
+
 ## 2.11.1
 
 - **Fix** : fix Mbway phone number issue

@@ -1554,6 +1554,15 @@ msgstr ""
 msgid "The payment will need to be validated on your Bancomat Pay application."
 msgstr ""
 
+#: assets/js/blocks/local-payments/payment-method.js
+#: includes/gateways/local/class-hipay-paypal.php:126
+msgid "Please accept the terms and conditions to use PayPal."
+msgstr ""
+
+#: assets/js/blocks/local-payments/payment-method.js
+msgid "Please accept the terms and conditions to use Apple Pay."
+msgstr ""
+
 #: includes/frontend/template/bancomat-pay.php
 #: assets/js/blocks/local-payments/payment-method.js
 msgid "Please accept the terms and conditions to use Bancomat Pay."

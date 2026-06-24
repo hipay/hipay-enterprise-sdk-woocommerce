@@ -297,7 +297,18 @@ const PayPalButton = ({ config, billing, shippingData, cartTotals: cartTotalsPro
 
     // Initialize PayPal button
     useEffect(() => {
-        // Don't initialize if already done, or if cart totals aren't available yet
+        if (initializedRef.current && buttonInstanceRef.current && cartTotals?.total_price) {
+            try {
+                buttonInstanceRef.current.destroy();
+                buttonInstanceRef.current = null;
+            } catch (e) {
+                console.warn('[HiPay PayPal] Error destroying button on price change:', e);
+            }
+            initializedRef.current = false;
+            setIsReady(false);
+            setIsLoading(true);
+        }
+
         if (initializedRef.current || !cartTotals || !cartTotals.total_price) {
             return;
         }
