@@ -231,7 +231,7 @@
             $('li.wc_payment_method.payment_method_hipayenterprise_applepay').hide();
             showPlaceOrderButton();
         } else {
-            showError(message || 'Unable to initialize Apple Pay.');
+            showError(message || __('Unable to initialize Apple Pay.', 'hipayenterprise'));
         }
     }
 
@@ -247,7 +247,7 @@
 
         const multiBrowserEnabled = Boolean(config.multiBrowserEnabled);
         if (!multiBrowserEnabled && (!window.ApplePaySession || !window.ApplePaySession.canMakePayments())) {
-            $('li.wc_payment_method.payment_method_hipayenterprise_applepay').hide();
+            showError(__('Apple Pay is not available on this device or browser.', 'hipayenterprise'));
             return;
         }
 
@@ -342,7 +342,8 @@
             Promise.resolve(created)
                 .then(function (instance) {
                     if (!instance) {
-                        $('li.wc_payment_method.payment_method_hipayenterprise_applepay').hide();
+                        showError(__('Apple Pay is not available on this device or browser.', 'hipayenterprise'));
+                        showPlaceOrderButton();
                         return;
                     }
                     applePayInstance = instance;
@@ -364,7 +365,7 @@
 
                     applePayInstance.on('paymentUnauthorized', function () {
                         applePayInstance.completePaymentWithFailure();
-                        showError('Apple Pay payment was not authorized. Please try again.');
+                        showError(__('Apple Pay payment was not authorized. Please try again.', 'hipayenterprise'));
                     });
                 })
                 .catch(function (error) {

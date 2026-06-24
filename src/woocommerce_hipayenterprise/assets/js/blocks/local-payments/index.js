@@ -59,7 +59,7 @@ hipayLocalMethods.forEach((methodName) => {
             canMakePayment: ({ billingAddress, cartTotals, shippingAddress }) => {
                 if (isApplePay && !settings?.config?.multiBrowserEnabled) {
                     if (!window.ApplePaySession || !window.ApplePaySession.canMakePayments()) {
-                        return false;
+                        return true;
                     }
                 }
 

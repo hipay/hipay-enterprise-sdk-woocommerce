@@ -3,6 +3,7 @@
 ## UNRELEASE
 
 - **Fix** : Fixed Paypal not applying discounts
+- **Fix** : Fixed Apple Pay disappears
 
 ## 2.11.1
 
