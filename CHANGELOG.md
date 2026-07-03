@@ -4,6 +4,7 @@
 
 - **Fix** : Fixed Paypal not applying discounts
 - **Fix** : Fixed Apple Pay disappears
+- **Fix** : Fixed min/max not filtering card networks
 
 ## 2.11.1
 

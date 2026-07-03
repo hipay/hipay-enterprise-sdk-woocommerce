@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from '@wordpress/element';
+import { useState, useEffect, useRef, useMemo } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { usePaymentMethodRefresh } from '../utils/payment-method-refresh';
 
@@ -25,6 +25,26 @@ const CreditCardComponent = ({
     // Get billing info for cardHolder field
     const firstName = billing?.billingAddress?.first_name || '';
     const lastName = billing?.billingAddress?.last_name || '';
+
+    const cartTotal = (billing?.cartTotal?.value || 0) / 100;
+
+    const allowedBrands = useMemo(() => {
+        const restrictions = config.creditCardRestrictions || {};
+        if (Object.keys(restrictions).length === 0) {
+            return null;
+        }
+        return Object.entries(restrictions)
+            .filter(([, r]) => {
+                if (r.minAmount && cartTotal < r.minAmount) return false;
+                if (r.maxAmount && cartTotal > r.maxAmount) return false;
+                return true;
+            })
+            .map(([brand]) => brand);
+    }, [cartTotal, config.creditCardRestrictions]);
+
+    const allowedBrandsRef = useRef(allowedBrands);
+    allowedBrandsRef.current = allowedBrands;
+    const allowedBrandsKey = allowedBrands ? allowedBrands.slice().sort().join(',') : '';
 
     // Initialize or re-initialize when billing name changes
     useEffect(() => {
@@ -63,8 +83,8 @@ const CreditCardComponent = ({
             initializeHostedFields();
         }, 100);
 
-        // Cleanup on unmount only
         return () => {
+            isInitializingRef.current = false;
             if (hostedFieldsInstance) {
                 try {
                     if (typeof hostedFieldsInstance.destroy === 'function') {
@@ -75,7 +95,7 @@ const CreditCardComponent = ({
                 }
             }
         };
-    }, [isHostedFields, firstName, lastName]);
+    }, [isHostedFields, firstName, lastName, allowedBrandsKey]);
 
     const initializeHostedFields = () => {
         // Validate credentials before attempting to load
@@ -149,6 +169,9 @@ const CreditCardComponent = ({
                 instance.injectBaseStylesheet();
 
                 const options = {
+                    ...(allowedBrandsRef.current?.length > 0 && {
+                        brand: allowedBrandsRef.current,
+                    }),
                     fields: {
                         cardHolder: {
                             selector: 'hipay-card-field-cardHolder',

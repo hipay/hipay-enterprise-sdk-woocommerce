@@ -180,8 +180,8 @@ final class Hipay_Credit_Card_Block extends Hipay_Payment_Block_Abstract
                     $creditCardRestrictions[$cardType] = [
                         'countries' => $conf['countries'] ?? [],
                         'currencies' => $conf['currencies'] ?? [],
-                        'minAmount' => $conf['minAmount'] ?? 0,
-                        'maxAmount' => $conf['maxAmount'] ?? null,
+                        'minAmount' => !empty($conf['minAmount']['EUR']) ? (float)$conf['minAmount']['EUR'] : 0,
+                        'maxAmount' => !empty($conf['maxAmount']['EUR']) ? (float)$conf['maxAmount']['EUR'] : null,
                     ];
                 }
             }
