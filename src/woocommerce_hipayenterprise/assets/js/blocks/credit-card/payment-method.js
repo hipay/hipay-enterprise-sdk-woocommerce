@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from '@wordpress/element';
+import { useState, useEffect, useRef, useMemo } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { usePaymentMethodRefresh } from '../utils/payment-method-refresh';
 
@@ -17,6 +17,8 @@ const CreditCardComponent = ({
     const [saveCard, setSaveCard] = useState(false);
     const [errors, setErrors] = useState({});
     const isInitializingRef = useRef(false);
+    const initTimeoutRef = useRef(null);
+    const effectIdRef = useRef(0);
 
     const config = settings.config || {};
     const isHostedFields = config.operating_mode === 'hosted_fields';
@@ -25,6 +27,38 @@ const CreditCardComponent = ({
     // Get billing info for cardHolder field
     const firstName = billing?.billingAddress?.first_name || '';
     const lastName = billing?.billingAddress?.last_name || '';
+
+    const [debouncedName, setDebouncedName] = useState({ firstName, lastName });
+    useEffect(() => {
+        const t = setTimeout(() => {
+            setDebouncedName({ firstName, lastName });
+        }, 600);
+        return () => clearTimeout(t);
+    }, [firstName, lastName]);
+
+    const nameRef = useRef(debouncedName);
+    nameRef.current = debouncedName;
+    const nameKey = debouncedName.firstName + '|' + debouncedName.lastName;
+
+    const cartTotal = (billing?.cartTotal?.value || 0) / 100;
+
+    const allowedBrands = useMemo(() => {
+        const restrictions = config.creditCardRestrictions || {};
+        if (Object.keys(restrictions).length === 0) {
+            return null;
+        }
+        return Object.entries(restrictions)
+            .filter(([, r]) => {
+                if (r.minAmount && cartTotal < r.minAmount) return false;
+                if (r.maxAmount && cartTotal > r.maxAmount) return false;
+                return true;
+            })
+            .map(([brand]) => brand);
+    }, [cartTotal, config.creditCardRestrictions]);
+
+    const allowedBrandsRef = useRef(allowedBrands);
+    allowedBrandsRef.current = allowedBrands;
+    const allowedBrandsKey = allowedBrands ? allowedBrands.slice().sort().join(',') : '';
 
     // Initialize or re-initialize when billing name changes
     useEffect(() => {
@@ -35,6 +69,7 @@ const CreditCardComponent = ({
         }
 
         isInitializingRef.current = true;
+        const effectId = ++effectIdRef.current;
 
         // If instance exists, destroy it first
         if (hostedFieldsInstance) {
@@ -59,12 +94,17 @@ const CreditCardComponent = ({
         });
 
         // Small delay to ensure cleanup is complete
-        setTimeout(() => {
-            initializeHostedFields();
+        clearTimeout(initTimeoutRef.current);
+        initTimeoutRef.current = setTimeout(() => {
+            initTimeoutRef.current = null;
+            if (effectId !== effectIdRef.current) return;
+            initializeHostedFields(effectId);
         }, 100);
 
-        // Cleanup on unmount only
         return () => {
+            clearTimeout(initTimeoutRef.current);
+            initTimeoutRef.current = null;
+            isInitializingRef.current = false;
             if (hostedFieldsInstance) {
                 try {
                     if (typeof hostedFieldsInstance.destroy === 'function') {
@@ -75,9 +115,9 @@ const CreditCardComponent = ({
                 }
             }
         };
-    }, [isHostedFields, firstName, lastName]);
+    }, [isHostedFields, allowedBrandsKey, nameKey]);
 
-    const initializeHostedFields = () => {
+    const initializeHostedFields = (effectId) => {
         // Validate credentials before attempting to load
         const credentials = config.sandbox_mode
             ? {
@@ -101,18 +141,21 @@ const CreditCardComponent = ({
             const script = document.createElement('script');
             script.src = config.hostedFieldsUrl;
             script.async = true;
-            script.onload = () => setupHostedFields();
+            script.onload = () => {
+                if (effectId !== effectIdRef.current) return;
+                setupHostedFields(effectId);
+            };
             script.onerror = () => {
                 console.error('HiPay: Failed to load SDK');
                 setErrors({ general: __('Failed to load payment form', 'hipayenterprise') });
             };
             document.body.appendChild(script);
         } else {
-            setupHostedFields();
+            setupHostedFields(effectId);
         }
     };
 
-    const setupHostedFields = () => {
+    const setupHostedFields = (effectId) => {
         try {
             const credentials = config.sandbox_mode
                 ? {
@@ -131,10 +174,16 @@ const CreditCardComponent = ({
 
             // Wait for DOM elements to be available
             const checkAndSetup = () => {
+                if (effectId !== effectIdRef.current) return;
+
                 const cardHolderEl = document.getElementById('hipay-card-field-cardHolder');
                 if (!cardHolderEl) {
                     // DOM not ready yet, try again
                     setTimeout(checkAndSetup, 100);
+                    return;
+                }
+
+                if (cardHolderEl.innerHTML.trim() !== '') {
                     return;
                 }
 
@@ -149,12 +198,15 @@ const CreditCardComponent = ({
                 instance.injectBaseStylesheet();
 
                 const options = {
+                    ...(allowedBrandsRef.current?.length > 0 && {
+                        brand: allowedBrandsRef.current,
+                    }),
                     fields: {
                         cardHolder: {
                             selector: 'hipay-card-field-cardHolder',
                             placeholder: config.i18n?.card_holder || 'Card Holder',
-                            defaultFirstname: firstName,
-                            defaultLastname: lastName,
+                            defaultFirstname: nameRef.current.firstName,
+                            defaultLastname: nameRef.current.lastName,
                         },
                         cardNumber: {
                             selector: 'hipay-card-field-cardNumber',
@@ -181,6 +233,8 @@ const CreditCardComponent = ({
                         },
                     },
                 };
+
+                if (effectId !== effectIdRef.current) return;
 
                 // Create returns the card instance directly (synchronously)
                 const cardInstance = instance.create('card', options);

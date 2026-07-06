@@ -67,10 +67,32 @@ class Hipay_Applepay extends Hipay_Gateway_Local_Abstract
         wp_enqueue_script(
             'hipay-js-front-applepay',
             plugins_url('/assets/js/frontend/local-payment-applepay.js', WC_HIPAYENTERPRISE_BASE_FILE),
-            ['jquery'],
+            ['jquery', 'wp-i18n'],
             filemtime(WC_HIPAYENTERPRISE_PATH . 'assets/js/frontend/local-payment-applepay.js'),
             true
         );
+
+        if (function_exists('wp_set_script_translations')) {
+            wp_set_script_translations('hipay-js-front-applepay', 'hipayenterprise', WC_HIPAYENTERPRISE_PATH . 'languages/');
+
+            static $applepay_filter_added = false;
+
+            if (!$applepay_filter_added) {
+                add_filter('pre_load_script_translations', function ($translations, $file, $handle, $domain) {
+                    if ($handle !== 'hipay-js-front-applepay' || $domain !== 'hipayenterprise' || null !== $translations) {
+                        return $translations;
+                    }
+                    $locale    = determine_locale();
+                    $languages = untrailingslashit(WC_HIPAYENTERPRISE_PATH . 'languages');
+                    foreach (glob($languages . '/hipayenterprise-' . $locale . '-*.json') as $json_file) {
+                        return file_get_contents($json_file);
+                    }
+                    return $translations;
+                }, 10, 4);
+
+                $applepay_filter_added = true;
+            }
+        }
 
         wp_localize_script(
             'hipay-js-front-applepay',

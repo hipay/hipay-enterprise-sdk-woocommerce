@@ -76,6 +76,20 @@ jQuery(document).ready(($) => {
 
   const paypalIntegration = (() => {
     let methodsInstance = {};
+    let orderReviewUpdated = false;
+
+    const isTosAccepted = () => {
+      const termsCheckbox = $('#terms');
+      return termsCheckbox.length === 0 || termsCheckbox.is(':checked');
+    };
+
+    const showTosError = () => {
+      const errorDiv = $('#error-js-paypal');
+      const paypalField = $('#paypal-field');
+      paypalField.empty();
+      paypalField.hide();
+      errorDiv.html(hipay_config_paypal.i18n.tosRequired).show();
+    };
 
     const getCurrentShippingAddress = () => {
 
@@ -164,6 +178,11 @@ jQuery(document).ready(($) => {
       checkoutUtils.handleSubmitButton(method, selectors);
 
       if (method === 'paypal' && paypal_version?.v2 !== null) {
+        if (!isTosAccepted()) {
+          showTosError();
+          return;
+        }
+
         const paypalInstance = createPaypalInstance(method);
 
         if (paypalInstance) {
@@ -175,6 +194,32 @@ jQuery(document).ready(($) => {
       }
     };
 
+    const getUpdatedCartAmount = () => {
+      if (!orderReviewUpdated) {
+        return hipay_config_paypal.amount;
+      }
+
+      const totalRow = document.querySelector(
+        'table.woocommerce-checkout-review-order-table tr.order-total td'
+      );
+      if (totalRow) {
+        const amountEl = totalRow.querySelector('.woocommerce-Price-amount');
+        if (amountEl) {
+          const clone = amountEl.cloneNode(true);
+          clone.querySelectorAll('.woocommerce-Price-currencySymbol').forEach((s) => s.remove());
+          const text = clone.textContent.trim().replace(/\s/g, '');
+          const decimalSep = hipay_config_paypal.decimalSeparator || '.';
+          const digits = text.split('').filter((c) => /\d/.test(c) || c === decimalSep).join('');
+          const normalized = decimalSep !== '.' ? digits.replace(decimalSep, '.') : digits;
+          const parsed = parseFloat(normalized);
+          if (!isNaN(parsed) && parsed > 0) {
+            return parsed;
+          }
+        }
+      }
+      return hipay_config_paypal.amount;
+    };
+
     const createPaypalInstance = (method) => {
       try {
         const paypalFieldExists = $('#paypal-field').length > 0;
@@ -183,8 +228,6 @@ jQuery(document).ready(($) => {
         }
 
         const paypalField = $('#paypal-field');
-
-        const containerContent = paypalField.html();
 
         const shippingAddress = getCurrentShippingAddress();
 
@@ -212,7 +255,7 @@ jQuery(document).ready(($) => {
           request: {
             locale: hipay_config_paypal.locale,
             currency: hipay_config_paypal.currency,
-            amount: String(hipay_config_paypal.amount),
+            amount: String(getUpdatedCartAmount()),
             customerShippingInformation: {
               zipCode: shippingAddress.zipCode,
               city: shippingAddress.city,
@@ -259,6 +302,10 @@ jQuery(document).ready(($) => {
       if (!instancePaypalButton) return;
 
       instancePaypalButton.on('paymentAuthorized', (hipayToken) => {
+        if (!isTosAccepted()) {
+          showTosError();
+          return;
+        }
         $('#paypal-orderId').val(hipayToken.orderID);
         $('#paypal-payment-product').val('paypal');
         $('#paypal-browserInfo').val(JSON.stringify(hipayToken.browser_info));
@@ -272,7 +319,10 @@ jQuery(document).ready(($) => {
       checkoutForm.submit();
     };
 
-    const updateMethods = (selectors) => {
+    const updateMethods = (selectors, fromOrderReviewUpdate = false) => {
+      if (fromOrderReviewUpdate) {
+        orderReviewUpdated = true;
+      }
       checkoutUtils.destroyMethods(methodsInstance);
 
       const selectedMethod = checkoutUtils.getSelectedMethod();
@@ -309,7 +359,7 @@ jQuery(document).ready(($) => {
     };
 
     const handleOrderReviewUpdate = () => {
-      paypalIntegration.updateMethods(selectors);
+      paypalIntegration.updateMethods(selectors, true);
       pageLoaded = true;
 
       const selectedMethod = checkoutUtils.getSelectedMethod();
@@ -338,6 +388,13 @@ jQuery(document).ready(($) => {
       $(document.body).on('payment_method_selected', () => {
         if (pageLoaded) {
           handlePaymentMethodChange();
+        }
+      });
+
+      $(document).on('change', '#terms', () => {
+        const selectedMethod = checkoutUtils.getSelectedMethod();
+        if (selectedMethod === 'paypal' && paypal_version?.v2 !== null) {
+          paypalIntegration.updateMethods(selectors);
         }
       });
 
