@@ -5,6 +5,7 @@
 - **Fix** : Fixed Paypal not applying discounts
 - **Fix** : Fixed Apple Pay disappears
 - **Fix** : Fixed min/max not filtering card networks
+- **Fix** : Fixed error on Hosted Fields when autocomplete
 
 ## 2.11.1
 
