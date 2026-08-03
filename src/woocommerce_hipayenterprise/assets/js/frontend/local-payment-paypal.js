@@ -92,6 +92,9 @@ jQuery(document).ready(($) => {
     };
 
     const getCurrentShippingAddress = () => {
+      if (isOrderPayPage) {
+        return hipay_config_paypal.shippingAddress || {};
+      }
 
       const getFieldValue = (fieldId) => {
         const field = $(fieldId);

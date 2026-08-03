@@ -2,6 +2,8 @@
 
 ## UNRELEASE
 
+- **Fix** : Fixed Hosted Fields issue on Customer Payment Page
+
 ## 2.11.2
 
 - **Fix** : Fixed Paypal not applying discounts
