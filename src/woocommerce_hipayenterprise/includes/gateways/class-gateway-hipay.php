@@ -112,7 +112,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
          */
         public function check_callback_response()
         {
-            $transactionReference = Hipay_Helper::getPostData('$1', '');
+            $transactionReference = Hipay_Helper::getPostData('transaction_reference', '');
 
             $isApplePay = false;
             $customData = Hipay_Helper::getPostData('custom_data');
@@ -166,12 +166,13 @@ if (!class_exists('WC_Gateway_Hipay')) {
 
         private function getActivatedCreditCards()
         {
+            $context = $this->getCurrentPaymentContext();
             return Hipay_Helper::getActivatedPaymentByCountryAndCurrency(
                 $this,
                 "credit_card",
-                WC()->customer->get_billing_country(),
-                get_woocommerce_currency(),
-                WC()->cart->get_totals()["total"],
+                $context['country'],
+                $context['currency'],
+                $context['total'],
                 false
             );
         }
@@ -400,9 +401,10 @@ if (!class_exists('WC_Gateway_Hipay')) {
         public function localize_scripts()
         {
             // Only localize for classic checkout, not blocks
-            if (is_page() &&
+            if (((is_page() &&
             (is_checkout() || is_add_payment_method_page()) &&
-            !is_order_received_page() &&
+            !is_order_received_page()) ||
+            $this->isOrderPayPage()) &&
             !$this->is_blocks_checkout()) {
                 wp_enqueue_style(
                     'hipayenterprise-style',
@@ -440,7 +442,7 @@ if (!class_exists('WC_Gateway_Hipay')) {
                     'hipay-js-front',
                     'hipay_hosted_fields_data',
                     array(
-                    "amount" => WC()->cart->get_totals()["total"],
+                    "amount" => $this->getCurrentPaymentContext()['total'],
                     )
                 );
             }

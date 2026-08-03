@@ -115,7 +115,7 @@ class Hipay_Applepay extends Hipay_Gateway_Local_Abstract
         $apiUsername = $credentials['username'];
         $apiPassword = $credentials['password'];
 
-        $customerCountry = WC()->customer ? WC()->customer->get_billing_country() : '';
+        $customerCountry = $this->getCurrentPaymentContext()['country'];
         $countryCode     = !empty($customerCountry) ? $customerCountry : WC()->countries->get_base_country();
 
         return [

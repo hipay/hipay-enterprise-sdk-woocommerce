@@ -235,14 +235,15 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
 
     public function localize_scripts()
     {
-        if (is_page() &&
+        if ((is_page() &&
         (is_checkout() || is_add_payment_method_page()) &&
-        !is_order_received_page()) {
+        !is_order_received_page()) ||
+        $this->isOrderPayPage()) {
             wp_localize_script(
                 'hipay-js-front',
                 'hipay_hosted_fields_data',
                 array(
-                    "amount" => WC()->cart->get_totals()["total"],
+                    "amount" => $this->getCurrentPaymentContext()['total'],
                 )
             );
         }

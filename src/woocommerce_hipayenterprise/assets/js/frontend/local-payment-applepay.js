@@ -11,6 +11,10 @@
 (function ($) {
     'use strict';
 
+    var __ = (window.wp && window.wp.i18n && window.wp.i18n.__) || function (text) {
+        return text;
+    };
+
     var applePayInstance = null;
     var submitButtonClone = null;
     var unhandledRejectionListener = null;
@@ -356,7 +360,11 @@
                         $('#applepay-card-holder').val(hipayToken.card_holder || '');
                         $('#applepay-payment-product').val(paymentProduct);
                         applePayInstance.completePaymentWithSuccess();
-                        $('form.woocommerce-checkout').trigger('submit');
+
+                        var $submitForm = isOrderPayPage()
+                            ? $('#order_review')
+                            : $('form.woocommerce-checkout');
+                        $submitForm.trigger('submit');
                     });
 
                     applePayInstance.on('cancel', function () {
@@ -415,6 +423,9 @@
                 destroyApplePayInstance();
             }
         });
+        if (isOrderPayPage() && isApplePaySelected()) {
+            initApplePayInstance();
+        }
     });
 
 }(jQuery));

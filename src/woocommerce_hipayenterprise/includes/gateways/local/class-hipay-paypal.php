@@ -50,6 +50,20 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
 
         parent::__construct();
 
+        if (!is_admin()) {
+            add_action('wp_enqueue_scripts', array($this, 'maybeEnqueuePaypalScripts'));
+        }
+    }
+
+    /**
+     * Enqueue PayPal scripts
+     */
+    public function maybeEnqueuePaypalScripts()
+    {
+        if (!((is_checkout() || is_add_payment_method_page()) && !is_order_received_page())) {
+            return;
+        }
+
         $paymentProductConfig = $this->confHelper->getLocalPayment($this->paymentProduct);
 
         if ($this->isPaypalV2() && !empty($paymentProductConfig)) {
@@ -350,13 +364,13 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
 
         // Get shipping address, fallback to billing if shipping is empty
         return [
-            'zipCode' => $source->get_shipping_postcode() ?? $source->get_billing_postcode(),
-            'city' => $source->get_shipping_city() ?? $source->get_billing_city(),
-            'country' => $source->get_shipping_country() ?? $source->get_billing_country(),
-            'streetaddress' => $source->get_shipping_address_1() ?? $source->get_billing_address_1(),
-            'streetaddress2' => $source->get_shipping_address_2() ?? $source->get_billing_address_2(),
-            'firstname' => $source->get_shipping_first_name() ?? $source->get_billing_first_name(),
-            'lastname' => $source->get_shipping_last_name() ?? $source->get_billing_last_name(),
+            'zipCode' => !empty($source->get_shipping_postcode()) ? $source->get_shipping_postcode() : $source->get_billing_postcode(),
+            'city' => !empty($source->get_shipping_city()) ? $source->get_shipping_city() : $source->get_billing_city(),
+            'country' => !empty($source->get_shipping_country()) ? $source->get_shipping_country() : $source->get_billing_country(),
+            'streetaddress' => !empty($source->get_shipping_address_1()) ? $source->get_shipping_address_1() : $source->get_billing_address_1(),
+            'streetaddress2' => !empty($source->get_shipping_address_2()) ? $source->get_shipping_address_2() : $source->get_billing_address_2(),
+            'firstname' => !empty($source->get_shipping_first_name()) ? $source->get_shipping_first_name() : $source->get_billing_first_name(),
+            'lastname' => !empty($source->get_shipping_last_name()) ? $source->get_shipping_last_name() : $source->get_billing_last_name(),
         ];
     }
 

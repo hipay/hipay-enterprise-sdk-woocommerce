@@ -142,6 +142,11 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
         $this->password = ($this->sandbox) ? $this->confHelper->getAccount()["sandbox"]["api_tokenjs_password_publickey_sandbox"]
             : $this->confHelper->getAccount()["production"]["api_tokenjs_password_publickey_production"];
 
+        add_action('wp_print_scripts', array($this, 'localize_common_config'), 4);
+    }
+
+    public function localize_common_config()
+    {
         $hipay_config_data = array(
             "apiUsernameTokenJs" => $this->username,
             "apiPasswordTokenJs" => $this->password,
@@ -283,13 +288,13 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
      */
     public function isAvailableForCurrentCart()
     {
-        $cartTotals = WC()->cart->get_totals();
+        $context = $this->getCurrentPaymentContext();
         $activatedPayments = Hipay_Helper::getActivatedPaymentByCountryAndCurrency(
             $this,
             $this->paymentProduct,
-            WC()->customer->get_billing_country(),
-            get_woocommerce_currency(),
-            $cartTotals["total"]
+            $context['country'],
+            $context['currency'],
+            $context['total']
         );
 
         return !empty($activatedPayments);
@@ -496,6 +501,28 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
         global $wp;
         return isset($wp->query_vars['order-pay']) && !empty($wp->query_vars['order-pay']);
     }
+
+    protected function getCurrentPaymentContext()
+    {
+        if ($this->isOrderPayPage()) {
+            global $wp;
+            $order = wc_get_order(absint($wp->query_vars['order-pay']));
+
+            if ($order) {
+                return array(
+                    'country' => $order->get_billing_country(),
+                    'currency' => $order->get_currency(),
+                    'total' => (float) $order->get_total()
+                );
+            }
+        }
+
+        return array(
+            'country' => WC()->customer->get_billing_country(),
+            'currency' => get_woocommerce_currency(),
+            'total' => (float) WC()->cart->get_totals()['total']
+        );
+    }
     
     /**
      * Check if current page is using blocks checkout
@@ -504,6 +531,10 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
      */
     protected function is_blocks_checkout()
     {
+        if ($this->isOrderPayPage()) {
+            return false;
+        }
+
         // Check if we're on a checkout page with blocks
         if (function_exists('has_block') && is_checkout()) {
             global $post;
