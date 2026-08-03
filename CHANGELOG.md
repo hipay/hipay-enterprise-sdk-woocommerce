@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## UNRELEASE
+## 2.11.3
 
 - **Fix** : Fixed Hosted Fields issue on Customer Payment Page
 
