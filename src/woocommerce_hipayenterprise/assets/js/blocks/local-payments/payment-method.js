@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
 import { CART_STORE_KEY } from '@woocommerce/block-data';
 import { usePaymentMethodRefresh } from '../utils/payment-method-refresh';
@@ -110,7 +110,10 @@ const LocalPaymentComponent = ({
                     if (!termsAccepted) {
                         return {
                             type: emitResponse.responseTypes.ERROR,
-                            message: __('Please accept the terms and conditions to use Bancomat Pay.', 'hipayenterprise'),
+                            message: sprintf(
+                                __('Please accept the terms and conditions to use %s.', 'hipayenterprise'),
+                                settings.title
+                            ),
                         };
                     }
                     if (!phoneInstanceRef.current) {
@@ -377,7 +380,10 @@ const LocalPaymentComponent = ({
 
             {hasPhoneHostedField && !termsAccepted && (
                 <p className="woocommerce-error" style={{ fontSize: '0.9em' }}>
-                    {__('Please accept the terms and conditions to use Bancomat Pay.', 'hipayenterprise')}
+                    {sprintf(
+                        __('Please accept the terms and conditions to use %s.', 'hipayenterprise'),
+                        settings.title
+                    )}
                 </p>
             )}
 

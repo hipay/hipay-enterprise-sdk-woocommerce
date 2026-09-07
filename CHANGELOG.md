@@ -3,6 +3,7 @@
 ## 2.11.4
 
 - **Fix** : Fixed refund screen prefilled with the full order amount by default
+- **Fix** : Fixed Mbway error payment message
 
 ## 2.11.3
 
