@@ -13,7 +13,9 @@ jQuery(function ($) {
                 .on('click', 'button.do-api-capture', this.do_capture)
                 .on( 'change', '.refund input.refund_line_total, .refund input.refund_line_tax', this.input_changed )
                 .on( 'change keyup', '#capture_amount', this.amount_changed );
+        },
 
+        prefill_capture_quantities: function () {
             $('#order_line_items .refund input.refund_order_item_qty').each(function (index, item) {
                 // Set all items quantities to max capturable and trigger change event to update other values (tax, total...)
 
@@ -95,6 +97,8 @@ jQuery(function ($) {
             $('div.wc-order-totals-items').slideUp();
             $('#woocommerce-order-items').find('div.refund').show();
             $('.wc-order-edit-line-item .wc-order-edit-line-item-actions').hide();
+
+            hipay_meta_boxes_order_items.prefill_capture_quantities();
 
             if($(this).hasClass('capture-complete-only')) {
                 $('#woocommerce-order-items').find('div.refund input').prop('readonly', 'readonly');

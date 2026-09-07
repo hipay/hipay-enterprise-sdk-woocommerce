@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.11.4
+
+- **Fix** : Fixed refund screen prefilled with the full order amount by default
+
 ## 2.11.3
 
 - **Fix** : Fixed Hosted Fields issue on Customer Payment Page
