@@ -14,14 +14,6 @@ jQuery(function ($) {
   var hipaySDK = {};
   var useOneClick = Boolean(hipay_config.useOneClick);
 
-  var originalTrigger = $.fn.trigger;
-  $.fn.trigger = function (event) {
-    if (event === 'update_checkout' && isProcessing) {
-      return this;
-    }
-    return originalTrigger.apply(this, arguments);
-  };
-
   // Safety mechanism - force release lock if held too long
   function ensureLockReleased() {
     if (isProcessing && processingTimeout) {
@@ -116,14 +108,29 @@ jQuery(function ($) {
     }
   }
 
-  function syncBancomatPayPhoneVisibility() {
+  function syncPhoneHostedFieldVisibility(method) {
     var termsCheckbox = document.getElementById('terms');
     var isAccepted = !termsCheckbox || termsCheckbox.checked;
     $('.hipay-phone-hosted-field').toggle(isAccepted);
     $('#hipay-bancomatpay-tos-notice').toggle(!isAccepted);
+    $('#hipay-bizum-tos-notice').toggle(!isAccepted);
+  }
+
+  var bizumPhoneEmpty = true;
+
+  function syncBizumPlaceOrderButton() {
+    var $btn = $('#place_order');
+    if (!$btn.length) return;
+
+    if (getSelectedMethod() === 'bizum' && bizumPhoneEmpty) {
+      $btn.prop('disabled', true).data('hipayBizumDisabled', true);
+    } else if ($btn.data('hipayBizumDisabled')) {
+      $btn.prop('disabled', false).removeData('hipayBizumDisabled');
+    }
   }
 
   function addPaymentMethod() {
+    syncBizumPlaceOrderButton();
     if (isProcessing) return;
 
     var method = getSelectedMethod();
@@ -287,6 +294,31 @@ jQuery(function ($) {
     return $('#add_payment_method').length > 0;
   }
 
+  function getCheckoutOrderAmount() {
+    var $total = $('tr.order-total .woocommerce-Price-amount').first();
+    if ($total.length) {
+      var raw = $total.text().replace(/\s/g, '');
+      var normalized = raw.replace(/[^\d.,-]/g, '').replace(',', '.');
+      var parsed = parseFloat(normalized);
+      if (!isNaN(parsed)) {
+        return parsed;
+      }
+    }
+
+    if (typeof hipay_hosted_fields_data !== 'undefined' && hipay_hosted_fields_data.amount != null) {
+      return parseFloat(hipay_hosted_fields_data.amount);
+    }
+
+    return undefined;
+  }
+
+  function refreshHostedFieldsAmount() {
+    var amount = getCheckoutOrderAmount();
+    if (amount != null && typeof hipay_hosted_fields_data !== 'undefined') {
+      hipay_hosted_fields_data.amount = amount;
+    }
+  }
+
   function createHostedFieldsInstance(method) {
     if (
       !method ||
@@ -318,9 +350,12 @@ jQuery(function ($) {
       configHostedFields = getCardConfig();
     } else {
       configHostedFields['template'] = 'auto';
+      var checkoutAmount = getCheckoutOrderAmount();
       configHostedFields['request'] = {
-        amount: hipay_hosted_fields_data.amount
-      }
+        amount: checkoutAmount != null && !isNaN(checkoutAmount)
+          ? String(checkoutAmount)
+          : undefined
+      };
     }
 
     configHostedFields['selector'] = 'hipayHF-container-' + method;
@@ -391,8 +426,12 @@ jQuery(function ($) {
       methodsInstance[method].on('helpButtonToggled', handleHelpButtonToggle);
       methodsInstance[method].on('ready', function () {
         unBlockUI();
-        if (method === 'bancomatpay') {
-          syncBancomatPayPhoneVisibility();
+        if (method === 'bancomatpay' || method === 'bizum') {
+          syncPhoneHostedFieldVisibility(method);
+        }
+        if (method === 'bizum') {
+          bizumPhoneEmpty = true;
+          syncBizumPlaceOrderButton();
         }
       });
       methodsInstance[method].on('error', function (error) {
@@ -429,6 +468,11 @@ jQuery(function ($) {
   function handleInputChange(data) {
     var method = getSelectedMethod();
     if (isCreditCardSelected()) method = 'card';
+
+    if (method === 'bizum') {
+      bizumPhoneEmpty = Boolean(data.validity && data.validity.empty);
+      syncBizumPlaceOrderButton();
+    }
 
     var domElement = document.querySelector(
       "[data-hipay-id='hipay-" + method + '-field-error-' + data.element + "']"
@@ -609,10 +653,11 @@ jQuery(function ($) {
   var debouncedCheckoutProcess = debounce(processCheckout, 300, false);
 
   $(document).on('change', '#terms', function () {
-    if (getSelectedMethod() === 'bancomatpay') {
-      $('.hipay-phone-hosted-field').toggle(this.checked);
-      $('#hipay-bancomatpay-tos-notice').toggle(!this.checked);
+    var method = getSelectedMethod();
+    if (method === 'bancomatpay' || method === 'bizum') {
+      syncPhoneHostedFieldVisibility(method);
     }
+    syncBizumPlaceOrderButton();
   });
 
   $(document).ready(function () {
@@ -624,6 +669,8 @@ jQuery(function ($) {
   });
 
   $(document.body).on('updated_checkout', function () {
+    refreshHostedFieldsAmount();
+    syncBizumPlaceOrderButton();
     if ($('input[name="payment_method"]:checked').length) {
       debouncedCheckoutProcess();
     }

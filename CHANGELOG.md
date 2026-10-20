@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2.12.0
+
+- **Add** : Added Bizum as a local payment method
+- **Fix** : Change P24 Display Name
+- 
+
 ## 2.11.4
 
 - **Fix** : Fixed refund screen prefilled with the full order amount by default

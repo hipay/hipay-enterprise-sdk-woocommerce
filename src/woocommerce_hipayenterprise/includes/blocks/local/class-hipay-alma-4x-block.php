@@ -37,7 +37,7 @@ final class Hipay_Alma_4x_Block extends Hipay_Local_Payment_Block_Abstract
      *
      * @var string
      */
-    protected $paymentProduct = 'alma_4x';
+    protected $paymentProduct = 'alma-4x';
     
     /**
      * Override to add SDK widget flag for Alma methods

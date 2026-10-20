@@ -145,6 +145,8 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
         try {
             $this->logs->logInfos(" # Process Payment for  " . $order_id);
 
+            $this->assertOrderEligibility($order_id);
+
             $method = $this->confHelper->getLocalPayment($this->paymentProduct);
 
             $rawPhone = Hipay_Helper::getPostData($this->paymentProduct.'-phone');

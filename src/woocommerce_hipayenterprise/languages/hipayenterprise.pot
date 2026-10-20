@@ -634,7 +634,7 @@ msgid "HiPay Enterprise PostFinance E-Finance"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-przelewy24.php:32
-msgid "HiPay Enterprise Przelewy24"
+msgid "HiPay Enterprise Blik / Przelewy24"
 msgstr ""
 
 #: includes/gateways/local/class-hipay-sdd.php:32
@@ -1123,7 +1123,7 @@ msgstr ""
 
 #: includes/gateways/local/class-hipay-przelewy24.php:33
 #: includes/gateways/local/class-hipay-przelewy24.php:34
-msgid "Przelewy24"
+msgid "Blik / Przelewy24"
 msgstr ""
 
 #: includes/admin/template/admin-faq-settings.php:126
@@ -1554,6 +1554,12 @@ msgstr ""
 msgid "The payment will need to be validated on your Bancomat Pay application."
 msgstr ""
 
+#: includes/gateways/local/class-hipay-bizum.php
+#: includes/blocks/local/class-hipay-bizum-block.php
+#: includes/frontend/template/bizum-pending.php
+msgid "The payment will need to be validated on your Bizum banking application."
+msgstr ""
+
 #: assets/js/blocks/local-payments/payment-method.js
 #: includes/gateways/local/class-hipay-paypal.php:126
 msgid "Please accept the terms and conditions to use PayPal."
@@ -1566,6 +1572,16 @@ msgstr ""
 #: includes/frontend/template/bancomat-pay.php
 #: assets/js/blocks/local-payments/payment-method.js
 msgid "Please accept the terms and conditions to use Bancomat Pay."
+msgstr ""
+
+#: includes/frontend/template/bizum.php
+#: assets/js/blocks/local-payments/payment-method.js
+msgid "Please accept the terms and conditions to use Bizum."
+msgstr ""
+
+#: assets/js/blocks/local-payments/payment-method.js
+#, javascript-format
+msgid "Please accept the terms and conditions to use %s."
 msgstr ""
 
 #: includes/frontend/template/bancomat-pay-pending.php
@@ -1594,4 +1610,29 @@ msgstr ""
 
 #: assets/js/blocks/local-payments/payment-method.js
 msgid "Please enter a valid phone number."
+msgstr ""
+
+#: includes/gateways/class-hipay-gateway-abstract.php
+#: assets/js/blocks/local-payments/phone-eligibility.js
+msgid "This payment method is not available for your country, currency or order amount."
+msgstr ""
+
+#: assets/js/blocks/local-payments/phone-eligibility.js
+msgid "Bizum is only available for billing addresses in Spain."
+msgstr ""
+
+#: assets/js/blocks/local-payments/phone-eligibility.js
+msgid "The order amount is too low for Bizum."
+msgstr ""
+
+#: assets/js/blocks/local-payments/phone-hosted-field.js
+msgid "Phone field error"
+msgstr ""
+
+#: assets/js/blocks/local-payments/phone-hosted-field.js
+msgid "Failed to initialize phone field"
+msgstr ""
+
+#: assets/js/blocks/local-payments/phone-hosted-field.js
+msgid "Loading phone field…"
 msgstr ""

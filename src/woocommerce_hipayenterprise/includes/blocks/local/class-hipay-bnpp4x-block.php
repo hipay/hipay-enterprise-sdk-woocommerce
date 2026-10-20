@@ -37,7 +37,7 @@ final class Hipay_Bnpp4x_Block extends Hipay_Local_Payment_Block_Abstract
      *
      * @var string
      */
-    protected $paymentProduct = 'bnpp-4x';
+    protected $paymentProduct = 'bnpp-4xcb';
     
     /**
      * Override to add SDK widget flag for BNPP methods

@@ -25,6 +25,7 @@ const LocalPaymentComponent = ({
     const [applePayPaymentData, setApplePayPaymentData] = useState(null);
     const [termsAccepted, setTermsAccepted] = useState(false);
     const phoneInstanceRef = useRef(null);
+    const [phoneEmpty, setPhoneEmpty] = useState(true);
 
     useEffect(() => {
         const termsEl = document.getElementById('terms-and-conditions');
@@ -49,11 +50,54 @@ const LocalPaymentComponent = ({
     const hasPhoneHostedField = Object.values(additionalFields.formFields || {})
         .some((f) => f.controlType === 'phone');
     
+    const disablePlaceOrder = config.paymentProduct === 'bizum' && hasPhoneHostedField
+        && (!termsAccepted || phoneEmpty);
+
+    useEffect(() => {
+        if (!disablePlaceOrder) return undefined;
+
+        const selector = '.wc-block-components-checkout-place-order-button';
+        const apply = () => {
+            const btn = document.querySelector(selector);
+            if (btn && !btn.disabled) {
+                btn.disabled = true;
+                btn.dataset.hipayBizumDisabled = '1';
+            }
+        };
+
+        apply();
+        const observer = new MutationObserver(apply);
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['disabled'],
+        });
+
+        return () => {
+            observer.disconnect();
+            const btn = document.querySelector(selector);
+            if (btn && btn.dataset.hipayBizumDisabled) {
+                btn.disabled = false;
+                delete btn.dataset.hipayBizumDisabled;
+            }
+        };
+    }, [disablePlaceOrder]);
+
     // Get cart totals from the store for PayPal
     const cartTotals = useSelect((select) => {
         const store = select(CART_STORE_KEY);
         return store.getCartTotals();
     }, []);
+
+    const orderAmount = cartTotals?.total_price != null
+        ? parseFloat(cartTotals.total_price) / 100
+        : undefined;
+
+    const billingCountry =
+        billing?.billingAddress?.country
+        || shippingData?.shippingAddress?.country
+        || '';
 
     // Handle payment processing
     useEffect(() => {
@@ -391,7 +435,10 @@ const LocalPaymentComponent = ({
                 <PhoneHostedField
                     config={config}
                     paymentProduct={config.paymentProduct}
+                    orderAmount={orderAmount}
+                    billingCountry={billingCountry}
                     instanceRef={phoneInstanceRef}
+                    onEmptyChange={setPhoneEmpty}
                 />
             ) : (
                 !hasPhoneHostedField && additionalFields.formFields && (

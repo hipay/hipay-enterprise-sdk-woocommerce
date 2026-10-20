@@ -460,6 +460,8 @@ if (!class_exists('WC_Gateway_Hipay')) {
             try {
                 $this->logs->logInfos(" # Process Payment for  " . $order_id);
 
+                $this->assertOrderEligibility($order_id);
+
                 $params = array(
                     "order_id" => $order_id,
                     "paymentProduct" => Hipay_Helper::getPostData('card-payment_product'),

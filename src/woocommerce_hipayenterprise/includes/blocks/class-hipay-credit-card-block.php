@@ -122,7 +122,7 @@ final class Hipay_Credit_Card_Block extends Hipay_Payment_Block_Abstract
     protected function get_gateway()
     {
         if (!isset($this->gateway)) {
-            $gateways = WC()->payment_gateways->get_available_payment_gateways();
+            $gateways = WC()->payment_gateways->payment_gateways();
             $this->gateway = isset($gateways[$this->name]) ? $gateways[$this->name] : null;
         }
         return $this->gateway;

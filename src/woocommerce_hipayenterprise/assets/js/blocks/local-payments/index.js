@@ -2,6 +2,7 @@ import { registerPaymentMethod } from '@woocommerce/blocks-registry';
 import { decodeEntities } from '@wordpress/html-entities';
 import { getSetting } from '@woocommerce/settings';
 import LocalPaymentComponent from './payment-method';
+import { BIZUM_SDK_MIN_AMOUNT } from './phone-eligibility';
 
 // Get all HiPay local payment methods
 const hipayLocalMethods = [
@@ -10,6 +11,7 @@ const hipayLocalMethods = [
     'hipayenterprise_alma_4x',
     'hipayenterprise_bancomatpay',
     'hipayenterprise_bancontact',
+    'hipayenterprise_bizum',
     'hipayenterprise_bnpp3x',
     'hipayenterprise_bnpp4x',
     'hipayenterprise_giropay',
@@ -83,14 +85,17 @@ hipayLocalMethods.forEach((methodName) => {
                 }
 
                 // Check currency restriction
-                if (restrictions.currencies && restrictions.currencies.length > 0) {
+                if (currency && restrictions.currencies && restrictions.currencies.length > 0) {
                     if (!restrictions.currencies.includes(currency)) {
                         return false;
                     }
                 }
 
-                // Check amount restrictions
-                if (restrictions.minAmount && total < restrictions.minAmount) {
+                // Check amount restrictions (Bizum: align with sdkjs min 0.5 EUR)
+                const minAmount = methodName === 'hipayenterprise_bizum'
+                    ? Math.max(restrictions.minAmount || 0, BIZUM_SDK_MIN_AMOUNT)
+                    : (restrictions.minAmount || 0);
+                if (minAmount > 0 && total < minAmount) {
                     return false;
                 }
                 if (restrictions.maxAmount && total > restrictions.maxAmount) {

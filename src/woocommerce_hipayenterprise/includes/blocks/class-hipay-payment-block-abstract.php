@@ -151,18 +151,7 @@ abstract class Hipay_Payment_Block_Abstract extends AbstractPaymentMethodType
     {
         $gateway = $this->get_gateway();
 
-        // First check if gateway is enabled
-        if (!$gateway || 'yes' !== $gateway->enabled) {
-            return false;
-        }
-
-        // Then check if it's available for the current cart
-        // This matches the logic used in shortcode checkout
-        if (isset(WC()->cart) && method_exists($gateway, 'isAvailableForCurrentCart')) {
-            return $gateway->isAvailableForCurrentCart();
-        }
-
-        return true;
+        return $gateway && 'yes' === $gateway->enabled;
     }
 
     /**
@@ -188,24 +177,26 @@ abstract class Hipay_Payment_Block_Abstract extends AbstractPaymentMethodType
         $script_url = $this->get_script_url();
         $script_asset_path = $this->get_script_asset_path();
 
-        if (file_exists($script_asset_path)) {
-            $script_asset = require $script_asset_path;
-        } else {
-            $script_asset = [
-                'dependencies' => [],
-                'version' => WC_HIPAYENTERPRISE_VERSION
-            ];
+        $script_handle = 'wc-hipayenterprise-' . basename($script_path, '.js');
+
+        if (!wp_script_is($script_handle, 'registered')) {
+            if (file_exists($script_asset_path)) {
+                $script_asset = require $script_asset_path;
+            } else {
+                $script_asset = [
+                    'dependencies' => [],
+                    'version' => WC_HIPAYENTERPRISE_VERSION
+                ];
+            }
+
+            wp_register_script(
+                $script_handle,
+                $script_url,
+                $script_asset['dependencies'],
+                $script_asset['version'],
+                true
+            );
         }
-
-        $script_handle = 'wc-hipayenterprise-' . $this->name . '-block';
-
-        wp_register_script(
-            $script_handle,
-            $script_url,
-            $script_asset['dependencies'],
-            $script_asset['version'],
-            true
-        );
 
         if (function_exists('wp_set_script_translations')) {
             wp_set_script_translations(
