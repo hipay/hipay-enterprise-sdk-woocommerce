@@ -1,10 +1,10 @@
 {
   "name": "przelewy24",
   "config": {
-    "displayNameBO": "Przelewy24",
+    "displayNameBO": "Blik / Przelewy24",
     "displayName": {
-      "fr": "Przelewy24",
-      "en": "Przelewy24"
+      "fr": "Blik / Przelewy24",
+      "en": "Blik / Przelewy24"
     },
     "frontPosition": 23,
     "activated": 0,
@@ -23,6 +23,6 @@
     "maxAmount": {
       "EUR": false
     },
-    "logo": "p24.png"
+    "logo": "p24.svg"
   }
 }

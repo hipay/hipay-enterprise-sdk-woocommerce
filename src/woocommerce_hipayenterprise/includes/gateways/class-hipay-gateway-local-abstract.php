@@ -43,8 +43,13 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
             $this->title = $methodConf["displayName"]['en'];
         }
 
-        if (isset($methodConf["logo"]) && file_exists(WC_HIPAYENTERPRISE_PATH_ASSETS . "local_payments_images/" . $methodConf["logo"])) {
-            $this->icon = WC_HIPAYENTERPRISE_URL_ASSETS . "local_payments_images/" . $methodConf["logo"];
+        $logo = $methodConf["logo"] ?? null;
+        if (!$logo || !file_exists(WC_HIPAYENTERPRISE_PATH_ASSETS . "local_payments_images/" . $logo)) {
+            $logo = $jsonDefaults["logo"] ?? null;
+        }
+
+        if ($logo && file_exists(WC_HIPAYENTERPRISE_PATH_ASSETS . "local_payments_images/" . $logo)) {
+            $this->icon = WC_HIPAYENTERPRISE_URL_ASSETS . "local_payments_images/" . $logo;
         }
 
         $this->init_form_fields();
