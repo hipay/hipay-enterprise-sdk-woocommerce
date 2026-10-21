@@ -93,6 +93,16 @@ abstract class Hipay_Order_Request_Abstract extends Hipay_Api_Formatter_Abstact
         }
 
         $orderRequest->cancel_url = $this->order->get_cancel_order_url_raw();
+
+        // Alma: sending the customer back from the Alma page must lead to the checkout to pick another payment method
+        if (in_array($this->order->get_payment_method(), array('hipayenterprise_alma_3x', 'hipayenterprise_alma_4x'), true)) {
+            $checkoutUrl = wc_get_checkout_url();
+            $orderRequest->pending_url = $checkoutUrl;
+            $orderRequest->decline_url = $checkoutUrl;
+            $orderRequest->exception_url = $checkoutUrl;
+            $orderRequest->cancel_url = $checkoutUrl;
+        }
+
         $orderRequest->customerBillingInfo = $this->getCustomerBillingInfo();
         $orderRequest->customerShippingInfo = $this->getCustomerShippingInfo();
 
