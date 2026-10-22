@@ -219,6 +219,7 @@ const CreditCardComponent = ({
                         cvc: {
                             selector: 'hipay-card-field-cvc',
                             placeholder: config.i18n?.cvv || 'CVV',
+                            helpButton: true,
                         },
                     },
                     styles: {
@@ -264,6 +265,13 @@ const CreditCardComponent = ({
                                 }
                             });
                         }, 100);
+                    });
+
+                    cardInstance.on('helpButtonToggled', (data) => {
+                        const el = document.querySelector(`[data-hipay-id='hipay-help-${data.element}']`);
+                        if (!el) return;
+                        el.classList.toggle('hipay-visible');
+                        el.innerHTML = el.innerHTML.trim() ? '' : data.message;
                     });
 
                     cardInstance.on('error', (error) => {
@@ -489,6 +497,9 @@ const CreditCardComponent = ({
                     <div className="hipay-field-container hipay-field-container-half">
                         <div className="hipay-field" id="hipay-card-field-cvc"></div>
                     </div>
+                </div>
+                <div className="hipay-form-row">
+                    <div data-hipay-id="hipay-help-cvc"></div>
                 </div>
             </div>
         );

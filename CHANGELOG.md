@@ -5,6 +5,8 @@
 - **Fix** : Fixed Alma redirection
 - **Add** : Added Bizum as a local payment method
 - **Fix** : Change P24 Display Name
+- **Fix** : Fix CVC tooltip
+
 
 ## 2.11.4
 
