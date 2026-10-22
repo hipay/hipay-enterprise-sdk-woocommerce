@@ -285,10 +285,13 @@ class Hipay_Api_Request_Handler
 
         switch ($response->getState()) {
             case TransactionState::COMPLETED:
-                if ($this->plugin->confHelper->getPaymentGlobal()["card_token"]) {
+                $paymentMethod = $response->getPaymentMethod();
+                if ($this->plugin->confHelper->getPaymentGlobal()["card_token"]
+                    && $paymentMethod !== null
+                    && method_exists($paymentMethod, 'getPan')) {
                     $token = Hipay_Token_Helper::cardExists(
-                        $response->getPaymentMethod()->getPan(),
-                        $response->getPaymentMethod()->getBrand(),
+                        $paymentMethod->getPan(),
+                        $paymentMethod->getBrand(),
                         $order->get_user_id()
                     );
 

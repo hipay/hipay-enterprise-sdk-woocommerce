@@ -80,7 +80,14 @@ final class Hipay_Credit_Card_Block extends Hipay_Payment_Block_Abstract
                 error_log("HiPay Blocks: Mapped \$_POST[$mappedKey] = $value");
 
                 // Also set the card-card_* variants for fields used in token saving
-                if ($key === 'hipay_card_holder') {
+                if ($key === 'hipay_save_card') {
+                    if (filter_var($value, FILTER_VALIDATE_BOOLEAN)) {
+                        $_POST['card-multi_use'] = '1';
+                        $_POST['card-one_click'] = '1';
+                    } else {
+                        unset($_POST['card-multi_use'], $_POST['card-one_click']);
+                    }
+                } elseif ($key === 'hipay_card_holder') {
                     $_POST['card-card_holder'] = $value;
                 } elseif ($key === 'hipay_brand') {
                     $_POST['card-brand'] = $value;

@@ -478,11 +478,16 @@ if (!class_exists('WC_Gateway_Hipay')) {
                         Hipay_Token_Helper::handleTokenForm($token, $params);
                     }
 
-                    $params["createOneClick"] = get_current_user_id() > 0 &&
-                        Hipay_Helper::getPostData('card-one_click');
+                    $saveCardBlocks = filter_var(
+                        Hipay_Helper::getPostData('hipay_save_card', false),
+                        FILTER_VALIDATE_BOOLEAN
+                    );
+                    $saveCard = $saveCardBlocks || Hipay_Helper::getPostData('card-multi_use');
 
-                    if (Hipay_Helper::getPostData('card-multi_use')
-                        && get_current_user_id() > 0) {
+                    $params["createOneClick"] = get_current_user_id() > 0 &&
+                        ($saveCardBlocks || Hipay_Helper::getPostData('card-one_click'));
+
+                    if ($saveCard && get_current_user_id() > 0) {
                         $values = array(
                             "token" => Hipay_Helper::getPostData('card-token'),
                             "pan" => str_replace('x', '*', Hipay_Helper::getPostData('card-pan')),

@@ -64,7 +64,8 @@ const CreditCardComponent = ({
     useEffect(() => {
         // Only initialize on actual checkout, not in editor
         const isEditor = document.body.classList.contains('block-editor-page');
-        if (!isHostedFields || isEditor || isInitializingRef.current) {
+        const fieldsMounted = selectedCard === 'new';
+        if (!isHostedFields || isEditor || !fieldsMounted || isInitializingRef.current) {
             return;
         }
 
@@ -115,7 +116,7 @@ const CreditCardComponent = ({
                 }
             }
         };
-    }, [isHostedFields, allowedBrandsKey, nameKey]);
+    }, [isHostedFields, allowedBrandsKey, nameKey, selectedCard === 'new']);
 
     const initializeHostedFields = (effectId) => {
         // Validate credentials before attempting to load
@@ -433,6 +434,19 @@ const CreditCardComponent = ({
                 {selectedCard === 'new' && isHostedFields && (
                     <div className="hipay-hosted-fields">
                         {renderHostedFields()}
+                    </div>
+                )}
+
+                {selectedCard === 'new' && (
+                    <div className="hipay-save-card">
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={saveCard}
+                                onChange={(e) => setSaveCard(e.target.checked)}
+                            />
+                            {config.i18n?.save_card || __('Save card for future payments', 'hipayenterprise')}
+                        </label>
                     </div>
                 )}
 
