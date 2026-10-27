@@ -8,7 +8,6 @@
 - **Fix** : Fix CVC tooltip
 - **Fix** : Fixed one click payment failing
 
-
 ## 2.11.4
 
 - **Fix** : Fixed refund screen prefilled with the full order amount by default
