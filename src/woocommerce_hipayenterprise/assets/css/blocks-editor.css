@@ -187,31 +187,6 @@
 
 
 /* Saved cards styling for blocks */
-.wc-block-checkout .hipay-credit-card-block .hipay-saved-cards,
-.wc-block-cart .hipay-credit-card-block .hipay-saved-cards {
-    margin-bottom: 20px;
-}
-
-.wc-block-checkout .hipay-credit-card-block .hipay-saved-cards label,
-.wc-block-cart .hipay-credit-card-block .hipay-saved-cards label {
-    display: block;
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.wc-block-checkout .hipay-credit-card-block .hipay-saved-cards label:hover,
-.wc-block-cart .hipay-credit-card-block .hipay-saved-cards label:hover {
-    background-color: #f9f9f9;
-}
-
-.wc-block-checkout .hipay-credit-card-block .hipay-saved-cards input[type="radio"],
-.wc-block-cart .hipay-credit-card-block .hipay-saved-cards input[type="radio"] {
-    margin-right: 10px;
-}
-
 .wc-block-checkout .hipay-credit-card-block .hipay-save-card,
 .wc-block-cart .hipay-credit-card-block .hipay-save-card {
     margin-top: 15px;
@@ -349,4 +324,11 @@
     width: 100%;
     max-width: 100%;
     height: 44px;
+}
+.wc-block-checkout .hipay-credit-card-block .hipay-saved-cards-field,
+.wc-block-cart .hipay-credit-card-block .hipay-saved-cards-field {
+    width: 100%;
+    height: auto;
+    min-height: 40px;
+    overflow: visible;
 }

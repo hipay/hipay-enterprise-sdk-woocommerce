@@ -6,6 +6,7 @@
 - **Add** : Added Bizum as a local payment method
 - **Fix** : Change P24 Display Name
 - **Fix** : Fix CVC tooltip
+- **Fix** : Fixed one click payment failing
 
 
 ## 2.11.4

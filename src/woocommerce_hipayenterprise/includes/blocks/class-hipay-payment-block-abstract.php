@@ -108,6 +108,16 @@ abstract class Hipay_Payment_Block_Abstract extends AbstractPaymentMethodType
                             'type' => 'string',
                             'required' => false,
                         ),
+                        'hipay_multi_use' => array(
+                            'description' => __('Save card token', 'hipayenterprise'),
+                            'type' => 'string',
+                            'required' => false,
+                        ),
+                        'hipay_one_click' => array(
+                            'description' => __('Enable one-click payment', 'hipayenterprise'),
+                            'type' => 'string',
+                            'required' => false,
+                        ),
                         'hipay_use_saved_card' => array(
                             'description' => __('Use saved card', 'hipayenterprise'),
                             'type' => 'boolean',
@@ -290,7 +300,13 @@ abstract class Hipay_Payment_Block_Abstract extends AbstractPaymentMethodType
                 'wc-hipayenterprise-blocks-style',
                 $blocks_style_url,
                 array(),
-                WC_HIPAYENTERPRISE_VERSION . '-v4-scoped'  // Cache bust for scoped CSS
+                WC_HIPAYENTERPRISE_VERSION . '-v5-oneclick'  // Cache bust for scoped CSS
+            );
+            wp_enqueue_style(
+                'wc-hipayenterprise-oneclick-style',
+                WC_HIPAYENTERPRISE_URL_ASSETS . 'css/frontend/hipay.css',
+                array(),
+                WC_HIPAYENTERPRISE_VERSION
             );
             $enqueued = true;
 

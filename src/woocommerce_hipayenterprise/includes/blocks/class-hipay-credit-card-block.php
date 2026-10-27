@@ -39,6 +39,33 @@ final class Hipay_Credit_Card_Block extends Hipay_Payment_Block_Abstract
     {
         // Hook to intercept payment processing for blocks
         add_filter('woocommerce_rest_checkout_process_payment_with_context', array($this, 'process_blocks_payment'), 10, 2);
+        add_filter('woocommerce_saved_payment_methods_list', array($this, 'hide_native_saved_methods'), 10, 2);
+    }
+
+    /**
+     *
+     * @param array $list
+     * @param int $customerId
+     * @return array
+     */
+    public function hide_native_saved_methods($list, $customerId)
+    {
+        if (!function_exists('is_checkout') || !is_checkout()) {
+            return $list;
+        }
+
+        foreach ($list as $type => $methods) {
+            foreach ($methods as $index => $method) {
+                if (($method['method']['gateway'] ?? '') === $this->name) {
+                    unset($list[$type][$index]);
+                }
+            }
+            if (empty($list[$type])) {
+                unset($list[$type]);
+            }
+        }
+
+        return $list;
     }
 
     /**
@@ -54,8 +81,6 @@ final class Hipay_Credit_Card_Block extends Hipay_Payment_Block_Abstract
             return $result;
         }
 
-        error_log('HiPay Blocks: Payment context data: ' . print_r($context->payment_data, true));
-
         // Map block payment data to expected $_POST keys
         $mapping = [
             'hipay_token' => 'card-token',
@@ -68,6 +93,8 @@ final class Hipay_Credit_Card_Block extends Hipay_Payment_Block_Abstract
             'hipay_device_fingerprint' => 'card-device_fingerprint',
             'hipay_browser_info' => 'card-browser_info',
             'hipay_save_card' => 'card-multi_use',
+            'hipay_multi_use' => 'card-multi_use',
+            'hipay_one_click' => 'card-one_click',
             'hipay_use_saved_card' => 'hipay_use_saved_card',
             'hipay_operating_mode' => 'hipay_operating_mode',
         ];
@@ -77,7 +104,6 @@ final class Hipay_Credit_Card_Block extends Hipay_Payment_Block_Abstract
             if (isset($mapping[$key])) {
                 $mappedKey = $mapping[$key];
                 $_POST[$mappedKey] = $value;
-                error_log("HiPay Blocks: Mapped \$_POST[$mappedKey] = $value");
 
                 // Also set the card-card_* variants for fields used in token saving
                 if ($key === 'hipay_save_card') {
@@ -94,7 +120,6 @@ final class Hipay_Credit_Card_Block extends Hipay_Payment_Block_Abstract
                     // If no payment_product provided, derive it from brand
                     if (empty($_POST['card-payment_product']) && !empty($value)) {
                         $_POST['card-payment_product'] = $value;
-                        error_log("HiPay Blocks: Derived payment_product from brand: $value");
                     }
                 } elseif ($key === 'hipay_pan') {
                     $_POST['card-pan'] = $value;
@@ -107,16 +132,17 @@ final class Hipay_Credit_Card_Block extends Hipay_Payment_Block_Abstract
                 }
             } else {
                 $_POST[$key] = $value;
-                error_log("HiPay Blocks: Set \$_POST[$key] = $value");
             }
         }
+
+        // A WC native saved-token id would make process_payment reuse the stored token without any CVC
+        unset($_POST['wc-' . $this->name . '-payment-token']);
 
         // Don't set a default payment_product - let HiPay determine it from the card token
         if (empty($_POST['card-payment_product'])) {
             error_log("HiPay Blocks: payment_product is empty, will be determined by HiPay API from card token");
         }
 
-        error_log('HiPay Blocks: Final $_POST after mapping: ' . print_r($_POST, true));
 
         return $result;
     }
@@ -238,6 +264,7 @@ final class Hipay_Credit_Card_Block extends Hipay_Payment_Block_Abstract
             'activatedCreditCards' => $activatedCreditCards,
             'creditCardRestrictions' => $creditCardRestrictions,
             'savedCards' => $savedCards,
+            'savedCardsDisplayCount' => (int)($paymentGlobal['number_saved_cards_displayed'] ?? 0),
             'canSaveCards' => is_user_logged_in() && $gateway->supports('tokenization'),
             'hostedFieldsUrl' => $paymentGlobal['sdk_js_url'] ?? 'https://libs.hipay.com/js/sdkjs.js',
             'ajaxUrl' => admin_url('admin-ajax.php'),
