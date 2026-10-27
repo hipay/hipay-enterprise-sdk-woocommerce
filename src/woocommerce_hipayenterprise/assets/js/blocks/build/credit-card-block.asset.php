@@ -7,6 +7,6 @@ return array(
         'wc-blocks-registry',
         'wc-settings',
     ),
-    'version' => '2.9.0'
+    'version' => WC_HIPAYENTERPRISE_VERSION
 );
 

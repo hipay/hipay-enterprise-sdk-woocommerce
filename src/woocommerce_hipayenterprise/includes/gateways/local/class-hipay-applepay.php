@@ -159,6 +159,8 @@ class Hipay_Applepay extends Hipay_Gateway_Local_Abstract
         try {
             $this->logs->logInfos(" # Process Apple Pay Payment for " . $order_id);
 
+            $this->assertOrderEligibility($order_id);
+
             $tokenPaymentProduct = Hipay_Helper::getPostData('applepay-payment-product');
             $resolvedPaymentProduct = !empty($tokenPaymentProduct)
                 ? strtolower(str_replace(' ', '-', $tokenPaymentProduct))

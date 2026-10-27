@@ -460,6 +460,8 @@ if (!class_exists('WC_Gateway_Hipay')) {
             try {
                 $this->logs->logInfos(" # Process Payment for  " . $order_id);
 
+                $this->assertOrderEligibility($order_id);
+
                 $params = array(
                     "order_id" => $order_id,
                     "paymentProduct" => Hipay_Helper::getPostData('card-payment_product'),
@@ -476,11 +478,24 @@ if (!class_exists('WC_Gateway_Hipay')) {
                         Hipay_Token_Helper::handleTokenForm($token, $params);
                     }
 
-                    $params["createOneClick"] = get_current_user_id() > 0 &&
-                        Hipay_Helper::getPostData('card-one_click');
+                    $saveCardBlocks = filter_var(
+                        Hipay_Helper::getPostData('hipay_save_card', false),
+                        FILTER_VALIDATE_BOOLEAN
+                    );
+                    $saveCard = $saveCardBlocks || Hipay_Helper::getPostData('card-multi_use');
 
-                    if (Hipay_Helper::getPostData('card-multi_use')
-                        && get_current_user_id() > 0) {
+                    $params["createOneClick"] = get_current_user_id() > 0 &&
+                        ($saveCardBlocks || Hipay_Helper::getPostData('card-one_click'));
+
+                    $cardAlreadySaved = $saveCard && get_current_user_id() > 0 && !empty(
+                        Hipay_Token_Helper::cardExists(
+                            str_replace('x', '*', Hipay_Helper::getPostData('card-pan')),
+                            Hipay_Helper::getPostData('card-brand'),
+                            get_current_user_id()
+                        )->get_token()
+                    );
+
+                    if ($saveCard && get_current_user_id() > 0 && !$cardAlreadySaved) {
                         $values = array(
                             "token" => Hipay_Helper::getPostData('card-token'),
                             "pan" => str_replace('x', '*', Hipay_Helper::getPostData('card-pan')),

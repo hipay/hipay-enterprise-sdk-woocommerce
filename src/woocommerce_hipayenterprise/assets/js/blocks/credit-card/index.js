@@ -81,6 +81,8 @@ const HiPayCreditCard = {
     ariaLabel: label,
     supports: {
         features: settings.supports || ['products'],
+        showSavedCards: false,
+        showSaveOption: false,
     },
 };
 

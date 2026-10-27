@@ -29,9 +29,9 @@ class Hipay_Przelewy24 extends Hipay_Gateway_Local_Abstract
     {
         $this->id = 'hipayenterprise_przelewy24';
         $this->paymentProduct = 'przelewy24';
-        $this->method_title = __('HiPay Enterprise Przelewy24', "hipayenterprise");
-        $this->title = __('Przelewy24', "hipayenterprise");
-        $this->method_description = __('Przelewy24', "hipayenterprise");
+        $this->method_title = __('HiPay Enterprise Blik / Przelewy24', "hipayenterprise");
+        $this->title = __('Blik / Przelewy24', "hipayenterprise");
+        $this->method_description = __('Blik / Przelewy24', "hipayenterprise");
 
         parent::__construct();
     }

@@ -49,6 +49,9 @@ msgstr "Indirizzo"
 msgid "The payment will need to be validated on your Bancomat Pay application."
 msgstr "Il pagamento dovrà essere convalidato sulla tua applicazione Bancomat Pay."
 
+msgid "The payment will need to be validated on your Bizum banking application."
+msgstr "Il pagamento dovrà essere convalidato sulla tua applicazione bancaria Bizum."
+
 #: assets/js/blocks/local-payments/payment-method.js
 #: includes/gateways/local/class-hipay-paypal.php:126
 msgid "Please accept the terms and conditions to use PayPal."
@@ -61,6 +64,14 @@ msgstr "Accetta i termini e le condizioni per utilizzare Apple Pay."
 #: includes/frontend/template/bancomat-pay.php
 msgid "Please accept the terms and conditions to use Bancomat Pay."
 msgstr "Accetta i termini e le condizioni per utilizzare Bancomat Pay."
+
+msgid "Please accept the terms and conditions to use Bizum."
+msgstr "Accetta i termini e le condizioni per utilizzare Bizum."
+
+#: assets/js/blocks/local-payments/payment-method.js
+#, javascript-format
+msgid "Please accept the terms and conditions to use %s."
+msgstr "Accetta i termini e le condizioni per utilizzare %s."
 
 #: includes/frontend/template/bancomat-pay-pending.php
 msgid "Payment pending"
@@ -89,3 +100,28 @@ msgstr "Il pagamento non è stato elaborato. Riprova."
 #: assets/js/blocks/local-payments/payment-method.js
 msgid "Please enter a valid phone number."
 msgstr "Inserisci un numero di telefono valido."
+
+#: includes/gateways/class-hipay-gateway-abstract.php
+#: assets/js/blocks/local-payments/phone-eligibility.js
+msgid "This payment method is not available for your country, currency or order amount."
+msgstr "Questo metodo di pagamento non è disponibile per il tuo paese, valuta o importo dell'ordine."
+
+#: assets/js/blocks/local-payments/phone-eligibility.js
+msgid "Bizum is only available for billing addresses in Spain."
+msgstr "Bizum è disponibile solo per indirizzi di fatturazione in Spagna."
+
+#: assets/js/blocks/local-payments/phone-eligibility.js
+msgid "The order amount is too low for Bizum."
+msgstr "L'importo dell'ordine è troppo basso per Bizum."
+
+#: assets/js/blocks/local-payments/phone-hosted-field.js
+msgid "Phone field error"
+msgstr "Errore del campo telefono"
+
+#: assets/js/blocks/local-payments/phone-hosted-field.js
+msgid "Failed to initialize phone field"
+msgstr "Impossibile inizializzare il campo telefono"
+
+#: assets/js/blocks/local-payments/phone-hosted-field.js
+msgid "Loading phone field…"
+msgstr "Caricamento del campo telefono…"

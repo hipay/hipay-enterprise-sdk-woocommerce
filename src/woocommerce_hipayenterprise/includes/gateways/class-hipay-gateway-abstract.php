@@ -247,6 +247,10 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
      */
     public function available_payment_gateways($available_gateways)
     {
+        if ($this->is_store_api_request() || $this->is_blocks_checkout()) {
+            return $available_gateways;
+        }
+
         if (isset(WC()->cart)) {
             foreach ($available_gateways as $id => $gateway) {
                 if ($id == $this->id && !$gateway->isAvailableForCurrentCart()) {
@@ -255,6 +259,20 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
             }
         }
         return $available_gateways;
+    }
+
+    /**
+     * @return boolean
+     */
+    protected function is_store_api_request()
+    {
+        if (!defined('REST_REQUEST') || !REST_REQUEST) {
+            return false;
+        }
+
+        $request_uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
+
+        return false !== strpos($request_uri, '/wc/store');
     }
 
     /**
@@ -300,6 +318,48 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
         return !empty($activatedPayments);
     }
 
+
+    /**
+     * Server-side eligibility check on the order itself (billing country, currency, total).
+     *
+     * @param int $order_id
+     * @throws Hipay_Payment_Exception
+     */
+    protected function assertOrderEligibility($order_id)
+    {
+        $order = wc_get_order($order_id);
+
+        if (!$order) {
+            throw new Hipay_Payment_Exception(
+                __("Order not found.", "hipayenterprise"),
+                "",
+                "fail"
+            );
+        }
+
+        $activatedPayments = Hipay_Helper::getActivatedPaymentByCountryAndCurrency(
+            $this,
+            $this->paymentProduct,
+            $order->get_billing_country(),
+            $order->get_currency(),
+            (float) $order->get_total()
+        );
+
+        if (empty($activatedPayments)) {
+            $this->logs->logInfos(
+                "# Payment method " . $this->paymentProduct . " not authorized for order " . $order_id
+                . ": country=" . $order->get_billing_country()
+                . ", currency=" . $order->get_currency()
+                . ", total=" . $order->get_total()
+            );
+
+            throw new Hipay_Payment_Exception(
+                __("This payment method is not available for your country, currency or order amount.", "hipayenterprise"),
+                "",
+                "fail"
+            );
+        }
+    }
 
     /**
      * @param Hipay_Payment_Exception $e

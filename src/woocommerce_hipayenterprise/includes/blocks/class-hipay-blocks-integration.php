@@ -177,6 +177,10 @@ class Hipay_Blocks_Integration
                 'file' => $blocks_path . 'class-hipay-bnpp4x-block.php',
             ),
             array(
+                'class' => 'Hipay_Bizum_Block',
+                'file' => $blocks_path . 'class-hipay-bizum-block.php',
+            ),
+            array(
                 'class' => 'Hipay_Giropay_Block',
                 'file' => $blocks_path . 'class-hipay-giropay-block.php',
             ),

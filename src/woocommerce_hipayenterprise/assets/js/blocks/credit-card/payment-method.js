@@ -13,8 +13,6 @@ const CreditCardComponent = ({
     const { onPaymentSetup, onCheckoutValidation } = eventRegistration;
     const [hostedFieldsInstance, setHostedFieldsInstance] = useState(null);
     const [isHostedFieldsReady, setIsHostedFieldsReady] = useState(false);
-    const [selectedCard, setSelectedCard] = useState('new');
-    const [saveCard, setSaveCard] = useState(false);
     const [errors, setErrors] = useState({});
     const isInitializingRef = useRef(false);
     const initTimeoutRef = useRef(null);
@@ -23,6 +21,9 @@ const CreditCardComponent = ({
     const config = settings.config || {};
     const isHostedFields = config.operating_mode === 'hosted_fields';
     const isHostedPage = config.operating_mode === 'hosted_page';
+    const savedCards = config.canSaveCards && Array.isArray(config.savedCards) ? config.savedCards : [];
+    const useOneClick = !!config.canSaveCards;
+    const hasSavedCards = savedCards.length > 0;
 
     // Get billing info for cardHolder field
     const firstName = billing?.billingAddress?.first_name || '';
@@ -56,6 +57,7 @@ const CreditCardComponent = ({
             .map(([brand]) => brand);
     }, [cartTotal, config.creditCardRestrictions]);
 
+    const savedCardsListenersRef = useRef(null);
     const allowedBrandsRef = useRef(allowedBrands);
     allowedBrandsRef.current = allowedBrands;
     const allowedBrandsKey = allowedBrands ? allowedBrands.slice().sort().join(',') : '';
@@ -85,9 +87,19 @@ const CreditCardComponent = ({
         }
 
         // Clear all field containers like shortcode does
+        if (savedCardsListenersRef.current) {
+            savedCardsListenersRef.current.abort();
+            savedCardsListenersRef.current = null;
+        }
         const selectors = ['cardHolder', 'cardNumber', 'expiryDate', 'cvc'];
         selectors.forEach(field => {
             const el = document.getElementById(`hipay-card-field-${field}`);
+            if (el) {
+                el.innerHTML = '';
+            }
+        });
+        ['hipay-card-saved-cards', 'hipay-saved-card-btn'].forEach(id => {
+            const el = document.getElementById(id);
             if (el) {
                 el.innerHTML = '';
             }
@@ -105,6 +117,10 @@ const CreditCardComponent = ({
             clearTimeout(initTimeoutRef.current);
             initTimeoutRef.current = null;
             isInitializingRef.current = false;
+            if (savedCardsListenersRef.current) {
+                savedCardsListenersRef.current.abort();
+                savedCardsListenersRef.current = null;
+            }
             if (hostedFieldsInstance) {
                 try {
                     if (typeof hostedFieldsInstance.destroy === 'function') {
@@ -201,7 +217,22 @@ const CreditCardComponent = ({
                     ...(allowedBrandsRef.current?.length > 0 && {
                         brand: allowedBrandsRef.current,
                     }),
+                    ...(useOneClick && {
+                        one_click: {
+                            enabled: true,
+                            ...(config.savedCardsDisplayCount > 0 && {
+                                cards_display_count: Number(config.savedCardsDisplayCount),
+                            }),
+                            cards: savedCards.filter(
+                                (card) => !allowedBrandsRef.current?.length || allowedBrandsRef.current.includes(card.brand)
+                            ),
+                        },
+                    }),
                     fields: {
+                        ...(useOneClick && {
+                            savedCards: { selector: 'hipay-card-saved-cards' },
+                            savedCardButton: { selector: 'hipay-saved-card-btn' },
+                        }),
                         cardHolder: {
                             selector: 'hipay-card-field-cardHolder',
                             placeholder: config.i18n?.card_holder || 'Card Holder',
@@ -219,6 +250,7 @@ const CreditCardComponent = ({
                         cvc: {
                             selector: 'hipay-card-field-cvc',
                             placeholder: config.i18n?.cvv || 'CVV',
+                            helpButton: true,
                         },
                     },
                     styles: {
@@ -242,6 +274,23 @@ const CreditCardComponent = ({
                 if (cardInstance) {
                     // Set up event handler for when fields are ready
                     cardInstance.on('ready', () => {
+                        if (hasSavedCards) {
+                            const cardForm = document.getElementById('hipayHF-card-form-container');
+                            const payOtherCardButton = document.getElementById('pay-other-card');
+                            if (cardForm) {
+                                savedCardsListenersRef.current?.abort();
+                                const controller = new AbortController();
+                                savedCardsListenersRef.current = controller;
+                                const { signal } = controller;
+                                cardForm.classList.add('hidden');
+                                payOtherCardButton?.addEventListener('click', () => {
+                                    cardForm.classList.toggle('hidden');
+                                }, { signal });
+                                Array.from(document.getElementsByClassName('saved-card')).forEach((el) => {
+                                    el.addEventListener('click', () => cardForm.classList.add('hidden'), { signal });
+                                });
+                            }
+                        }
                         setIsHostedFieldsReady(true);
                         isInitializingRef.current = false;
 
@@ -264,6 +313,13 @@ const CreditCardComponent = ({
                                 }
                             });
                         }, 100);
+                    });
+
+                    cardInstance.on('helpButtonToggled', (data) => {
+                        const el = document.querySelector(`[data-hipay-id='hipay-help-${data.element}']`);
+                        if (!el) return;
+                        el.classList.toggle('hipay-visible');
+                        el.innerHTML = el.innerHTML.trim() ? '' : data.message;
                     });
 
                     cardInstance.on('error', (error) => {
@@ -292,19 +348,6 @@ const CreditCardComponent = ({
     useEffect(() => {
         const unsubscribe = onPaymentSetup(async () => {
             try {
-                if (selectedCard !== 'new' && config.savedCards?.length) {
-                    // Use saved card
-                    return {
-                        type: emitResponse.responseTypes.SUCCESS,
-                        meta: {
-                            paymentMethodData: {
-                                hipay_token: selectedCard,
-                                hipay_use_saved_card: true,
-                            },
-                        },
-                    };
-                }
-
                 if (isHostedPage) {
                     // Hosted page mode - just proceed, redirect will happen server-side
                     return {
@@ -350,7 +393,8 @@ const CreditCardComponent = ({
                             hipay_card_holder: tokenResponse.card_holder || '',
                             hipay_device_fingerprint: tokenResponse.device_fingerprint || '',
                             hipay_browser_info: browserInfo,
-                            hipay_save_card: saveCard ? 'true' : 'false',
+                            ...(tokenResponse.multi_use && { hipay_multi_use: '1' }),
+                            ...(tokenResponse.one_click && { hipay_one_click: '1' }),
                         };
 
                         return {
@@ -380,60 +424,10 @@ const CreditCardComponent = ({
         return unsubscribe;
     }, [
         onPaymentSetup,
-        selectedCard,
         hostedFieldsInstance,
-        saveCard,
         isHostedFields,
         isHostedPage,
     ]);
-
-    // Render saved cards
-    if (config.savedCards && config.savedCards.length > 0 && config.canSaveCards) {
-        return (
-            <div className="hipay-credit-card-block">
-                {settings.description && (
-                    <p className="hipay-description">{settings.description}</p>
-                )}
-
-                <div className="hipay-saved-cards">
-                    <label>
-                        <input
-                            type="radio"
-                            name="hipay-card-choice"
-                            value="new"
-                            checked={selectedCard === 'new'}
-                            onChange={(e) => setSelectedCard(e.target.value)}
-                        />
-                        {config.i18n?.use_new_card || __('Use a new card', 'hipayenterprise')}
-                    </label>
-
-                    {config.savedCards.map((card) => (
-                        <label key={card.token} className="hipay-saved-card-option">
-                            <input
-                                type="radio"
-                                name="hipay-card-choice"
-                                value={card.token}
-                                checked={selectedCard === card.token}
-                                onChange={(e) => setSelectedCard(e.target.value)}
-                            />
-                            <span className={`hipay-card-brand hipay-card-${card.brand}`}></span>
-                            {card.pan} - {card.card_holder}
-                        </label>
-                    ))}
-                </div>
-
-                {selectedCard === 'new' && isHostedFields && (
-                    <div className="hipay-hosted-fields">
-                        {renderHostedFields()}
-                    </div>
-                )}
-
-                {errors.general && (
-                    <div className="hipay-error">{errors.general}</div>
-                )}
-            </div>
-        );
-    }
 
     // Render regular payment form
     return (
@@ -450,19 +444,6 @@ const CreditCardComponent = ({
 
             {isHostedFields && renderHostedFields()}
 
-            {config.canSaveCards && selectedCard === 'new' && (
-                <div className="hipay-save-card">
-                    <label>
-                        <input
-                            type="checkbox"
-                            checked={saveCard}
-                            onChange={(e) => setSaveCard(e.target.checked)}
-                        />
-                        {config.i18n?.save_card || __('Save card for future payments', 'hipayenterprise')}
-                    </label>
-                </div>
-            )}
-
             {errors.general && (
                 <div className="hipay-error">{errors.general}</div>
             )}
@@ -471,6 +452,14 @@ const CreditCardComponent = ({
 
     function renderHostedFields() {
         return (
+            <div id="hipayHF-container-card">
+                {useOneClick && (
+                    <div className="one-click hipay-form-row">
+                        <div className="hipay-field-container">
+                            <div className="hipay-saved-cards-field" id="hipay-card-saved-cards"></div>
+                        </div>
+                    </div>
+                )}
             <div id="hipayHF-card-form-container">
                 <div className="hipay-form-row">
                     <div className="hipay-field-container">
@@ -490,6 +479,17 @@ const CreditCardComponent = ({
                         <div className="hipay-field" id="hipay-card-field-cvc"></div>
                     </div>
                 </div>
+                <div className="hipay-form-row">
+                    <div data-hipay-id="hipay-help-cvc"></div>
+                </div>
+                {useOneClick && (
+                    <div className="hipay-form-row">
+                        <div className="hipay-field-container hipay-saved-card">
+                            <div className="hipay-saved-cards-field" id="hipay-saved-card-btn"></div>
+                        </div>
+                    </div>
+                )}
+            </div>
             </div>
         );
     }

@@ -69,6 +69,7 @@ class Hipay_Upgrade_Helper
             $this->updateConfigFromFile();
             $this->updateAlmaCountries();
             $this->updateBancomatPayCountries();
+            $this->updatePrzelewy24DisplayName();
             $this->confHelper->update_option($this->configHipay);
 
             $this->logs->logInfos("Hipay Plugin configuration is now in version : " . WC_HIPAYENTERPRISE_VERSION);
@@ -126,6 +127,31 @@ class Hipay_Upgrade_Helper
             }
 
             $this->logs->logInfos("# End Update Bancomat Pay countries");
+        } catch (\Exception $e) {
+            $this->logs->logException($e);
+        }
+    }
+
+    /**
+     * Rename Przelewy24 to Blik / Przelewy24
+     */
+    private function updatePrzelewy24DisplayName()
+    {
+        try {
+            $this->logs->logInfos("# Begin Update Przelewy24 display name");
+
+            $localPayments = &$this->configHipay[Hipay_Config::KEY_PAYMENT][Hipay_Config::KEY_LOCAL_PAYMENT];
+
+            if (isset($localPayments['przelewy24']['displayName']) && is_array($localPayments['przelewy24']['displayName'])) {
+                foreach ($localPayments['przelewy24']['displayName'] as $lang => $displayName) {
+                    if ($displayName === 'Przelewy24') {
+                        $localPayments['przelewy24']['displayName'][$lang] = 'Blik / Przelewy24';
+                        $this->logs->logInfos("Updated przelewy24 display name for language: " . $lang);
+                    }
+                }
+            }
+
+            $this->logs->logInfos("# End Update Przelewy24 display name");
         } catch (\Exception $e) {
             $this->logs->logException($e);
         }

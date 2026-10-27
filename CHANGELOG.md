@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 2.12.0
+
+- **Fix** : Fixed Alma redirection
+- **Add** : Added Bizum as a local payment method
+- **Fix** : Change P24 Display Name
+- **Fix** : Fix CVC tooltip
+- **Fix** : Fixed one click payment failing
+
 ## 2.11.4
 
 - **Fix** : Fixed refund screen prefilled with the full order amount by default

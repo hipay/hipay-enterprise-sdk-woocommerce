@@ -119,7 +119,7 @@ abstract class Hipay_Local_Payment_Block_Abstract extends Hipay_Payment_Block_Ab
     protected function get_gateway()
     {
         if (!isset($this->gateway)) {
-            $gateways = WC()->payment_gateways->get_available_payment_gateways();
+            $gateways = WC()->payment_gateways->payment_gateways();
             $this->gateway = isset($gateways[$this->name]) ? $gateways[$this->name] : null;
         }
         return $this->gateway;
@@ -165,8 +165,8 @@ abstract class Hipay_Local_Payment_Block_Abstract extends Hipay_Payment_Block_Ab
                 $restrictions = [
                     'countries' => $conf['countries'] ?? [],
                     'currencies' => $conf['currencies'] ?? [],
-                    'minAmount' => $conf['minAmount'] ?? 0,
-                    'maxAmount' => $conf['maxAmount'] ?? null,
+                    'minAmount' => !empty($conf['minAmount']['EUR']) ? (float)$conf['minAmount']['EUR'] : 0,
+                    'maxAmount' => !empty($conf['maxAmount']['EUR']) ? (float)$conf['maxAmount']['EUR'] : null,
                 ];
             }
         }

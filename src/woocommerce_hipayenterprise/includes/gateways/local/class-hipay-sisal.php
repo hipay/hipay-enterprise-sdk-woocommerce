@@ -78,6 +78,8 @@ class Hipay_Sisal extends Hipay_Gateway_Local_Abstract
 
             $this->logs->logInfos("# Process Payment for $order_id");
 
+            $this->assertOrderEligibility($order_id);
+
             $params = array(
                 "order_id" => $order_id,
                 "paymentProduct" => $this->paymentProduct,

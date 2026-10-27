@@ -212,6 +212,8 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
         try {
             $this->logs->logInfos(" # Process Payment for  " . $order_id);
 
+            $this->assertOrderEligibility($order_id);
+
             $providerData = [
                 'paypal_id' => (string) Hipay_Helper::getPostData('paypalOrderId'),
             ];

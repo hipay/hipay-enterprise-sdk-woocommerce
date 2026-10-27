@@ -689,8 +689,8 @@ msgid "HiPay Enterprise PostFinance E-Finance"
 msgstr "HiPay Enterprise PostFinance E-Finance"
 
 #: includes/gateways/local/class-hipay-przelewy24.php:32
-msgid "HiPay Enterprise Przelewy24"
-msgstr "HiPay Enterprise Przelewy24"
+msgid "HiPay Enterprise Blik / Przelewy24"
+msgstr "HiPay Enterprise Blik / Przelewy24"
 
 #: includes/gateways/local/class-hipay-sdd.php:32
 msgid "HiPay Enterprise SEPA Direct Debit"
@@ -1228,8 +1228,8 @@ msgstr "Configuration production"
 
 #: includes/gateways/local/class-hipay-przelewy24.php:33
 #: includes/gateways/local/class-hipay-przelewy24.php:34
-msgid "Przelewy24"
-msgstr "Przelewy24"
+msgid "Blik / Przelewy24"
+msgstr "Blik / Przelewy24"
 
 #: includes/admin/template/admin-faq-settings.php:126
 msgid "Public credentials"
@@ -1711,6 +1711,9 @@ msgstr "Adresse"
 msgid "The payment will need to be validated on your Bancomat Pay application."
 msgstr "Le paiement devra être validé sur votre application Bancomat Pay."
 
+msgid "The payment will need to be validated on your Bizum banking application."
+msgstr "Le paiement devra être validé sur votre application bancaire Bizum."
+
 #: assets/js/blocks/local-payments/payment-method.js
 #: includes/gateways/local/class-hipay-paypal.php:126
 msgid "Please accept the terms and conditions to use PayPal."
@@ -1724,6 +1727,14 @@ msgstr "Veuillez accepter les conditions générales pour utiliser Apple Pay."
 #: assets/js/blocks/local-payments/payment-method.js
 msgid "Please accept the terms and conditions to use Bancomat Pay."
 msgstr "Veuillez accepter les conditions générales pour utiliser Bancomat Pay."
+
+msgid "Please accept the terms and conditions to use Bizum."
+msgstr "Veuillez accepter les conditions générales pour utiliser Bizum."
+
+#: assets/js/blocks/local-payments/payment-method.js
+#, javascript-format
+msgid "Please accept the terms and conditions to use %s."
+msgstr "Veuillez accepter les conditions générales pour utiliser %s."
 
 #: includes/frontend/template/bancomat-pay-pending.php
 msgid "Payment pending"
@@ -1752,3 +1763,28 @@ msgstr "Votre paiement n'a pas pu être traité. Veuillez réessayer."
 #: assets/js/blocks/local-payments/payment-method.js
 msgid "Please enter a valid phone number."
 msgstr "Veuillez saisir un numéro de téléphone valide."
+
+#: includes/gateways/class-hipay-gateway-abstract.php
+#: assets/js/blocks/local-payments/phone-eligibility.js
+msgid "This payment method is not available for your country, currency or order amount."
+msgstr "Ce moyen de paiement n'est pas disponible pour votre pays, devise ou montant de commande."
+
+#: assets/js/blocks/local-payments/phone-eligibility.js
+msgid "Bizum is only available for billing addresses in Spain."
+msgstr "Bizum n'est disponible que pour les adresses de facturation en Espagne."
+
+#: assets/js/blocks/local-payments/phone-eligibility.js
+msgid "The order amount is too low for Bizum."
+msgstr "Le montant de la commande est trop faible pour Bizum."
+
+#: assets/js/blocks/local-payments/phone-hosted-field.js
+msgid "Phone field error"
+msgstr "Erreur du champ téléphone"
+
+#: assets/js/blocks/local-payments/phone-hosted-field.js
+msgid "Failed to initialize phone field"
+msgstr "Échec de l'initialisation du champ téléphone"
+
+#: assets/js/blocks/local-payments/phone-hosted-field.js
+msgid "Loading phone field…"
+msgstr "Chargement du champ téléphone…"
