@@ -333,6 +333,7 @@ class Hipay_Settings_Handler
         $this->plugin->logs->logInfos("# SaveLocalPaymentSettings");
 
         try {
+            $this->validateLocalPaymentAmounts($methods);
             $this->handleErrors();
 
             $keySaved = array(
@@ -389,6 +390,42 @@ class Hipay_Settings_Handler
         }
 
         return false;
+    }
+
+    /**
+     * @param string $method
+     */
+    private function validateLocalPaymentAmounts($method)
+    {
+        $fields = array(
+            "minAmount" => __('Minimum order amount', "hipayenterprise"),
+            "maxAmount" => __('Maximum order amount', "hipayenterprise"),
+        );
+
+        foreach ($fields as $key => $label) {
+            $amounts = Hipay_Helper::getPostData("woocommerce_hipayenterprise_methods_" . $key . "_" . $method);
+
+            if (!is_array($amounts)) {
+                continue;
+            }
+
+            foreach ($amounts as $currency => $amount) {
+                if ($currency === 'fixed' || $amount === '' || $amount === null) {
+                    continue;
+                }
+
+                if (!is_numeric($amount) || (float) $amount < 0) {
+                    $this->addError(
+                        sprintf(
+                            /* translators: %s: field label (e.g. "Minimum order amount") */
+                            __('%s must be a positive number', "hipayenterprise"),
+                            $label
+                        )
+                    );
+                    break;
+                }
+            }
+        }
     }
 
     /**

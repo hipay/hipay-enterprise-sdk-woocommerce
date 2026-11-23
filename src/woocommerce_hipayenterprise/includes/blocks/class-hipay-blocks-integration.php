@@ -153,6 +153,10 @@ class Hipay_Blocks_Integration
                 'file' => $blocks_path . 'class-hipay-applepay-block.php',
             ),
             array(
+                'class' => 'Hipay_Googlepay_Block',
+                'file' => $blocks_path . 'class-hipay-googlepay-block.php',
+            ),
+            array(
                 'class' => 'Hipay_Alma_3x_Block',
                 'file' => $blocks_path . 'class-hipay-alma-3x-block.php',
             ),

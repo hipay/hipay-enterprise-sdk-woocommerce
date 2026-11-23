@@ -1,0 +1,34 @@
+{
+  "name": "googlepay",
+  "config": {
+    "displayNameBO": "Google Pay",
+    "displayName": {
+      "fr": "Google Pay",
+      "en": "Google Pay"
+    },
+    "frontPosition": 101,
+    "activated": 0,
+    "displayConfigurationFields": [
+      "displayName",
+      "currencies",
+      "countries",
+      "minAmount",
+      "maxAmount"
+    ],
+    "countrySelectorReadOnly": 0,
+    "currencySelectorReadOnly": 0,
+    "currencies": [],
+    "countries": [],
+    "minAmount": {
+      "EUR": 0
+    },
+    "maxAmount": {
+      "EUR": false
+    },
+    "logo": "googlepay.svg",
+    "canManualCapture": false,
+    "canManualCapturePartially": false,
+    "canRefund": true,
+    "additionalFields": {}
+  }
+}

@@ -80,7 +80,7 @@ class Hipay_Api_Request_Handler
     public function handleCreditCard($params)
     {
 
-        if (isset($params['isApplePay']) && $params['isApplePay']) {
+        if (!empty($params['isApplePay']) || !empty($params['isGooglePay'])) {
             return $this->handleDirectOrder($params, true);
         }
 

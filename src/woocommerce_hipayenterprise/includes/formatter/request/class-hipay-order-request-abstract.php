@@ -58,7 +58,7 @@ abstract class Hipay_Order_Request_Abstract extends Hipay_Api_Formatter_Abstact
         $product = $this->plugin->getPaymentProduct();
         $confProduct = $this->plugin->confHelper->getLocalPayment($product);
 
-        if ($product === Gateway_Hipay::CREDIT_CARD_PAYMENT_PRODUCT) {
+        if ($product === Gateway_Hipay::CREDIT_CARD_PAYMENT_PRODUCT || $product === 'googlepay') {
             $orderRequest->browser_info = $this->getBrowserInfo();
             $orderRequest->previous_auth_info = $this->getPreviousAuthInfo();
             $orderRequest->merchant_risk_statement = $this->getMerchantRiskStatement();

@@ -349,3 +349,36 @@
   height: 10px;
   margin: 0;
 }
+
+.hipay-googlepay-wrapper {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+#hipay-googlepay {
+    width: 100%;
+    min-width: 240px;
+    height: 48px;
+    box-sizing: border-box;
+}
+
+li.wc_payment_method.payment_method_hipayenterprise_googlepay:not(.hipay-googlepay-ready) {
+    display: none;
+}
+
+body.hipay-googlepay-selected #place_order {
+    display: none !important;
+}
+
+.hipay-googlepay-blocks-container {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.hipay-googlepay-loading,
+.hipay-googlepay-processing {
+    padding: 8px 0;
+    font-size: 0.9em;
+}

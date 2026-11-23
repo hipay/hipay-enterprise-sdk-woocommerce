@@ -6,6 +6,7 @@ import { usePaymentMethodRefresh } from '../utils/payment-method-refresh';
 import PayPalButton from './paypal-button';
 import SDKWidget from './sdk-widget';
 import ApplePayButton from './apple-pay-button';
+import GooglePayButton from './google-pay-button';
 import PhoneHostedField from './phone-hosted-field';
 
 const LocalPaymentComponent = ({
@@ -23,6 +24,7 @@ const LocalPaymentComponent = ({
     const [errors, setErrors] = useState({});
     const [paypalPaymentData, setPaypalPaymentData] = useState(null);
     const [applePayPaymentData, setApplePayPaymentData] = useState(null);
+    const [googlePayPaymentData, setGooglePayPaymentData] = useState(null);
     const [termsAccepted, setTermsAccepted] = useState(false);
     const phoneInstanceRef = useRef(null);
     const [phoneEmpty, setPhoneEmpty] = useState(true);
@@ -150,6 +152,28 @@ const LocalPaymentComponent = ({
                     };
                 }
 
+                if (config.isGooglePay) {
+                    if (!termsAccepted) {
+                        return {
+                            type: emitResponse.responseTypes.ERROR,
+                            message: __('Please accept the terms and conditions to use Google Pay.', 'hipayenterprise'),
+                        };
+                    }
+                    if (!googlePayPaymentData || !googlePayPaymentData['googlepay-card-token']) {
+                        return {
+                            type: emitResponse.responseTypes.ERROR,
+                            message: __('Please authorize with Google Pay first', 'hipayenterprise'),
+                        };
+                    }
+
+                    return {
+                        type: emitResponse.responseTypes.SUCCESS,
+                        meta: {
+                            paymentMethodData: googlePayPaymentData,
+                        },
+                    };
+                }
+
                 if (hasPhoneHostedField) {
                     if (!termsAccepted) {
                         return {
@@ -222,7 +246,7 @@ const LocalPaymentComponent = ({
         });
 
         return unsubscribe;
-    }, [onPaymentSetup, formData, config.paymentProduct, config.isPayPalV2, paypalPaymentData, config.isApplePay, applePayPaymentData, hasPhoneHostedField, termsAccepted]);
+    }, [onPaymentSetup, formData, config.paymentProduct, config.isPayPalV2, paypalPaymentData, config.isApplePay, applePayPaymentData, config.isGooglePay, googlePayPaymentData, hasPhoneHostedField, termsAccepted]);
 
     const validateFields = () => {
         const validationErrors = {};
@@ -377,6 +401,28 @@ const LocalPaymentComponent = ({
                     <ApplePayButton
                         config={config}
                         onPaymentDataChange={setApplePayPaymentData}
+                    />
+                )}
+            </div>
+        );
+    }
+
+    if (config.isGooglePay) {
+        return (
+            <div className="hipay-local-payment-block hipay-googlepay">
+                {settings.description && (
+                    <p className="hipay-description">{settings.description}</p>
+                )}
+                {!termsAccepted && (
+                    <p className="woocommerce-error" style={{ fontSize: '0.9em' }}>
+                        {__('Please accept the terms and conditions to use Google Pay.', 'hipayenterprise')}
+                    </p>
+                )}
+                {termsAccepted && (
+                    <GooglePayButton
+                        config={config}
+                        country={billing?.billingAddress?.country || config.countryCode}
+                        onPaymentDataChange={setGooglePayPaymentData}
                     />
                 )}
             </div>

@@ -126,3 +126,44 @@ msgstr "Falha ao inicializar o campo de telefone"
 #: assets/js/blocks/local-payments/phone-hosted-field.js
 msgid "Loading phone field…"
 msgstr "A carregar o campo de telefone…"
+
+#: includes/gateways/local/class-hipay-googlepay.php
+msgid "HiPay Enterprise Google Pay"
+msgstr "HiPay Enterprise Google Pay"
+
+#: includes/gateways/local/class-hipay-googlepay.php
+msgid "Google Pay"
+msgstr "Google Pay"
+
+#: includes/helper/class-hipay-settings-handler.php
+#, php-format
+msgid "%s must be a positive number"
+msgstr "%s deve ser um número positivo"
+
+#: includes/gateways/local/class-hipay-googlepay.php
+msgid "Please accept the terms and conditions to use Google Pay."
+msgstr "Aceite os termos e condições para utilizar o Google Pay."
+
+#: includes/gateways/local/class-hipay-googlepay.php
+msgid "Google Pay payment failed. Please try again or use another payment method."
+msgstr "O pagamento com Google Pay falhou. Tente novamente ou utilize outro meio de pagamento."
+
+#: assets/js/blocks/local-payments/google-pay-button.js
+msgid "Please authorize with Google Pay first"
+msgstr "Autorize primeiro o pagamento com Google Pay"
+
+#: assets/js/blocks/local-payments/google-pay-button.js
+msgid "Google Pay is not available on this device or browser."
+msgstr "O Google Pay não está disponível neste dispositivo ou navegador."
+
+#: assets/js/blocks/local-payments/google-pay-button.js
+msgid "Loading Google Pay..."
+msgstr "A carregar o Google Pay..."
+
+#: assets/js/blocks/local-payments/google-pay-button.js
+msgid "Processing your Google Pay payment..."
+msgstr "A processar o seu pagamento com Google Pay..."
+
+#: assets/js/blocks/local-payments/google-pay-button.js
+msgid "Unable to initialize Google Pay."
+msgstr "Não foi possível inicializar o Google Pay."

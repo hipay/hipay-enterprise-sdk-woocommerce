@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.13.0
+
+- **Add** : Added Google Pay as payment method
+
 ## 2.12.0
 
 - **Fix** : Fixed Alma redirection
