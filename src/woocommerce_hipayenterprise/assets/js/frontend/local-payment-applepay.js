@@ -318,7 +318,7 @@
                 currencyCode:     config.currency || 'EUR',
                 total: {
                     label:  config.shopName || 'Total',
-                    amount: String(config.amount || '0.01'),
+                    amount: String($('.hipay-applepay-wrapper').attr('data-amount') || config.amount || '0.01'),
                 },
                 supportedNetworks: ['visa', 'masterCard', 'amex', 'maestro', 'cartesBancaires'],
             };

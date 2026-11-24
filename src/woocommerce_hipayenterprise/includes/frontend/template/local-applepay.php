@@ -1,6 +1,6 @@
 <?php if (!defined('ABSPATH')) { exit; } ?>
 
-<div class="hipay-applepay-wrapper">
+<div class="hipay-applepay-wrapper" data-amount="<?php echo esc_attr($amount ?? ''); ?>">
     <div id="apple-pay-tos-notice" style="display:none" class="woocommerce-info"></div>
     <div id="apple-pay-button-container"></div>
     <div id="error-js-<?php echo esc_attr($localPaymentName); ?>" style="display:none" class="woocommerce-error"></div>

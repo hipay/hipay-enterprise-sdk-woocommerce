@@ -144,7 +144,15 @@ class Hipay_Applepay extends Hipay_Gateway_Local_Abstract
         $this->process_template(
             'local-applepay.php',
             'frontend',
-            ['localPaymentName' => $this->paymentProduct]
+            [
+                'localPaymentName' => $this->paymentProduct,
+                'amount'           => number_format(
+                    (float) $this->getCartAmount(),
+                    wc_get_price_decimals(),
+                    '.',
+                    ''
+                ),
+            ]
         );
     }
 

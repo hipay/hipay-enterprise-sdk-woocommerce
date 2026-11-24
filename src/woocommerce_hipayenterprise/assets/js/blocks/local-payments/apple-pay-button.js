@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
 import { CART_STORE_KEY } from '@woocommerce/block-data';
+import { loadSdk, formatAmount } from './googlepay-sdk';
 
 /**
  * Apple Pay Button Component
@@ -18,7 +19,6 @@ const ApplePayButton = ({ config, onPaymentDataChange }) => {
     const [fieldsValid, setFieldsValid]   = useState(false);
     const instanceRef                     = useRef(null);
     const containerIdRef                = useRef('hipay-applepay-' + Math.random().toString(36).substr(2, 9));
-    const initializedRef                = useRef(false);
     const onPaymentDataChangeRef        = useRef(onPaymentDataChange);
 
     useEffect(() => {
@@ -59,17 +59,6 @@ const ApplePayButton = ({ config, onPaymentDataChange }) => {
         };
     }, []);
 
-    // Destroy instance on unmount.
-    useEffect(() => {
-        return () => {
-            if (instanceRef.current) {
-                try { instanceRef.current.destroy(); } catch (e) {}
-                instanceRef.current = null;
-            }
-            initializedRef.current = false;
-        };
-    }, []);
-
     useEffect(() => {
         const checkFields = () => {
             const checkout = document.querySelector('.wc-block-checkout');
@@ -93,13 +82,20 @@ const ApplePayButton = ({ config, onPaymentDataChange }) => {
 
     // Initialize once cart totals are available.
     useEffect(() => {
-        if (initializedRef.current || !cartTotals || !cartTotals.total_price) {
+        if (!cartTotals || !cartTotals.total_price) {
             return;
         }
 
         const multiBrowserEnabled = Boolean(config.multiBrowserEnabled);
+        let cancelled = false;
+
+        setIsLoading(true);
+        setError(null);
 
         const waitForContainer = () => {
+            if (cancelled) {
+                return;
+            }
             const container = document.getElementById(containerIdRef.current);
             if (!container) {
                 setTimeout(waitForContainer, 100);
@@ -109,22 +105,24 @@ const ApplePayButton = ({ config, onPaymentDataChange }) => {
         };
 
         const loadSDKAndCreate = () => {
-            if (!window.HiPay) {
-                const script    = document.createElement('script');
-                script.src      = config.hostedFieldsUrl || 'https://libs.hipay.com/js/sdkjs.js';
-                script.async    = true;
-                script.onload   = createButton;
-                script.onerror  = () => {
+            if (cancelled) {
+                return;
+            }
+            loadSdk(config.hostedFieldsUrl)
+                .then(createButton)
+                .catch(() => {
+                    if (cancelled) {
+                        return;
+                    }
                     setError(__('Failed to load HiPay SDK', 'hipayenterprise'));
                     setIsLoading(false);
-                };
-                document.body.appendChild(script);
-            } else {
-                createButton();
-            }
+                });
         };
 
         const createButton = () => {
+            if (cancelled) {
+                return;
+            }
             try {
                 const hipay = window.HiPay({
                     username:    config.apiUsernameTokenJs,
@@ -133,20 +131,14 @@ const ApplePayButton = ({ config, onPaymentDataChange }) => {
                     lang:        config.lang || 'en',
                 });
 
-                let amount = 0;
-                if (cartTotals?.total_price) {
-                    amount = (parseFloat(cartTotals.total_price) / 100).toFixed(2);
-                }
-                if (parseFloat(amount) < 0.01) {
-                    amount = '0.01';
-                }
+                const amount = formatAmount(cartTotals);
 
                 const request = {
                     countryCode:       config.countryCode || '',
                     currencyCode:      cartTotals?.currency_code || config.currency || 'EUR',
                     total: {
                         label:  config.shopName || 'Total',
-                        amount: String(amount),
+                        amount,
                     },
                     supportedNetworks: ['visa', 'masterCard', 'amex', 'maestro', 'cartesBancaires'],
                 };
@@ -218,8 +210,7 @@ const ApplePayButton = ({ config, onPaymentDataChange }) => {
                     }
                 });
 
-                instanceRef.current   = applePayInstance;
-                initializedRef.current = true;
+                instanceRef.current = applePayInstance;
                 setIsLoading(false);
             } catch (e) {
                 if (e.message === 'HIPAY_PAYMENT_PRODUCT_NOT_AVAILABLE') {
@@ -232,6 +223,18 @@ const ApplePayButton = ({ config, onPaymentDataChange }) => {
         };
 
         waitForContainer();
+
+        return () => {
+            cancelled = true;
+            if (instanceRef.current) {
+                try { instanceRef.current.destroy(); } catch (e) {}
+                instanceRef.current = null;
+            }
+            const container = document.getElementById(containerIdRef.current);
+            if (container) {
+                container.innerHTML = '';
+            }
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [cartTotals?.total_price]);
 
