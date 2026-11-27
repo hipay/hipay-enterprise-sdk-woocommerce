@@ -51,7 +51,7 @@ class Hipay_Googlepay extends Hipay_Gateway_Local_Abstract
 
     protected function enqueueGooglePayScripts()
     {
-        if (!$this->isEnabledInSettings()) {
+        if ('yes' !== $this->enabled) {
             return;
         }
 

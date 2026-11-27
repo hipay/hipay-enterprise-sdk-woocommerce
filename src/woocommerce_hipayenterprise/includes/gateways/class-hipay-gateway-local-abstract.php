@@ -77,22 +77,6 @@ class Hipay_Gateway_Local_Abstract extends Hipay_Gateway_Abstract
         return 'yes' === $this->enabled;
     }
 
-    /**
-     * Saved "enabled" flag of the gateway, read from the settings at call time.
-     *
-     * `$this->enabled` is resolved once, when the gateway is constructed. Reading the
-     * option again keeps an enqueue callback from acting on a stale value, and gives the
-     * three local gateways the same check.
-     *
-     * @return bool
-     */
-    protected function isEnabledInSettings()
-    {
-        $this->init_settings();
-
-        return 'yes' === $this->get_option('enabled');
-    }
-
     public function payment_fields()
     {
         $this->process_template(

@@ -59,22 +59,6 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
     protected $notifications;
 
     /**
-     * Order of the order-pay page, once it has passed the key and ownership checks.
-     *
-     * Shared by every gateway instance so the check runs once per request.
-     *
-     * @var WC_Order|null
-     */
-    private static $orderPayOrder = null;
-
-    /**
-     * Whether the order-pay order has already been resolved for this request.
-     *
-     * @var bool
-     */
-    private static $orderPayOrderResolved = false;
-
-    /**
      * @var
      */
     protected $paymentProduct;
@@ -179,11 +163,15 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
             'isOrderPayPage' => $this->isOrderPayPage()
         );
 
-        $orderPayOrder = $this->getOrderPayOrder();
+        if ($this->isOrderPayPage()) {
+            global $wp;
+            $order_id = absint($wp->query_vars['order-pay']);
+            $order = wc_get_order($order_id);
 
-        if ($orderPayOrder) {
-            $hipay_config_data["customerFirstName"] = $orderPayOrder->get_billing_first_name();
-            $hipay_config_data["customerLastName"] = $orderPayOrder->get_billing_last_name();
+            if ($order) {
+                $hipay_config_data["customerFirstName"] = $order->get_billing_first_name();
+                $hipay_config_data["customerLastName"] = $order->get_billing_last_name();
+            }
         }
 
         wp_localize_script(
@@ -574,75 +562,19 @@ class Hipay_Gateway_Abstract extends WC_Payment_Gateway
         return isset($wp->query_vars['order-pay']) && !empty($wp->query_vars['order-pay']);
     }
 
-    /**
-     * Order of the order-pay page, only when the caller is allowed to see it.
-     *
-     * WooCommerce refuses a missing or wrong key in the page content, after the scripts
-     * have already been printed, so the gateways must check it themselves before putting
-     * any order data in the page. Resolved once per request and reused by every caller,
-     * so nothing reads the query var again after the check.
-     *
-     * @return WC_Order|null
-     */
-    protected function getOrderPayOrder()
-    {
-        if (!self::$orderPayOrderResolved) {
-            self::$orderPayOrderResolved = true;
-            self::$orderPayOrder = $this->resolveOrderPayOrder();
-        }
-
-        return self::$orderPayOrder;
-    }
-
-    /**
-     * @return WC_Order|null
-     */
-    private function resolveOrderPayOrder()
-    {
-        if (!$this->isOrderPayPage()) {
-            return null;
-        }
-
-        global $wp;
-        $order = wc_get_order(absint($wp->query_vars['order-pay']));
-
-        if (!$order instanceof WC_Order) {
-            return null;
-        }
-
-        if (!isset($_GET['key']) || !is_string($_GET['key'])) {
-            return null;
-        }
-
-        $orderKey = $order->get_order_key();
-        if (!is_string($orderKey) || '' === $orderKey) {
-            return null;
-        }
-
-        if (!hash_equals($orderKey, sanitize_text_field(wp_unslash($_GET['key'])))) {
-            return null;
-        }
-
-        // A guest order is identified by its key alone; an order attached to a customer
-        // is only visible to that customer.
-        $customerId = (int) $order->get_customer_id();
-        if (0 !== $customerId && $customerId !== get_current_user_id()) {
-            return null;
-        }
-
-        return $order;
-    }
-
     protected function getCurrentPaymentContext()
     {
-        $order = $this->getOrderPayOrder();
+        if ($this->isOrderPayPage()) {
+            global $wp;
+            $order = wc_get_order(absint($wp->query_vars['order-pay']));
 
-        if ($order) {
-            return array(
-                'country' => $order->get_billing_country(),
-                'currency' => $order->get_currency(),
-                'total' => (float) $order->get_total()
-            );
+            if ($order) {
+                return array(
+                    'country' => $order->get_billing_country(),
+                    'currency' => $order->get_currency(),
+                    'total' => (float) $order->get_total()
+                );
+            }
         }
 
         return array(

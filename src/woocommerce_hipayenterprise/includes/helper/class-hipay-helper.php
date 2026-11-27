@@ -122,20 +122,9 @@ class Hipay_Helper
 
         $hashAlgorithm = $plugin->confHelper->getAccount()["hash_algorithm"][$environment];
 
-        // A notification is signed by the X-Allopass-Signature header over the raw POST body.
-        // Both are passed explicitly so the check never falls back to the query string, whatever
-        // version of the HiPay PHP SDK is bundled with the plugin.
-        $signature = isset($_SERVER['HTTP_X_ALLOPASS_SIGNATURE'])
-            ? (string)$_SERVER['HTTP_X_ALLOPASS_SIGNATURE']
-            : '';
-        $payload = (string)file_get_contents('php://input');
+        $isValidSignature = Signature::isValidHttpSignature($passphrase, $hashAlgorithm);
 
-        $isValidSignature = Signature::isValidHttpSignature($passphrase, $hashAlgorithm, $signature, $payload);
-
-        if (
-            !$isValidSignature
-            && !Signature::isSameHashAlgorithm($passphrase, $hashAlgorithm, $signature, $payload)
-        ) {
+        if (!$isValidSignature && !Signature::isSameHashAlgorithm($passphrase, $hashAlgorithm)) {
             $plugin->logs->logInfos(
                 "# Signature is not valid. Hash is not the same. Try to synchronize for {$environment}"
             );
@@ -150,9 +139,7 @@ class Hipay_Helper
                         $plugin->logs->logInfos("# Hash Algorithm is now synced for {$environment}");
                         $isValidSignature = Signature::isValidHttpSignature(
                             $passphrase,
-                            $hashAlgorithmAccount->getHashingAlgorithm(),
-                            $signature,
-                            $payload
+                            $hashAlgorithmAccount->getHashingAlgorithm()
                         );
                     }
                 }

@@ -60,10 +60,6 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
      */
     public function maybeEnqueuePaypalScripts()
     {
-        if (!$this->isEnabledInSettings()) {
-            return;
-        }
-
         if (!((is_checkout() || is_add_payment_method_page()) && !is_order_received_page())) {
             return;
         }
@@ -305,12 +301,14 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
      * @return float
      */
     protected function getOrderPayAmount() {
-        $order = $this->getOrderPayOrder();
-
-        if ($order) {
-            return $order->get_total();
+        global $wp;
+        if (isset($wp->query_vars['order-pay']) && !empty($wp->query_vars['order-pay'])) {
+            $order_id = absint($wp->query_vars['order-pay']);
+            $order = wc_get_order($order_id);
+            if ($order) {
+                return $order->get_total();
+            }
         }
-
         return 0;
     }
 
@@ -354,7 +352,10 @@ class Hipay_Paypal extends Hipay_Gateway_Local_Abstract
         // Check if we're on order-pay page
         $source = null;
         if ($this->isOrderPayPage()) {
-            $source = $this->getOrderPayOrder();
+            global $wp;
+            if (isset($wp->query_vars['order-pay']) && !empty($wp->query_vars['order-pay'])) {
+                $source = wc_get_order(absint($wp->query_vars['order-pay']));
+            }
         } else {
             $source = WC()->customer;
         }
