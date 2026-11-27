@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2.12.1
+
+- **Fix** : Refined order data handling during checkout
+- **Fix** : Improved frontend script loading for inactive payment methods
+- **Fix** : Updated HiPay PHP SDK to 2.24.2 and adjusted notification handling
+
 ## 2.12.0
 
 - **Fix** : Fixed Alma redirection
