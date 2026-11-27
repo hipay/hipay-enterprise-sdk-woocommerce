@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2.13.1
+
+- **Fix** : Fixed customer data of the order being exposed on the order payment page to callers without the order key
+- **Fix** : Fixed PayPal and Apple Pay script data being emitted while the payment method is disabled
+- **Fix** : Updated HiPay PHP SDK to 2.24.2, which hardens the notification signature verification, and the notification check now passes the signature header and the raw body explicitly
+
 ## 2.13.0
 
 - **Add** : Added Google Pay as payment method

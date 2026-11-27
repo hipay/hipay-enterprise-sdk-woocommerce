@@ -50,6 +50,10 @@ class Hipay_Applepay extends Hipay_Gateway_Local_Abstract
 
         if (!is_admin() && $paymentProductConfig) {
             add_action('wp_enqueue_scripts', function () use ($paymentProductConfig) {
+                if (!$this->isEnabledInSettings()) {
+                    return;
+                }
+
                 if ((is_checkout() || is_add_payment_method_page()) && !is_order_received_page()) {
                     $this->enqueueApplePayScripts($paymentProductConfig);
                 }
@@ -208,12 +212,9 @@ class Hipay_Applepay extends Hipay_Gateway_Local_Abstract
     protected function getCartAmount()
     {
         if ($this->isOrderPayPage()) {
-            global $wp;
-            if (isset($wp->query_vars['order-pay']) && !empty($wp->query_vars['order-pay'])) {
-                $order = wc_get_order(absint($wp->query_vars['order-pay']));
-                if ($order) {
-                    return $order->get_total();
-                }
+            $order = $this->getOrderPayOrder();
+            if ($order) {
+                return $order->get_total();
             }
         }
 
